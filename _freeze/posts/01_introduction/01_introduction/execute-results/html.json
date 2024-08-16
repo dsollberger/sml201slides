@@ -1,0 +1,15 @@
+{
+  "hash": "c0b5cd3c0b9e40c9faaaec9b7561eab6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"1: Introductions\"\nauthor: \"Derek Sollberger\"\ndate: \"2024-09-03\"\nexecute:\n  cache: true\n# format:\n#   revealjs:\n#     scrollable: true\nformat:\n  html:\n    toc: true\n---\n\n\n\\newcommand{\\ds}{\\displaystyle}\n\n# Non-Normal Hierarchical Models\n:::: {.columns}\n\n::: {.column width=\"45%\"}\n**Goals:** \n\n* Further explore hierarchical models\n* Apply the Bayesian mindset to neural networks\n\n:::\n\n::: {.column width=\"10%\"}\n\n:::\n\n::: {.column width=\"45%\"}\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"tidyverse\")\n\nknitr::opts_chunk$set(echo = TRUE)\n\nairbnb_raw <- readr::read_csv(\"listings.csv\")\n\n# brand colors\n# https://pickcoloronline.com/brands/airbnb/\nairbnb_red <- \"#FF5A5F\"\nairbnb_green <- \"#00A699\"\nairbnb_orange <- \"#FC642D\"\nairbnb_black <- \"#484848\"\nairbnb_gray <- \"#767676\"\n```\n:::\n\n:::\n\n::::\n\n\n\n\n# Footnotes\n\n* \n\n::: {.callout-note collapse=\"true\"}\n## Session Info\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsessionInfo()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nR version 4.4.0 (2024-04-24 ucrt)\nPlatform: x86_64-w64-mingw32/x64\nRunning under: Windows 10 x64 (build 19045)\n\nMatrix products: default\n\n\nlocale:\n[1] LC_COLLATE=English_United States.utf8 \n[2] LC_CTYPE=English_United States.utf8   \n[3] LC_MONETARY=English_United States.utf8\n[4] LC_NUMERIC=C                          \n[5] LC_TIME=English_United States.utf8    \n\ntime zone: America/New_York\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.0    fastmap_1.2.0     cli_3.6.2        \n [5] tools_4.4.0       htmltools_0.5.8.1 rstudioapi_0.16.0 yaml_2.3.8       \n [9] rmarkdown_2.27    knitr_1.48        jsonlite_1.8.8    xfun_0.44        \n[13] digest_0.6.35     rlang_1.1.4       evaluate_0.24.0  \n```\n\n\n:::\n:::\n\n:::\n\n\n:::: {.columns}\n\n::: {.column width=\"45%\"}\n\t\n:::\n\n::: {.column width=\"10%\"}\n\n:::\n\n::: {.column width=\"45%\"}\n\n:::\n\n::::\n\n\n::::: {.panel-tabset}\n\n\n\n:::::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,92 @@
+---
+title: "1: Introductions"
+author: "Derek Sollberger"
+date: "2024-09-03"
+execute:
+  cache: true
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+\newcommand{\ds}{\displaystyle}
+
+# Non-Normal Hierarchical Models
+:::: {.columns}
+
+::: {.column width="45%"}
+**Goals:** 
+
+* Further explore hierarchical models
+* Apply the Bayesian mindset to neural networks
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+```{r, eval = FALSE}
+#| message: false
+#| warning: false
+
+library("tidyverse")
+
+knitr::opts_chunk$set(echo = TRUE)
+
+airbnb_raw <- readr::read_csv("listings.csv")
+
+# brand colors
+# https://pickcoloronline.com/brands/airbnb/
+airbnb_red <- "#FF5A5F"
+airbnb_green <- "#00A699"
+airbnb_orange <- "#FC642D"
+airbnb_black <- "#484848"
+airbnb_gray <- "#767676"
+```
+:::
+
+::::
+
+
+
+
+# Footnotes
+
+* 
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+
+::::: {.panel-tabset}
+
+
+
+:::::
