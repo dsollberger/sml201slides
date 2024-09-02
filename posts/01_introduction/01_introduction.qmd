@@ -16,9 +16,13 @@ format:
 #| warning: false
 library("gt")
 library("tidyverse")
+
+bee_states_df <- readr::read_csv("bee_population_states.csv")
+bee_totals_df <- readr::read_csv("bee_population_totals.csv")
+topics_df <- readr::read_csv("SML201_lecture_schedule.csv")
 ```
 
-# SML 320
+# SML 201
 
 ## Start
 
@@ -36,7 +40,84 @@ library("tidyverse")
 
 ::::
 
-## SML 201: Introduction to Data Science
+# Case Study
+
+## Concern for Bee Populations
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![Time](bee_news_1.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![ABC](bee_news_2.png)
+:::
+
+::::
+
+## Finding Data
+
+* US Dept of Agriculture
+* National Agricultural Statistics Service
+
+:::: {.panel-tabset}
+
+## Loading Data
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_df <- readr::read_csv("bee_population.csv")
+head(bee_df)
+```
+
+## R Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+bee_df <- readr::read_csv("bee_population.csv")
+head(bee_df)
+```
+::::
+
+## Presenting Narrative
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+library("tidyverse")
+
+bee_df |> 
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = Year, y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  coord_cartesian(ylim = c(2.5,3.0)) +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+
+
+# SML 201: Introduction to Data Science
 
 * Fall 2024
 * Tuesdays and Thursdays
@@ -171,6 +252,11 @@ Introduction to Data Science provides a practical introduction to the burgeoning
 
     * Exam 1 (15%): October 10
     * Exam 2 (20%): December 5
+
+* content:
+
+    * multiple-choice questions (similar to BLTs)
+    * open-ended tasks (similar to precepts and projects)
 
 :::
 
@@ -341,10 +427,621 @@ If you are finding yourself taking way too long hitting your head against a wall
 
 I value all students regardless of their background, country of origin, race, religion, ethnicity, gender, sexual orientation, disability status, etc. and am committed to providing a climate of excellence and inclusiveness within all aspects of the course. If there are aspects of your culture or identity that you would like to share with me as they relate to your success in this class, I am happy to meet to discuss. Likewise, if you have any concerns in this area or facing any special issues or challenges, you are encouraged to discuss the matter with me (set up a meeting by e-mail) with an assurance of full confidentiality (only exception being mandatory reporting of academic integrity code violations or sexual harassment).
 
+# Topics
+
+:::: {.panel-tabset}
+
+## table
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+topics_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Fall 2024") |>
+  tab_header(
+    title = "SML 201",
+    subtitle = "Lecture Topics"
+  )
+```
+
+## gt code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+topics_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Fall 2024") |>
+  tab_header(
+    title = "SML 201",
+    subtitle = "Lecture Topics"
+  )
+```
+
+::::
+
+
+
+# Learner Profiles
+
+:::: {.panel-tabset}
+
+## Pedagogy
+
+Sharing an overview of the types of students that might be taking this course.
+
+## 1
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Spike
+
+![Spike](LP_Spike.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* Senior
+* History
+* Did not like computer programming in the past, but is willing to learn now
+:::
+
+::::
+
+## 2
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Jet
+
+![Jet](LP_Jet.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* Junior
+* Psychology
+* Took AP Statistics years ago, and wants more complex case studies
+:::
+
+::::
+
+## 3
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Faye
+
+![Faye](LP_Faye.png)		
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* Sophomore
+* Anthropology
+* Wants to add "data science" to CV before applying to internships
+:::
+
+::::
+
+## 4
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Ed
+
+![Ed](LP_Ed.png)		
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* Computer Science
+* ORFE
+* Has a lot of experience programming in Python, but is wondering why this class is taught in R 
+:::
+
+::::
+
+::::
+
+
+# Languages
+
+## Why R?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![R](R_logo.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* matches data science concepts well
+* language made for statistics and probability calculations
+* software compatibility
+* easier to learn
+* easier to teach
+* gaining popularity in areas such as consulting, finance, epidemiology, genomics, pharmaceuticals, etc.
+:::
+
+::::
+
+## R vs Python
+
+:::: {.panel-tabset}
+
+## table
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+languages_df <- data.frame(
+  R = c("Data Science", "Dashboards", "Interactvity", "Visualization", "Debugging"),
+  Python = c("Machine Learning", "Software Development", "Object-Oriented Programming", "Big Data", "Faster")
+)
+
+languages_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "source: Derek's opinion") |>
+  tab_header(
+    title = "Data Science Programming Languages",
+    subtitle = "Which one is better?"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#ffc100")
+    ),
+    locations = cells_body(columns = R)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#d0cef3")
+    ),
+    locations = cells_body(columns = Python)
+  )
+```
+
+## gt code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+languages_df <- data.frame(
+  R = c("Data Science", "Dashboards", "Interactvity", "Visualization", "Debugging"),
+  Python = c("Machine Learning", "Software Development", "Object-Oriented Programming", "Big Data", "Faster")
+)
+
+languages_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "source: Derek's opinion") |>
+  tab_header(
+    title = "Data Science Programming Languages",
+    subtitle = "Which one is better?"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#ffc100")
+    ),
+    locations = cells_body(columns = R)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#d0cef3")
+    ),
+    locations = cells_body(columns = Python)
+  )
+```
+
+::::
 
 
 
 
+
+
+
+
+
+
+
+
+# Return of the Bees
+
+:::: {.panel-tabset}
+
+## Plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_df |> 
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = Year, y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  coord_cartesian(ylim = c(2.5,3.0)) +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       # caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+bee_df |> 
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = Year, y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  coord_cartesian(ylim = c(2.5,3.0)) +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+
+## Facets
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_states_df |>
+  filter(Year >= 2015 & Year <= 2018) |>
+  filter(State %in% c("CALIFORNIA", "NEW JERSEY")) |>
+  ggplot(aes(x = Year, y = Value)) +
+  facet_wrap(vars(State), scales = "free_y") +
+  geom_bar(stat = "identity")
+```
+
+::::
+
+## Critique
+
+:::: {.columns}
+
+::: {.column width="25%"}
+Critique this graph.  What comments do you have about it?	
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="70%"}
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_df |> 
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = Year, y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  coord_cartesian(ylim = c(2.5,3.0)) +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       # caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+:::
+
+::::
+
+
+## Continuing the Narrative
+
+:::: {.panel-tabset}
+
+## More Data
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_totals_df |>
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = factor(Year), y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       # caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+bee_totals_df |>
+  mutate(num_colonies = Value / 1e6) |>
+  ggplot(aes(x = factor(Year), y = num_colonies)) +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  labs(title = "US Bee Population",
+       subtitle = "Survey of bee colonies",
+       caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies (in millions)") +
+  theme_minimal()
+```
+
+## Facets
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+bee_states_df |>
+  # filter(Year >= 2015 & Year <= 2018) |>
+  filter(State %in% c("NEW JERSEY", "CALIFORNIA")) |>
+  ggplot(aes(x = factor(Year), y = Value)) +
+  facet_wrap(vars(State), ncol = 1, scales = "free_y") +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  labs(title = "US Bee Population",
+       subtitle = "Selection of States",
+       caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies") +
+  theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+bee_states_df |>
+  # filter(Year >= 2015 & Year <= 2018) |>
+  filter(State %in% c("NEW JERSEY", "CALIFORNIA")) |>
+  ggplot(aes(x = factor(Year), y = Value)) +
+  facet_wrap(vars(State), ncol = 1, scales = "free_y") +
+  geom_bar(color = "#121212", fill = "#E77500",
+           stat = "identity") +
+  labs(title = "US Bee Population",
+       subtitle = "Selection of States",
+       caption = "source: USDA NASS",
+       x = "year",
+       y = "bee colonies") +
+  theme_minimal()
+```
+
+::::
+
+## Epilogue
+
+![Yay bees!](bee_news_3.png)
+* inspiration: [Wait, does America suddenly have a record number of bees?](https://www.washingtonpost.com/business/2024/03/29/bees-boom-colony-collapse/) by Andrew Van Dam
+
+# Projects
+
+:::: {.panel-tabset}
+
+## Splash
+
+We will have hands-on coding experience here in SML 201.
+
+Here are the projects being drafted for this semester.
+
+## 1
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Electoral College
+
+Organize a national campaign
+
+* concept: exploring data
+* areas: politics, management
+
+
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+![Electoral College](elec_college_map.png)
+
+* image source: Wikipedia
+:::
+
+::::
+
+## 2
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Covid Tracking
+
+Replicate studies of wastewater surveillance and tracking coronaviruses
+
+* concept: data wrangling
+* areas: public health, geostatistics
+
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![wastewater study](Wastewater-Surveillance.png)
+
+* image source: California Department of Public Health
+
+:::
+
+::::
+
+## 3
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### AI Security
+
+Classify internet activity in the age of artificial intelligence
+
+* concept: hypothesis testing
+* areas: cybersecurity, operations
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![AI Attacks](AI_attacks.png)
+
+* image source: Red Asia Insurance
+:::
+
+::::
+
+## 4
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### Uber Ridesharing
+
+Predict car sharing ridership and pricing
+
+* concept: regression models
+* areas: business, finance
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Uber App](ridesharing.png)
+
+* image source: Reuters
+:::
+
+::::
+
+::::
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Please read the weekly announcement in Canvas
+* Be sure to complete the before-lecture tasks
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* This week:
+
+    * Software Installation
+    * BLT0905
+    * Precept 1
+    * CLO Assessment
+    * Demographics Survey
+    
+* Project 1:
+
+    * assigned: Sept 23
+    * due: Oct 2
+    
+* Exam 1: Oct 10
+    
+:::
+
+::::
 
 
 # Footnotes
@@ -353,8 +1050,7 @@ I value all students regardless of their background, country of origin, race, re
 
 ## (optional) Additional Resources
 
-* [Classical vs Frequentist vs Bayesian Probability](https://www.youtube.com/watch?v=dejy4PPCFHY) by Trefor Bazett
-* [Creating a Syllabus with Quarto](https://www.youtube.com/watch?v=bKXaaVaBaT0) by Data and Design
+* [Wait, does America suddenly have a record number of bees?](https://www.washingtonpost.com/business/2024/03/29/bees-boom-colony-collapse/) by Andrew Van Dam
 
 :::
 
@@ -369,11 +1065,15 @@ sessionInfo()
 
 :::: {.columns}
 
-::: {.column width="50%"}
+::: {.column width="45%"}
 	
 :::
 
-::: {.column width="50%"}
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
 
 :::
 

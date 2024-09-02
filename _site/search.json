@@ -11,7 +11,7 @@
     "href": "posts/01_introduction/01_introduction.html",
     "title": "1: Introductions",
     "section": "",
-    "text": "Goal: Introduce data science\nObjective: Explore a data set with bar graphs and facets\n\n\n\n\n\nImage credit: Steven Geringer\n\n\n\n\n\n\n\n\nFall 2024\nTuesdays and Thursdays\n\n11 AM to 1220 PM: Lewis Library 120\n130 PM to 250 PM: Lewis Library 120\n\nLecturer: Derek\n\nI go by “Derek” or “teacher”\n\n\n\n\n\n\n\n\nCourse Description\n\n\n\n\n\nIntroduction to Data Science provides a practical introduction to the burgeoning field of data science. The course introduces students to the essential tools for conducting data-driven research, including the fundamentals of programming techniques and the essentials of statistics. Students will work with real-world datasets from various domains; write computer code to manipulate, explore, and analyze data; use basic techniques from statistics and machine learning to analyze data; learn to draw conclusions using sound statistical reasoning; and produce scientific reports. No prior knowledge of programming or statistics is required."
+    "text": "Goal: Introduce data science\nObjective: Explore a data set with bar graphs and facets\n\n\n\n\n\nImage credit: Steven Geringer"
   },
   {
     "objectID": "posts/post-with-code/index.html",
@@ -103,5 +103,61 @@
     "title": "1: Introductions",
     "section": "Inclusion Statement",
     "text": "Inclusion Statement\nI value all students regardless of their background, country of origin, race, religion, ethnicity, gender, sexual orientation, disability status, etc. and am committed to providing a climate of excellence and inclusiveness within all aspects of the course. If there are aspects of your culture or identity that you would like to share with me as they relate to your success in this class, I am happy to meet to discuss. Likewise, if you have any concerns in this area or facing any special issues or challenges, you are encouraged to discuss the matter with me (set up a meeting by e-mail) with an assurance of full confidentiality (only exception being mandatory reporting of academic integrity code violations or sexual harassment)."
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#concern-for-bee-populations",
+    "href": "posts/01_introduction/01_introduction.html#concern-for-bee-populations",
+    "title": "1: Introductions",
+    "section": "Concern for Bee Populations",
+    "text": "Concern for Bee Populations\n\n\n\n\n\nTime\n\n\n\n\n\n\n\n\nABC"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#finding-data",
+    "href": "posts/01_introduction/01_introduction.html#finding-data",
+    "title": "1: Introductions",
+    "section": "Finding Data",
+    "text": "Finding Data\n\nUS Dept of Agriculture\nNational Agricultural Statistics Service\n\n\nLoading DataR Code\n\n\n\n\n# A tibble: 4 × 7\n  Program  Year   Value `Geo Level` State    Commodity `Data Item`              \n  &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;                    \n1 SURVEY   2015 2849500 NATIONAL    US TOTAL HONEY     HONEY, BEE COLONIES - IN…\n2 SURVEY   2016 2801470 NATIONAL    US TOTAL HONEY     HONEY, BEE COLONIES - IN…\n3 SURVEY   2017 2694150 NATIONAL    US TOTAL HONEY     HONEY, BEE COLONIES - IN…\n4 SURVEY   2018 2665880 NATIONAL    US TOTAL HONEY     HONEY, BEE COLONIES - IN…\n\n\n\n\n\nbee_df &lt;- readr::read_csv(\"bee_population.csv\")\nhead(bee_df)"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#presenting-narrative",
+    "href": "posts/01_introduction/01_introduction.html#presenting-narrative",
+    "title": "1: Introductions",
+    "section": "Presenting Narrative",
+    "text": "Presenting Narrative"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#why-r",
+    "href": "posts/01_introduction/01_introduction.html#why-r",
+    "title": "1: Introductions",
+    "section": "Why R?",
+    "text": "Why R?\n\n\n\n\n\nR\n\n\n\n\n\n\nmatches data science concepts well\nlanguage made for statistics and probability calculations\nsoftware compatibility\neasier to learn\neasier to teach\ngaining popularity in areas such as consulting, finance, epidemiology, genomics, pharmaceuticals, etc."
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#r-vs-python",
+    "href": "posts/01_introduction/01_introduction.html#r-vs-python",
+    "title": "1: Introductions",
+    "section": "R vs Python",
+    "text": "R vs Python\n\ntablegt code\n\n\n\n\n\n\n\n\n\n\nData Science Programming Languages\n\n\nWhich one is better?\n\n\nR\nPython\n\n\n\n\nData Science\nMachine Learning\n\n\nDashboards\nSoftware Development\n\n\nInteractvity\nObject-Oriented Programming\n\n\nVisualization\nBig Data\n\n\nDebugging\nFaster\n\n\n\nsource: Derek's opinion\n\n\n\n\n\n\n\n\n\n\n\nlanguages_df &lt;- data.frame(\n  R = c(\"Data Science\", \"Dashboards\", \"Interactvity\", \"Visualization\", \"Debugging\"),\n  Python = c(\"Machine Learning\", \"Software Development\", \"Object-Oriented Programming\", \"Big Data\", \"Faster\")\n)\n\nlanguages_df |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"source: Derek's opinion\") |&gt;\n  tab_header(\n    title = \"Data Science Programming Languages\",\n    subtitle = \"Which one is better?\"\n  ) |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  ) |&gt;\n  tab_style(\n    style = list(\n      cell_fill(color = \"#ffc100\")\n    ),\n    locations = cells_body(columns = R)\n  ) |&gt;\n  tab_style(\n    style = list(\n      cell_fill(color = \"#d0cef3\")\n    ),\n    locations = cells_body(columns = Python)\n  )"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#critique",
+    "href": "posts/01_introduction/01_introduction.html#critique",
+    "title": "1: Introductions",
+    "section": "Critique",
+    "text": "Critique\n\n\nCritique this graph. What comments do you have about it?"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#continuing-the-narrative",
+    "href": "posts/01_introduction/01_introduction.html#continuing-the-narrative",
+    "title": "1: Introductions",
+    "section": "Continuing the Narrative",
+    "text": "Continuing the Narrative\n\nMore DataCodeFacetsCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbee_totals_df |&gt;\n  mutate(num_colonies = Value / 1e6) |&gt;\n  ggplot(aes(x = factor(Year), y = num_colonies)) +\n  geom_bar(color = \"#121212\", fill = \"#E77500\",\n           stat = \"identity\") +\n  labs(title = \"US Bee Population\",\n       subtitle = \"Survey of bee colonies\",\n       caption = \"source: USDA NASS\",\n       x = \"year\",\n       y = \"bee colonies (in millions)\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbee_states_df |&gt;\n  # filter(Year &gt;= 2015 & Year &lt;= 2018) |&gt;\n  filter(State %in% c(\"NEW JERSEY\", \"CALIFORNIA\")) |&gt;\n  ggplot(aes(x = factor(Year), y = Value)) +\n  facet_wrap(vars(State), ncol = 1, scales = \"free_y\") +\n  geom_bar(color = \"#121212\", fill = \"#E77500\",\n           stat = \"identity\") +\n  labs(title = \"US Bee Population\",\n       subtitle = \"Selection of States\",\n       caption = \"source: USDA NASS\",\n       x = \"year\",\n       y = \"bee colonies\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/01_introduction/01_introduction.html#epilogue",
+    "href": "posts/01_introduction/01_introduction.html#epilogue",
+    "title": "1: Introductions",
+    "section": "Epilogue",
+    "text": "Epilogue\n * inspiration: Wait, does America suddenly have a record number of bees? by Andrew Van Dam"
   }
 ]
