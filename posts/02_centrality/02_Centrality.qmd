@@ -1,0 +1,211 @@
+---
+title: "1: Centrality"
+author: "Derek Sollberger"
+date: "2024-09-05"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library("tidyverse")
+
+some_data <- c(32, 45, 16, 78, 39)
+
+```
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Summarize data by centrality
+
+* **Objective**: Compute mean, median, and mode
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![The limit does not exist!](median_girls_meme.png)
+:::
+
+::::
+
+## Advice
+
+* create a folder on your computer desktop called "SML 201"
+
+    * later: place all code scripts and data sets in this folder
+    
+* open RStudio and create a new Quarto document
+
+    * `File` --> `New File` --> `Quarto Document ...`
+    * save the file into your `SML 201` folder
+    
+* To run a line of code, the keyboard short cut is
+
+    * Windows: CTRL + ENTER
+    * Mac: CMD + ENTER
+
+# Mean
+
+## Definition
+
+For a list of data
+
+$$\{a_{1}, a_{2}, ..., a_{n}\}$$
+
+the **mean** or **average** of the data is defined as
+
+$$\bar{x} = \displaystyle\frac{1}{n}\sum_{i = 1}^{n} a_{i}$$
+where "x bar" denotes a **sample mean**
+
+## In R
+
+Run each of these lines of code, and describe the code
+
+```{r}
+#| echo: true
+#| eval: false
+some_data <- c(32, 45, 16, 78, 39)
+sum(some_data)
+length(some_data)
+sum(some_data) / length(some_data)
+mean(some_data)
+```
+
+## Missing Data
+
+Run each of these lines of code, and describe the code
+
+```{r}
+#| echo: true
+#| eval: false
+some_data <- c(32, 45, 16, 78, NA, 39)
+sum(some_data)
+length(some_data)
+sum(some_data) / length(some_data)
+mean(some_data)
+mean(some_data, na.rm = TRUE)
+```
+
+
+
+
+# Case Study: Ages of Olympians
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Assignments:
+
+    * Software Installation
+    * Precept 1
+    * CLO Assessment
+    * Demographics Survey
+    * BLT0910
+    
+* Project 1:
+
+    * assigned: Sept 23
+    * due: Oct 2
+    
+* Exam 1: Oct 10
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![](statistics_rhyme.png)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) How the data set was altered
+
+I altered the following `olympics_data.csv` to make classroom demonstrations.
+
+```{r}
+#| echo: true
+#| eval: false
+
+Q <- readr::read_csv("athletes.csv")
+Q$weight[Q$weight <=0] <- -99 #imitate old-fashioned missing value recording
+Q$age <- lubridate::year("2024-07-26") - lubridate::year(Q$birth_date)
+readr::write_csv(Q, "olympic_data.csv")
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
