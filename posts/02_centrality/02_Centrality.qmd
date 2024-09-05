@@ -585,13 +585,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 3, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 3 day window)",
@@ -608,13 +608,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 5, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 5 day window)",
@@ -631,13 +631,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 7, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 7 day window)",
@@ -654,13 +654,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 9, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 9 day window)",
@@ -677,13 +677,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 11, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 11 day window)",
@@ -700,13 +700,13 @@ tickets_df |>
 #| warning: false
 
 tickets_df |>
-  mutate(roll_mean = zoo::rollapply(
+  mutate(roll_median = zoo::rollapply(
     n, 3, median, align = 'left', fill = NA
   )) |>
     ggplot() +
     geom_point(aes(x = date, y = n),
                color = "black") +
-  geom_line(aes(x = date, y = roll_mean),
+  geom_line(aes(x = date, y = roll_median),
             color = "red") +
     labs(title = "Parking Tickets in Philadelphia",
          subtitle = "Rolling median in red (n = 3 day window)",

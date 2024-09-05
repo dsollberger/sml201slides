@@ -312,6 +312,6 @@
     "href": "posts/02_centrality/02_Centrality.html#rolling-median",
     "title": "2: Centrality",
     "section": "Rolling Median",
-    "text": "Rolling Median\n\n357911Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_mean = zoo::rollapply(\n    n, 3, median, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_mean),\n            color = \"red\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling median in red (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()"
+    "text": "Rolling Median\n\n357911Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_median = zoo::rollapply(\n    n, 3, median, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_median),\n            color = \"red\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling median in red (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()"
   }
 ]
