@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -159,5 +159,159 @@
     "title": "1: Introductions",
     "section": "Epilogue",
     "text": "Epilogue\n * inspiration: Wait, does America suddenly have a record number of bees? by Andrew Van Dam"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html",
+    "href": "posts/02_centrality/02_Centrality.html",
+    "title": "2: Centrality",
+    "section": "",
+    "text": "Goal: Summarize data by centrality\nObjective: Compute mean, median, and mode\n\n\n\n\n\n\n\nThe limit does not exist!\n\n\n\n\n\n\n\n\ncreate a folder on your computer desktop called “SML 201”\n\nlater: place all code scripts and data sets in this folder\n\nopen RStudio and create a new Quarto document\n\nFile –&gt; New File –&gt; Quarto Document ...\nsave the file into your SML 201 folder\n\nTo run a line of code, the keyboard short cut is\n\nWindows: CTRL + ENTER\nMac: CMD + ENTER"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#start",
+    "href": "posts/02_centrality/02_Centrality.html#start",
+    "title": "2: Centrality",
+    "section": "",
+    "text": "Goal: Summarize data by centrality\nObjective: Compute mean, median, and mode\n\n\n\n\n\n\n\nThe limit does not exist!"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#advice",
+    "href": "posts/02_centrality/02_Centrality.html#advice",
+    "title": "2: Centrality",
+    "section": "",
+    "text": "create a folder on your computer desktop called “SML 201”\n\nlater: place all code scripts and data sets in this folder\n\nopen RStudio and create a new Quarto document\n\nFile –&gt; New File –&gt; Quarto Document ...\nsave the file into your SML 201 folder\n\nTo run a line of code, the keyboard short cut is\n\nWindows: CTRL + ENTER\nMac: CMD + ENTER"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#definition",
+    "href": "posts/02_centrality/02_Centrality.html#definition",
+    "title": "2: Centrality",
+    "section": "Definition",
+    "text": "Definition\nFor a list of data\n\\[\\{a_{1}, a_{2}, ..., a_{n}\\}\\]\nthe mean or average of the data is defined as\n\\[\\bar{x} = \\displaystyle\\frac{1}{n}\\sum_{i = 1}^{n} a_{i}\\] where “x bar” denotes a sample mean"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#in-r",
+    "href": "posts/02_centrality/02_Centrality.html#in-r",
+    "title": "2: Centrality",
+    "section": "In R",
+    "text": "In R\nRun each of these lines of code, and describe the code\n\nsome_data &lt;- c(32, 45, 16, 78, 39)\nsum(some_data)\nlength(some_data)\nsum(some_data) / length(some_data)\nmean(some_data)"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#missing-data",
+    "href": "posts/02_centrality/02_Centrality.html#missing-data",
+    "title": "2: Centrality",
+    "section": "Missing Data",
+    "text": "Missing Data\nRun each of these lines of code, and describe the code\n\nsome_data &lt;- c(32, 45, 16, 78, NA, 39)\nsum(some_data)\nlength(some_data)\nsum(some_data) / length(some_data)\nmean(some_data)\nmean(some_data, na.rm = TRUE)"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#loading-the-data",
+    "href": "posts/02_centrality/02_Centrality.html#loading-the-data",
+    "title": "2: Centrality",
+    "section": "Loading the Data",
+    "text": "Loading the Data\nI have supplied a couple of data sets to a GitHub repository to ease the loading of data for classroom work.\n\nolympic_df1 &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data.csv\")\nolympic_df2 &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data2.csv\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#summary-statistics",
+    "href": "posts/02_centrality/02_Centrality.html#summary-statistics",
+    "title": "2: Centrality",
+    "section": "Summary Statistics",
+    "text": "Summary Statistics\nRun each of these lines of code, and describe the code\n\nmean(olympic_df1$weight)\nmean(olympic_df1$weight, na.rm = TRUE)\n\n\n\n\n\n\n\nThe fix\n\n\n\n\n\n\nolympic_df1$weight[olympic_df1$weight &lt;= 0] &lt;- NA\nolympic_df2$weight[olympic_df2$weight &lt;= 0] &lt;- NA"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#filter",
+    "href": "posts/02_centrality/02_Centrality.html#filter",
+    "title": "2: Centrality",
+    "section": "Filter",
+    "text": "Filter\nFor this demonstration, let us focus on the athletes from Turkey.\n\nTurkey_df1 &lt;- olympic_df1 |&gt;\n  filter(country_code == \"TUR\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#dotplot",
+    "href": "posts/02_centrality/02_Centrality.html#dotplot",
+    "title": "2: Centrality",
+    "section": "Dotplot",
+    "text": "Dotplot\nEarly in an introductory statistics course, a dotplot is useful for visualizing integer data.\n\nmean_1 &lt;- mean(Turkey_df1$age, na.rm = TRUE)\n\nTurkey_df1 |&gt;\n  ggplot(aes(x = age)) +\n  geom_dotplot() +\n  geom_vline(xintercept = mean_1, color = \"blue\", linewidth = 3) +\n  labs(title = \"Ages of Turkish Athletics\",\n       subtitle = \"mean in blue\",\n       caption = \"SML 201\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#the-outlier",
+    "href": "posts/02_centrality/02_Centrality.html#the-outlier",
+    "title": "2: Centrality",
+    "section": "The Outlier",
+    "text": "The Outlier\n\n\n\n\n\nYusuf Dikec\n\n\n\nimage source: News 18\n\n\n\n\n\nYusuf Dikec\nTurkish sharpshooter\n\nsilver medalist (2024 Olympics)\n10m air pistol mixed team\n\nAge: 51"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#filtered-again",
+    "href": "posts/02_centrality/02_Centrality.html#filtered-again",
+    "title": "2: Centrality",
+    "section": "Filtered Again",
+    "text": "Filtered Again\n\nTurkey_df2 &lt;- olympic_df2 |&gt;\n  filter(country_code == \"TUR\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#dotplot-revisited",
+    "href": "posts/02_centrality/02_Centrality.html#dotplot-revisited",
+    "title": "2: Centrality",
+    "section": "Dotplot Revisited",
+    "text": "Dotplot Revisited\nEarly in an introductory statistics course, a dotplot is useful for visualizing integer data.\n\nmean_1 &lt;- mean(Turkey_df1$age, na.rm = TRUE)\nmean_2 &lt;- mean(Turkey_df2$age, na.rm = TRUE)\n\nTurkey_df2 |&gt;\n  ggplot(aes(x = age)) +\n  geom_dotplot() +\n  geom_vline(xintercept = mean_1, color = \"blue\", linewidth = 3) +\n  geom_vline(xintercept = mean_2, color = \"blue\", linewidth = 3) +\n  labs(title = \"Ages of Turkish Athletics\",\n       subtitle = \"mean in blue\",\n       caption = \"SML 201\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#medians",
+    "href": "posts/02_centrality/02_Centrality.html#medians",
+    "title": "2: Centrality",
+    "section": "Medians",
+    "text": "Medians\n\nmedian_1 &lt;- median(Turkey_df1$age, na.rm = TRUE)\nmedian_2 &lt;- median(Turkey_df2$age, na.rm = TRUE)\n\nTurkey_df2 |&gt;\n  ggplot(aes(x = age)) +\n  geom_dotplot() +\n  geom_vline(xintercept = median_1, color = \"red\", linewidth = 3) +\n  geom_vline(xintercept = median_2, color = \"red\", linewidth = 3) +\n  labs(title = \"Ages of Turkish Athletics\",\n       subtitle = \"median in red\",\n       caption = \"SML 201\")"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#difference-in-means",
+    "href": "posts/02_centrality/02_Centrality.html#difference-in-means",
+    "title": "2: Centrality",
+    "section": "Difference in Means",
+    "text": "Difference in Means\n\nmean_1 - mean_2\n\n[1] -1.92449\n\nabs(mean_1 - mean_2)\n\n[1] 1.92449"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#difference-in-medians",
+    "href": "posts/02_centrality/02_Centrality.html#difference-in-medians",
+    "title": "2: Centrality",
+    "section": "Difference in Medians",
+    "text": "Difference in Medians\n\nmedian_1 - median_2\n\n[1] 0\n\nabs(median_1 - median_2)\n\n[1] 0"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#punchline",
+    "href": "posts/02_centrality/02_Centrality.html#punchline",
+    "title": "2: Centrality",
+    "section": "Punchline",
+    "text": "Punchline\n\n\n\nInvincible\n\n\n\nThe median is robust against outliers!\nimage source: Know Your Meme"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#why-the-mean",
+    "href": "posts/02_centrality/02_Centrality.html#why-the-mean",
+    "title": "2: Centrality",
+    "section": "Why the mean?",
+    "text": "Why the mean?\nLater, we use the mean for:\n\nnormal distributions (“bell curves”)\nlinear regression goes through center of mass\nestimators and other statistical theory"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#which-do-we-use",
+    "href": "posts/02_centrality/02_Centrality.html#which-do-we-use",
+    "title": "2: Centrality",
+    "section": "Which do we use?",
+    "text": "Which do we use?\n\n\n\nWhen feasible, compute and report both the mean and median.\n\n\n\n\n\n\n\nWhy not both?\n\n\n\nimage source: Know Your Meme"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#time-series",
+    "href": "posts/02_centrality/02_Centrality.html#time-series",
+    "title": "2: Centrality",
+    "section": "Time Series",
+    "text": "Time Series\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  ggplot(aes(x = date, y = n)) +\n  geom_line() +\n  labs(title = \"Parking Tickets in Philadelphia\",\n       subtitle = \"Street Sweeping Violations (2017)\",\n       caption = \"Source: Open Data Philly\",\n       y = \"number of tickets\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#moving-average",
+    "href": "posts/02_centrality/02_Centrality.html#moving-average",
+    "title": "2: Centrality",
+    "section": "Moving Average",
+    "text": "Moving Average\n\nConcept357911Code\n\n\nA rolling mean or moving average compues the mean across a group of \\(L\\) (lag) consecutive data points in a time series and slides the “window”.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_mean = zoo::rollapply(\n    n, 3, mean, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_mean),\n            color = \"blue\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling mean in blue (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()"
+  },
+  {
+    "objectID": "posts/02_centrality/02_Centrality.html#rolling-median",
+    "href": "posts/02_centrality/02_Centrality.html#rolling-median",
+    "title": "2: Centrality",
+    "section": "Rolling Median",
+    "text": "Rolling Median\n\n357911Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_mean = zoo::rollapply(\n    n, 3, median, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_mean),\n            color = \"red\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling median in red (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()"
   }
 ]

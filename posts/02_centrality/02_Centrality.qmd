@@ -1,5 +1,5 @@
 ---
-title: "1: Centrality"
+title: "2: Centrality"
 author: "Derek Sollberger"
 date: "2024-09-05"
 # format:
@@ -15,9 +15,12 @@ format:
 #| message: false
 #| warning: false
 library("tidyverse")
+library("zoo")
 
 some_data <- c(32, 45, 16, 78, 39)
-
+olympic_df1 <- readr::read_csv("olympic_data.csv")
+olympic_df2 <- readr::read_csv("olympic_data2.csv")
+tickets_df <- readr::read_csv("tickets_days.csv")
 ```
 
 # SML 201
@@ -101,21 +104,659 @@ mean(some_data, na.rm = TRUE)
 ```
 
 
+# Median
+
+Run each of these lines of code, and describe the code
+
+```{r}
+#| echo: true
+#| eval: false
+some_data <- c(32, 45, 16, 78, 39)
+sort(some_data)
+median(some_data)
+
+some_data2 <- c(32, 45, 16, 78, 39, 5)
+sort(some_data2)
+median(some_data2)
+```
+
+
+# Case Study: Weights of Olympians
+
+## Loading the Data
+
+I have supplied a couple of data sets to a GitHub repository to ease the loading of data for classroom work.
+
+```{r}
+#| echo: true
+#| eval: false
+olympic_df1 <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data.csv")
+olympic_df2 <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data2.csv")
+```
+
+## Summary Statistics
+
+Run each of these lines of code, and describe the code
+
+```{r}
+#| echo: true
+#| eval: false
+mean(olympic_df1$weight)
+mean(olympic_df1$weight, na.rm = TRUE)
+```
+
+::: {.callout-tip collapse="true"}
+## The fix
+
+```{r}
+olympic_df1$weight[olympic_df1$weight <= 0] <- NA
+olympic_df2$weight[olympic_df2$weight <= 0] <- NA
+```
+
+:::
 
 
 # Case Study: Ages of Olympians
 
-```{r}
+## Filter
 
+For this demonstration, let us focus on the athletes from Turkey.
+
+```{r}
+Turkey_df1 <- olympic_df1 |>
+  filter(country_code == "TUR")
 ```
 
 
+## Dotplot
+
+Early in an introductory statistics course, a **dotplot** is useful for visualizing *integer* data.
+
+```{r}
+#| warning: false
+mean_1 <- mean(Turkey_df1$age, na.rm = TRUE)
+
+Turkey_df1 |>
+  ggplot(aes(x = age)) +
+  geom_dotplot() +
+  geom_vline(xintercept = mean_1, color = "blue", linewidth = 3) +
+  labs(title = "Ages of Turkish Athletics",
+       subtitle = "mean in blue",
+       caption = "SML 201")
+```
 
 
+## The Outlier
+
+:::: {.columns}
+
+::: {.column width="55%"}
+![Yusuf Dikec](Yusuf_Dikec.png)
+
+* image source: News 18
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="40%"}
+* Yusuf Dikec
+* Turkish sharpshooter
+
+    * silver medalist (2024 Olympics)
+    * 10m air pistol mixed team
+
+* Age: 51
+:::
+
+::::
+
+## Filtered Again
+
+```{r}
+Turkey_df2 <- olympic_df2 |>
+  filter(country_code == "TUR")
+```
+
+## Dotplot Revisited
+
+Early in an introductory statistics course, a **dotplot** is useful for visualizing *integer* data.
+
+```{r}
+#| warning: false
+mean_1 <- mean(Turkey_df1$age, na.rm = TRUE)
+mean_2 <- mean(Turkey_df2$age, na.rm = TRUE)
+
+Turkey_df2 |>
+  ggplot(aes(x = age)) +
+  geom_dotplot() +
+  geom_vline(xintercept = mean_1, color = "blue", linewidth = 3) +
+  geom_vline(xintercept = mean_2, color = "blue", linewidth = 3) +
+  labs(title = "Ages of Turkish Athletics",
+       subtitle = "mean in blue",
+       caption = "SML 201")
+```
+
+## Medians
+
+```{r}
+#| warning: false
+median_1 <- median(Turkey_df1$age, na.rm = TRUE)
+median_2 <- median(Turkey_df2$age, na.rm = TRUE)
+
+Turkey_df2 |>
+  ggplot(aes(x = age)) +
+  geom_dotplot() +
+  geom_vline(xintercept = median_1, color = "red", linewidth = 3) +
+  geom_vline(xintercept = median_2, color = "red", linewidth = 3) +
+  labs(title = "Ages of Turkish Athletics",
+       subtitle = "median in red",
+       caption = "SML 201")
+```
+
+## Difference in Means
+
+```{r}
+mean_1 - mean_2
+abs(mean_1 - mean_2)
+```
+
+## Difference in Medians
+
+```{r}
+median_1 - median_2
+abs(median_1 - median_2)
+```
+
+## Punchline
+
+![Invincible](median_robust.png)
+
+* The median is *robust* against outliers!
+* image source: [Know Your Meme](https://knowyourmeme.com/memes/look-what-they-need-to-mimic-a-fraction-of-our-power)
+
+# Reporting
+
+## Why the mean?
+
+Later, we use the mean for:
+
+* normal distributions ("bell curves")
+* linear regression goes through center of mass
+* estimators and other statistical theory
+
+## Which do we use?
+
+:::: {.columns}
+
+::: {.column width="60%"}
+### When feasible, compute and report both the mean and median.	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Why not both?](why_not_both.png)
+
+* image source: [Know Your Meme](https://knowyourmeme.com/memes/why-not-both-why-dont-we-have-both)
+:::
+
+::::
 
 
+# Side Quest: Median Stack
+
+:::: {.panel-tabset}
+
+## Computer Vision
+
+![RGB matrices](RBG_matrices.png)
+
+* image credit: Ben Mauss
+
+## Outlier Pixels
+
+![Salt and pepper noise](salt_and_pepper_noise.png)
+
+## Align Matrices
+
+![take many still photos](many_shots.png)
+
+## Median Stack Filter
+
+![apply a median!](median_stack_result.png)
+
+* source: [making people disappear from a photo](https://photofocus.com/software/photoshop-magic-making-people-disappear-from-a-scene/)
+
+::::
+
+# Application: Rolling Mean
+
+:::: {.panel-tabset}
+
+## Data 
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* source: [TidyTuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-12-03) (2019-12-03)
+
+* [Open Data Philly](https://opendataphilly.org/datasets/parking-violations/)
+
+    * filtered to year 2017 data that had latitude/longitude	
+    
+* objective: summarize trends in ticketing
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Philadelphia Parking Authority](PPA.png)
+
+* image source: Matt Rourke/AP Photo
+:::
+
+::::
+
+## Wrangling
+
+```{r}
+#| echo: true
+#| eval: false
+
+# i.e. started with a very large data set
+# and needed to pare it down
+tickets_raw <- readr::read_csv("tickets.csv")
+tickets_days <- tickets_raw |>
+  separate(issue_datetime, sep = " ",
+           into = c("date", "time")) |>
+  group_by(date) |>
+  count(date) |>
+  ungroup() |>
+  select(date, n)
+readr::write_csv(tickets_days, "tickets_days.csv")
+
+tickets_df <- readr::read_csv("tickets_days.csv")
+```
 
 
+::::
+
+## Time Series
+
+:::: {.panel-tabset}
+
+## Viz
+
+```{r}
+#| echo: false
+#| eval: true
+
+tickets_df |>
+  ggplot(aes(x = date, y = n)) +
+  geom_line() +
+  labs(title = "Parking Tickets in Philadelphia",
+       subtitle = "Street Sweeping Violations (2017)",
+       caption = "Source: Open Data Philly",
+       y = "number of tickets") +
+  theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+tickets_df |>
+  ggplot(aes(x = date, y = n)) +
+  geom_line() +
+  labs(title = "Parking Tickets in Philadelphia",
+       subtitle = "Street Sweeping Violations (2017)",
+       caption = "Source: Open Data Philly",
+       y = "number of tickets") +
+  theme_minimal()
+```
+
+::::
+
+## Moving Average
+
+:::: {.panel-tabset}
+
+## Concept
+
+A **rolling mean** or **moving average** compues the mean across a group of $L$ (lag) consecutive data points in a time series and slides the "window".
+
+## 3
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 3, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 3 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 5
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 5, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 35 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 7
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 7, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 7 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 9
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 9, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 9 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 11
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 11, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 11 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 3, mean, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "blue") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling mean in blue (n = 3 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+::::
+
+## Rolling Median
+
+:::: {.panel-tabset}
+
+## 3
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 3, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 3 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 5
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 5, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 5 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 7
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 7, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 7 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 9
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 9, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 9 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## 11
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 11, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 11 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+
+tickets_df |>
+  mutate(roll_mean = zoo::rollapply(
+    n, 3, median, align = 'left', fill = NA
+  )) |>
+    ggplot() +
+    geom_point(aes(x = date, y = n),
+               color = "black") +
+  geom_line(aes(x = date, y = roll_mean),
+            color = "red") +
+    labs(title = "Parking Tickets in Philadelphia",
+         subtitle = "Rolling median in red (n = 3 day window)",
+         caption = "Source: Open Data Philly",
+         y = "number of tickets") +
+    theme_minimal()
+```
+
+::::
+
+# Mode
+
+It appears that `R` doesn't have a built-in function to compute a statistical mode, so programmers over the years employed a user-defined function, such as the one found [here](https://stackoverflow.com/questions/2547402/how-to-find-the-statistical-mode)
+
+Run each of these lines of code, and describe the code
+
+```{r}
+#| echo: true
+#| eval: false
+
+mode_of_data <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+some_data_2 <- c(1, 3, 5, 7, 7, 9)
+mode_of_data(some_data_2)
+
+some_data_3 <- c(1, 3, 3, 5, 7, 7, 9)
+mode_of_data(some_data_3)
+```
+
+In that thread, there was an even better function for computing the mode.
+
+```{r}
+#| echo: true
+#| eval: false
+
+mode_of_data <- function(x) {
+  ux <- unique(x)
+  tab <- tabulate(match(x, ux))
+  ux[tab == max(tab)]
+}
+
+some_data_2 <- c(1, 3, 5, 7, 7, 9)
+mode_of_data(some_data_2)
+
+some_data_3 <- c(1, 3, 3, 5, 7, 7, 9)
+mode_of_data(some_data_3)
+```
 
 
 
@@ -166,7 +807,9 @@ I altered the following `olympics_data.csv` to make classroom demonstrations.
 Q <- readr::read_csv("athletes.csv")
 Q$weight[Q$weight <=0] <- -99 #imitate old-fashioned missing value recording
 Q$age <- lubridate::year("2024-07-26") - lubridate::year(Q$birth_date)
-readr::write_csv(Q, "olympic_data.csv")
+W <- Q |> dplyr::filter(age <= 30)
+readr::write_csv(Q, "olympic_data2.csv")
+readr::write_csv(W, "olympic_data.csv")
 ```
 
 :::
@@ -175,7 +818,7 @@ readr::write_csv(Q, "olympic_data.csv")
 
 ## (optional) Additional Resources
 
-
+* great explanation of a [moving average](https://www.ablebits.com/office-addins-blog/moving-average-excel/)
 
 :::
 
