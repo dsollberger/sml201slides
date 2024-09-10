@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -313,5 +313,166 @@
     "title": "2: Centrality",
     "section": "Rolling Median",
     "text": "Rolling Median\n\n357911Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_median = zoo::rollapply(\n    n, 3, median, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_median),\n            color = \"red\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling median in red (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html",
+    "href": "posts/03_variance/03_Variance.html",
+    "title": "3: Variance",
+    "section": "",
+    "text": "Goal: Introduce the concept of variance\nObjective: Compute range, variance, and standard deviation\n\n\n\n\n\n\n\nSpread!"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#start",
+    "href": "posts/03_variance/03_Variance.html#start",
+    "title": "3: Variance",
+    "section": "",
+    "text": "Goal: Introduce the concept of variance\nObjective: Compute range, variance, and standard deviation\n\n\n\n\n\n\n\nSpread!"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#centrality",
+    "href": "posts/03_variance/03_Variance.html#centrality",
+    "title": "3: Variance",
+    "section": "Centrality",
+    "text": "Centrality\nRecall that we can compute means and medians.\n\nmean(A)\n\n[1] 0\n\nmean(B)\n\n[1] 0\n\nmedian(A)\n\n[1] 0\n\nmedian(B)\n\n[1] 0"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#visualization",
+    "href": "posts/03_variance/03_Variance.html#visualization",
+    "title": "3: Variance",
+    "section": "Visualization",
+    "text": "Visualization\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsimple_df &lt;- data.frame(A,B)\ntitle_string &lt;- \"Compare and Contrast: &lt;span style='color:blue'&gt;Set A&lt;/span&gt; versus &lt;span style='color:red'&gt;Set B&lt;/span&gt;\"\n\nsimple_df |&gt;\n  ggplot() +\n  geom_point(aes(x = A, y = 1), color = \"blue\", size = 10) +\n  geom_point(aes(x = B, y = 2), color = \"red\", size = 10) +\n  labs(title = title_string,\n       subtitle = \"What is alike?  What is different?\",\n       caption = \"SML 201\",\n       x = \"\", y = \"\") +\n  theme_minimal() +\n  theme(axis.text.y = element_blank(),\n        plot.title = element_markdown(face = \"bold\", hjust = 0.5,size = 20),\n        plot.subtitle = element_markdown(hjust = 0.5,size = 15)) +\n  ylim(0,3)"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#aside-range",
+    "href": "posts/03_variance/03_Variance.html#aside-range",
+    "title": "3: Variance",
+    "section": "Aside: Range",
+    "text": "Aside: Range\nTo describe variance, an early draft was the range\n\\[\\text{range}(x) = \\text{max}(x) - \\text{min}(x)\\]\n\nhighly affected by outliers\nuses only two data points\n\n\n# range in R computes min and max values\nrange(A)\n\n[1] -3  3\n\nrange(B)\n\n[1] -9  9\n\n# range in statistics\ndiff(range(A))\n\n[1] 6\n\ndiff(range(B))\n\n[1] 18"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#sample-mean",
+    "href": "posts/03_variance/03_Variance.html#sample-mean",
+    "title": "3: Variance",
+    "section": "Sample Mean",
+    "text": "Sample Mean\nRecall that we compute the sample mean of the data as\n\\[\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_{i}\\]\n\nH &lt;- c(75,76,63,62,58)\nxbar &lt;- mean(H)"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#deviations",
+    "href": "posts/03_variance/03_Variance.html#deviations",
+    "title": "3: Variance",
+    "section": "Deviations",
+    "text": "Deviations\nNext, we can compute deviations from the mean\n\ndeviations &lt;- H - xbar\ndeviations\n\n[1]  8.2  9.2 -3.8 -4.8 -8.8"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#squared-deviations",
+    "href": "posts/03_variance/03_Variance.html#squared-deviations",
+    "title": "3: Variance",
+    "section": "Squared Deviations",
+    "text": "Squared Deviations\nWe don’t need negative signs in this calculations. One way around this is to square the deviations.\n\nsq_deviations &lt;- deviations^2\nsq_deviations\n\n[1] 67.24 84.64 14.44 23.04 77.44"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#tabulation",
+    "href": "posts/03_variance/03_Variance.html#tabulation",
+    "title": "3: Variance",
+    "section": "Tabulation",
+    "text": "Tabulation\nSo far we have\n\nTableCode\n\n\n\n\n\n\n\n\n\n\nNathan's Hot Dog Eating Contest\n\n\nRecent winning amounts\n\n\nhot_dogs\nxbar\ndeviations\nsq_deviations\n\n\n\n\n75\n66.8\n8.2\n67.24\n\n\n76\n66.8\n9.2\n84.64\n\n\n63\n66.8\n-3.8\n14.44\n\n\n62\n66.8\n-4.8\n23.04\n\n\n58\n66.8\n-8.8\n77.44\n\n\n\nMen's competition\n\n\n\n\n\n\n\n\n\n\n\nhot_dog_data &lt;- data.frame(hot_dogs = c(75,76,63,62,58))\nhot_dog_data |&gt;\n  mutate(xbar = mean(hot_dogs, na.rm = TRUE),\n         deviations = hot_dogs - xbar,\n         sq_deviations = deviations^2) |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"Men's competition\") |&gt;\n  tab_header(\n    title = \"Nathan's Hot Dog Eating Contest\",\n    subtitle = \"Recent winning amounts\") |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  )"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#summarizing",
+    "href": "posts/03_variance/03_Variance.html#summarizing",
+    "title": "3: Variance",
+    "section": "Summarizing",
+    "text": "Summarizing\nLike before, we want to summarize a list of numbers.\n\\[s^{2} = \\frac{1}{n-1}\\sum_{i=1}^{n} (x_{i} - \\bar{x})^{2} = \\frac{266.8}{4} = 66.7\\]\nAt this point, the calculation has produced a sample variance\n\nWhy “n-1”? See later session about “Estimators”\nBut what are the units?"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#dimensional-analysis",
+    "href": "posts/03_variance/03_Variance.html#dimensional-analysis",
+    "title": "3: Variance",
+    "section": "Dimensional Analysis",
+    "text": "Dimensional Analysis\n\nTableCodeWhat?\n\n\n\n\n\n\n\n\n\n\nNathan's Hot Dog Eating Contest\n\n\nRecent winning amounts\n\n\nhot_dogs\nxbar\ndeviations\nsq_deviations\n\n\n\n\n75\n66.8\n8.2\n67.24 (hot dogs)^2\n\n\n76\n66.8\n9.2\n84.64 (hot dogs)^2\n\n\n63\n66.8\n-3.8\n14.44 (hot dogs)^2\n\n\n62\n66.8\n-4.8\n23.04 (hot dogs)^2\n\n\n58\n66.8\n-8.8\n77.44 (hot dogs)^2\n\n\n\nMen's competition\n\n\n\n\n\n\n\n\n\n\n\nhot_dog_data &lt;- data.frame(hot_dogs = c(75,76,63,62,58))\nhot_dog_data |&gt;\n  mutate(xbar = mean(hot_dogs, na.rm = TRUE),\n         deviations = hot_dogs - xbar,\n         sq_deviations = paste(round(deviations^2,2), \n                               \"(hot dogs)^2\")) |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"Men's competition\") |&gt;\n  tab_header(\n    title = \"Nathan's Hot Dog Eating Contest\",\n    subtitle = \"Recent winning amounts\") |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  ) |&gt;\n  tab_style(\n    style = cell_text(color = \"red\"),\n    locations = cells_body(columns = sq_deviations)\n  )\n\n\n\nThe sample variance is\n\\[s^{2} = 66.7 \\,(\\text{hot dogs})^{2}\\]\n\n\n\nsquare hot dogs?\n\n\n\nimage created with Canva AI"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#rectify",
+    "href": "posts/03_variance/03_Variance.html#rectify",
+    "title": "3: Variance",
+    "section": "Rectify",
+    "text": "Rectify\nIf we need to use these results in subsequent calculations, we can fix the units by taking the square root of the sample variance. This yields the sample standard deviation\n\\[s = \\sqrt{66.7} \\approx 8.1670 \\text{ hot dogs}\\]"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#sse",
+    "href": "posts/03_variance/03_Variance.html#sse",
+    "title": "3: Variance",
+    "section": "SSE",
+    "text": "SSE\nFor the sum of squared errors, what value of \\(c\\) will minimize the error?\n\\[\\text{SSE} = \\sum_{i=1}^{n} (x_{i} - c)^{2}, \\quad H = \\{75,76,63,62,58\\}\\]\n\ncvals &lt;- seq(58, 76)\nSSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SSE[i] &lt;- sum((H - cvals[i])^{2})\n}\nmin(SSE)\n\n[1] 267\n\ncvals[which.min(SSE)]\n\n[1] 67\n\n\n\ncvals &lt;- seq(58, 76, by = 0.1)\nSSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SSE[i] &lt;- sum((H - cvals[i])^{2})\n}\nmin(SSE)\n\n[1] 266.8\n\ncvals[which.min(SSE)]\n\n[1] 66.8\n\nmean(H)\n\n[1] 66.8\n\n\nClaim: The sample mean minimizes the sum of squared errors.\n\n\n\n\n\n\n(optional) Calculus proof\n\n\n\n\n\nFor a non-constant data set \\(\\{x_{i}\\}_{i=1}^{n}\\), and for the sum of squared errors\n\\[S(c) = \\sum_{i=1}^{n} (x_{i} - c)^{2}\\]\nwe can set the derivative equal to zero\n\\[\\begin{array}{rcl}\n  0 & = & \\frac{dS}{dc} \\\\\n  0 & = & \\frac{d}{dc} \\sum_{i=1}^{n} (x_{i} - c)^{2} \\\\\n  0 & = & \\sum_{i=1}^{n} \\frac{d}{dc} (x_{i} - c)^{2} \\\\\n  0 & = & \\sum_{i=1}^{n} 2(x_{i} - c) \\\\\n  0 & = &  2\\sum_{i=1}^{n} x_{i} - 2nc \\\\\n  0 & = &  \\sum_{i=1}^{n} x_{i} - nc \\\\\n  nc & = &  \\sum_{i=1}^{n} x_{i} \\\\\n  c & = & \\frac{1}{n}\\sum_{i=1}^{n} x_{i} \\\\\n\\end{array}\\]\nWe recognize that the right-hand side is the sample mean. Since the function was a concave up parabola, we know that this critical point is a global minimum."
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#absolute-value",
+    "href": "posts/03_variance/03_Variance.html#absolute-value",
+    "title": "3: Variance",
+    "section": "Absolute Value",
+    "text": "Absolute Value\nWhat if we had used the absolute value instead? We can use a similar argument on the sum of absolute errors.\n\ncvals &lt;- seq(58, 76, by = 0.1)\nSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SE[i] &lt;- sum(abs(H - cvals[i]))\n}\nmin(SE)\n\n[1] 31\n\ncvals[which.min(SE)]\n\n[1] 63\n\nmedian(H)\n\n[1] 63\n\n\nClaim: The sample median minimizes the sum of absolute errors.\n\\[SE(c) = \\sum_{i=1}^{n} |x_{i} - c|\\]\n\n\n\n\n\n\n(optional) Outline of proof\n\n\n\n\n\n\nargue that the summation is smallest when one of terms is zero\ninterpolate for the case when the number of observations is even"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#data-dow-jones-industrial-average",
+    "href": "posts/03_variance/03_Variance.html#data-dow-jones-industrial-average",
+    "title": "3: Variance",
+    "section": "Data: Dow Jones Industrial Average",
+    "text": "Data: Dow Jones Industrial Average\n\n\n\n30 popular stocks\nYear to date\n\nJan 2, 2024\nSept 6, 2024\n\nsource: Yahoo Finance\n\n\n\n\n\ndow_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/03_variance/DOW30.csv\")"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#exploration",
+    "href": "posts/03_variance/03_Variance.html#exploration",
+    "title": "3: Variance",
+    "section": "Exploration",
+    "text": "Exploration\n\nhead(dow_df)\n\n# A tibble: 6 × 11\n  ticker ref_date   price_open price_high price_low price_close   volume\n  &lt;chr&gt;  &lt;date&gt;          &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;\n1 AAPL   2024-01-02       187.       188.      184.        186. 82488700\n2 AAPL   2024-01-03       184.       186.      183.        184. 58414500\n3 AAPL   2024-01-04       182.       183.      181.        182. 71983600\n4 AAPL   2024-01-05       182.       183.      180.        181. 62303300\n5 AAPL   2024-01-08       182.       186.      182.        186. 59144500\n6 AAPL   2024-01-09       184.       185.      183.        185. 42841800\n# ℹ 4 more variables: price_adjusted &lt;dbl&gt;, ret_adjusted_prices &lt;dbl&gt;,\n#   ret_closing_prices &lt;dbl&gt;, cumret_adjusted_prices &lt;dbl&gt;\n\n\n\nstr(dow_df, give.attr = FALSE)\n\nspc_tbl_ [5,160 × 11] (S3: spec_tbl_df/tbl_df/tbl/data.frame)\n $ ticker                : chr [1:5160] \"AAPL\" \"AAPL\" \"AAPL\" \"AAPL\" ...\n $ ref_date              : Date[1:5160], format: \"2024-01-02\" \"2024-01-03\" ...\n $ price_open            : num [1:5160] 187 184 182 182 182 ...\n $ price_high            : num [1:5160] 188 186 183 183 186 ...\n $ price_low             : num [1:5160] 184 183 181 180 182 ...\n $ price_close           : num [1:5160] 186 184 182 181 186 ...\n $ volume                : num [1:5160] 82488700 58414500 71983600 62303300 59144500 ...\n $ price_adjusted        : num [1:5160] 185 184 181 180 185 ...\n $ ret_adjusted_prices   : num [1:5160] NA -0.00749 -0.0127 -0.00401 0.02417 ...\n $ ret_closing_prices    : num [1:5160] NA -0.00749 -0.0127 -0.00401 0.02417 ...\n $ cumret_adjusted_prices: num [1:5160] 1 0.993 0.98 0.976 1 ...\n\n\n\ncolnames(dow_df)\n\n [1] \"ticker\"                 \"ref_date\"               \"price_open\"            \n [4] \"price_high\"             \"price_low\"              \"price_close\"           \n [7] \"volume\"                 \"price_adjusted\"         \"ret_adjusted_prices\"   \n[10] \"ret_closing_prices\"     \"cumret_adjusted_prices\""
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#which-stocks",
+    "href": "posts/03_variance/03_Variance.html#which-stocks",
+    "title": "3: Variance",
+    "section": "Which Stocks?",
+    "text": "Which Stocks?\nThe table command tallys the observations in a categorical variable.\n\ntable(dow_df$ticker)\n\n\nAAPL AMGN AMZN  AXP   BA  CAT  CRM CSCO  CVX  DIS  DOW   GS   HD  HON  IBM INTC \n 172  172  172  172  172  172  172  172  172  172  172  172  172  172  172  172 \n JNJ  JPM   KO  MCD  MMM  MRK MSFT  NKE   PG  TRV  UNH    V   VZ  WMT \n 172  172  172  172  172  172  172  172  172  172  172  172  172  172"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#histograms",
+    "href": "posts/03_variance/03_Variance.html#histograms",
+    "title": "3: Variance",
+    "section": "Histograms",
+    "text": "Histograms\n\ndow_df |&gt;\n  filter(ticker == \"VZ\") |&gt;\n  ggplot(aes(x = price_close)) +\n  geom_histogram() +\n  labs(title = \"Verizon stock\",\n       subtitle = \"2024 YTD\",\n       caption = \"SML 201\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n\n\ndow_df |&gt;\n  filter(ticker == \"GS\") |&gt;\n  ggplot(aes(x = price_close)) +\n  geom_histogram() +\n  labs(title = \"Goldman Sachs stock\",\n       subtitle = \"2024 YTD\",\n       caption = \"SML 201\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`."
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#application-1",
+    "href": "posts/03_variance/03_Variance.html#application-1",
+    "title": "3: Variance",
+    "section": "Application 1",
+    "text": "Application 1\nWhich stocks have had the highest average price_close this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(avg_price = mean(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, avg_price) |&gt;\n  distinct() |&gt;\n  arrange(desc(avg_price))\n\n# A tibble: 30 × 2\n   ticker avg_price\n   &lt;chr&gt;      &lt;dbl&gt;\n 1 UNH         516.\n 2 GS          435.\n 3 MSFT        417.\n 4 HD          354.\n 5 CAT         335.\n 6 AMGN        302.\n 7 MCD         275.\n 8 V           273.\n 9 CRM         271.\n10 AXP         227.\n# ℹ 20 more rows\n\n\n\nUnited Health\nGoldman Sachs\nMicrosoft\nHome Depot\nCaterpillar"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#volatility",
+    "href": "posts/03_variance/03_Variance.html#volatility",
+    "title": "3: Variance",
+    "section": "Volatility",
+    "text": "Volatility\nWhich stocks have been the most volatile this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, volatility) |&gt;\n  distinct() |&gt;\n  arrange(desc(volatility))\n\n# A tibble: 30 × 2\n   ticker volatility\n   &lt;chr&gt;       &lt;dbl&gt;\n 1 GS           43.5\n 2 UNH          37.5\n 3 CRM          22.2\n 4 CAT          21.9\n 5 AMGN         21.3\n 6 AAPL         20.8\n 7 MSFT         19.5\n 8 AXP          18.9\n 9 BA           17.5\n10 MMM          16.2\n# ℹ 20 more rows\n\n\n\nGoldman Sachs\nUnited Health\nSalesforce\nCaterpillar\nAmgen\n\nWhich stocks have been the most volatile this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, volatility) |&gt;\n  distinct() |&gt;\n  arrange(volatility)\n\n# A tibble: 30 × 2\n   ticker volatility\n   &lt;chr&gt;       &lt;dbl&gt;\n 1 VZ          0.973\n 2 CSCO        1.73 \n 3 DOW         2.29 \n 4 KO          3.58 \n 5 MRK         5.56 \n 6 PG          6.23 \n 7 JNJ         6.23 \n 8 CVX         6.24 \n 9 WMT         6.47 \n10 HON         6.56 \n# ℹ 20 more rows\n\n\n\nVerizon\nCisco\nDow Inc\nCoca-Cola\nMerck"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#coefficient-of-variation",
+    "href": "posts/03_variance/03_Variance.html#coefficient-of-variation",
+    "title": "3: Variance",
+    "section": "Coefficient of Variation",
+    "text": "Coefficient of Variation\nWouldn’t the most expensive stocks naturally vary more?\n\\[\\text{CoV} = \\frac{s}{\\bar{x}}\\]\n\n\\(\\bar{x}\\): sample mean\n\\(s\\): sample standard deviation\n\nWhich stocks have the highest coefficients of variation this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(avg_price = mean(price_close, na.rm = TRUE)) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, avg_price, volatility) |&gt;\n  distinct() |&gt;\n  mutate(coef_var = volatility / avg_price) |&gt;\n  arrange(desc(coef_var))\n\n# A tibble: 30 × 4\n   ticker avg_price volatility coef_var\n   &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;\n 1 INTC        35.1       8.58   0.244 \n 2 MMM         98.2      16.2    0.165 \n 3 NKE         91.6      10.6    0.115 \n 4 AAPL       195.       20.8    0.106 \n 5 WMT         63.3       6.47   0.102 \n 6 GS         435.       43.5    0.100 \n 7 DIS        102.        9.92   0.0971\n 8 BA         187.       17.5    0.0934\n 9 AXP        227.       18.9    0.0833\n10 CRM        271.       22.2    0.0819\n# ℹ 20 more rows\n\n\n\nIntel\n3M\nNike\nApple\nWalmart"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#z-scores-1",
+    "href": "posts/03_variance/03_Variance.html#z-scores-1",
+    "title": "3: Variance",
+    "section": "Z-scores",
+    "text": "Z-scores\nSometimes, we want to rescale numerical columns to be able to compare them together.\n\nsummary(dow_df$price_close)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  18.89   96.86  181.35  198.37  271.92  604.18 \n\n\n\ndow_df &lt;- dow_df |&gt;\n  mutate(price_scaled = scale(price_close)) #z-scores\n\n\nsummary(dow_df$price_scaled)\n\n       V1         \n Min.   :-1.4525  \n 1st Qu.:-0.8215  \n Median :-0.1377  \n Mean   : 0.0000  \n 3rd Qu.: 0.5953  \n Max.   : 3.2842"
+  },
+  {
+    "objectID": "posts/03_variance/03_Variance.html#line-plots",
+    "href": "posts/03_variance/03_Variance.html#line-plots",
+    "title": "3: Variance",
+    "section": "Line Plots",
+    "text": "Line Plots\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntitle_string &lt;- \"&lt;span style='color:blue'&gt;Verizon&lt;/span&gt; and &lt;span style='color:red'&gt;Goldman Sachs&lt;/span&gt;\"\nsubtitle_string &lt;- \"2024 stock prices\"\n\ndow_df |&gt;\n  ggplot() +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"blue\", linewidth = 2,\n            data = dow_df |&gt; filter(ticker == \"VZ\")) +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"red\", linewidth = 3,\n            data = dow_df |&gt; filter(ticker == \"GS\")) +\n  labs(title = title_string,\n       subtitle = subtitle_string,\n       caption = \"SML 201\",\n       x = \"date\", y = \"closing price\") +\n  theme_minimal() +\n  theme(plot.title = element_markdown(face = \"bold\", hjust = 0.5,size = 25),\n        plot.subtitle = element_markdown(hjust = 0.5,size = 20))"
   }
 ]
