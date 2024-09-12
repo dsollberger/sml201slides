@@ -1,0 +1,312 @@
+---
+title: "4: Categories"
+author: "Derek Sollberger"
+date: "2024-09-12"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library("tidyverse")
+
+demo_df <- readr::read_csv("sml201survey.csv")
+```
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Explore data wrangling with categorical variables
+
+* **Objective**: Compute counts, make bar graphs, and discuss data
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![demographics survey](short_names.png)
+:::
+
+::::
+
+# Demographics Survey
+
+## Data
+
+```{r}
+#| echo: true
+#| eval: false
+demo_df <- readr::read_csv("")
+```
+
+
+## Queries
+
+:::: {.columns}
+
+::: {.column width="20%"}
+For the *Demographics Survey*, here are the variable names that represent the responses to the survey questions.	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="70%"}
+![demographics survey](short_names.png)
+:::
+
+::::
+
+## Example: Ocean or Snow?
+
+```{r}
+demo_df |>
+  filter(!is.na(oceanSnow)) |>
+  ggplot(aes(x = oceanSnow)) +
+  geom_bar(aes(fill = oceanSnow),
+           color = "black",
+           stat = "count")
+```
+
+## Example: Campus Safety
+
+On a scale from 0 to 100---with 0 = very anxious and 100 = comfortable---how safe do you feel on campus? 
+
+```{r}
+summary(demo_df$safety)
+```
+```{r}
+demo_df |>
+  ggplot(aes(x = safety)) +
+  geom_histogram(binwidth = 5)
+```
+
+```{r}
+demo_df |>
+  ggplot(aes(x = safety, group = gender)) +
+  geom_density(aes(fill = gender),
+               alpha = 0.5)
+```
+
+```{r}
+demo_df |>
+  ggplot(aes(x = gender, y = safety)) +
+  geom_boxplot()
+```
+
+
+## Example: Flossing
+
+```{r}
+summary(demo_df$flossing)
+```
+
+## Example: Football
+
+```{r}
+demo_df |>
+  select(football) |>
+  separate_longer_delim(football, delim = ",") |>
+  count(football) |>
+  arrange(desc(n))
+```
+
+```{r}
+demo_df |>
+  select(baseball) |>
+  separate_longer_delim(baseball, delim = ",") |>
+  count(baseball) |>
+  arrange(desc(n))
+```
+
+## Example: Sleep
+
+```{r}
+#| echo: false
+#| eval: false
+demo_df |>
+  ggplot(aes(x = sleepTime)) +
+  geom_bar(stat = "count")
+```
+
+```{r}
+#| echo: false
+#| eval: false
+demo_df <- demo_df |>
+  mutate(sleepTime_fac = factor(sleepTime,
+    levels = c("11 PM", "12 midnight", "1 AM", "2 AM", "3 AM")))
+```
+
+```{r}
+#| echo: false
+#| eval: false
+demo_df |>
+  filter(!is.na(sleepTime_fac)) |>
+  ggplot(aes(x = sleepTime_fac)) +
+  geom_bar(stat = "count", aes(fill = after_stat(x))) +
+  scale_fill_gradient(low = "orange", high = "blue")
+```
+
+## Example: Residential Colleges
+
+```{r}
+#| echo: false
+#| eval: false
+demo_df |>
+  select(residentialCollege) |>
+  count(residentialCollege)
+```
+
+```{r}
+#| echo: false
+#| eval: false
+demo_df |>
+  ggplot(aes(x = fct_rev(fct_infreq(residentialCollege)))) +
+  coord_flip() +
+  geom_bar(stat = "count")
+```
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Assignments:
+
+    * Precept 2
+    * Group Membership
+    
+* Project 1:
+
+    * assigned: Sept 23
+    * due: Oct 2
+    
+* Exam 1: Oct 10
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+"The first [lesson] was always to make the choice to learn.  That meant embracing change and mustering the courage to fail; success and failure are two sides of the same coin.  You cannot succeed if at some point you haven't failed" --- Maria Ressa
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) How the data set was cleaned and anonymized
+
+```{r}
+#| echo: true
+#| eval: false
+
+demo_raw <- readr::read_csv("Demographics Survey Survey Student Analysis Report.csv")
+
+short_names <- c("timestamp", "currentCourse", "statsBefore", "classStanding",
+                 "numCourses", "major",
+                 "minor1", "minor2", "residentialCollege", "GPA", "gender",
+                 "ethnicity", "hoursStudying", "birthMonth", "age", "height",
+                 "shoeSize", "weight", "calories", "hoursExercise", "sleepTime",
+                 "sleepDuration", "socialMedia", "smartPhones", "baseball", "football",
+                 "basketball", "hockey", "politics", "religous", "Kinsey",
+                 "happyCampus", "happyCity", "anxiousCourse", "highSchool", "prepared",
+                 "drugUse", "firstGeneration", "languages", "safety", "makingFriends",
+                 "campusTeam", "officeHours", "studyGroups", "retirement", "happiness",
+                 "intelligence", "attractiveness", "favColor", "favNumber", "showers",
+                 "brushing", "flossing", "washHair", "finAidInfluence", "futureCareer",
+                 "numSiblings", "favMovie", "loneliness", "tidyness", "highSchoolGPA",
+                 "SAT", "activeCampus", "numFriends", "studyMusic", "familyInfluence",
+                 "campusLiving", "jobBool", "campusGroups", "attendance", "pancakesWaffles",
+                 "coffeeTea", "dogsCats", "oceanSnow", "pineapplePizza", "campusAcceptance",
+                 "hoursSocialMedia", "continents", "superhero", "supervillain", "season",
+                 "handedness", "safety2", "laundry", "favClass", "favProfessor", 
+                 "anxiousSurvey")
+
+demo_df <- demo_raw |>
+  # remove student names and Canvas metadeta
+  select(seq(7,179,2)) |>
+  
+  # apply short column names (i.e. ease programming)
+  setNames(short_names) |>
+  
+  # shuffle all rows (i.e. no longer alphabetical by student name)
+  sample_frac(1.0) |>
+  
+  # mask majors who are underrepresented
+  group_by(major) |>
+  mutate(majorCount = n()) |>
+  ungroup() |>
+  mutate(major = ifelse(majorCount >= 3, major, "other")) |>
+  select(-majorCount) |>
+  
+  # remove other possible ID factors
+  select(-c(ethnicity, minor1, minor2)) |>
+  mutate(age = ifelse(age < 18 | age > 21, NA, age))
+
+readr::write_csv(demo_df, "sml201survey.csv")
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+* Colors: [useful glossary](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) by Dr Ying Wei
+* a great [blog post](https://blog.albertkuo.me/post/2022-01-04-reordering-geom-col-and-geom-bar-by-count-or-value/) about the `forcats` package by Albert Kuo
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
