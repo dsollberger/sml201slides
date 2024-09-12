@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -474,5 +474,75 @@
     "title": "3: Variance",
     "section": "Line Plots",
     "text": "Line Plots\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntitle_string &lt;- \"&lt;span style='color:blue'&gt;Verizon&lt;/span&gt; and &lt;span style='color:red'&gt;Goldman Sachs&lt;/span&gt;\"\nsubtitle_string &lt;- \"2024 stock prices\"\n\ndow_df |&gt;\n  ggplot() +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"blue\", linewidth = 2,\n            data = dow_df |&gt; filter(ticker == \"VZ\")) +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"red\", linewidth = 3,\n            data = dow_df |&gt; filter(ticker == \"GS\")) +\n  labs(title = title_string,\n       subtitle = subtitle_string,\n       caption = \"SML 201\",\n       x = \"date\", y = \"closing price\") +\n  theme_minimal() +\n  theme(plot.title = element_markdown(face = \"bold\", hjust = 0.5,size = 25),\n        plot.subtitle = element_markdown(hjust = 0.5,size = 20))"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html",
+    "href": "posts/04_categories/04_categories.html",
+    "title": "4: Categories",
+    "section": "",
+    "text": "Goal: Explore data wrangling with categorical variables\nObjective: Compute counts, make bar graphs, and discuss data\n\n\n\n\n\n\n\ndemographics survey"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#start",
+    "href": "posts/04_categories/04_categories.html#start",
+    "title": "4: Categories",
+    "section": "",
+    "text": "Goal: Explore data wrangling with categorical variables\nObjective: Compute counts, make bar graphs, and discuss data\n\n\n\n\n\n\n\ndemographics survey"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#data",
+    "href": "posts/04_categories/04_categories.html#data",
+    "title": "4: Categories",
+    "section": "Data",
+    "text": "Data\n\ndemo_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv\")"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#queries",
+    "href": "posts/04_categories/04_categories.html#queries",
+    "title": "4: Categories",
+    "section": "Queries",
+    "text": "Queries\n\n\nFor the Demographics Survey, here are the variable names that represent the responses to the survey questions.\n\n\n\n\n\n\ndemographics survey"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-ocean-or-snow",
+    "href": "posts/04_categories/04_categories.html#example-ocean-or-snow",
+    "title": "4: Categories",
+    "section": "Example: Ocean or Snow?",
+    "text": "Example: Ocean or Snow?\n\ndemo_df |&gt;\n  filter(!is.na(oceanSnow)) |&gt;\n  ggplot(aes(x = oceanSnow)) +\n  geom_bar(aes(fill = oceanSnow),\n           color = \"black\",\n           stat = \"count\")"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-campus-safety",
+    "href": "posts/04_categories/04_categories.html#example-campus-safety",
+    "title": "4: Categories",
+    "section": "Example: Campus Safety",
+    "text": "Example: Campus Safety\nOn a scale from 0 to 100—with 0 = very anxious and 100 = comfortable—how safe do you feel on campus?\n\nsummary(demo_df$safety)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's \n   2.00   80.00   90.00   87.16   97.25  100.00       5 \n\n\n\ndemo_df |&gt;\n  ggplot(aes(x = safety)) +\n  geom_histogram(binwidth = 5)\n\nWarning: Removed 5 rows containing non-finite outside the scale range\n(`stat_bin()`).\n\n\n\n\n\n\n\n\n\n\ndemo_df |&gt;\n  ggplot(aes(x = safety, group = gender)) +\n  geom_density(aes(fill = gender),\n               alpha = 0.5)\n\nWarning: Removed 5 rows containing non-finite outside the scale range\n(`stat_density()`).\n\n\n\n\n\n\n\n\n\n\ndemo_df |&gt;\n  ggplot(aes(x = gender, y = safety)) +\n  geom_boxplot()\n\nWarning: Removed 5 rows containing non-finite outside the scale range\n(`stat_boxplot()`)."
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-flossing",
+    "href": "posts/04_categories/04_categories.html#example-flossing",
+    "title": "4: Categories",
+    "section": "Example: Flossing",
+    "text": "Example: Flossing\n\nsummary(demo_df$flossing)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's \n  0.000   2.000   5.000   5.224   7.000  14.000      10"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-football",
+    "href": "posts/04_categories/04_categories.html#example-football",
+    "title": "4: Categories",
+    "section": "Example: Football",
+    "text": "Example: Football\n\ndemo_df |&gt;\n  select(football) |&gt;\n  separate_longer_delim(football, delim = \",\") |&gt;\n  count(football) |&gt;\n  arrange(desc(n))\n\n# A tibble: 29 × 2\n   football                 n\n   &lt;chr&gt;                &lt;int&gt;\n 1 &lt;NA&gt;                    40\n 2 New York Giants         14\n 3 Philadelphia Eagles     13\n 4 San Francisco 49ers     11\n 5 Dallas Cowboys           7\n 6 Buffalo Bills            6\n 7 Houston Texas            6\n 8 New England Patriots     6\n 9 Arizona Cardinals        5\n10 New York Jets            5\n# ℹ 19 more rows\n\n\n\ndemo_df |&gt;\n  select(baseball) |&gt;\n  separate_longer_delim(baseball, delim = \",\") |&gt;\n  count(baseball) |&gt;\n  arrange(desc(n))\n\n# A tibble: 28 × 2\n   baseball                  n\n   &lt;chr&gt;                 &lt;int&gt;\n 1 &lt;NA&gt;                     49\n 2 New York Yankees         16\n 3 Boston Red Sox           11\n 4 New York Mets            11\n 5 Philadelphia Phillies    11\n 6 Los Angeles Dodgers       8\n 7 Arizona Diamondbacks      4\n 8 Houston Astros            4\n 9 Miami Marlins             4\n10 San Franciso Giants       4\n# ℹ 18 more rows"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-sleep",
+    "href": "posts/04_categories/04_categories.html#example-sleep",
+    "title": "4: Categories",
+    "section": "Example: Sleep",
+    "text": "Example: Sleep"
+  },
+  {
+    "objectID": "posts/04_categories/04_categories.html#example-residential-colleges",
+    "href": "posts/04_categories/04_categories.html#example-residential-colleges",
+    "title": "4: Categories",
+    "section": "Example: Residential Colleges",
+    "text": "Example: Residential Colleges"
   }
 ]

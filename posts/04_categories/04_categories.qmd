@@ -48,7 +48,7 @@ demo_df <- readr::read_csv("sml201survey.csv")
 ```{r}
 #| echo: true
 #| eval: false
-demo_df <- readr::read_csv("")
+demo_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv")
 ```
 
 
