@@ -70,7 +70,7 @@ SML 201,JRN 449,CWR 201,URB 385,SPA 107,NA,Princeton School of Public and Intern
 SML 201,MOL 214,MAT 201,COS 217,PSY 254,NA,Computer Science
 SML 201,COS 217,COS 240,MAE 305,EAS 350,NA,Computer Science
 SML 201,COS 217,EAS 345,PHI 200,JPN 105,NA,Computer Science
-SML 201,REL 264,CHM337,VIS213,NA,NA,Molecular Biology
+SML 201,REL 264,CHM 337,VIS 213,NA,NA,Molecular Biology
 SML 201,HIS 322,JPN 105,SPI 298,NA,NA,Princeton School of Public and International Affairs
 SML 201,EEB 211,CHM 301,AAS 239,NA,NA,Molecular Biology
 SML 201,COS 226,MAT 202,ORF 245,AMS 101,NA,Computer Science
@@ -107,7 +107,7 @@ SML 201,COS 217,SOC 101,PHY 209,CWR 203,NA,Computer Science
 SML 201,CHM 301,SPA 108,CEE 102A,NA,NA,Molecular Biology
 SML 201,SPI 298,HIS 383,SPA 233,NA,NA,Princeton School of Public and International Affairs
 SML 201,COS 217,ECO 310,COM 351,HLS 222,NA,Computer Science
-SML 201,EGR 156,ECO 342,ECO 362,COS 217,COS316,Computer Science
+SML 201,EGR 156,ECO 342,ECO 362,COS 217,COS 316,Computer Science
 SML 201,CHM 301,PSY 254,ENV 208,NA,NA,Molecular Biology
 SML 201,LIN 302,COS 217,EGR 156,PSY 254,NA,Computer Science
 SML 201,COS 126,ECO 100,ORF 245,ORF 309,NA,Operations Research and Financial Engineering

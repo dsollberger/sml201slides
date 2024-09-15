@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -544,5 +544,117 @@
     "title": "4: Categories",
     "section": "Example: Residential Colleges",
     "text": "Example: Residential Colleges"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html",
+    "href": "posts/05_networks/05_networks.html",
+    "title": "5: Networks",
+    "section": "",
+    "text": "Goal: Visualize network data\nObjective: Arrange paired data into nodes and edges"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#start",
+    "href": "posts/05_networks/05_networks.html#start",
+    "title": "5: Networks",
+    "section": "",
+    "text": "Goal: Visualize network data\nObjective: Arrange paired data into nodes and edges"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#rbind",
+    "href": "posts/05_networks/05_networks.html#rbind",
+    "title": "5: Networks",
+    "section": "rbind",
+    "text": "rbind\n\ndf1 &lt;- music_df |&gt;\n  select(artist1, song1) |&gt;\n  set_names(c(\"artist\", \"song\"))\ndf2 &lt;- music_df |&gt;\n  select(artist2, song2) |&gt;\n  set_names(c(\"artist\", \"song\"))\n\nmusic_long &lt;- df1 |&gt;\n  rbind(df2) |&gt;\n  separate_longer_delim(artist, delim = \", \") |&gt;\n  filter(!is.na(artist)) |&gt;\n  filter(!is.na(song))"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#top_n",
+    "href": "posts/05_networks/05_networks.html#top_n",
+    "title": "5: Networks",
+    "section": "top_n",
+    "text": "top_n\nWho are the top 5 most frequent artists in the data set?\n\nmusic_long |&gt;\n  count(artist) |&gt;\n  arrange(desc(n)) |&gt;\n  top_n(5, wt = n)\n\n# A tibble: 6 × 2\n  artist                n\n  &lt;chr&gt;             &lt;int&gt;\n1 Taylor Swift         10\n2 Sabrina Carpenter     9\n3 SZA                   7\n4 Daya                  6\n5 Bruno Mars            4\n6 Lauv                  4\n\n\n\ntop_artists &lt;- music_long |&gt;\n  count(artist) |&gt;\n  arrange(desc(n)) |&gt;\n  top_n(5, wt = n) |&gt;\n  pull(artist)"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#node-tibble",
+    "href": "posts/05_networks/05_networks.html#node-tibble",
+    "title": "5: Networks",
+    "section": "Node Tibble",
+    "text": "Node Tibble\n\nnode_tbl &lt;- tibble(id = music_long$artist,\n                  label = music_long$artist,\n                  color = \"green\",\n                  shape = \"circle\")\nnode_tbl &lt;- node_tbl |&gt;\n  bind_rows(\n    tibble(id = music_long$song,\n           label = music_long$song,\n           color = \"yellow\",\n           shape = \"circle\")\n  ) |&gt;\n  distinct()"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#edge-tibble",
+    "href": "posts/05_networks/05_networks.html#edge-tibble",
+    "title": "5: Networks",
+    "section": "Edge Tibble",
+    "text": "Edge Tibble\n\nedge_tbl &lt;- tibble(\n  from = music_long$artist,\n  to = music_long$song,\n  arrow = \"to\") #directed network"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#viznetwork-plot",
+    "href": "posts/05_networks/05_networks.html#viznetwork-plot",
+    "title": "5: Networks",
+    "section": "vizNetwork Plot",
+    "text": "vizNetwork Plot\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Song Playlist Network\")"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#filtered-plot",
+    "href": "posts/05_networks/05_networks.html#filtered-plot",
+    "title": "5: Networks",
+    "section": "Filtered Plot",
+    "text": "Filtered Plot\n\nmusic_top &lt;- music_long |&gt;\n  filter(artist %in% top_artists)\n\nnode_tbl &lt;- tibble(id = music_top$artist,\n                  label = music_top$artist,\n                  color = \"green\",\n                  shape = \"circle\")\nnode_tbl &lt;- node_tbl |&gt;\n  bind_rows(\n    tibble(id = music_top$song,\n           label = music_top$song,\n           color = \"yellow\",\n           shape = \"circle\")\n  ) |&gt;\n  distinct()\n\nedge_tbl &lt;- tibble(\n  from = music_top$artist,\n  to = music_top$song)\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Song Playlist Network\")"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#other-music",
+    "href": "posts/05_networks/05_networks.html#other-music",
+    "title": "5: Networks",
+    "section": "Other Music",
+    "text": "Other Music\nWe can negate the %in% to create a complement set of lessor known songs. We can also use the sample function to display a small number of those songs.\n\nmusic_long |&gt;\n  filter(!(artist %in% top_artists)) |&gt;\n  sample_n(10)\n\n# A tibble: 10 × 2\n   artist       song          \n   &lt;chr&gt;        &lt;chr&gt;         \n 1 The La's     There She Goes\n 2 UMI          Love Affair   \n 3 Skillibeng   Jump          \n 4 Noah Kahan   Stick Season  \n 5 Lana Del Rey Black Beauty  \n 6 Bad Bunny    MOJABI GHOST  \n 7 Keyshia Cole Love          \n 8 keshi        Dream         \n 9 Prince Royce Mi Corazoncito\n10 The Marías   Care For You"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#node-tibble-1",
+    "href": "posts/05_networks/05_networks.html#node-tibble-1",
+    "title": "5: Networks",
+    "section": "Node Tibble",
+    "text": "Node Tibble\n\nnode_tbl &lt;- tibble(id = majors_df$major,\n                  label = majors_df$major,\n                  color = \"#E77500\",\n                  shape = \"circle\") |&gt;\n  bind_rows(\n    tibble(id = majors_df$minor1,\n           label = majors_df$minor1,\n           color = \"#121212\",\n           opacity = 0.5,\n           shape = \"circle\")\n  ) |&gt; \n  bind_rows(\n    tibble(id = majors_df$minor2,\n           label = majors_df$minor2,\n           color = \"#121212\",\n           opacity = 0.5,\n           shape = \"circle\")\n  ) |&gt; \n  distinct(id, .keep_all = TRUE)"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#edge-tibble-1",
+    "href": "posts/05_networks/05_networks.html#edge-tibble-1",
+    "title": "5: Networks",
+    "section": "Edge Tibble",
+    "text": "Edge Tibble\n\nedge_tbl &lt;- tibble(\n  from = majors_df$major,\n  to = majors_df$minor1,\n  color = \"#333333\") |&gt;\n  bind_rows(\n    tibble(from = majors_df$major,\n           to = majors_df$minor2,\n           color = \"#333333\")\n  ) |&gt;\n  filter(!is.na(to))"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#viznetwork-plot-1",
+    "href": "posts/05_networks/05_networks.html#viznetwork-plot-1",
+    "title": "5: Networks",
+    "section": "vizNetwork Plot",
+    "text": "vizNetwork Plot\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Majors and Minors at Princeton\\nAmong SML 201 Students\")"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#node-tibble-2",
+    "href": "posts/05_networks/05_networks.html#node-tibble-2",
+    "title": "5: Networks",
+    "section": "Node Tibble",
+    "text": "Node Tibble\n\nnode_tbl &lt;- tibble(\n  id = classes_df$class1,\n  label = classes_df$class1) |&gt;\n  bind_rows(tibble(\n    id = classes_df$class2,\n    label = classes_df$class2\n  )) |&gt;\n  bind_rows(tibble(\n    id = classes_df$class3,\n    label = classes_df$class3\n  )) |&gt;\n  bind_rows(tibble(\n    id = classes_df$class4,\n    label = classes_df$class4\n  )) |&gt;\n  bind_rows(tibble(\n    id = classes_df$class5,\n    label = classes_df$class5\n  )) |&gt;\n  bind_rows(tibble(\n    id = classes_df$class6,\n    label = classes_df$class6\n  )) |&gt;\n  distinct() |&gt;\n  filter(!is.na(id)) |&gt;\n  filter(id != \"SML 201\") |&gt;\n  separate(id, into = c(\"dept\", \"num\"), \n           sep = \" \", remove = FALSE)"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#edge-tibble-2",
+    "href": "posts/05_networks/05_networks.html#edge-tibble-2",
+    "title": "5: Networks",
+    "section": "Edge Tibble",
+    "text": "Edge Tibble\n\nedge_tbl &lt;- tibble(\n  from   = classes_df$class1,\n  to     = classes_df$class2\n) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class1,\n    to   = classes_df$class3\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class1,\n    to   = classes_df$class4\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class1,\n    to   = classes_df$class5\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class1,\n    to   = classes_df$class6\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class2,\n    to   = classes_df$class3\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class2,\n    to   = classes_df$class4\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class2,\n    to   = classes_df$class5\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class2,\n    to   = classes_df$class6\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class3,\n    to   = classes_df$class4\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class3,\n    to   = classes_df$class5\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class3,\n    to   = classes_df$class6\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class4,\n    to   = classes_df$class5\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class4,\n    to   = classes_df$class6\n  )) |&gt;\n  bind_rows(tibble(\n    from = classes_df$class5,\n    to   = classes_df$class6\n  )) |&gt;\n  distinct() |&gt;\n  filter(!is.na(to)) |&gt;\n  filter(from != \"SML 201\") |&gt;\n  separate(from, into = c(\"dept_from\", \"num_from\"), \n           sep = \" \", remove = FALSE) |&gt;\n  separate(to, into = c(\"dept_to\", \"num_to\"), \n           sep = \" \", remove = FALSE)"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#viznetwork-plot-2",
+    "href": "posts/05_networks/05_networks.html#viznetwork-plot-2",
+    "title": "5: Networks",
+    "section": "vizNetwork Plot",
+    "text": "vizNetwork Plot\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Current Classes\",\n           submain = \"Among SML 201 Students\") |&gt;\n  visPhysics(maxVelocity = 5,\n             stabilization = list(iterations = 5))"
+  },
+  {
+    "objectID": "posts/05_networks/05_networks.html#highlighted-plot",
+    "href": "posts/05_networks/05_networks.html#highlighted-plot",
+    "title": "5: Networks",
+    "section": "Highlighted Plot",
+    "text": "Highlighted Plot\n\ndept_abbrev = \"MOL\"\n\nnode_tbl &lt;- node_tbl |&gt;\n  mutate(color = ifelse(dept == dept_abbrev, \n                        \"orange\", \"gray75\"))\nedge_tbl &lt;- edge_tbl |&gt;\n  mutate(color = ifelse(dept_from == dept_abbrev | dept_to == dept_abbrev,\n                        \"orange\", \"gray75\"))\n\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Classes Connected to MOL BIO\",\n           submain = \"Among SML 201 Students\") |&gt;\n  visPhysics(maxVelocity = 5,\n             stabilization = list(iterations = 5))"
   }
 ]
