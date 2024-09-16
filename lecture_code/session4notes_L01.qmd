@@ -1,0 +1,161 @@
+---
+title: "session 4 notes"
+author: "Derek Sollberger"
+format: html
+---
+
+Loading a CSV file with the read_csv command.
+
+```{r}
+library("tidyverse")
+
+demo_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv")
+```
+
+# Example 1
+
+How many languages do students speak (on average) at each residential college?
+
+Here: "population" is all 133 survey participants
+
+```{r}
+# population mean
+mu <- mean(demo_df$languages, na.rm = TRUE)
+mu
+
+# residential colleges
+# table(demo_df$residentialCollege)
+
+# filtering
+df2 <- demo_df |>
+  select(residentialCollege, languages)
+
+df3 <- filter(df2, residentialCollege == "Mathey")
+
+# sample mean
+xbar <- mean(df3$languages, na.rm = TRUE)
+xbar
+
+df4 <- filter(df2, residentialCollege == "Yeh College")
+xbar <- mean(df4$languages, na.rm = TRUE)
+xbar
+```
+
+* key idea: the sample mean can vary
+
+# Grouping
+
+```{r}
+demo_df_grouped <- group_by(demo_df, residentialCollege)
+
+# group means
+# mean(demo_df_grouped$languages, na.rm = TRUE)
+# summarize(demo_df_grouped,
+#           xbar = mean(languages, na.rm = TRUE))
+
+# comment keyboard shortcut: CTRL + SHIFT + C
+
+demo_df |>
+  group_by(residentialCollege) |>
+  summarize(xbar = mean(languages, na.rm = TRUE))
+```
+
+# Bar Chart (Identity)
+
+```{r}
+language_data <- demo_df |>
+  group_by(residentialCollege) |>
+  summarize(xbar = mean(languages, na.rm = TRUE))
+
+# aes: aesthetics ("what" are we graphing)
+# variables go inside aes()
+ggplot(language_data, aes(x = residentialCollege, y = xbar)) +
+  geom_bar(color = "red", fill = "green", stat = "identity")
+```
+
+# Example
+
+What are the most popular majors among SML 201 students?
+
+```{r}
+df2 <- demo_df |>
+  select(major) |>
+  group_by(major) |>
+  mutate(numMajor = n()) |> #n() counted the amount of rows in each group
+  ungroup()
+
+df3 <- distinct(df2)
+
+df4 <- arrange(df3, desc(numMajor))
+
+```
+
+```{r}
+updated_data <- demo_df |>
+  select(major) |>
+  group_by(major) |>
+  mutate(numMajor = n()) |>
+  ungroup() |>
+  distinct() |>
+  arrange(desc(numMajor))
+```
+
+```{r}
+df2 <- demo_df |>
+  select(major) |>
+  count(major)
+```
+
+```{r}
+demo_df |>
+  select(major) |>
+  count(major) |>
+  arrange(desc(n))
+```
+
+## Visualization
+
+```{r}
+demo_df |>
+  ggplot(aes(x = fct_rev(fct_infreq(major)), fill = major)) +
+  coord_flip() +
+  geom_bar(stat = "count") +
+  labs(title = "SML 201 students by major",
+       subtitle = "Fall 2024",
+       y = "number of students",
+       x = "") +
+  theme_minimal() + #removes gray background
+  theme(legend.position = "none") 
+```
+
+# Examples
+
+What time do you go to sleep?
+
+```{r}
+table(demo_df$sleepTime)
+```
+
+```{r}
+summary(demo_df$flossing)
+```
+
+```{r}
+table(demo_df$pineapplePizza)
+```
+
+```{r}
+summary(demo_df$numFriends)
+```
+
+```{r}
+summary(demo_df$SAT)
+
+# remove outliers
+demo_df$SAT[demo_df$SAT > 1600] <- NA
+demo_df$SAT[demo_df$SAT < 400] <- NA
+
+summary(demo_df$SAT)
+
+```
+

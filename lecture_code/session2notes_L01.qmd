@@ -1,0 +1,107 @@
+---
+title: "session 2 notes"
+author: "Derek Sollberger"
+format: html
+---
+
+# Mean
+
+1.  add up the values
+2.  divide by amount of values
+
+"c" means "concatenate" (or "combine")
+
+to run one line of code: CTRL + ENTER
+
+```{r}
+# create some data
+some_data <- c(32, 45, 16, 78, 39)
+
+sum(some_data)
+length(some_data)
+sum(some_data) / length(some_data)
+
+mean(some_data)
+```
+
+## Missing Data
+
+NA for non-applicable, or "missing data"
+
+By default, R *stops* upon missing
+
+   * want to avoid the missing data
+
+```{r}
+some_data <- c(32, 45, 16, 78, NA, 39)
+
+mean(some_data)
+mean(some_data, na.rm = TRUE)
+```
+
+# Median
+
+new code chunk: ALT + CRTL + I
+
+```{r}
+some_data <- c(32, 45, 16, 78, 39)
+sort(some_data)
+median(some_data)
+
+some_data2 <- c(32, 45, 16, 78, 39, 5)
+sort(some_data2)
+median(some_data2)
+```
+
+# Olympics
+
+load data
+
+```{r}
+olympic_df1 <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data.csv")
+olympic_df2 <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/02_centrality/olympic_data2.csv")
+```
+
+## explore the data
+
+```{r}
+head(olympic_df1)
+str(olympic_df1) #structure
+colnames(olympic_df1)
+```
+
+```{r}
+mean(olympic_df1$weight)
+mean(olympic_df1$weight, na.rm = TRUE)
+summary(olympic_df1$weight)
+```
+
+```{r}
+olympic_df1$weight[olympic_df1$weight <= 0] <- NA
+olympic_df2$weight[olympic_df2$weight <= 0] <- NA
+
+mean(olympic_df1$weight, na.rm = TRUE)
+summary(olympic_df1$weight)
+```
+
+
+## Filter
+
+```{r}
+library("tidyverse")
+
+Turkey_df1 <- olympic_df1 |>
+  filter(country_code == "TUR")
+```
+
+
+
+
+
+
+
+
+
+
+
+
