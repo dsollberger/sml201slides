@@ -1,7 +1,7 @@
 ---
 title: "5: Networks"
 author: "Derek Sollberger"
-date: "2024-09-12"
+date: "2024-09-17"
 # format:
 #   revealjs:
 #     scrollable: true
@@ -16,6 +16,7 @@ format:
 #| warning: false
 library("gt")
 library("tidyverse")
+library("webexercises")
 library("visNetwork")
 
 restaurant_df <- data.frame(
@@ -47,12 +48,262 @@ music_df <- readr::read_csv("music_data.csv")
 :::
 
 ::: {.column width="45%"}
-![]()
+![network terminology](graph_example_terms.png)
+
+* image source: [MRI Questions](https://s.mriquestions.com/networkgraphs.html)
 :::
 
 ::::
 
+## Template Files
 
+Moving forward, those who want to type along with the lecture sessio will probably want to use template files
+
+1. Go to our Canvas Page --> Files --> lecture_notes
+2. *Download* today's template file
+3. Move that .qmd file into your SML 201 folder
+4. Open that template file
+
+
+# Before Lecture Task
+
+::: {.callout-note collapse="true"}
+## Q
+
+Consider the sets
+
+$$A = \{1, 2, 3, 4, 5\}$$
+$$B = \{3, 4, 5, 6, 7, 8\}$$
+
+Which of the following is the *intersection* of sets $A$ and $B$?
+
+$$X = \{1, 2, 3, 4, 5, 6, 7, 8\}$$
+$$Y = \{3, 4, 5\}$$
+
+```{r}
+#| echo: false
+#| eval: true
+#| results: asis
+
+this_prompt <- "Which of the following is the intersection of sets A and B?"
+this_choices <- c("X", answer = "Y")
+cat(this_prompt, 
+    webexercises::longmcq(this_choices))
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+## Q
+
+Consider the following code chains.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# A
+df |>
+  group_by(var1) |>
+  mutate(stat1 = mean(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# B
+df |>
+  group_by(var1) |>
+  mutate(stat1 = sd(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# C
+df |>
+  group_by(var1) |>
+  mutate(stat1 = median(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# D
+df |>
+  group_by(var1) |>
+  mutate(stat1 = var(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# E
+df |>
+  group_by(var1) |>
+  mutate(stat1 = n()) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| results: asis
+this_prompt <- "Which code chain computes the group means and displays them in descending order"
+this_choices <- c(answer = "A", "B", "C", "D", "E")
+cat(this_prompt, 
+    webexercises::longmcq(this_choices))
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+## Q
+
+Consider the following code chains.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# A
+df |>
+  group_by(var1) |>
+  mutate(stat1 = mean(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# B
+df |>
+  group_by(var1) |>
+  mutate(stat1 = sd(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# C
+df |>
+  group_by(var1) |>
+  mutate(stat1 = median(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# D
+df |>
+  group_by(var1) |>
+  mutate(stat1 = var(var1, na.rm = TRUE)) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+
+# E
+df |>
+  group_by(var1) |>
+  mutate(stat1 = n()) |>
+  ungroup() |>
+  select(var1, stat1) |>
+  arrange(desc(stat1))
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| results: asis
+this_prompt <- "Which code chain computes the mode of var1 and places at the top of the data frame?"
+this_choices <- c("A", "B", "C", "D", answer = "E")
+cat(this_prompt, 
+    webexercises::longmcq(this_choices))
+```
+
+:::
+
+
+::: {.callout-note collapse="true"}
+## Q
+
+```{r}
+set.seed(201)
+example_network <- data.frame(
+  from = sample(LETTERS[1:5],
+                size = 14, replace = TRUE),
+  to   = sample(LETTERS[1:5],
+                size = 14, replace = TRUE)
+)
+
+node_tbl <- tibble(id = LETTERS[1:5],
+                  label = LETTERS[1:5],
+                  color = "blue",
+                  shape = "circle")
+
+edge_tbl <- tibble(
+  from = example_network$from,
+  to = example_network$to,
+  color = "red") |>
+  filter(from != to)
+
+visNetwork(nodes = node_tbl, 
+           edges = edge_tbl,
+           main = "Example Network")
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| results: asis
+
+this_prompt <- "How many nodes are there in this network"
+this_choices <- c(answer = "5", "9")
+cat(this_prompt, 
+    webexercises::longmcq(this_choices))
+```
+
+:::
+
+
+::: {.callout-note collapse="true"}
+## Q
+
+```{r}
+set.seed(201)
+example_network <- data.frame(
+  from = sample(LETTERS[1:5],
+                size = 14, replace = TRUE),
+  to   = sample(LETTERS[1:5],
+                size = 14, replace = TRUE)
+)
+
+node_tbl <- tibble(id = LETTERS[1:5],
+                  label = LETTERS[1:5],
+                  color = "blue",
+                  shape = "circle")
+
+edge_tbl <- tibble(
+  from = example_network$from,
+  to = example_network$to,
+  color = "red") |>
+  filter(from != to)
+
+visNetwork(nodes = node_tbl, 
+           edges = edge_tbl,
+           main = "Example Network")
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| results: asis
+
+this_prompt <- "How many edges are there in this network?"
+this_choices <- c("5", answer = "9")
+cat(this_prompt, 
+    webexercises::longmcq(this_choices))
+```
+
+:::
+
+<!---
+[For optional practice] **Grade**: `r total_correct()`.
+--->
 
 # Simple Example
 
@@ -497,11 +748,11 @@ visNetwork(nodes = node_tbl,
 dept_abbrev = "MOL"
 
 node_tbl <- node_tbl |>
-  mutate(color = ifelse(dept == dept_abbrev, 
-                        "orange", "gray75"))
+  mutate(color = ifelse(dept == dept_abbrev,
+                        "orange", "gray70"))
 edge_tbl <- edge_tbl |>
   mutate(color = ifelse(dept_from == dept_abbrev | dept_to == dept_abbrev,
-                        "orange", "gray75"))
+                        "orange", "gray70"))
 
 
 visNetwork(nodes = node_tbl, 
@@ -513,15 +764,43 @@ visNetwork(nodes = node_tbl,
 ```
 
 
-# Quo Vadimus?
+# Saving Images
+
+While there are tools in the `visNetwork` and `webshot` packages to help export a network to an image, it is probably just as practical to go to your HTML rendered output and right-clicking on an image to bring up "Take screenshot"
+
+# Precept 3
 
 :::: {.columns}
 
 ::: {.column width="45%"}
+* GPUs power generative AI
+* Nvidia's stock grew a lot in 2023
+* Is Nvidia still dominant in 2024?
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Nvidia's growth in 2023](nvidia_2023.png)
+
+* image credit: Louis Krauskopf
+
+:::
+
+::::
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="30%"}
 * Assignments:
 
     * Precept 3
-    * Group Membership
+    * BLT0919
+    * Coloring Assignment 1
     
 * Project 1:
 
@@ -535,8 +814,10 @@ visNetwork(nodes = node_tbl,
 	
 :::
 
-::: {.column width="45%"}
-"The first [lesson] was always to make the choice to learn.  That meant embracing change and mustering the courage to fail; success and failure are two sides of the same coin.  You cannot succeed if at some point you haven't failed" --- Maria Ressa
+::: {.column width="60%"}
+![Game of Thrones network](graph_example_GOT.png)
+
+* image source: [A Comprehensive Survey of Time Series Anomaly Detection in Online Social Network Data](https://www.researchgate.net/figure/Graph-theory-analysis-in-social-network-Image-courtesy-of-5_fig1_321846685) by Md Rafiqul Islam, et al
 
 :::
 
@@ -592,6 +873,13 @@ readr::write_csv(music_df, "music_data.csv")
 ```{r}
 sessionInfo()
 ```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
 :::
 
 
