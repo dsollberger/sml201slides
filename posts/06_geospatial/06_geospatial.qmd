@@ -14,10 +14,12 @@ format:
 #| echo: false
 #| message: false
 #| warning: false
-library("sf")
-library("tidyverse")
+library("sf") #special features, useful for geography
+library("tidyverse") #tools for data wrangling and visualization
 
-
+nj_health <- readr::read_csv("nj_health.csv")
+nj_pop    <- readr::read_csv("nj_pop.csv")
+nj_shp    <- readr::read_rds("nj_shp.rds")
 ```
 
 
@@ -45,6 +47,207 @@ library("tidyverse")
 
 ::::
 
+## Template Files
+
+Moving forward, those who want to type along with the lecture sessio will probably want to use template files
+
+1. Go to our Canvas Page --> Files --> lecture_notes
+2. *Download* today's template file
+3. Move that .qmd file into your SML 201 folder
+4. Open that template file
+
+## Load Data
+
+```{r}
+#| message: false
+#| warning: false
+nj_health <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv")
+nj_pop    <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv")
+nj_shp    <- readr::read_rds("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds")
+```
+
+
+# Data
+
+::::: {.panel-tabset}
+
+## Shapefile
+
+:::: {.columns}
+
+::: {.column width="45%"}
+A **shapefile** has labeled geography data 	
+
+* points
+* lines
+* polygons
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+nj_shp |>
+  ggplot() +
+  geom_sf()
+```
+
+:::
+
+::::
+
+## Health
+
+[New Jersey Health Data](https://www.countyhealthrankings.org/health-data/new-jersey/data-and-resources)
+
+![New Jersey Health Data](nj_health_splash.png)
+:::::
+
+
+# Categorical
+
+Let us produce a colorful map of the counties of New Jersey.
+
+```{r}
+nj_shp |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Centroids
+
+```{r}
+# Calculate the centroid of each hexagon to add the label
+# https://stackoverflow.com/questions/49343958/do-the-values-returned-by-rgeosgcentroid-and-sfst-centroid-differ
+centers <- data.frame(
+  st_coordinates(st_centroid(nj_shp$geometry)),
+  id=nj_shp$COUNTY)
+
+nj_counties <- nj_shp |>
+  left_join(centers, by = c("COUNTY" = "id"))
+```
+
+
+## Text (for labels)
+
+```{r}
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_text(aes(x = X, y = Y, label = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Labels
+
+```{r}
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_label(aes(x = X, y = Y, label = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Subset
+
+```{r}
+nj_label_subset <- nj_counties |>
+  filter(COUNTY %in% c("MERCER", "SUSSEX", "SALEM"))
+
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_label(aes(x = X, y = Y, label = COUNTY),
+             data = nj_label_subset,
+             size = 2) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+# Gradient
+
+```{r}
+nj_df <- nj_counties |>
+  mutate(COUNTY = str_to_title(COUNTY)) |>
+  left_join(nj_health, by = c("COUNTY" = "county"))
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = number_unemployed)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "numerical data",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "OrRd",
+                       direction = 1) +
+  theme_minimal()
+```
+
+## Per Capita
+
+```{r}
+nj_df <- nj_df |>
+  left_join(nj_pop, by = c("COUNTY" = "county"))
+```
+
+```{r}
+nj_df <- nj_df |>
+  mutate(unemployed_per_cap = number_unemployed / population)
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = unemployed_per_cap)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "per capita",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "OrRd",
+                       direction = 1) +
+  theme_minimal()
+```
+
+
+# Divergent
+
+```{r}
+nj_df <- nj_df |>
+  mutate(unemployed_scaled = scale(unemployed_per_cap))
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = unemployed_scaled)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "standardized data",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "RdYlGn",
+                       direction = -1) +
+  theme_minimal()
+```
 
 
 
@@ -68,7 +271,9 @@ library("tidyverse")
 :::
 
 ::: {.column width="45%"}
+![Pork Roll vs Taylor Ham](pork_roll_Taylor_Ham.png)
 
+* poll from NJ.com
 
 :::
 
@@ -89,18 +294,21 @@ nj_shp_raw <- sf::st_read("County_Boundaries_of_NJ/County_Boundaries_of_NJ.shp")
 readr::write_rds(nj_shp_raw, "nj_shp.rds") #save as R binary file
 
 # data files
-nj_health_raw <- readxl::read_xlsx(
+nj_health <- readxl::read_xlsx(
   "2024 County Health Rankings New Jersey Data - v2.xlsx",
   sheet = 2,
   skip = 1) |>
   janitor::clean_names() |>
   filter(!is.na(county))
-nj_pop_raw <- readxl::read_xlsx(
+nj_pop <- readxl::read_xlsx(
   "2024 County Health Rankings New Jersey Data - v2.xlsx",
   sheet = 4,
   skip = 1) |>
   janitor::clean_names() |>
   filter(!is.na(county))
+
+readr::write_csv(nj_health, "nj_health.csv") 
+readr::write_csv(nj_pop, "nj_pop.csv") 
 ```
 
 :::
@@ -109,7 +317,9 @@ nj_pop_raw <- readxl::read_xlsx(
 
 ## (optional) Additional Resources
 
+* more about Rcolorbrewer: [https://r-graph-gallery.com/38-rcolorbrewers-palettes.html](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html)
 
+* more about joins: [http://lindsaydbrin.github.io/CREATE_R_Workshop/Lesson_-_dplyr_join.html](http://lindsaydbrin.github.io/CREATE_R_Workshop/Lesson_-_dplyr_join.html)
 
 :::
 

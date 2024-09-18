@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/06_geospatial/06_geospatial.html",
       "/posts/05_networks/05_networks.html",
       "/posts/04_categories/04_categories.html",
       "/posts/03_variance/03_Variance.html",

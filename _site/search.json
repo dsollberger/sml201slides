@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -817,5 +817,68 @@
     "title": "session 4 notes",
     "section": "Visualization",
     "text": "Visualization\n\ndemo_df |&gt;\n  ggplot(aes(x = fct_rev(fct_infreq(major)), fill = major)) +\n  coord_flip() +\n  geom_bar(stat = \"count\") +\n  labs(title = \"SML 201 students by major\",\n       subtitle = \"Fall 2024\",\n       y = \"number of students\",\n       x = \"\") +\n  theme_minimal() + #removes gray background\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html",
+    "href": "posts/06_geospatial/06_geospatial.html",
+    "title": "6: Geospatial",
+    "section": "",
+    "text": "Goal: Visualize geospatial data\nObjective: Merge shapefiles and data files\n\n\n\n\n\n\n\nNJ at a glance\n\n\n\nimage source: Totally Bamboo\n\n\n\n\n\n\nMoving forward, those who want to type along with the lecture sessio will probably want to use template files\n\nGo to our Canvas Page –&gt; Files –&gt; lecture_notes\nDownload today’s template file\nMove that .qmd file into your SML 201 folder\nOpen that template file\n\n\n\n\n\nnj_health &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv\")\nnj_pop    &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv\")\nnj_shp    &lt;- readr::read_rds(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#start",
+    "href": "posts/06_geospatial/06_geospatial.html#start",
+    "title": "6: Geospatial",
+    "section": "",
+    "text": "Goal: Visualize geospatial data\nObjective: Merge shapefiles and data files\n\n\n\n\n\n\n\nNJ at a glance\n\n\n\nimage source: Totally Bamboo"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#template-files",
+    "href": "posts/06_geospatial/06_geospatial.html#template-files",
+    "title": "6: Geospatial",
+    "section": "",
+    "text": "Moving forward, those who want to type along with the lecture sessio will probably want to use template files\n\nGo to our Canvas Page –&gt; Files –&gt; lecture_notes\nDownload today’s template file\nMove that .qmd file into your SML 201 folder\nOpen that template file"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#load-data",
+    "href": "posts/06_geospatial/06_geospatial.html#load-data",
+    "title": "6: Geospatial",
+    "section": "",
+    "text": "nj_health &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv\")\nnj_pop    &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv\")\nnj_shp    &lt;- readr::read_rds(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#centroids",
+    "href": "posts/06_geospatial/06_geospatial.html#centroids",
+    "title": "6: Geospatial",
+    "section": "Centroids",
+    "text": "Centroids\n\n# Calculate the centroid of each hexagon to add the label\n# https://stackoverflow.com/questions/49343958/do-the-values-returned-by-rgeosgcentroid-and-sfst-centroid-differ\ncenters &lt;- data.frame(\n  st_coordinates(st_centroid(nj_shp$geometry)),\n  id=nj_shp$COUNTY)\n\nnj_counties &lt;- nj_shp |&gt;\n  left_join(centers, by = c(\"COUNTY\" = \"id\"))"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#text-for-labels",
+    "href": "posts/06_geospatial/06_geospatial.html#text-for-labels",
+    "title": "6: Geospatial",
+    "section": "Text (for labels)",
+    "text": "Text (for labels)\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_text(aes(x = X, y = Y, label = COUNTY)) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#labels",
+    "href": "posts/06_geospatial/06_geospatial.html#labels",
+    "title": "6: Geospatial",
+    "section": "Labels",
+    "text": "Labels\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_label(aes(x = X, y = Y, label = COUNTY)) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#subset",
+    "href": "posts/06_geospatial/06_geospatial.html#subset",
+    "title": "6: Geospatial",
+    "section": "Subset",
+    "text": "Subset\n\nnj_label_subset &lt;- nj_counties |&gt;\n  filter(COUNTY %in% c(\"MERCER\", \"SUSSEX\", \"SALEM\"))\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_label(aes(x = X, y = Y, label = COUNTY),\n             data = nj_label_subset,\n             size = 2) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/06_geospatial/06_geospatial.html#per-capita",
+    "href": "posts/06_geospatial/06_geospatial.html#per-capita",
+    "title": "6: Geospatial",
+    "section": "Per Capita",
+    "text": "Per Capita\n\nnj_df &lt;- nj_df |&gt;\n  left_join(nj_pop, by = c(\"COUNTY\" = \"county\"))\n\n\nnj_df &lt;- nj_df |&gt;\n  mutate(unemployed_per_cap = number_unemployed / population)\n\n\nnj_df |&gt;\n  ggplot() +\n  geom_sf(aes(fill = unemployed_per_cap)) +\n  labs(title = \"New Jersey Unemployment\",\n       subtitle = \"per capita\",\n       caption = \"SML 201\") +\n  scale_fill_distiller(palette = \"OrRd\",\n                       direction = 1) +\n  theme_minimal()"
   }
 ]
