@@ -1,0 +1,152 @@
+---
+title: "6: Geospatial"
+author: "Derek Sollberger"
+date: "2024-09-19"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library("sf")
+library("tidyverse")
+
+
+```
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Visualize geospatial data
+
+* **Objective**: Merge shapefiles and data files
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![NJ at a glance](nj_cutting_board.png)
+
+* image source: Totally Bamboo
+:::
+
+::::
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Project 1:
+
+    * assigned: Sept 23
+    * due: Oct 2
+    
+* Exam 1: Oct 10
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) How the data sets were simplified
+
+```{r}
+#| echo: true
+#| eval: false
+
+# shape file
+nj_shp_raw <- sf::st_read("County_Boundaries_of_NJ/County_Boundaries_of_NJ.shp")
+readr::write_rds(nj_shp_raw, "nj_shp.rds") #save as R binary file
+
+# data files
+nj_health_raw <- readxl::read_xlsx(
+  "2024 County Health Rankings New Jersey Data - v2.xlsx",
+  sheet = 2,
+  skip = 1) |>
+  janitor::clean_names() |>
+  filter(!is.na(county))
+nj_pop_raw <- readxl::read_xlsx(
+  "2024 County Health Rankings New Jersey Data - v2.xlsx",
+  sheet = 4,
+  skip = 1) |>
+  janitor::clean_names() |>
+  filter(!is.na(county))
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
