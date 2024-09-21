@@ -31,8 +31,8 @@ Woodbridge ,Genasco,North Jersey Coast Line
 Genasco,Perth Amboy,North Jersey Coast Line
 Perth Amboy,South Amboy ,North Jersey Coast Line
 South Amboy ,Laurence Harbor,North Jersey Coast Line
-Laurence Harbor,Aberdeen-Matawan ,North Jersey Coast Line
-Aberdeen-Matawan ,Hazlet ,North Jersey Coast Line
+Laurence Harbor,AberdeenMatawan ,North Jersey Coast Line
+AberdeenMatawan ,Hazlet ,North Jersey Coast Line
 Hazlet ,Middletown ,North Jersey Coast Line
 Middletown ,Red Bank ,North Jersey Coast Line
 Red Bank ,Little Silver,North Jersey Coast Line
@@ -85,10 +85,10 @@ Delawanna,Passaic,Main Line
 Passaic,Clifton,Main Line
 Clifton,Paterson ,Main Line
 Paterson ,Hawthorne,Main Line
-Hawthorne,Glen Rock-Main Line,Main Line
-Glen Rock-Main Line,Ridgewood ,Main Line
-Ridgewood ,Ho-Ho-Kus,Main Line
-Ho-Ho-Kus,Waldwick,Main Line
+Hawthorne,Glen RockMain Line,Main Line
+Glen RockMain Line,Ridgewood ,Main Line
+Ridgewood ,HoHoKus,Main Line
+HoHoKus,Waldwick,Main Line
 Waldwick,Allendale,Main Line
 Allendale,Ramsey ,Main Line
 Ramsey ,Mahwah,Main Line
@@ -101,17 +101,17 @@ Garfield,Spring Tank,Bergen County Line
 Spring Tank,Plauderville ,Bergen County Line
 Plauderville ,Broadway,Bergen County Line
 Broadway,Radburn,Bergen County Line
-Radburn,Glen Rock-Boro Hall,Bergen County Line
-Glen Rock-Boro Hall,Ridgewood ,Bergen County Line
-Ridgewood ,Ho-Ho-Kus,Bergen County Line
-Ho-Ho-Kus,Waldwick,Bergen County Line
+Radburn,Glen RockBoro Hall,Bergen County Line
+Glen RockBoro Hall,Ridgewood ,Bergen County Line
+Ridgewood ,HoHoKus,Bergen County Line
+HoHoKus,Waldwick,Bergen County Line
 Waldwick,Allendale,Bergen County Line
 Allendale,Ramsey ,Bergen County Line
 Ramsey ,Mahwah,Bergen County Line
 Mahwah,Suffern,Bergen County Line
 Hoboken Terminal ,Secaucus Junction ,Pascack Valley Line
-Secaucus Junction ,Wood-Ridge,Pascack Valley Line
-Wood-Ridge,Teterboro,Pascack Valley Line
+Secaucus Junction ,WoodRidge,Pascack Valley Line
+WoodRidge,Teterboro,Pascack Valley Line
 Teterboro,Essex Street ,Pascack Valley Line
 Essex Street ,Anderson Street,Pascack Valley Line
 Anderson Street,Fairmount Avenue,Pascack Valley Line
@@ -147,8 +147,8 @@ Montclair Heights ,Monclair State Univ,Montclair-Boonton Line
 Monclair State Univ,Little Falls,Montclair-Boonton Line
 Little Falls,Singac,Montclair-Boonton Line
 Singac,Wayne Route 23 Transit Center ,Montclair-Boonton Line
-Wayne Route 23 Transit Center ,Mountain View-Wayne ,Montclair-Boonton Line
-Mountain View-Wayne ,Lincoln Park,Montclair-Boonton Line
+Wayne Route 23 Transit Center ,Mountain ViewWayne ,Montclair-Boonton Line
+Mountain ViewWayne ,Lincoln Park,Montclair-Boonton Line
 Lincoln Park,Towaco ,Montclair-Boonton Line
 Towaco ,Montville,Montclair-Boonton Line
 Montville,Boonton ,Montclair-Boonton Line
