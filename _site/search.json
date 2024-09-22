@@ -655,7 +655,7 @@
     "href": "posts/05_networks/05_networks.html#highlighted-plot",
     "title": "5: Networks",
     "section": "Highlighted Plot",
-    "text": "Highlighted Plot\n\ndept_abbrev = \"MOL\"\n\nnode_tbl &lt;- node_tbl |&gt;\n  mutate(color = ifelse(dept == dept_abbrev,\n                        \"orange\", \"gray70\"))\nedge_tbl &lt;- edge_tbl |&gt;\n  mutate(color = ifelse(dept_from == dept_abbrev | dept_to == dept_abbrev,\n                        \"orange\", \"gray70\"))\n\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Classes Connected to MOL BIO\",\n           submain = \"Among SML 201 Students\") |&gt;\n  visPhysics(maxVelocity = 5,\n             stabilization = list(iterations = 5))"
+    "text": "Highlighted Plot\n\ndept_abbrev = \"MOL\"\n\nnode_tbl &lt;- node_tbl |&gt;\n  mutate(color = ifelse(dept == dept_abbrev,\n                        \"#E77500\", \"#DDDDDD\"),\n         opacity = ifelse(dept == dept_abbrev,\n                        1.0, 0.5))\nedge_tbl &lt;- edge_tbl |&gt;\n  mutate(color = ifelse(dept_from == dept_abbrev | dept_to == dept_abbrev,\n                        \"#E77500\", \"#DDDDDD\"))\n\n\nvisNetwork(nodes = node_tbl, \n           edges = edge_tbl,\n           main = \"Classes Connected to MOL BIO\",\n           submain = \"Among SML 201 Students\") |&gt;\n  visPhysics(maxVelocity = 5,\n             stabilization = list(iterations = 5))"
   },
   {
     "objectID": "posts/05_networks/05_networks.html#template-files",

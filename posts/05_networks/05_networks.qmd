@@ -28,6 +28,9 @@ restaurant_df <- data.frame(
 classes_df <- readr::read_csv("classes_data.csv")
 majors_df <- readr::read_csv("majors_data.csv")
 music_df <- readr::read_csv("music_data.csv")
+
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
 ```
 
 
@@ -749,10 +752,12 @@ dept_abbrev = "MOL"
 
 node_tbl <- node_tbl |>
   mutate(color = ifelse(dept == dept_abbrev,
-                        "orange", "gray70"))
+                        "#E77500", "#DDDDDD"),
+         opacity = ifelse(dept == dept_abbrev,
+                        1.0, 0.5))
 edge_tbl <- edge_tbl |>
   mutate(color = ifelse(dept_from == dept_abbrev | dept_to == dept_abbrev,
-                        "orange", "gray70"))
+                        "#E77500", "#DDDDDD"))
 
 
 visNetwork(nodes = node_tbl, 
