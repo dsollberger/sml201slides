@@ -1,0 +1,698 @@
+---
+title: "7: Correlation"
+author: "Derek Sollberger"
+date: "2024-09-24"
+format:
+  html:
+    toc: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+library("corrplot")
+library("gt")
+library("tidyverse") #tools for data wrangling and visualization
+
+correlatedValues = function(x, r = 0.9){
+  r2 = r**2
+  ve = 1-r2
+  SD = sqrt(ve)
+  e  = rnorm(length(x), mean=0, sd=SD)
+  y  = r*x + e
+  return(y)
+}
+judging_categories <- c("aroma", "flavor", "aftertaste", "acidity", "body", "balance", "uniformity", "clean_cup", "sweetness")
+
+x1 = rnorm(100, mean = -6, sd = 1)
+y1 = correlatedValues(x1, r = 0.75) + 6
+x2 = rnorm(100, mean = -3, sd = 1)
+y2 = correlatedValues(x2, r = 0.75) + 3
+x3 = rnorm(100, mean = 0, sd = 1)
+y3 = correlatedValues(x3, r = 0.75)
+x4 = rnorm(100, mean = 3, sd = 1)
+y4 = correlatedValues(x4, r = 0.75) - 3
+x5 = rnorm(100, mean = 6, sd = 1)
+y5 = correlatedValues(x5, r = 0.75) - 6
+
+df1 <- data.frame(x1, y1, "group 1")
+df2 <- data.frame(x2, y2, "group 2")
+df3 <- data.frame(x3, y3, "group 3")
+df4 <- data.frame(x4, y4, "group 4")
+df5 <- data.frame(x5, y5, "group 5")
+names(df1) <- c("xdata", "ydata", "group")
+names(df2) <- c("xdata", "ydata", "group")
+names(df3) <- c("xdata", "ydata", "group")
+names(df4) <- c("xdata", "ydata", "group")
+names(df5) <- c("xdata", "ydata", "group")
+demo_df <- rbind(df1, df2, df3, df4, df5)
+```
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="30%"}
+* **Goal**: Explore covariance
+
+* **Objective**: Compute interquartile ranges and correlations
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="60%"}
+![correlation](xkcd552.png)
+
+* image source: [XKCD](https://xkcd.com/552/)
+:::
+
+::::
+
+## Data
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Coffee Ratings
+* source: [Coffee Quality Database](https://github.com/jldbc/coffee-quality-database)
+* host: [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md) --- July 7, 2020
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| message: false
+#| warning: false
+
+# coffee_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
+coffee_df <- readr::read_csv("coffee_ratings.csv")
+```
+:::
+
+::::
+
+
+# Quantiles
+
+## Numerical Variables
+
+```{r}
+str(coffee_df, give.attr = FALSE)
+```
+
+Recall that we can use `summary` on a numerical variable.
+
+```{r}
+summary(coffee_df$total_cup_points)
+```
+
+The `dplyr` way to compute quantiles includes
+
+```{r}
+coffee_df |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+We can verify that about 50% of the data are below the median value
+
+```{r}
+mean(coffee_df$total_cup_points < 
+       median(coffee_df$total_cup_points))
+```
+
+
+We can verify that about 75% of the data are indeed below that value for the 0.75 quantile (i.e. 75th percentile.)
+
+```{r}
+mean(coffee_df$total_cup_points < 83.67)
+```
+
+The *interquartile range* is the 75th percentile minus the 25th percentile.
+
+```{r}
+summary(coffee_df$total_cup_points)
+```
+
+```{r}
+IQR(coffee_df$total_cup_points, na.rm = TRUE)
+```
+
+
+## Categorical Group
+
+The `dplyr` code is easily adaptable to grouped data.
+
+```{r}
+coffee_df |>
+  group_by(species) |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+
+# Boxplots
+
+For these lecture slides, I wanted that previous table to be displayed vertically. This is a crude way to write a summary table as a vertical data frame.
+
+```{r}
+summary_df <- coffee_df |>
+  group_by(species) |>
+  mutate(min_val = min(total_cup_points, na.rm = TRUE),
+         q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+         q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+         q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+         max_val = max(total_cup_points, na.rm = TRUE)) |>
+  ungroup() |>
+  select(species, min_val, q25, q50, q75, max_val) |>
+  distinct() |>
+  rev() |> #reverse order of columns
+  t() |>   #transpose (switch rows and columns)
+  data.frame() |>
+  slice(1:5) |>
+  set_names(c("Arabica", "Robusta"))
+```
+
+Here I color code the data within the `gt` framework.
+
+```{r}
+summary_df |>
+  gt() |>
+  tab_style(
+    style = list(cell_text(color = "red")),
+    locations = cells_body(columns = "Arabica")
+  ) |>
+  tab_style(
+    style = list(cell_text(color = "blue")),
+    locations = cells_body(columns = "Robusta")
+  )
+```
+
+A *boxplot* is useful to graph a numerical variable (on the vertical axis) across a categorical variable (on the horizontal axis).
+
+```{r}
+coffee_df |>
+  filter(total_cup_points > 0) |> #avoid one outlier
+  ggplot() +
+  geom_boxplot(aes(x = species, y = total_cup_points, color = species)) +
+  labs(title = "Coffee Ratings",
+       subtitle = "Are these quantities different?",
+       caption = "Source: Coffee Quality Database",
+       x = "species", y = "total points") +
+  scale_color_manual(values = c("red","blue")) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Another Example
+
+:::: {.panel-tabset}
+
+### 1
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  group_by(processing_method) |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+
+### 2
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  group_by(processing_method) |>
+  mutate(min_val = min(total_cup_points, na.rm = TRUE),
+         q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+         q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+         q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+         max_val = max(total_cup_points, na.rm = TRUE)) |>
+  ungroup() |>
+  select(processing_method, min_val, q25, q50, q75, max_val) |>
+  distinct() |>
+  rev() |> #reverse order of columns
+  t() |>   #transpose (switch rows and columns)
+  data.frame() |>
+  slice(1:5) |>
+  set_names(c("washed", "natural", "pulped", "semi", "other"))
+```
+
+### Boxplot
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  ggplot() +
+  geom_boxplot(aes(x = processing_method, y = total_cup_points,
+                   color = processing_method)) +
+  labs(title = "Coffee Ratings",
+       subtitle = "Are these quantities different?",
+       caption = "Source: Coffee Quality Database",
+       x = "", y = "total points") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45),
+        legend.position = "none")
+```
+
+::::
+
+# Scatterplots
+
+A **scatterplot** helps us visualize two numerical variables.
+
+```{r}
+coffee_df |>
+  filter(total_cup_points > 0) |>
+  ggplot(aes(x = acidity, y = body)) +
+  geom_point() +
+  labs(title = "Coffee Ratings",
+       subtitle = "Do the data vary together?",
+       caption = "Source: Coffee Quality Database") +
+  theme_minimal()
+```
+
+
+## Covariance
+
+:::: {.panel-tabset}
+
+## Formula
+
+For data $(X,Y)$ listed as $n$ data points $(x_{i}, y_{i})$, the **covariance** is defined as
+
+$$\begin{array}{rcl}
+  \text{Cov}(X,Y) & = & \frac{1}{2n^{2}}\sum_{i=1}^{n}\sum_{j=1}^{n}(x_{i} - x_{j})(y_{i} - y_{j}) \\
+  ~ & = & \text{E}[X] \cdot \text{E}[Y] - \text{E}[XY] \\
+  \end{array}$$
+
+## Intuition
+
+![constructive or destructive waves](constructive_destructive_waves.png)
+
+* image source: [Fissics](https://www.fizzics.org/interference-of-waves/)
+
+## Commentary
+
+* Are resultant numbers large or small?
+* Units? (e.g. "burger-fries")
+
+::::
+
+## Standardization
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### z-score
+
+$$\begin{array}{ccc}
+z & = & \frac{x - \bar{x}}{s} \\
+~ & = & \frac{\text{deviation}}{\text{standard deviation}} \\
+\end{array}$$
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+### Correlation
+
+$$\begin{array}{ccc}
+  r & = & \frac{\sum_{i=1}^{n} (x_{i} - \bar{x})(y_{i} - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_{i} - \bar{x})}\sqrt{\sum_{i=1}^{n} (y_{i} - \bar{y})}} \\
+  ~ & = & \frac{\text{Cov}(X,Y)}{\text{SD}(X) \cdot \text{SD}(Y)} \\
+  ~ & = & \frac{1}{n-1}\sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right) \\
+\end{array}$$
+:::
+
+::::
+
+**Claim**: The *correlation coefficient* $r$ has a mathematical range in $[-1,1]$:
+
+$$-1 \leq r \leq 1$$
+
+::: {.callout-note collapse="true"}
+## Proof
+
+[refer to a Calculus-based Probability course]
+:::
+
+
+# Correlation
+
+:::: {.columns}
+
+::: {.column width="60%"}
+In this course, we will simply follow the Pearson suggestions for interpreting correlation values:
+
+* $-1.0 \leq r \leq -0.7$: highly and negatively correlated
+* $-0.7 < r < -0.4$: slightly and negatively correlated
+* $-0.4 \leq r \leq 0.4$: virtually uncorrelated
+* $0.4 < r < 0.7$: slightly and positively correlated
+* $0.7 \leq r \leq 1.0$: highly and positively correlated	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Karl Pearson](Karl_Pearson.png)
+:::
+
+::::
+
+## Demonstration
+
+::: {.panel-tabset}
+
+### 1
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = -0.9)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", strongly and negatively correlated"),
+       caption = "SML 201")
+```
+
+### 2
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = -0.5)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and negatively correlated"),
+       caption = "SML 201")
+```
+
+### 3
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", virtually uncorrelated"),
+       caption = "SML 201")
+```
+
+### 4
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0.5)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and positively correlated"),
+       caption = "SML 201")
+```
+
+### 5
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0.9)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", strongly and positively correlated"),
+       caption = "SML 201")
+```
+
+:::
+
+## Examples
+
+Compute the correlation between `flavor` and `aftertaste`
+
+```{r}
+cor(coffee_df$flavor, coffee_df$aftertaste)
+```
+
+Compute the correlation between `uniformity` and `clean_cup`
+
+```{r}
+cor(coffee_df$uniformity, coffee_df$clean_cup,
+    use = "pairwise.complete.obs")
+```
+
+Compute the correlation between `aroma` and `sweetness`
+
+```{r}
+coffee_df |>
+  summarize(r = cor(aroma, sweetness,
+                    use = "pairwise.complete.obs"))
+```
+
+
+# Correlation is Not Causation
+
+* High values of $r$ can appear by coincidence
+* Even if there was some causation, how would we show the direction?
+* Popular website of examples: [Spurious Correlations](https://tylervigen.com/spurious-correlations) by Tyler Vigen
+
+
+# Simpson's Paradox
+
+Now we will visualize the data in `demo_df`
+
+```{r, message = FALSE, warning = FALSE}
+demo_df |>
+ggplot(aes(x = xdata, y = ydata)) +
+  geom_point() +
+  labs(title = "all together")
+
+# compute correlation
+demo_df |>
+  summarize(cor = cor(xdata, ydata))
+```
+
+Now let us treat the groups separately.
+
+```{r}
+demo_df |>
+ggplot(aes(x = xdata, y = ydata, color = group)) +
+  geom_point() +
+  labs(title = "separate groups")
+
+# compute correlation
+demo_df |>
+  group_by(group) |>
+  summarize(cor = cor(xdata, ydata))
+```
+
+# Correlation Matrices
+
+```{r}
+coffee_df |>
+  select_if(is.numeric) |>
+  cor(use = "pairwise.complete.obs") |>
+  corrplot.mixed(order = "FPC", upper = "ellipse")
+```
+
+```{r}
+coffee_df |>
+  select(any_of(c(judging_categories, "total_cup_points"))) |>
+  cor() |>
+  corrplot.mixed(order = "FPC", upper = "ellipse")
+```
+
+
+# Research Considerations
+
+If correlation is not causation, then ... ?
+
+* Humanities and life sciences tend to seek high correlation values
+
+    * hint at possible causation
+    
+* Physical sciences and engineering tend to seek low correlation
+
+    * dimensionality reduction
+
+* Causation? Seek out econometrics or graduate studies
+
+
+# Precept 4
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![NJ train map](NJ_rail_map.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![NJ train network](NJ_rail_network.png)
+:::
+
+::::
+
+
+# Project 1
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* Where was the Green Party popular?
+* Where did the Libertarian Party make a dent in voting?
+* Swing counties: where should a political campaign concentrate their efforts?
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Electoral College (2020)](elec_college_map.png)
+:::
+
+::::
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+* Continue to complete BLTs and precept assignments
+* Project 1:
+
+    * Assigned! Sept 23
+    * Due: Oct 2
+    
+* Exam 1: Oct 10
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Piracy and Global Warming are strongly and negatively correlated](pirates_global_warming.png)
+
+* image source: [Dr Sandy Dersham](https://donhillson.wordpress.com/2011/04/01/link-found-between-piracy-and-global-warming/)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+* [vignette](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) about `corrplot` by Taiyun Wei and Viliam Simko
+
+* books about causation
+
+    * [The Effect](https://theeffectbook.net/index.html) by Nick Huntington-Klein
+    * [Causal Mixtape](https://mixtape.scunning.com/) by Scott Cunningham
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::

@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Derek Sollberger">
+<meta name="dcterms.date" content="2024-09-24">
+
+<title>SML 201 Fall 2024 - 7: Correlation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SML 201 Fall 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">7: Correlation</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Derek Sollberger </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 24, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sml-201" id="toc-sml-201" class="nav-link active" data-scroll-target="#sml-201">SML 201</a>
+  <ul class="collapse">
+  <li><a href="#start" id="toc-start" class="nav-link" data-scroll-target="#start">Start</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  </ul></li>
+  <li><a href="#quantiles" id="toc-quantiles" class="nav-link" data-scroll-target="#quantiles">Quantiles</a>
+  <ul class="collapse">
+  <li><a href="#numerical-variables" id="toc-numerical-variables" class="nav-link" data-scroll-target="#numerical-variables">Numerical Variables</a></li>
+  <li><a href="#categorical-group" id="toc-categorical-group" class="nav-link" data-scroll-target="#categorical-group">Categorical Group</a></li>
+  </ul></li>
+  <li><a href="#boxplots" id="toc-boxplots" class="nav-link" data-scroll-target="#boxplots">Boxplots</a>
+  <ul class="collapse">
+  <li><a href="#another-example" id="toc-another-example" class="nav-link" data-scroll-target="#another-example">Another Example</a></li>
+  </ul></li>
+  <li><a href="#scatterplots" id="toc-scatterplots" class="nav-link" data-scroll-target="#scatterplots">Scatterplots</a>
+  <ul class="collapse">
+  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance">Covariance</a></li>
+  <li><a href="#standardization" id="toc-standardization" class="nav-link" data-scroll-target="#standardization">Standardization</a></li>
+  </ul></li>
+  <li><a href="#correlation-1" id="toc-correlation-1" class="nav-link" data-scroll-target="#correlation-1">Correlation</a>
+  <ul class="collapse">
+  <li><a href="#demonstration" id="toc-demonstration" class="nav-link" data-scroll-target="#demonstration">Demonstration</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
+  <li><a href="#correlation-is-not-causation" id="toc-correlation-is-not-causation" class="nav-link" data-scroll-target="#correlation-is-not-causation">Correlation is Not Causation</a></li>
+  <li><a href="#simpsons-paradox" id="toc-simpsons-paradox" class="nav-link" data-scroll-target="#simpsons-paradox">Simpson’s Paradox</a></li>
+  <li><a href="#correlation-matrices" id="toc-correlation-matrices" class="nav-link" data-scroll-target="#correlation-matrices">Correlation Matrices</a></li>
+  <li><a href="#research-considerations" id="toc-research-considerations" class="nav-link" data-scroll-target="#research-considerations">Research Considerations</a></li>
+  <li><a href="#precept-4" id="toc-precept-4" class="nav-link" data-scroll-target="#precept-4">Precept 4</a></li>
+  <li><a href="#project-1" id="toc-project-1" class="nav-link" data-scroll-target="#project-1">Project 1</a></li>
+  <li><a href="#quo-vadimus" id="toc-quo-vadimus" class="nav-link" data-scroll-target="#quo-vadimus">Quo Vadimus?</a></li>
+  <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"corrplot"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"gt"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>) <span class="co">#tools for data wrangling and visualization</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>correlatedValues <span class="ot">=</span> <span class="cf">function</span>(x, <span class="at">r =</span> <span class="fl">0.9</span>){</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  r2 <span class="ot">=</span> r<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ve <span class="ot">=</span> <span class="dv">1</span><span class="sc">-</span>r2</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  SD <span class="ot">=</span> <span class="fu">sqrt</span>(ve)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  e  <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>SD)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  y  <span class="ot">=</span> r<span class="sc">*</span>x <span class="sc">+</span> e</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>judging_categories <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"aroma"</span>, <span class="st">"flavor"</span>, <span class="st">"aftertaste"</span>, <span class="st">"acidity"</span>, <span class="st">"body"</span>, <span class="st">"balance"</span>, <span class="st">"uniformity"</span>, <span class="st">"clean_cup"</span>, <span class="st">"sweetness"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="sc">-</span><span class="dv">6</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>y1 <span class="ot">=</span> <span class="fu">correlatedValues</span>(x1, <span class="at">r =</span> <span class="fl">0.75</span>) <span class="sc">+</span> <span class="dv">6</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>y2 <span class="ot">=</span> <span class="fu">correlatedValues</span>(x2, <span class="at">r =</span> <span class="fl">0.75</span>) <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>y3 <span class="ot">=</span> <span class="fu">correlatedValues</span>(x3, <span class="at">r =</span> <span class="fl">0.75</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>x4 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>y4 <span class="ot">=</span> <span class="fu">correlatedValues</span>(x4, <span class="at">r =</span> <span class="fl">0.75</span>) <span class="sc">-</span> <span class="dv">3</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>x5 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">6</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>y5 <span class="ot">=</span> <span class="fu">correlatedValues</span>(x5, <span class="at">r =</span> <span class="fl">0.75</span>) <span class="sc">-</span> <span class="dv">6</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x1, y1, <span class="st">"group 1"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x2, y2, <span class="st">"group 2"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x3, y3, <span class="st">"group 3"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x4, y4, <span class="st">"group 4"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>df5 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x5, y5, <span class="st">"group 5"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"xdata"</span>, <span class="st">"ydata"</span>, <span class="st">"group"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"xdata"</span>, <span class="st">"ydata"</span>, <span class="st">"group"</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df3) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"xdata"</span>, <span class="st">"ydata"</span>, <span class="st">"group"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df4) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"xdata"</span>, <span class="st">"ydata"</span>, <span class="st">"group"</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df5) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"xdata"</span>, <span class="st">"ydata"</span>, <span class="st">"group"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>demo_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df1, df2, df3, df4, df5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sml-201" class="level1">
+<h1>SML 201</h1>
+<section id="start" class="level2">
+<h2 class="anchored" data-anchor-id="start">Start</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<ul>
+<li><p><strong>Goal</strong>: Explore covariance</p></li>
+<li><p><strong>Objective</strong>: Compute interquartile ranges and correlations</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="xkcd552.png" class="img-fluid figure-img"></p>
+<figcaption>correlation</figcaption>
+</figure>
+</div>
+<ul>
+<li>image source: <a href="https://xkcd.com/552/">XKCD</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Coffee Ratings</li>
+<li>source: <a href="https://github.com/jldbc/coffee-quality-database">Coffee Quality Database</a></li>
+<li>host: <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md">TidyTuesday</a> — July 7, 2020</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coffee_df &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"coffee_ratings.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="quantiles" class="level1">
+<h1>Quantiles</h1>
+<section id="numerical-variables" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-variables">Numerical Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(coffee_df, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spc_tbl_ [1,339 × 43] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ total_cup_points     : num [1:1339] 90.6 89.9 89.8 89 88.8 ...
+ $ species              : chr [1:1339] "Arabica" "Arabica" "Arabica" "Arabica" ...
+ $ owner                : chr [1:1339] "metad plc" "metad plc" "grounds for health admin" "yidnekachew dabessa" ...
+ $ country_of_origin    : chr [1:1339] "Ethiopia" "Ethiopia" "Guatemala" "Ethiopia" ...
+ $ farm_name            : chr [1:1339] "metad plc" "metad plc" "san marcos barrancas \"san cristobal cuch" "yidnekachew dabessa coffee plantation" ...
+ $ lot_number           : chr [1:1339] NA NA NA NA ...
+ $ mill                 : chr [1:1339] "metad plc" "metad plc" NA "wolensu" ...
+ $ ico_number           : chr [1:1339] "2014/2015" "2014/2015" NA NA ...
+ $ company              : chr [1:1339] "metad agricultural developmet plc" "metad agricultural developmet plc" NA "yidnekachew debessa coffee plantation" ...
+ $ altitude             : chr [1:1339] "1950-2200" "1950-2200" "1600 - 1800 m" "1800-2200" ...
+ $ region               : chr [1:1339] "guji-hambela" "guji-hambela" NA "oromia" ...
+ $ producer             : chr [1:1339] "METAD PLC" "METAD PLC" NA "Yidnekachew Dabessa Coffee Plantation" ...
+ $ number_of_bags       : num [1:1339] 300 300 5 320 300 100 100 300 300 50 ...
+ $ bag_weight           : chr [1:1339] "60 kg" "60 kg" "1" "60 kg" ...
+ $ in_country_partner   : chr [1:1339] "METAD Agricultural Development plc" "METAD Agricultural Development plc" "Specialty Coffee Association" "METAD Agricultural Development plc" ...
+ $ harvest_year         : chr [1:1339] "2014" "2014" NA "2014" ...
+ $ grading_date         : chr [1:1339] "April 4th, 2015" "April 4th, 2015" "May 31st, 2010" "March 26th, 2015" ...
+ $ owner_1              : chr [1:1339] "metad plc" "metad plc" "Grounds for Health Admin" "Yidnekachew Dabessa" ...
+ $ variety              : chr [1:1339] NA "Other" "Bourbon" NA ...
+ $ processing_method    : chr [1:1339] "Washed / Wet" "Washed / Wet" NA "Natural / Dry" ...
+ $ aroma                : num [1:1339] 8.67 8.75 8.42 8.17 8.25 8.58 8.42 8.25 8.67 8.08 ...
+ $ flavor               : num [1:1339] 8.83 8.67 8.5 8.58 8.5 8.42 8.5 8.33 8.67 8.58 ...
+ $ aftertaste           : num [1:1339] 8.67 8.5 8.42 8.42 8.25 8.42 8.33 8.5 8.58 8.5 ...
+ $ acidity              : num [1:1339] 8.75 8.58 8.42 8.42 8.5 8.5 8.5 8.42 8.42 8.5 ...
+ $ body                 : num [1:1339] 8.5 8.42 8.33 8.5 8.42 8.25 8.25 8.33 8.33 7.67 ...
+ $ balance              : num [1:1339] 8.42 8.42 8.42 8.25 8.33 8.33 8.25 8.5 8.42 8.42 ...
+ $ uniformity           : num [1:1339] 10 10 10 10 10 10 10 10 9.33 10 ...
+ $ clean_cup            : num [1:1339] 10 10 10 10 10 10 10 10 10 10 ...
+ $ sweetness            : num [1:1339] 10 10 10 10 10 10 10 9.33 9.33 10 ...
+ $ cupper_points        : num [1:1339] 8.75 8.58 9.25 8.67 8.58 8.33 8.5 9 8.67 8.5 ...
+ $ moisture             : num [1:1339] 0.12 0.12 0 0.11 0.12 0.11 0.11 0.03 0.03 0.1 ...
+ $ category_one_defects : num [1:1339] 0 0 0 0 0 0 0 0 0 0 ...
+ $ quakers              : num [1:1339] 0 0 0 0 0 0 0 0 0 0 ...
+ $ color                : chr [1:1339] "Green" "Green" NA "Green" ...
+ $ category_two_defects : num [1:1339] 0 1 0 2 2 1 0 0 0 4 ...
+ $ expiration           : chr [1:1339] "April 3rd, 2016" "April 3rd, 2016" "May 31st, 2011" "March 25th, 2016" ...
+ $ certification_body   : chr [1:1339] "METAD Agricultural Development plc" "METAD Agricultural Development plc" "Specialty Coffee Association" "METAD Agricultural Development plc" ...
+ $ certification_address: chr [1:1339] "309fcf77415a3661ae83e027f7e5f05dad786e44" "309fcf77415a3661ae83e027f7e5f05dad786e44" "36d0d00a3724338ba7937c52a378d085f2172daa" "309fcf77415a3661ae83e027f7e5f05dad786e44" ...
+ $ certification_contact: chr [1:1339] "19fef5a731de2db57d16da10287413f5f99bc2dd" "19fef5a731de2db57d16da10287413f5f99bc2dd" "0878a7d4b9d35ddbf0fe2ce69a2062cceb45a660" "19fef5a731de2db57d16da10287413f5f99bc2dd" ...
+ $ unit_of_measurement  : chr [1:1339] "m" "m" "m" "m" ...
+ $ altitude_low_meters  : num [1:1339] 1950 1950 1600 1800 1950 ...
+ $ altitude_high_meters : num [1:1339] 2200 2200 1800 2200 2200 NA NA 1700 1700 1850 ...
+ $ altitude_mean_meters : num [1:1339] 2075 2075 1700 2000 2075 ...</code></pre>
+</div>
+</div>
+<p>Recall that we can use <code>summary</code> on a numerical variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(coffee_df<span class="sc">$</span>total_cup_points)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   81.08   82.50   82.09   83.67   90.58 </code></pre>
+</div>
+</div>
+<p>The <code>dplyr</code> way to compute quantiles includes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">min =</span> <span class="fu">min</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">q25 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">q50 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.50</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">q75 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">max =</span> <span class="fu">max</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+    min   q25   q50   q75   max
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0  81.1  82.5  83.7  90.6</code></pre>
+</div>
+</div>
+<p>We can verify that about 50% of the data are below the median value</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(coffee_df<span class="sc">$</span>total_cup_points <span class="sc">&lt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">median</span>(coffee_df<span class="sc">$</span>total_cup_points))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4899178</code></pre>
+</div>
+</div>
+<p>We can verify that about 75% of the data are indeed below that value for the 0.75 quantile (i.e.&nbsp;75th percentile.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(coffee_df<span class="sc">$</span>total_cup_points <span class="sc">&lt;</span> <span class="fl">83.67</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7490665</code></pre>
+</div>
+</div>
+<p>The <em>interquartile range</em> is the 75th percentile minus the 25th percentile.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(coffee_df<span class="sc">$</span>total_cup_points)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   81.08   82.50   82.09   83.67   90.58 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(coffee_df<span class="sc">$</span>total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.59</code></pre>
+</div>
+</div>
+</section>
+<section id="categorical-group" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-group">Categorical Group</h2>
+<p>The <code>dplyr</code> code is easily adaptable to grouped data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">min =</span> <span class="fu">min</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">q25 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">q50 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.50</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">q75 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">max =</span> <span class="fu">max</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  species   min   q25   q50   q75   max
+  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Arabica   0    81.2  82.5  83.7  90.6
+2 Robusta  73.8  80.2  81.5  82.5  83.8</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="boxplots" class="level1">
+<h1>Boxplots</h1>
+<p>For these lecture slides, I wanted that previous table to be displayed vertically. This is a crude way to write a summary table as a vertical data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>summary_df <span class="ot">&lt;-</span> coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">min_val =</span> <span class="fu">min</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">q25 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">q50 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.50</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">q75 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">max_val =</span> <span class="fu">max</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, min_val, q25, q50, q75, max_val) <span class="sc">|&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev</span>() <span class="sc">|&gt;</span> <span class="co">#reverse order of columns</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span>   <span class="co">#transpose (switch rows and columns)</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">"Arabica"</span>, <span class="st">"Robusta"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here I color code the data within the <code>gt</code> framework.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>summary_df <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"red"</span>)),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> <span class="st">"Arabica"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"blue"</span>)),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> <span class="st">"Robusta"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="mbfiwqsrvw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mbfiwqsrvw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mbfiwqsrvw thead, #mbfiwqsrvw tbody, #mbfiwqsrvw tfoot, #mbfiwqsrvw tr, #mbfiwqsrvw td, #mbfiwqsrvw th {
+  border-style: none;
+}
+
+#mbfiwqsrvw p {
+  margin: 0;
+  padding: 0;
+}
+
+#mbfiwqsrvw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mbfiwqsrvw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mbfiwqsrvw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mbfiwqsrvw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mbfiwqsrvw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mbfiwqsrvw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mbfiwqsrvw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mbfiwqsrvw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mbfiwqsrvw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mbfiwqsrvw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mbfiwqsrvw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mbfiwqsrvw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mbfiwqsrvw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mbfiwqsrvw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mbfiwqsrvw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mbfiwqsrvw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mbfiwqsrvw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mbfiwqsrvw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mbfiwqsrvw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mbfiwqsrvw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mbfiwqsrvw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mbfiwqsrvw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mbfiwqsrvw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mbfiwqsrvw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mbfiwqsrvw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mbfiwqsrvw .gt_left {
+  text-align: left;
+}
+
+#mbfiwqsrvw .gt_center {
+  text-align: center;
+}
+
+#mbfiwqsrvw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mbfiwqsrvw .gt_font_normal {
+  font-weight: normal;
+}
+
+#mbfiwqsrvw .gt_font_bold {
+  font-weight: bold;
+}
+
+#mbfiwqsrvw .gt_font_italic {
+  font-style: italic;
+}
+
+#mbfiwqsrvw .gt_super {
+  font-size: 65%;
+}
+
+#mbfiwqsrvw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mbfiwqsrvw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mbfiwqsrvw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mbfiwqsrvw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mbfiwqsrvw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mbfiwqsrvw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mbfiwqsrvw .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mbfiwqsrvw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mbfiwqsrvw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="Arabica" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Arabica</th>
+<th id="Robusta" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Robusta</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="Arabica" style="color: #FF0000">90.58</td>
+<td class="gt_row gt_right" headers="Robusta" style="color: #0000FF">83.75</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Arabica" style="color: #FF0000">83.67</td>
+<td class="gt_row gt_right" headers="Robusta" style="color: #0000FF">82.52</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="Arabica" style="color: #FF0000">82.5</td>
+<td class="gt_row gt_right" headers="Robusta" style="color: #0000FF">81.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="Arabica" style="color: #FF0000">81.17</td>
+<td class="gt_row gt_right" headers="Robusta" style="color: #0000FF">80.17</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="Arabica" style="color: #FF0000">0.00</td>
+<td class="gt_row gt_right" headers="Robusta" style="color: #0000FF">73.75</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A <em>boxplot</em> is useful to graph a numerical variable (on the vertical axis) across a categorical variable (on the horizontal axis).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_cup_points <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="co">#avoid one outlier</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> total_cup_points, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Coffee Ratings"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Are these quantities different?"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: Coffee Quality Database"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"species"</span>, <span class="at">y =</span> <span class="st">"total points"</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>)) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="another-example" class="level2">
+<h2 class="anchored" data-anchor-id="another-example">Another Example</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Boxplot</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(processing_method)) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(processing_method) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">min =</span> <span class="fu">min</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">q25 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">q50 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.50</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">q75 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">max =</span> <span class="fu">max</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 6
+  processing_method           min   q25   q50   q75   max
+  &lt;chr&gt;                     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Natural / Dry              67.9  81.2  82.8  83.8  89  
+2 Other                      63.1  80.8  81.8  83.0  84.7
+3 Pulped natural / honey     80.1  82.0  82.7  83.2  86.6
+4 Semi-washed / Semi-pulped  78.8  81.5  82.5  83.6  86.1
+5 Washed / Wet               59.8  81    82.4  83.5  90.6</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(processing_method)) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(processing_method) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">min_val =</span> <span class="fu">min</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">q25 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">q50 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.50</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">q75 =</span> <span class="fu">quantile</span>(total_cup_points, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">max_val =</span> <span class="fu">max</span>(total_cup_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(processing_method, min_val, q25, q50, q75, max_val) <span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev</span>() <span class="sc">|&gt;</span> <span class="co">#reverse order of columns</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span>   <span class="co">#transpose (switch rows and columns)</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">"washed"</span>, <span class="st">"natural"</span>, <span class="st">"pulped"</span>, <span class="st">"semi"</span>, <span class="st">"other"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         washed natural  pulped    semi   other
+max_val   90.58   89.00   86.58   86.08   84.67
+q75     83.5000 83.8300 83.2075 83.6425 82.9575
+q50      82.420  82.750  82.665  82.500  81.830
+q25     81.0000 81.2500 81.9550 81.5000 80.7925
+min_val   59.83   67.92   80.08   78.75   63.08</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(processing_method)) <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> processing_method, <span class="at">y =</span> total_cup_points,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color =</span> processing_method)) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Coffee Ratings"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Are these quantities different?"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: Coffee Quality Database"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"total points"</span>) <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>),</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="scatterplots" class="level1">
+<h1>Scatterplots</h1>
+<p>A <strong>scatterplot</strong> helps us visualize two numerical variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_cup_points <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> acidity, <span class="at">y =</span> body)) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Coffee Ratings"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Do the data vary together?"</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Source: Coffee Quality Database"</span>) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="covariance" class="level2">
+<h2 class="anchored" data-anchor-id="covariance">Covariance</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Formula</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Intuition</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Commentary</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>For data <span class="math inline">\((X,Y)\)</span> listed as <span class="math inline">\(n\)</span> data points <span class="math inline">\((x_{i}, y_{i})\)</span>, the <strong>covariance</strong> is defined as</p>
+<p><span class="math display">\[\begin{array}{rcl}
+  \text{Cov}(X,Y) &amp; = &amp; \frac{1}{2n^{2}}\sum_{i=1}^{n}\sum_{j=1}^{n}(x_{i} - x_{j})(y_{i} - y_{j}) \\
+  ~ &amp; = &amp; \text{E}[X] \cdot \text{E}[Y] - \text{E}[XY] \\
+  \end{array}\]</span></p>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="constructive_destructive_waves.png" class="img-fluid figure-img"></p>
+<figcaption>constructive or destructive waves</figcaption>
+</figure>
+</div>
+<ul>
+<li>image source: <a href="https://www.fizzics.org/interference-of-waves/">Fissics</a></li>
+</ul>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<ul>
+<li>Are resultant numbers large or small?</li>
+<li>Units? (e.g.&nbsp;“burger-fries”)</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="standardization" class="level2">
+<h2 class="anchored" data-anchor-id="standardization">Standardization</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<section id="z-score" class="level3">
+<h3 class="anchored" data-anchor-id="z-score">z-score</h3>
+<p><span class="math display">\[\begin{array}{ccc}
+z &amp; = &amp; \frac{x - \bar{x}}{s} \\
+~ &amp; = &amp; \frac{\text{deviation}}{\text{standard deviation}} \\
+\end{array}\]</span></p>
+</section>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<section id="correlation" class="level3">
+<h3 class="anchored" data-anchor-id="correlation">Correlation</h3>
+<p><span class="math display">\[\begin{array}{ccc}
+  r &amp; = &amp; \frac{\sum_{i=1}^{n} (x_{i} - \bar{x})(y_{i} - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_{i} - \bar{x})}\sqrt{\sum_{i=1}^{n} (y_{i} - \bar{y})}} \\
+  ~ &amp; = &amp; \frac{\text{Cov}(X,Y)}{\text{SD}(X) \cdot \text{SD}(Y)} \\
+  ~ &amp; = &amp; \frac{1}{n-1}\sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right) \\
+\end{array}\]</span></p>
+</section>
+</div>
+</div>
+<p><strong>Claim</strong>: The <em>correlation coefficient</em> <span class="math inline">\(r\)</span> has a mathematical range in <span class="math inline">\([-1,1]\)</span>:</p>
+<p><span class="math display">\[-1 \leq r \leq 1\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proof
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>[refer to a Calculus-based Probability course]</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="correlation-1" class="level1">
+<h1>Correlation</h1>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>In this course, we will simply follow the Pearson suggestions for interpreting correlation values:</p>
+<ul>
+<li><span class="math inline">\(-1.0 \leq r \leq -0.7\)</span>: highly and negatively correlated</li>
+<li><span class="math inline">\(-0.7 &lt; r &lt; -0.4\)</span>: slightly and negatively correlated</li>
+<li><span class="math inline">\(-0.4 \leq r \leq 0.4\)</span>: virtually uncorrelated</li>
+<li><span class="math inline">\(0.4 &lt; r &lt; 0.7\)</span>: slightly and positively correlated</li>
+<li><span class="math inline">\(0.7 \leq r \leq 1.0\)</span>: highly and positively correlated<br>
+</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Karl_Pearson.png" class="img-fluid figure-img"></p>
+<figcaption>Karl Pearson</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="demonstration" class="level2">
+<h2 class="anchored" data-anchor-id="demonstration">Demonstration</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false">5</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p>Compute the correlation between <code>flavor</code> and <code>aftertaste</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(coffee_df<span class="sc">$</span>flavor, coffee_df<span class="sc">$</span>aftertaste)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8956718</code></pre>
+</div>
+</div>
+<p>Compute the correlation between <code>uniformity</code> and <code>clean_cup</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(coffee_df<span class="sc">$</span>uniformity, coffee_df<span class="sc">$</span>clean_cup,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5262187</code></pre>
+</div>
+</div>
+<p>Compute the correlation between <code>aroma</code> and <code>sweetness</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">r =</span> <span class="fu">cor</span>(aroma, sweetness,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+      r
+  &lt;dbl&gt;
+1 0.253</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="correlation-is-not-causation" class="level1">
+<h1>Correlation is Not Causation</h1>
+<ul>
+<li>High values of <span class="math inline">\(r\)</span> can appear by coincidence</li>
+<li>Even if there was some causation, how would we show the direction?</li>
+<li>Popular website of examples: <a href="https://tylervigen.com/spurious-correlations">Spurious Correlations</a> by Tyler Vigen</li>
+</ul>
+</section>
+<section id="simpsons-paradox" class="level1">
+<h1>Simpson’s Paradox</h1>
+<p>Now we will visualize the data in <code>demo_df</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>demo_df <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> xdata, <span class="at">y =</span> ydata)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"all together"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute correlation</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>demo_df <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">cor =</span> <span class="fu">cor</span>(xdata, ydata))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         cor
+1 -0.5564614</code></pre>
+</div>
+</div>
+<p>Now let us treat the groups separately.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>demo_df <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> xdata, <span class="at">y =</span> ydata, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"separate groups"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute correlation</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>demo_df <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">cor =</span> <span class="fu">cor</span>(xdata, ydata))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  group     cor
+  &lt;chr&gt;   &lt;dbl&gt;
+1 group 1 0.737
+2 group 2 0.780
+3 group 3 0.737
+4 group 4 0.830
+5 group 5 0.760</code></pre>
+</div>
+</div>
+</section>
+<section id="correlation-matrices" class="level1">
+<h1>Correlation Matrices</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(<span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corrplot.mixed</span>(<span class="at">order =</span> <span class="st">"FPC"</span>, <span class="at">upper =</span> <span class="st">"ellipse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>coffee_df <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">any_of</span>(<span class="fu">c</span>(judging_categories, <span class="st">"total_cup_points"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corrplot.mixed</span>(<span class="at">order =</span> <span class="st">"FPC"</span>, <span class="at">upper =</span> <span class="st">"ellipse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_correlation_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="research-considerations" class="level1">
+<h1>Research Considerations</h1>
+<p>If correlation is not causation, then … ?</p>
+<ul>
+<li><p>Humanities and life sciences tend to seek high correlation values</p>
+<ul>
+<li>hint at possible causation</li>
+</ul></li>
+<li><p>Physical sciences and engineering tend to seek low correlation</p>
+<ul>
+<li>dimensionality reduction</li>
+</ul></li>
+<li><p>Causation? Seek out econometrics or graduate studies</p></li>
+</ul>
+</section>
+<section id="precept-4" class="level1">
+<h1>Precept 4</h1>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="NJ_rail_map.png" class="img-fluid figure-img"></p>
+<figcaption>NJ train map</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="NJ_rail_network.png" class="img-fluid figure-img"></p>
+<figcaption>NJ train network</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="project-1" class="level1">
+<h1>Project 1</h1>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Where was the Green Party popular?</li>
+<li>Where did the Libertarian Party make a dent in voting?</li>
+<li>Swing counties: where should a political campaign concentrate their efforts?</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="elec_college_map.png" class="img-fluid figure-img"></p>
+<figcaption>Electoral College (2020)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="quo-vadimus" class="level1">
+<h1>Quo Vadimus?</h1>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><p>Continue to complete BLTs and precept assignments</p></li>
+<li><p>Project 1:</p>
+<ul>
+<li>Assigned! Sept 23</li>
+<li>Due: Oct 2</li>
+</ul></li>
+<li><p>Exam 1: Oct 10</p></li>
+<li><p>Refer to weekly announcement for more info</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pirates_global_warming.png" class="img-fluid figure-img"></p>
+<figcaption>Piracy and Global Warming are strongly and negatively correlated</figcaption>
+</figure>
+</div>
+<ul>
+<li>image source: <a href="https://donhillson.wordpress.com/2011/04/01/link-found-between-piracy-and-global-warming/">Dr Sandy Dersham</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="footnotes" class="level1">
+<h1>Footnotes</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+(optional) Additional Resources
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><p><a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">vignette</a> about <code>corrplot</code> by Taiyun Wei and Viliam Simko</p></li>
+<li><p>books about causation</p>
+<ul>
+<li><a href="https://theeffectbook.net/index.html">The Effect</a> by Nick Huntington-Klein</li>
+<li><a href="https://mixtape.scunning.com/">Causal Mixtape</a> by Scott Cunningham</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.4.1 (2024-06-14 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 10 x64 (build 19045)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=English_United States.utf8   
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.3 forcats_1.0.0   stringr_1.5.1   dplyr_1.1.4    
+ [5] purrr_1.0.2     readr_2.1.5     tidyr_1.3.1     tibble_3.2.1   
+ [9] ggplot2_3.5.1   tidyverse_2.0.0 gt_0.11.0       corrplot_0.94  
+
+loaded via a namespace (and not attached):
+ [1] sass_0.4.9        utf8_1.2.4        generics_0.1.3    xml2_1.3.6       
+ [5] stringi_1.8.4     hms_1.1.3         digest_0.6.35     magrittr_2.0.3   
+ [9] evaluate_0.24.0   grid_4.4.1        timechange_0.3.0  fastmap_1.2.0    
+[13] jsonlite_1.8.8    fansi_1.0.6       scales_1.3.0      cli_3.6.2        
+[17] rlang_1.1.4       crayon_1.5.3      bit64_4.0.5       munsell_0.5.1    
+[21] withr_3.0.1       yaml_2.3.8        tools_4.4.1       parallel_4.4.1   
+[25] tzdb_0.4.0        colorspace_2.1-1  vctrs_0.6.5       R6_2.5.1         
+[29] lifecycle_1.0.4   htmlwidgets_1.6.4 bit_4.0.5         vroom_1.6.5      
+[33] pkgconfig_2.0.3   archive_1.1.8     pillar_1.9.0      gtable_0.3.5     
+[37] glue_1.7.0        xfun_0.44         tidyselect_1.2.1  rstudioapi_0.16.0
+[41] knitr_1.48        farver_2.1.2      htmltools_0.5.8.1 labeling_0.4.3   
+[45] rmarkdown_2.27    compiler_4.4.1   </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example Callout Block
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>note</code>, <code>tip</code>, <code>warning</code>, <code>caution</code>, or <code>important</code></p>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"></ul>
+<div class="tab-content">
+
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
