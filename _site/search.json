@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -950,5 +950,236 @@
     "title": "7: Correlation",
     "section": "Examples",
     "text": "Examples\nCompute the correlation between flavor and aftertaste\n\ncor(coffee_df$flavor, coffee_df$aftertaste)\n\n[1] 0.8956718\n\n\nCompute the correlation between uniformity and clean_cup\n\ncor(coffee_df$uniformity, coffee_df$clean_cup,\n    use = \"pairwise.complete.obs\")\n\n[1] 0.5262187\n\n\nCompute the correlation between aroma and sweetness\n\ncoffee_df |&gt;\n  summarize(r = cor(aroma, sweetness,\n                    use = \"pairwise.complete.obs\"))\n\n# A tibble: 1 × 1\n      r\n  &lt;dbl&gt;\n1 0.253"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html",
+    "href": "posts/08_linear_regression/08_linear_regression.html",
+    "title": "8: Linear Regression",
+    "section": "",
+    "text": "library(\"gt\")        #great tables\nlibrary(\"HistData\")  #historical data sets\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nliquor_df &lt;- data.frame(\n  year = 2014:2022,\n  LLV = c(129, 54, 103, 50, 15, 10, 18, 49,57)\n)\nMM_df &lt;- data.frame(\n  S = c(0.08, 0.12, 0.54, 1.23, 1.82, 2.72, 4.94, 10.00),\n  v = c(0.15, 0.21, 0.7, 1.1, 1.3, 1.5, 1.7, 1.8)\n)"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#start",
+    "href": "posts/08_linear_regression/08_linear_regression.html#start",
+    "title": "8: Linear Regression",
+    "section": "Start",
+    "text": "Start\n\n\n\nGoal: Make predictions\nObjective: Perform linear regression and compute coefficients of determination\n\n\n\n\n\n\n\nlinear regression\n\n\n\nimage source: XKCD"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#linear-regression-in-r",
+    "href": "posts/08_linear_regression/08_linear_regression.html#linear-regression-in-r",
+    "title": "8: Linear Regression",
+    "section": "Linear Regression in R",
+    "text": "Linear Regression in R\n\nresponse variable (y): LLV\nexplanatory variable (x): year\n\n\nlin_fit &lt;- lm(LLV ~ year, data = liquor_df)\n\nIn a model equation, the tilde ~ is read as “explained by”. In this model, we can say that the response variable LLV is explained by the year."
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#prediction-in-r",
+    "href": "posts/08_linear_regression/08_linear_regression.html#prediction-in-r",
+    "title": "8: Linear Regression",
+    "section": "Prediction in R",
+    "text": "Prediction in R\nWe use the predict function where the input is a data frame. In this example, we are predicting the number of judicial referrals for liquor law violations in the year 2023.\n\nyhat &lt;- predict(lin_fit,\n                newdata = data.frame(year = 2023))"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#validation",
+    "href": "posts/08_linear_regression/08_linear_regression.html#validation",
+    "title": "8: Linear Regression",
+    "section": "Validation",
+    "text": "Validation\nIn this simple example, we know the true answer: there were 262 judicial referrals for liquor law violations in the year 2023\n\n# true value\ny &lt;- 262\n\n\n# absolute error\nabs(y - yhat)\n\n       1 \n250.8611 \n\n\n\n# relative error\nabs(y - yhat) / y\n\n        1 \n0.9574852 \n\n\nWhy was the prediction so inaccurate?"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#scatterplot",
+    "href": "posts/08_linear_regression/08_linear_regression.html#scatterplot",
+    "title": "8: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\nIt is a good idea to look at the data (when practical).\n\nliquor_df |&gt;\n  ggplot() +\n  geom_point(aes(x = factor(year), y = LLV),\n             size = 4, color = \"black\") +\n  labs(title = \"Liquor Law Violations\",\n       subtitle = \"Princeton University, main campus\",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#smooth",
+    "href": "posts/08_linear_regression/08_linear_regression.html#smooth",
+    "title": "8: Linear Regression",
+    "section": "Smooth",
+    "text": "Smooth\nOn the visual size, linear regression summarizes a scatterplot.\n\nliquor_df |&gt;\n  ggplot(aes(x = year, y = LLV)) +\n  geom_point(size = 4, color = \"black\") +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE,\n              color = \"blue\", linewidth = 2) +\n  labs(title = \"Liquor Law Violations\",\n       subtitle = \"Princeton University, main campus\",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#centroid",
+    "href": "posts/08_linear_regression/08_linear_regression.html#centroid",
+    "title": "8: Linear Regression",
+    "section": "Centroid",
+    "text": "Centroid\nClaim: a linear regression model goes through the centroid\n\\[(\\bar{x}, \\bar{y})\\]\n\nxbar &lt;- mean(liquor_df$year)\nybar &lt;- mean(liquor_df$LLV)\n\nliquor_df |&gt;\n  ggplot(aes(x = year, y = LLV)) +\n  geom_point(size = 4, color = \"black\") +\n  geom_vline(xintercept = xbar, color = \"green\") +\n  geom_hline(yintercept = ybar, color = \"green\") +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE,\n              color = \"blue\", linewidth = 2) +\n  labs(title = \"Linear Regression\",\n       subtitle = \"A linear regression model goes through the centroid \",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#vector-space",
+    "href": "posts/08_linear_regression/08_linear_regression.html#vector-space",
+    "title": "8: Linear Regression",
+    "section": "Vector Space",
+    "text": "Vector Space\nHow was the line drawn?\n\n\n\nWhere to draw the line?"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#linear-model",
+    "href": "posts/08_linear_regression/08_linear_regression.html#linear-model",
+    "title": "8: Linear Regression",
+    "section": "Linear Model",
+    "text": "Linear Model\n\\[\\hat{y} = a + bx\\]\n\n\\(\\hat{y}\\): predicted value\n\\(a\\): intercept\n\\(b\\): slope"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#residuals",
+    "href": "posts/08_linear_regression/08_linear_regression.html#residuals",
+    "title": "8: Linear Regression",
+    "section": "Residuals",
+    "text": "Residuals\nA residual is the difference between a predicted value and its true value.\n\nliquor_df &lt;- liquor_df |&gt;\n  mutate(predictions = predict(lin_fit,\n                               newdata = data.frame(year = liquor_df$year)),\n         residuals = predictions - LLV)\n\n\nliquor_df |&gt;\n  ggplot(aes(x = year, y = LLV)) +\n  geom_segment(aes(x = year, y = predictions, \n                   xend = year, yend = LLV), \n               color = \"purple\", linewidth = 3) +\n  geom_point(size = 4, color = \"black\") +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE,\n              color = \"blue\", linewidth = 2) +\n  geom_point(aes(x = year, y = predictions),\n             color = \"red\", size = 4) +\n  labs(title = \"Linear Regression\",\n       subtitle = \"black: true values\\nred: predictions\\npurple: residuals\",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#corollary-residual-balance",
+    "href": "posts/08_linear_regression/08_linear_regression.html#corollary-residual-balance",
+    "title": "8: Linear Regression",
+    "section": "Corollary: Residual Balance",
+    "text": "Corollary: Residual Balance\nClaim: the average of the residuals is zero\n\nmean(liquor_df$residuals)\n\n[1] 1.616879e-12"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#method-of-least-squares",
+    "href": "posts/08_linear_regression/08_linear_regression.html#method-of-least-squares",
+    "title": "8: Linear Regression",
+    "section": "Method of Least Squares",
+    "text": "Method of Least Squares\nIdea: The best-fit line is where the sum-of-squared residuals is minimized.\n\\[E(a,b) = \\sum_{i=1}^{n} (y_{i} - a - bx_{i})^{2}\\]\nClaim: \\[a = \\frac{ (\\sum y_{i})(\\sum x_{i}^{2}) - (\\sum x_{i})(\\sum x_{i}y_{i}) }{ n\\sum x_{i}^{2} - (\\sum x_{i})^{2} }, \\quad b = \\frac{ n\\sum x_{i}y_{i} - (\\sum x_{i})(\\sum y_{i}) }{ n\\sum x_{i}^{2} - (\\sum x_{i})^{2} }\\]\n\n\n\n\n\n\n(optional) Proof\n\n\n\n\n\nSearch for a critical point by setting the partial derivatives (along with the Chain Rule) equal to zero.\n\\[0 = \\frac{\\partial E}{\\partial a} = -2\\sum_{i = 1}^{n} (y_{i} - a - bx_{i}) = 2an + 2b\\sum_{i = 1}^{n}x_{i} - 2\\sum_{i = 1}^{n} y_{i}\\] \\[0 = \\frac{\\partial E}{\\partial b} = -2\\sum_{i = 1}^{n} (y_{i} - a - bx_{i})x_{i} = 2a\\sum_{i = 1}^{n}x_{i} + 2b\\sum_{i = 1}^{n}x_{i}^{2} - 2\\sum_{i = 1}^{n} x_{i}y_{i}\\]\nCreate a matrix system of equations.\n\\[\\left[  \\begin{array}{cc}\n  n & \\sum_{i = 1}^{n}x_{i} \\\\\n  \\sum_{i = 1}^{n}x_{i} & \\sum_{i = 1}^{n}x_{i}^{2} \\\\\n  \\end{array}\\right]\n  \\left[  \\begin{array}{c}  a \\\\ b \\end{array}\\right]\n  =\n  \\left[  \\begin{array}{c}  \\sum_{i = 1}^{n} y_{i} \\\\ \\sum_{i = 1}^{n} x_{i}y_{i} \\end{array}\\right]\n  \\]\nEmploy a matrix inverse.\n$$\n\\[\\begin{array}{rcl}\n  \\left[  \\begin{array}{c}  a \\\\ b \\end{array}\\right] & = &\n  \\left[  \\begin{array}{cc}\n  n & \\sum_{i = 1}^{n}x_{i} \\\\\n  \\sum_{i = 1}^{n}x_{i} & \\sum_{i = 1}^{n}x_{i}^{2} \\\\\n  \\end{array}\\right]^{-1}\\left[  \\begin{array}{c}  \\sum_{i = 1}^{n} y_{i} \\\\ \\sum_{i = 1}^{n} x_{i}y_{i} \\end{array}\\right] \\\\\n  \n  ~ & ~ & ~ \\\\\n  \n  \\left[  \\begin{array}{c}  a \\\\ b \\end{array}\\right] & = & \\frac{1}{n\\sum x_{i}^{2} - (\\sum x_{i})^{2}} \\left[  \\begin{array}{cc}\n  \\sum_{i = 1}^{n}x_{i}^{2} & -\\sum_{i = 1}^{n}x_{i} \\\\\n  -\\sum_{i = 1}^{n}x_{i} & n \\\\\n  \\end{array}\\right]  \\left[  \\begin{array}{c}  \\sum_{i = 1}^{n} y_{i} \\\\ \\sum_{i = 1}^{n} x_{i}y_{i} \\end{array}\\right] \\\\\n  \n  ~ & ~ & ~ \\\\\n  \n  \\left[  \\begin{array}{c}  a \\\\ b \\end{array}\\right] & = & \\frac{1}{n\\sum x_{i}^{2} - (\\sum x_{i})^{2}}\n  \\left[  \\begin{array}{c}  (\\sum y_{i})(\\sum x_{i}^{2}) - (\\sum x_{i})(\\sum x_{i}y_{i}) \\\\  n\\sum x_{i}y_{i} - (\\sum x_{i})(\\sum y_{i}) \\end{array}\\right] \\\\\n\\end{array}\\]\n$$"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#lm",
+    "href": "posts/08_linear_regression/08_linear_regression.html#lm",
+    "title": "8: Linear Regression",
+    "section": "LM",
+    "text": "LM\n\\[\\hat{y} = a + bx\\]\n\nlm(LLV ~ year, data = liquor_df)\n\n\nCall:\nlm(formula = LLV ~ year, data = liquor_df)\n\nCoefficients:\n(Intercept)         year  \n   17307.79        -8.55  \n\n\nFor every increase in year, the number of judicial referrals decreases by 8.55.\n\nPrediction\nPredict the number of judicial referrals for liquor law violations in the year 2023.\n\na &lt;- summary(lin_fit)$coefficients[1]\nb &lt;- summary(lin_fit)$coefficients[2]\n\na + b*(2023)\n\n[1] 11.13889\n\npredict(lin_fit, newdata = data.frame(year = 2023))\n\n       1 \n11.13889"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#definition",
+    "href": "posts/08_linear_regression/08_linear_regression.html#definition",
+    "title": "8: Linear Regression",
+    "section": "Definition",
+    "text": "Definition\nThe coefficient of determination is defined as\n\\[R^{2} = \\frac{\\text{explained variance}}{\\text{total variance}}\\]\nFor analysis of variance:\n\nexplained variation: \\(\\sum(\\hat{y} - \\bar{y})^{2}\\)\nunexplained variation: \\(\\sum(y - \\hat{y})^{2}\\)\ntotal variation = explained variation + unexplained variation \\[\\sum(y - \\bar{y})^{2} = \\sum(\\hat{y} - \\bar{y})^{2} + \\sum(y - \\hat{y})^{2}\\]"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#inference",
+    "href": "posts/08_linear_regression/08_linear_regression.html#inference",
+    "title": "8: Linear Regression",
+    "section": "Inference",
+    "text": "Inference\nWhy is that denoted “\\(R^2\\)”? For linear regression, the coefficient of determination is literally the square of the correlation coefficient (\\(r\\))\n\ncorrelation \\(-1 \\leq r \\leq 1\\) implies coefficient of determination \\[0 \\leq R^{2} \\leq 1\\]\nwant more “explained variation”, thus higher \\(R^{2}\\) means a better model"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#guidelines",
+    "href": "posts/08_linear_regression/08_linear_regression.html#guidelines",
+    "title": "8: Linear Regression",
+    "section": "Guidelines",
+    "text": "Guidelines\n\n\nIn this course, we will simply follow the Pearson suggestions for interpreting coefficient of determination values:\n\n\\(0 \\leq R^{2} &lt; 0.4\\): poor model\n\\(0.4 \\leq R^{2} &lt; 0.7\\): good model\n\\(0.7 \\leq R^{2} \\leq 1.0\\): great model\n\n\n\n\n\n\n\nKarl Pearson"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#model-statistics",
+    "href": "posts/08_linear_regression/08_linear_regression.html#model-statistics",
+    "title": "8: Linear Regression",
+    "section": "Model Statistics",
+    "text": "Model Statistics\nIn R, we can use summary to access model statistics.\n\nsummary(lin_fit)\n\n\nCall:\nlm(formula = LLV ~ year, data = liquor_df)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-38.89 -25.54 -12.44  32.01  40.91 \n\nCoefficients:\n             Estimate Std. Error t value Pr(&gt;|t|)  \n(Intercept) 17307.789   9047.707   1.913   0.0973 .\nyear           -8.550      4.483  -1.907   0.0982 .\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 34.73 on 7 degrees of freedom\nMultiple R-squared:  0.3419,    Adjusted R-squared:  0.2479 \nF-statistic: 3.637 on 1 and 7 DF,  p-value: 0.09819\n\n\nHere in SML 201, we will use the “Adjusted R-squared” value that accounts for the number of predictor variables. Treat negative adjusted R-squared values simply as zero variation explained, and then look for the highest adjusted R-squared values.\n\nsummary(lin_fit)$adj.r.squared\n\n[1] 0.2478815"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#francis-galton",
+    "href": "posts/08_linear_regression/08_linear_regression.html#francis-galton",
+    "title": "8: Linear Regression",
+    "section": "Francis Galton",
+    "text": "Francis Galton\n\n\n\n\n\nSir Francis Galton\n\n\n\n\n\n\n1822 - 1911\ncousin of Charles Darwin\ncorrelation discovery\n\n1846: August Bravais\n1888: Francis Galton"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#do-tall-parents-have-tall-children",
+    "href": "posts/08_linear_regression/08_linear_regression.html#do-tall-parents-have-tall-children",
+    "title": "8: Linear Regression",
+    "section": "Do tall parents have tall children?",
+    "text": "Do tall parents have tall children?\nThe Galton data set in the HistData package has two variables\n\nparents’ height (see documentation for weighted formula)\nchild’s height\n\nfor about 200 families\n\nheredity_df &lt;- HistData::Galton"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#scatterplot-1",
+    "href": "posts/08_linear_regression/08_linear_regression.html#scatterplot-1",
+    "title": "8: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nheredity_df |&gt;\n  ggplot(aes(x = parent, y = child)) +\n  geom_point() +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE) +\n  labs(title = \"Do tall parents have tall children?\",\n       subtitle = \"Galton Survey of Heights\",\n       caption = \"SML 201\",\n       x = \"parent's heights (weighted average)\",\n       y = \"child's height\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#linear-model-1",
+    "href": "posts/08_linear_regression/08_linear_regression.html#linear-model-1",
+    "title": "8: Linear Regression",
+    "section": "Linear Model",
+    "text": "Linear Model\n\nlin_fit &lt;- lm(child ~ parent, data = heredity_df)\n\n# slope\nsummary(lin_fit)$coefficients[2]\n\n[1] 0.6462906\n\n\nFor every one inch increase in parents’ height, the child’s height increases by about 0.65 inches."
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#prediction-1",
+    "href": "posts/08_linear_regression/08_linear_regression.html#prediction-1",
+    "title": "8: Linear Regression",
+    "section": "Prediction",
+    "text": "Prediction\nIf the parents are 69 inches in height, what do we predict for the height of the child?\n\npredict(lin_fit, newdata = data.frame(parent = 69))\n\n       1 \n68.53558 \n\n\nIf the parents are 58 inches in height, what do we predict for the height of the child?\n\npredict(lin_fit, newdata = data.frame(parent = 58))\n\n       1 \n61.42638"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#regression-to-the-mean",
+    "href": "posts/08_linear_regression/08_linear_regression.html#regression-to-the-mean",
+    "title": "8: Linear Regression",
+    "section": "Regression to the Mean",
+    "text": "Regression to the Mean\nIn these early studies of heredity, Galton coined the phrase\n\\[\\text{regression to the mean}\\]\nand similar calculations have been called regression ever since."
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#michaelis-and-menton",
+    "href": "posts/08_linear_regression/08_linear_regression.html#michaelis-and-menton",
+    "title": "8: Linear Regression",
+    "section": "Michaelis and Menton",
+    "text": "Michaelis and Menton\n\n\n\n\n\nLeonor Michaelis and Maud Menton\n\n\n\n\n\nLeonor Michaelis\n\nBerlin University (1897)\n\nMaud Menton\n\nUniversity of Toronto (1911)\n\nDie Kinetik der Invertinwirkung (1913)\n\\[v = \\frac{V_{\\text{max}}[S]}{K_{m} + [S]}\\]\n\n\\(v\\): reaction rate (micromolars per minute)\n\\([S]\\): substrate concentration (micromolars)"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#enzyme-kinetics",
+    "href": "posts/08_linear_regression/08_linear_regression.html#enzyme-kinetics",
+    "title": "8: Linear Regression",
+    "section": "Enzyme Kinetics",
+    "text": "Enzyme Kinetics\n\n\n\n\n\nEssential Cell Biology\n\n\n\n\n\nThe reaction rates of the reaction S \\(\\rightarrow\\) P catalyzed by enzyme E were determined under conditions such that only very little product was formed. Compute the maximum reaction velocity asymptote \\(V_{\\text{max}}\\) and the Michaelis-Menton constant \\(K_{m}\\)\n\n\n\n\n\n\n\n\nMichaelis Menton Experiment\n\n\nreaction rate vs substrate concentration\n\n\nS\nv\n\n\n\n\n0.08\n0.15\n\n\n0.12\n0.21\n\n\n0.54\n0.70\n\n\n1.23\n1.10\n\n\n1.82\n1.30\n\n\n2.72\n1.50\n\n\n4.94\n1.70\n\n\n10.00\n1.80\n\n\n\nDie Kinetik der Invertinwirkung"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#scatterplot-2",
+    "href": "posts/08_linear_regression/08_linear_regression.html#scatterplot-2",
+    "title": "8: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nreaction rate (lower case v)\nsubstrate concentration (capital S)\n\n\nMM_df |&gt;\n  ggplot(aes(x = S, y = v)) +\n  geom_smooth(formula = \"y ~ x\", method = \"loess\", se = TRUE) +\n  geom_point(color = \"black\", size = 4) +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"reaction rate vs substrate concentration\",\n       caption = \"Essential Cell Biology\",\n       x = \"substrate concentration (micromolars)\",\n       y = \"reaction rate (micromolars per minute)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#transformation",
+    "href": "posts/08_linear_regression/08_linear_regression.html#transformation",
+    "title": "8: Linear Regression",
+    "section": "Transformation",
+    "text": "Transformation\nHans Lineweaver (George Washington Univ., 1934)\n\\[v = \\frac{V_{\\text{max}}[S]}{K_{m} + [S]} \\quad\\rightarrow\\quad \\frac{1}{v} = \\frac{K_{m}}{V_{\\text{max}}} \\cdot \\frac{1}{[S]} + \\frac{1}{V_{\\text{max}}}\\]\nThe reciprocal of the reaction rate is linear with respect to the reciprocal of the substrate concentration."
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#double-reciprocal-plot",
+    "href": "posts/08_linear_regression/08_linear_regression.html#double-reciprocal-plot",
+    "title": "8: Linear Regression",
+    "section": "Double-Reciprocal Plot",
+    "text": "Double-Reciprocal Plot\n\nMM_df &lt;- MM_df |&gt;\n  mutate(rS = 1/S,\n         rv = 1/v)\n\n\nMM_df |&gt;\n  ggplot(aes(x = rS, y = rv)) +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE) +\n  geom_point(color = \"black\", size = 4) +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"Double Reciprocal Plot\",\n       caption = \"Essential Cell Biology\",\n       x = \"1/[S] (1/micromoles)\",\n       y = \"1/v (minutes per micromolar)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#linear-model-2",
+    "href": "posts/08_linear_regression/08_linear_regression.html#linear-model-2",
+    "title": "8: Linear Regression",
+    "section": "Linear Model",
+    "text": "Linear Model\n\nlin_fit &lt;- lm(rv ~ rS, data = MM_df)"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#coefficient-of-determination-1",
+    "href": "posts/08_linear_regression/08_linear_regression.html#coefficient-of-determination-1",
+    "title": "8: Linear Regression",
+    "section": "Coefficient of Determination",
+    "text": "Coefficient of Determination\n\nsummary(lin_fit)$adj.r.squared\n\n[1] 0.9995051"
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#extracting-the-constants",
+    "href": "posts/08_linear_regression/08_linear_regression.html#extracting-the-constants",
+    "title": "8: Linear Regression",
+    "section": "Extracting the Constants",
+    "text": "Extracting the Constants\n\nslope &lt;- lin_fit$coefficients[2]\nintercept &lt;- lin_fit$coefficients[1]\n\nVmax &lt;- 1/intercept\nKm &lt;- slope * Vmax\n\nprint(paste(\"The Vmax asymptote is \", Vmax))\n\n[1] \"The Vmax asymptote is  1.9894653306508\"\n\nprint(paste(\"The Michaelis-Menton constant is \", Km))\n\n[1] \"The Michaelis-Menton constant is  0.991986524114476\""
+  },
+  {
+    "objectID": "posts/08_linear_regression/08_linear_regression.html#mm-experiment-revisited",
+    "href": "posts/08_linear_regression/08_linear_regression.html#mm-experiment-revisited",
+    "title": "8: Linear Regression",
+    "section": "MM Experiment Revisited",
+    "text": "MM Experiment Revisited\n\nMM_df |&gt;\n  ggplot(aes(x = S, y = v)) +\n  geom_smooth(formula = \"y ~ x\", method = \"loess\", se = TRUE) +\n  geom_point(color = \"black\", size = 4) +\n  geom_abline(slope = Km, intercept = 0, color = \"red\") +\n  geom_abline(slope = 0, intercept = Vmax, color = \"purple\") +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"maximum reaction velocity asymptote (purple)\\nMichaelis-Menton constant (red slope)\",\n       caption = \"Essential Cell Biology\",\n       x = \"substrate concentration (micromolars)\",\n       y = \"reaction rate (micromolars per minute)\") +\n  theme_minimal()"
   }
 ]

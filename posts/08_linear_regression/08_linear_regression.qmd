@@ -1,0 +1,752 @@
+---
+title: "8: Linear Regression"
+author: "Derek Sollberger"
+date: "2024-09-26"
+format:
+  html:
+    toc: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+library("gt")        #great tables
+library("HistData")  #historical data sets
+library("tidyverse") #tools for data wrangling and visualization
+
+liquor_df <- data.frame(
+  year = 2014:2022,
+  LLV = c(129, 54, 103, 50, 15, 10, 18, 49,57)
+)
+MM_df <- data.frame(
+  S = c(0.08, 0.12, 0.54, 1.23, 1.82, 2.72, 4.94, 10.00),
+  v = c(0.15, 0.21, 0.7, 1.1, 1.3, 1.5, 1.7, 1.8)
+)
+```
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="30%"}
+* **Goal**: Make predictions
+
+* **Objective**: Perform linear regression and compute coefficients of determination
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="60%"}
+![linear regression](xkcd_2533.png)
+
+* image source: [XKCD](https://www.explainxkcd.com/wiki/index.php/2533:_Slope_Hypothesis_Testing)
+:::
+
+::::
+
+
+# Campus Example
+
+:::: {.panel-tabset}
+
+## Description
+
+:::: {.columns}
+
+::: {.column width="45%"}
+The following data on judicial referrals for liquor law violations come from the Princeton University [Annual Security and Fire Safety Report](https://publicsafety.princeton.edu/information/monthlyannual-data)  (in and around the main campus)	
+
+![Cleary Act Report](Cleary_Report.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+liquor_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Princeton University, Main Campus") |>
+  tab_header(
+    title = "Liquor Law Violiations",
+    subtitle = "(judicial referrals)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  data_color(
+    columns = LLV,
+    target_columns = everything(),
+    palette = "inferno",
+    reverse = FALSE
+  )
+```
+
+:::
+
+::::
+
+## gt code
+
+```{r}
+#| echo: true
+#| eval: false
+liquor_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Princeton University, Main Campus") |>
+  tab_header(
+    title = "Liquor Law Violiations",
+    subtitle = "(judicial referrals)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  data_color(
+    columns = LLV,
+    target_columns = everything(),
+    palette = "inferno",
+    reverse = FALSE
+  )
+```
+
+::::
+
+## Linear Regression in R
+
+* response variable (y): `LLV`
+* explanatory variable (x): `year`
+
+```{r}
+lin_fit <- lm(LLV ~ year, data = liquor_df)
+```
+
+In a model equation, the tilde `~` is read as "explained by".  In this model, we can say that the response variable `LLV` is explained by the `year`.
+
+## Prediction in R
+
+We use the `predict` function where the input is a data frame.  In this example, we are predicting the number of judicial referrals for liquor law violations in the year 2023.
+
+```{r}
+yhat <- predict(lin_fit,
+                newdata = data.frame(year = 2023))
+```
+
+## Validation
+
+In this simple example, we know the true answer: there were 262 judicial referrals for liquor law violations in the year 2023
+
+```{r}
+# true value
+y <- 262
+```
+
+```{r}
+# absolute error
+abs(y - yhat)
+```
+
+```{r}
+# relative error
+abs(y - yhat) / y
+```
+
+Why was the prediction so inaccurate?
+
+
+# SSE
+
+## Scatterplot
+
+It is a good idea to look at the data (when practical).
+
+```{r}
+liquor_df |>
+  ggplot() +
+  geom_point(aes(x = factor(year), y = LLV),
+             size = 4, color = "black") +
+  labs(title = "Liquor Law Violations",
+       subtitle = "Princeton University, main campus",
+       caption = "SML 201",
+       x = "year", y = "judicial referrals") +
+  theme_minimal()
+```
+
+
+## Smooth
+
+On the visual size, linear regression summarizes a scatterplot.
+
+```{r}
+liquor_df |>
+  ggplot(aes(x = year, y = LLV)) +
+  geom_point(size = 4, color = "black") +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE,
+              color = "blue", linewidth = 2) +
+  labs(title = "Liquor Law Violations",
+       subtitle = "Princeton University, main campus",
+       caption = "SML 201",
+       x = "year", y = "judicial referrals") +
+  theme_minimal()
+```
+
+## Centroid
+
+Claim: a linear regression model goes through the centroid 
+
+$$(\bar{x}, \bar{y})$$
+
+```{r}
+xbar <- mean(liquor_df$year)
+ybar <- mean(liquor_df$LLV)
+
+liquor_df |>
+  ggplot(aes(x = year, y = LLV)) +
+  geom_point(size = 4, color = "black") +
+  geom_vline(xintercept = xbar, color = "green") +
+  geom_hline(yintercept = ybar, color = "green") +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE,
+              color = "blue", linewidth = 2) +
+  labs(title = "Linear Regression",
+       subtitle = "A linear regression model goes through the centroid ",
+       caption = "SML 201",
+       x = "year", y = "judicial referrals") +
+  theme_minimal()
+```
+
+## Vector Space
+
+How was the line drawn?
+
+![Where to draw the line?](many_splits.gif)
+
+## Linear Model
+
+$$\hat{y} = a + bx$$
+
+* $\hat{y}$: predicted value
+* $a$: intercept
+* $b$: slope
+
+## Residuals
+
+A *residual* is the difference between a predicted value and its true value.
+
+```{r}
+liquor_df <- liquor_df |>
+  mutate(predictions = predict(lin_fit,
+                               newdata = data.frame(year = liquor_df$year)),
+         residuals = predictions - LLV)
+```
+
+```{r}
+liquor_df |>
+  ggplot(aes(x = year, y = LLV)) +
+  geom_segment(aes(x = year, y = predictions, 
+                   xend = year, yend = LLV), 
+               color = "purple", linewidth = 3) +
+  geom_point(size = 4, color = "black") +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE,
+              color = "blue", linewidth = 2) +
+  geom_point(aes(x = year, y = predictions),
+             color = "red", size = 4) +
+  labs(title = "Linear Regression",
+       subtitle = "black: true values\nred: predictions\npurple: residuals",
+       caption = "SML 201",
+       x = "year", y = "judicial referrals") +
+  theme_minimal()
+```
+
+## Corollary: Residual Balance
+
+Claim: the average of the residuals is zero
+
+```{r}
+mean(liquor_df$residuals)
+```
+
+## Method of Least Squares
+
+**Idea**: The *best-fit* line is where the sum-of-squared residuals is minimized.
+
+$$E(a,b) = \sum_{i=1}^{n} (y_{i} - a - bx_{i})^{2}$$
+
+**Claim**: $$a = \frac{ (\sum y_{i})(\sum x_{i}^{2}) - (\sum x_{i})(\sum x_{i}y_{i}) }{ n\sum x_{i}^{2} - (\sum x_{i})^{2} }, \quad b = \frac{ n\sum x_{i}y_{i} - (\sum x_{i})(\sum y_{i}) }{ n\sum x_{i}^{2} - (\sum x_{i})^{2} }$$
+
+::: {.callout-note collapse="true"}
+## (optional) Proof
+
+Search for a critical point by setting the partial derivatives (along with the Chain Rule) equal to zero.
+
+$$0 = \frac{\partial E}{\partial a} = -2\sum_{i = 1}^{n} (y_{i} - a - bx_{i}) = 2an + 2b\sum_{i = 1}^{n}x_{i} - 2\sum_{i = 1}^{n} y_{i}$$
+$$0 = \frac{\partial E}{\partial b} = -2\sum_{i = 1}^{n} (y_{i} - a - bx_{i})x_{i} = 2a\sum_{i = 1}^{n}x_{i} + 2b\sum_{i = 1}^{n}x_{i}^{2} - 2\sum_{i = 1}^{n} x_{i}y_{i}$$
+
+Create a matrix system of equations.
+
+$$\left[  \begin{array}{cc}
+  n & \sum_{i = 1}^{n}x_{i} \\
+  \sum_{i = 1}^{n}x_{i} & \sum_{i = 1}^{n}x_{i}^{2} \\
+  \end{array}\right]
+  \left[  \begin{array}{c}  a \\ b \end{array}\right]
+  =
+  \left[  \begin{array}{c}  \sum_{i = 1}^{n} y_{i} \\ \sum_{i = 1}^{n} x_{i}y_{i} \end{array}\right]
+  $$
+
+
+Employ a matrix inverse.
+
+$$\begin{array}{rcl}
+  \left[  \begin{array}{c}  a \\ b \end{array}\right] & = & 
+  \left[  \begin{array}{cc}
+  n & \sum_{i = 1}^{n}x_{i} \\
+  \sum_{i = 1}^{n}x_{i} & \sum_{i = 1}^{n}x_{i}^{2} \\
+  \end{array}\right]^{-1}\left[  \begin{array}{c}  \sum_{i = 1}^{n} y_{i} \\ \sum_{i = 1}^{n} x_{i}y_{i} \end{array}\right] \\
+  
+  ~ & ~ & ~ \\
+  
+  \left[  \begin{array}{c}  a \\ b \end{array}\right] & = & \frac{1}{n\sum x_{i}^{2} - (\sum x_{i})^{2}} \left[  \begin{array}{cc}
+  \sum_{i = 1}^{n}x_{i}^{2} & -\sum_{i = 1}^{n}x_{i} \\
+  -\sum_{i = 1}^{n}x_{i} & n \\
+  \end{array}\right]  \left[  \begin{array}{c}  \sum_{i = 1}^{n} y_{i} \\ \sum_{i = 1}^{n} x_{i}y_{i} \end{array}\right] \\
+  
+  ~ & ~ & ~ \\
+  
+  \left[  \begin{array}{c}  a \\ b \end{array}\right] & = & \frac{1}{n\sum x_{i}^{2} - (\sum x_{i})^{2}} 
+  \left[  \begin{array}{c}  (\sum y_{i})(\sum x_{i}^{2}) - (\sum x_{i})(\sum x_{i}y_{i}) \\  n\sum x_{i}y_{i} - (\sum x_{i})(\sum y_{i}) \end{array}\right] \\
+\end{array}$$
+
+:::
+
+## LM
+
+$$\hat{y} = a + bx$$
+
+```{r}
+lm(LLV ~ year, data = liquor_df)
+```
+
+For every increase in year, the number of judicial referrals decreases by 8.55.
+
+### Prediction
+
+Predict the number of judicial referrals for liquor law violations in the year 2023.
+
+```{r}
+a <- summary(lin_fit)$coefficients[1]
+b <- summary(lin_fit)$coefficients[2]
+
+a + b*(2023)
+predict(lin_fit, newdata = data.frame(year = 2023))
+```
+
+# Coefficient of Determination
+
+We want a measurement that can assure us of how useful a model will be for predictions.
+
+## Definition
+
+The **coefficient of determination** is defined as
+
+$$R^{2} = \frac{\text{explained variance}}{\text{total variance}}$$
+
+For analysis of variance:
+
+* explained variation: $\sum(\hat{y} - \bar{y})^{2}$
+* unexplained variation: $\sum(y - \hat{y})^{2}$
+* total variation = explained variation + unexplained variation
+$$\sum(y - \bar{y})^{2} = \sum(\hat{y} - \bar{y})^{2} + \sum(y - \hat{y})^{2}$$
+
+## Inference
+
+Why is that denoted "$R^2$"? For linear regression, the coefficient of determination is literally the square of the correlation coefficient ($r$)
+
+* correlation $-1 \leq r \leq 1$ implies coefficient of determination
+$$0 \leq R^{2} \leq 1$$
+* want more "explained variation", thus higher $R^{2}$ means a better model
+
+## Guidelines
+
+:::: {.columns}
+
+::: {.column width="60%"}
+In this course, we will simply follow the Pearson suggestions for interpreting coefficient of determination values:
+
+* $0 \leq R^{2} < 0.4$: poor model
+* $0.4 \leq R^{2} < 0.7$: good model
+* $0.7 \leq R^{2} \leq 1.0$: great model
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Karl Pearson](Karl_Pearson.png)
+:::
+
+::::
+
+## Model Statistics
+
+In `R`, we can use `summary` to access **model statistics**.
+
+```{r}
+summary(lin_fit)
+```
+
+Here in SML 201, we will use the "Adjusted R-squared" value that accounts for the number of predictor variables.  Treat negative adjusted R-squared values simply as zero variation explained, and then look for the highest adjusted R-squared values.
+
+```{r}
+summary(lin_fit)$adj.r.squared
+```
+
+
+# Historical Example
+
+## Francis Galton
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![Sir Francis Galton](Francis_Galton.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+* 1822 - 1911
+* cousin of Charles Darwin
+* correlation discovery
+
+    * 1846: August Bravais
+    * 1888: Francis Galton
+:::
+
+::::
+
+## Do tall parents have tall children?
+
+The `Galton` data set in the `HistData` package has two variables
+
+* parents' height (see documentation for weighted formula)
+* child's height
+
+for about 200 families
+
+```{r}
+heredity_df <- HistData::Galton
+```
+
+## Scatterplot
+
+```{r}
+heredity_df |>
+  ggplot(aes(x = parent, y = child)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE) +
+  labs(title = "Do tall parents have tall children?",
+       subtitle = "Galton Survey of Heights",
+       caption = "SML 201",
+       x = "parent's heights (weighted average)",
+       y = "child's height") +
+  theme_minimal()
+```
+
+## Linear Model
+
+```{r}
+lin_fit <- lm(child ~ parent, data = heredity_df)
+
+# slope
+summary(lin_fit)$coefficients[2]
+```
+
+For every one inch increase in parents' height, the child's height increases by about 0.65 inches.
+
+## Prediction
+
+If the parents are 69 inches in height, what do we predict for the height of the child?
+
+```{r}
+predict(lin_fit, newdata = data.frame(parent = 69))
+```
+
+If the parents are 58 inches in height, what do we predict for the height of the child?
+
+```{r}
+predict(lin_fit, newdata = data.frame(parent = 58))
+```
+
+
+## Regression to the Mean
+
+In these early studies of heredity, Galton coined the phrase
+
+$$\text{regression to the mean}$$
+
+and similar calculations have been called *regression* ever since.
+
+
+# Chemistry Example
+
+## Michaelis and Menton
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![Leonor Michaelis and Maud Menton](Michaelis_Menton.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+Leonor Michaelis
+
+* Berlin University (1897)
+
+Maud Menton
+
+* University of Toronto (1911)
+
+*Die Kinetik der Invertinwirkung* (1913)
+
+$$v = \frac{V_{\text{max}}[S]}{K_{m} + [S]}$$
+
+* $v$: reaction rate (micromolars per minute)
+* $[S]$: substrate concentration (micromolars)
+
+:::
+
+::::
+
+## Enzyme Kinetics
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![Essential Cell Biology](Alberts_cell_bio.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="70%"}
+The reaction rates of the reaction S $\rightarrow$ P catalyzed by enzyme E were determined under conditions such that only very little product was formed.  Compute the maximum reaction velocity asymptote $V_{\text{max}}$ and the Michaelis-Menton constant $K_{m}$
+
+```{r}
+#| echo: false
+MM_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Die Kinetik der Invertinwirkung") |>
+  tab_header(
+    title = "Michaelis Menton Experiment",
+    subtitle = "reaction rate vs substrate concentration"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#ffc100")
+    ),
+    locations = cells_body(columns = S)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#d0cef3")
+    ),
+    locations = cells_body(columns = v)
+  )
+```
+
+:::
+
+::::
+
+## Scatterplot
+
+* reaction rate (lower case v)
+* substrate concentration (capital S)
+
+```{r}
+MM_df |>
+  ggplot(aes(x = S, y = v)) +
+  geom_smooth(formula = "y ~ x", method = "loess", se = TRUE) +
+  geom_point(color = "black", size = 4) +
+  labs(title = "Michaelis Menton Enzyme Kinetics Experiment",
+       subtitle = "reaction rate vs substrate concentration",
+       caption = "Essential Cell Biology",
+       x = "substrate concentration (micromolars)",
+       y = "reaction rate (micromolars per minute)") +
+  theme_minimal()
+```
+
+## Transformation
+
+[Hans Lineweaver](https://carnotcycle.wordpress.com/2014/12/02/the-michaelis-menten-equation/) (George Washington Univ., 1934)
+
+$$v = \frac{V_{\text{max}}[S]}{K_{m} + [S]} \quad\rightarrow\quad \frac{1}{v} = \frac{K_{m}}{V_{\text{max}}} \cdot \frac{1}{[S]} + \frac{1}{V_{\text{max}}}$$
+
+The reciprocal of the reaction rate is *linear* with respect to the reciprocal of the substrate concentration.
+
+## Double-Reciprocal Plot
+
+```{r}
+MM_df <- MM_df |>
+  mutate(rS = 1/S,
+         rv = 1/v)
+```
+
+```{r}
+MM_df |>
+  ggplot(aes(x = rS, y = rv)) +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE) +
+  geom_point(color = "black", size = 4) +
+  labs(title = "Michaelis Menton Enzyme Kinetics Experiment",
+       subtitle = "Double Reciprocal Plot",
+       caption = "Essential Cell Biology",
+       x = "1/[S] (1/micromoles)",
+       y = "1/v (minutes per micromolar)") +
+  theme_minimal()
+```
+
+## Linear Model
+
+```{r}
+lin_fit <- lm(rv ~ rS, data = MM_df)
+```
+
+## Coefficient of Determination
+
+```{r}
+#| eval: true
+summary(lin_fit)$adj.r.squared
+```
+
+## Extracting the Constants
+
+```{r}
+#| eval: true
+slope <- lin_fit$coefficients[2]
+intercept <- lin_fit$coefficients[1]
+
+Vmax <- 1/intercept
+Km <- slope * Vmax
+
+print(paste("The Vmax asymptote is ", Vmax))
+print(paste("The Michaelis-Menton constant is ", Km))
+```
+
+## MM Experiment Revisited
+
+```{r}
+MM_df |>
+  ggplot(aes(x = S, y = v)) +
+  geom_smooth(formula = "y ~ x", method = "loess", se = TRUE) +
+  geom_point(color = "black", size = 4) +
+  geom_abline(slope = Km, intercept = 0, color = "red") +
+  geom_abline(slope = 0, intercept = Vmax, color = "purple") +
+  labs(title = "Michaelis Menton Enzyme Kinetics Experiment",
+       subtitle = "maximum reaction velocity asymptote (purple)\nMichaelis-Menton constant (red slope)",
+       caption = "Essential Cell Biology",
+       x = "substrate concentration (micromolars)",
+       y = "reaction rate (micromolars per minute)") +
+  theme_minimal()
+```
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+* Continue to complete BLTs and precept assignments
+* Project 1:
+
+    * Assigned! Sept 23
+    * Due: Oct 2
+    
+* Exam 1: Oct 10
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![coefficient of determination](xkcd_1725.png)
+
+* image source: [XKCD](https://xkcd.com/1725/)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
