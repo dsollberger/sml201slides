@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "8: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -1181,5 +1181,110 @@
     "title": "8: Linear Regression",
     "section": "MM Experiment Revisited",
     "text": "MM Experiment Revisited\n\nMM_df |&gt;\n  ggplot(aes(x = S, y = v)) +\n  geom_smooth(formula = \"y ~ x\", method = \"loess\", se = TRUE) +\n  geom_point(color = \"black\", size = 4) +\n  geom_abline(slope = Km, intercept = 0, color = \"red\") +\n  geom_abline(slope = 0, intercept = Vmax, color = \"purple\") +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"maximum reaction velocity asymptote (purple)\\nMichaelis-Menton constant (red slope)\",\n       caption = \"Essential Cell Biology\",\n       x = \"substrate concentration (micromolars)\",\n       y = \"reaction rate (micromolars per minute)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html",
+    "title": "8: Multiple Linear Regression",
+    "section": "",
+    "text": "library(\"corrplot\")  #visualize correlations simultaneously\nlibrary(\"gt\")        #great tables\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\noakland_green &lt;- \"#003831\"\noakland_yellow &lt;- \"#EFB21E\"\n\n# user-defined function\ncor2text &lt;- function(x,y, num_digits = 4){\n  # This function will compute a correlation, round the result, and describe the results\n  # INPUTS:\n  ## x: numerical vector\n  ## y: numerical vector\n  ## num_digits: number of digits for rounding (default: 4)\n  # OUTPUT: string\n  \n  r = cor(x,y, use = \"pairwise.complete.obs\")\n  \n  cor_des &lt;- case_when(\n    r &gt;= 0.7 ~ \"strongly and positively correlated\",\n    r &gt;= 0.4 & r &lt; 0.7 ~ \"slightly and positively correlated\",\n    r &lt;= -0.4 & r &gt; -0.7 ~ \"slightly and negatively correlated\",\n    r &lt;= -0.7 ~ \"strongly and negatively correlated\",\n    .default = \"virtually uncorrelated\"\n  )\n  \n  #return\n  paste0(\"r = \", round(r, num_digits),\n         \", \", cor_des)\n}\nbb_df &lt;- readr::read_csv(\"baseball_data_90s.csv\")\n\noffense_cats &lt;- c(\"R\", \"H\", \"X2B\", \"X3B\", \"HR\", \"BB\", \"SO\", \"SB\")\ndefense_cats &lt;- c(\"RA\", \"ER\", \"HA\", \"HRA\", \"BBA\", \"SOA\", \"E\", \"FP\")"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#start",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#start",
+    "title": "8: Multiple Linear Regression",
+    "section": "Start",
+    "text": "Start\n\n\n\nGoal: Expand to larger regression models\nObjective: Include multiple linear terms and an interaction term\n\n\n\n\n\n\n\nMoneyball (2011)"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#story",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#story",
+    "title": "8: Multiple Linear Regression",
+    "section": "Story",
+    "text": "Story\n\nBookFinance\n\n\n\n\n\n\n\nMoneyball (2003)\n\n\n\n\n\n\nOakland Athletics fielded a competitive team despite having a payroll size around 1/3 of some other franchises\nTraditional scouting vs modern statistics\nIdea: Can we identify qualities (variables) in baseball players that lead to more wins?\n\n\n\n\n\n\n\n\nMLB Team Salaries, 2002\n\n\n\nimage source: Wikimedia Commons"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#data",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#data",
+    "title": "8: Multiple Linear Regression",
+    "section": "Data",
+    "text": "Data\n\nLahmanOffenseDefense\n\n\nToday’s data set comes from the Lahman package, which contains a lot of historical data about Major League Baseball.\n\nLahman package CRAN page\n\n\n\n\nR: runs\nH: hits\nX2B: doubles\nX3B: triples\nHR: home runs\nBB: walks\nSO: strikeouts (by hitters)\nSB: stolen bases\n\n\n\n\nRA: runs allowed\nER: earned runs\nHA: hits allowed\nHRA: home runs allowed\nBBA: walks allowed\nSOA: strikeouts (by pitchers)\nE: errors\nFP: fielding percentage"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#correlation",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#correlation",
+    "title": "8: Multiple Linear Regression",
+    "section": "Correlation",
+    "text": "Correlation\n\nOffenseCodeDefenseCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbb_df |&gt;\n  ggplot(aes(x = R, y = W)) +\n  geom_point(color = oakland_green) + \n  labs(title = \"Wins vs Runs Scored\",\n       subtitle = paste0(\"r = \", round(cor_value, 4), \n                         \", slightly and positively correlated\"),\n       caption = \"seasons 1990 to 1999\",\n       x = \"runs scored\",\n       y = \"wins\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncor_value &lt;- cor(bb_df$RA, bb_df$W)\n\nbb_df |&gt;\n  ggplot(aes(x = RA, y = W)) +\n  geom_point(color = oakland_green) + \n  labs(title = \"Wins vs Runs Allowed\",\n       subtitle = paste0(\"r = \", round(cor_value, 4), \n                         \", virtually uncorrelated\"),\n       caption = \"seasons 1990 to 1999\",\n       x = \"runs allowed\",\n       y = \"wins\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#correlation-matrices",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#correlation-matrices",
+    "title": "8: Multiple Linear Regression",
+    "section": "Correlation Matrices",
+    "text": "Correlation Matrices\n\nOffenseCodeDefenseCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbb_df |&gt;\n  select(any_of(offense_cats)) |&gt;\n  cor() |&gt;\n  corrplot.mixed(order = \"FPC\",\n                 upper = \"ellipse\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nbb_df |&gt;\n  select(any_of(defense_cats)) |&gt;\n  cor() |&gt;\n  corrplot.mixed(order = \"FPC\",\n                 upper = \"ellipse\")\n\n\n\n\n\n\n\n\n\n\nNew Directions\n\n\n\n\n\nSo far, a sabermetrician might observe and ask\n\nWins are correlated with runs scored\nWhat correlates well with runs scored?"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#model-equation",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#model-equation",
+    "title": "8: Multiple Linear Regression",
+    "section": "Model Equation",
+    "text": "Model Equation\n\nMathCodeInterceptSlopeDetermination\n\n\n\\[\\text{Runs} = \\beta_{0} + \\beta_{1}(\\text{Hits})\\]\n\n\\(\\beta_{0}\\): intercept\n\\(\\beta_{1}\\): change in Runs with respect to Hits\n\n\n\n\nlm(R ~ H, data = bb_df)\n\n\nCall:\nlm(formula = R ~ H, data = bb_df)\n\nCoefficients:\n(Intercept)            H  \n  -108.7903       0.5934  \n\n\n\n\\(\\beta_{0} \\approx -108.7903\\)\n\\(\\beta_{1} \\approx 0.5934\\)\n\n\\[\\text{Runs} = -108.7903 + 0.5934(\\text{Hits})\\]\n\n\nIn a hypothetical scenario where a team has zero hits,\n\\[\\text{Runs} = -108.7903 + 0.5934(0)\\] the model estimates that the baseball team will win about negative 109 games in a season.\n\nsee note about “Removing the intercept” below\n\n\n\nWe continue to intercept the rate of change (or slope)\n\\[\\beta_{1} \\approx 0.5934\\]\nwith language like\n\nFor every additional hit, the number of runs increases by about 0.5934.\n\n\n\nWe can get a sense of how useful this model can be with the coefficient of determination.\n\nmod1 &lt;- lm(R ~ H, data = bb_df) #baseline model\nsummary(mod1)$adj.r.squared\n\n[1] 0.6893222\n\n\n\nAccording to the coefficient of determination, this model (with “Hits” as an explanatory variable) explains about 69 percent of the variance in runs scored.\n\n\n\n\n\n\n\n\n\n\nRemoving the Intercept\n\n\n\n\n\nSometimes an analyst might want to remove the intercept term (here: zero hits should imply zero runs?)\n\\[\\text{Runs} = \\beta_{1}(\\text{Hits})\\]\n\nmod0 &lt;- lm(R ~ H - 1, data = bb_df) #removed intercept\nmod0\n\n\nCall:\nlm(formula = R ~ H - 1, data = bb_df)\n\nCoefficients:\n    H  \n0.517  \n\n\n\nsummary(mod0)$adj.r.squared #removed intercept\n\n[1] 0.993489\n\nsummary(mod1)$adj.r.squared #baseline model\n\n[1] 0.6893222\n\n\nWhile removing the intercept seems great in this simple example, in practice removing the intercept does not tend to generalize to larger models or inclusion of additional data."
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#different-models-different-coefficients",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#different-models-different-coefficients",
+    "title": "8: Multiple Linear Regression",
+    "section": "Different Models, Different Coefficients",
+    "text": "Different Models, Different Coefficients\n\n\n\n\n\n\nCoefficients are different in different models\n\n\n\n\n\n\n\n\n\n\n\n\n\nEarly Baseball Stats Models\n\n\nComparing the coefficients\n\n\ncoefs\nmod1\nmod2\n\n\n\n\nbeta_0\n-108.7903\n-124.4358\n\n\nbeta_1\n0.5934\n0.4382\n\n\nbeta_2\n-\n0.4395\n\n\n\nSML 201\n\n\n\n\n\n\n\n\n\nmod_stats_df &lt;- data.frame(\n  coefs = c(\"beta_0\", \"beta_1\", \"beta_2\"),\n  mod1 = c(-108.7903, 0.5934, \"-\"),\n  mod2 = c(-124.4358, 0.4382, 0.4395)\n)\n\nmod_stats_df |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"SML 201\") |&gt;\n  tab_header(\n    title = \"Early Baseball Stats Models\",\n    subtitle = \"Comparing the coefficients\"\n  ) |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  ) |&gt;\n  tab_style(\n    style = list(\n      cell_fill(color = oakland_green),\n      cell_text(color = oakland_yellow)\n    ),\n    locations = cells_body(columns = mod1)\n  ) |&gt;\n  tab_style(\n    style = list(\n      cell_fill(color = oakland_yellow),\n      cell_text(color = oakland_green)\n    ),\n    locations = cells_body(columns = mod2)\n  )\n\n\n\n\nIn practice, we tend to explore several models through trial-and-error. After choosing a model, we then scrutinize the interpretation of the \\(\\beta\\) coefficients."
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#augmentation",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#augmentation",
+    "title": "8: Multiple Linear Regression",
+    "section": "Augmentation",
+    "text": "Augmentation\nWe can attach new columns and calculations using mutate.\n\nbb_df &lt;- bb_df |&gt;\n  mutate(BA = H/AB,               #batting average\n         OBP = (H + BB + HBP)/AB, #on-base percentage\n         SLG = (H + X2B + 2*X3B + 3*HR)/AB, #slugging percentage\n         OPS = OBP + SLG)         #on-base plus slugging\n\n\nStats like runs, hits, walks, and strikeouts are called count statistics. Baseball players tend to accumulate count statistics with more playing time.\nStats like BA, OBP, and SLGare called rate statistics. These baseball statistics are adjusted over playing time.\nThese derived statistics may be better to evaluate individual baseball players (rather than whole teams).\nAside: yes, it may be silly to add together OBP and SLG (i.e. two rate statistics), but baseball writers really like this calculation."
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#using-the-derived-statistics",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#using-the-derived-statistics",
+    "title": "8: Multiple Linear Regression",
+    "section": "Using the Derived Statistics",
+    "text": "Using the Derived Statistics\nWe build a model for different allocations of explanatory variables.\n\nfit_BA  &lt;- lm(R ~ BA,  data = bb_df)\nfit_OBP &lt;- lm(R ~ OBP, data = bb_df)\nfit_SLG &lt;- lm(R ~ SLG, data = bb_df)\nfit_OPS &lt;- lm(R ~ OBP + SLG, data = bb_df)"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#measuring-the-models",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#measuring-the-models",
+    "title": "8: Multiple Linear Regression",
+    "section": "Measuring the Models",
+    "text": "Measuring the Models\nWe use the coefficients of determination to help us rank the models.\n\nsummary(fit_BA)$adj.r.squared\n\n[1] 0.3445441\n\nsummary(fit_OBP)$adj.r.squared\n\n[1] 0.4279833\n\nsummary(fit_SLG)$adj.r.squared\n\n[1] 0.433078\n\nsummary(fit_OPS)$adj.r.squared\n\n[1] 0.4902423"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#picking-the-best-model",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#picking-the-best-model",
+    "title": "8: Multiple Linear Regression",
+    "section": "Picking the Best Model",
+    "text": "Picking the Best Model\n\ngtCode\n\n\n\n\n\n\n\n\n\n\nDerived Baseball Stats Models\n\n\nComparing the coefficients of determination\n\n\nmodels\nr2_vals\n\n\n\n\nfit_BA\n0.3445\n\n\nfit_OBP\n0.4280\n\n\nfit_SLG\n0.4331\n\n\nfit_OPS\n0.4902\n\n\n\nSML 201\n\n\n\n\n\n\n\n\n\n\n\nmod_stats_df2 &lt;- data.frame(\n  models = paste0(\"fit_\", c(\"BA\", \"OBP\", \"SLG\", \"OPS\")),\n  r2_vals = round(c(summary(fit_BA)$adj.r.squared,\n                    summary(fit_OBP)$adj.r.squared,\n                    summary(fit_SLG)$adj.r.squared,\n                    summary(fit_OPS)$adj.r.squared), 4)\n)\n\nmod_stats_df2 |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"SML 201\") |&gt;\n  tab_header(\n    title = \"Derived Baseball Stats Models\",\n    subtitle = \"Comparing the coefficients of determination\"\n  ) |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  ) |&gt;\n  tab_style(\n    style = list(\n      cell_fill(color = oakland_yellow),\n      cell_text(color = oakland_green,\n                weight = \"bold\")\n    ),\n    locations = cells_body(columns = c(models, r2_vals),\n                           rows = r2_vals == max(r2_vals))\n    # finds maximum value programmatically\n  )"
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#before-interaction",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#before-interaction",
+    "title": "8: Multiple Linear Regression",
+    "section": "Before Interaction",
+    "text": "Before Interaction\nFirst, let us try another multiple linear regression model\n\nVariablesCodeInterceptSlopesDetermination\n\n\n\\[\\text{Wins} = \\beta_{0} + \\beta_{1}(\\text{Runs Scored}) + \\beta_{2}(\\text{Runs Allowed})\\]\n\nresponse variable: Wins\nexplanatory variables:\n\nRuns Scored (offense)\nRuns Allowed (defense)\n\n\n\n\n\nlm(W ~ R + RA, data = bb_df)\n\n\nCall:\nlm(formula = W ~ R + RA, data = bb_df)\n\nCoefficients:\n(Intercept)            R           RA  \n   42.50059      0.12530     -0.07692  \n\n\n\n\nIn a hypothetical scenario where a team has zero runs and zero runs allowed,\n\\[\\text{Wins} = 42.5006 + 0.1253(0) - 0.0769(0)\\]\nthe model estimates that the baseball team will win about 43 games in a season.\n\n\nIn regression, we say that we control for other variables by treating other variables as constants.\n\\[\\text{Wins} = 42.5006 + 0.1253(\\text{Runs Scored}) - 0.0769(\\text{Runs Allowed})\\]\n\nHolding runs allowed constant, for every additional run scored, the number of wins increases by about 0.1253.\nHolding runs scored constant, for every additional run allowed, the number of wins decreases by about 0.0769.\n\n\n\nWith our usage of the coefficient of determination\n\nwithout_interaction &lt;- lm(W ~ R + RA, data = bb_df)\n\nsummary(without_interaction)$adj.r.squared\n\n[1] 0.700125\n\n\n\nAccording to the coefficient of determination, this model (with 2 explanatory variables) explains about 70 percent of the variance in wins."
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#with-an-interaction-term",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#with-an-interaction-term",
+    "title": "8: Multiple Linear Regression",
+    "section": "With an Interaction Term",
+    "text": "With an Interaction Term\nNow let us explore an interaction term\n\nVariablesCodeInterceptSlopesDetermination\n\n\n\\[\\begin{array}{rcl}\n\\text{Wins} & = & \\beta_{0} \\\\\n& & + \\beta_{1}(\\text{Runs Scored}) \\\\\n& & + \\beta_{2}(\\text{Runs Allowed}) \\\\\n& & + \\beta_{3}(\\text{Runs Scored})(\\text{Runs Allowed}) \\\\\n\\end{array}\\]\n\nresponse variable: Wins\nexplanatory variables:\n\nRuns Scored\nRuns Allowed\ninteraction bteween Runs Scored and Runs Allowed\n\n\n\n\n\nlm(W ~ R + RA + R:RA, data = bb_df)\n\n\nCall:\nlm(formula = W ~ R + RA + R:RA, data = bb_df)\n\nCoefficients:\n(Intercept)            R           RA         R:RA  \n -8.896e+01    3.082e-01    1.090e-01   -2.555e-04  \n\n\n\n\nIn a hypothetical scenario where a team has zero runs and zero runs allowed,\n\\[\\text{Wins} = -88.96 + 0.3082(0) + 0.1090(0) - 0.0002(0)(0)\\]\nthe model estimates that the baseball team will win about -89 games in a season.\n\n\nTo get a sense of how many runs a MLB team allows in a season, we can use the summary command.\n\nsummary(bb_df$RA)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  448.0   655.2   721.0   726.5   794.0  1103.0 \n\n\n\nStrong Defense\nSuppose that a MLB team has good defensive skills and allows about 650 runs in a season (i.e. around the 20th percentile).\n\\[\\begin{array}{rcl}\n\\text{Wins} & = & -88.96 + 0.3082(\\text{Runs Scored}) + 0.1090(\\text{Runs Allowed}) - 0.0002(\\text{Runs Scored})(\\text{Runs Allowed}) \\\\\n~ & = & -88.96 + 0.3082(\\text{Runs Scored}) + 0.1090(650) - 0.0002(\\text{Runs Scored})(650) \\\\\n  ~ & = & -18.11 + 0.1782(\\text{Runs Scored})\\\\\n\\end{array}\\]\n\nHolding runs allowed constant at 650, for every additional run scored, the number of wins increases by about 0.1782.\n\n\n\nWeak Defense\nSuppose that a MLB team has weak defensive skills and allows about 800 runs in a season (i.e. around the 80th percentile).\n\\[\\begin{array}{rcl}\n\\text{Wins} & = & -88.96 + 0.3082(\\text{Runs Scored}) + 0.1090(\\text{Runs Allowed}) - 0.0002(\\text{Runs Scored})(\\text{Runs Allowed}) \\\\\n~ & = & -88.96 + 0.3082(\\text{Runs Scored}) + 0.1090(800) - 0.0002(\\text{Runs Scored})(800) \\\\\n  ~ & = & -1.76 + 0.1482(\\text{Runs Scored})\\\\\n\\end{array}\\]\n\nHolding runs allowed constant at 800, for every additional run scored, the number of wins increases by about 0.1482.\n\n\n\n\nWith our usage of the coefficient of determination\n\nwith_interaction &lt;- lm(W ~ R + RA + R:RA, data = bb_df)\n\nsummary(without_interaction)$adj.r.squared\n\n[1] 0.700125\n\nsummary(with_interaction)$adj.r.squared\n\n[1] 0.764043\n\n\n\nAccording to the coefficient of determination, this model (with the interaction term) explains about 76 percent of the variance in wins."
+  },
+  {
+    "objectID": "posts/09_multiple_regression/09_multiple_linear.html#milestone-home-run-totals",
+    "href": "posts/09_multiple_regression/09_multiple_linear.html#milestone-home-run-totals",
+    "title": "8: Multiple Linear Regression",
+    "section": "Milestone Home Run Totals",
+    "text": "Milestone Home Run Totals\n\nRecordsCodeZ-ScoresSwitchWhat If\n\n\n\n\n\n\n\nRoger Maris\n\n\n\n\n\n\nRoger Maris hit 61 home runs in 1961\nAaron Judge hit 62 home runs in 2022\n\nAmerican League records\n\n\n\n\n\n\n\n\nAaron Judge\n\n\n\n\n\n\n\nLahman::Batting |&gt;\n  filter(yearID %in% c(\"1961\", \"2022\")) |&gt;\n  filter(AB &gt;= 100) |&gt;\n  group_by(yearID) |&gt;\n  summarize(xbar = mean(HR, na.rm = TRUE),\n            s = sd(HR, na.rm = TRUE))\n\n# A tibble: 2 × 3\n  yearID  xbar     s\n   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;\n1   1961  10.8 10.8 \n2   2022  10.6  8.91\n\n\n\n\n\\[z_{M} = \\frac{61 - \\bar{x}_{2022}}{s_{2022}} = \\frac{61 - 10.7615}{10.7928} \\approx 4.6548\\] Roger Maris’ home run record was about 4.6548 standard deviations above the mean in 1961.\n\\[z_{J} = \\frac{62 - \\bar{x}_{2022}}{s_{2022}} = \\frac{62 - 10.5729}{8.9065} \\approx 5.7741\\]\nAaron Judge’s home run record was about 5.7741 standard deviations above the mean in 2022.\n\n\n\\[4.6548 = \\frac{x_{M} - \\bar{x}_{2022}}{s_{2022}} = \\frac{x_{M} - 10.5729}{8.9065} \\Rightarrow x_{M} \\approx 52.0388\\]\n\\[5.7741 = \\frac{x_{J} - \\bar{x}_{1961}}{s_{1961}} = \\frac{x_{J} - 10.7615}{10.7928} \\Rightarrow x_{J} \\approx 73.0802\\]\n\n\n\n\n\n\n\nRoger Maris\n\n\n\n\n\n\nRoger Maris would have hit 52 home runs is 2022\nAaron Judge would have hit 73 home runs in 1961\n\n\n\n\n\n\n\nAaron Judge"
   }
 ]

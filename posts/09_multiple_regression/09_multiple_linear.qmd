@@ -1,0 +1,1200 @@
+---
+title: "8: Multiple Linear Regression"
+author: "Derek Sollberger"
+date: "2024-10-01"
+format:
+  html:
+    toc: true
+    theme: cerulean
+    # theme: customstyle.scss
+---
+
+```{r}
+#| message: false
+#| warning: false
+library("corrplot")  #visualize correlations simultaneously
+library("gt")        #great tables
+library("tidyverse") #tools for data wrangling and visualization
+
+oakland_green <- "#003831"
+oakland_yellow <- "#EFB21E"
+
+# user-defined function
+cor2text <- function(x,y, num_digits = 4){
+  # This function will compute a correlation, round the result, and describe the results
+  # INPUTS:
+  ## x: numerical vector
+  ## y: numerical vector
+  ## num_digits: number of digits for rounding (default: 4)
+  # OUTPUT: string
+  
+  r = cor(x,y, use = "pairwise.complete.obs")
+  
+  cor_des <- case_when(
+    r >= 0.7 ~ "strongly and positively correlated",
+    r >= 0.4 & r < 0.7 ~ "slightly and positively correlated",
+    r <= -0.4 & r > -0.7 ~ "slightly and negatively correlated",
+    r <= -0.7 ~ "strongly and negatively correlated",
+    .default = "virtually uncorrelated"
+  )
+  
+  #return
+  paste0("r = ", round(r, num_digits),
+         ", ", cor_des)
+}
+```
+
+```{r}
+#| message: false
+#| warning: false
+bb_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/data/baseball_data_90s.csv")
+
+offense_cats <- c("R", "H", "X2B", "X3B", "HR", "BB", "SO", "SB")
+defense_cats <- c("RA", "ER", "HA", "HRA", "BBA", "SOA", "E", "FP")
+```
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Expand to larger regression models
+
+* **Objective**: Include multiple linear terms and an interaction term
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![Moneyball (2011)](moneyball_movie.png)
+
+:::
+
+::::
+
+## Story
+
+:::: {.panel-tabset}
+
+### Book
+
+:::: {.columns}
+
+::: {.column width="30%"}
+![Moneyball (2003)](moneyball_book.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="60%"}
+* <span style = "color:#003831">**Oakland Athletics**</span> fielded a competitive team despite having a payroll size around 1/3 of some other franchises
+* Traditional scouting vs modern statistics
+* **Idea**: Can we identify qualities (variables) in baseball players that lead to more wins?
+:::
+
+::::
+
+### Finance
+
+![MLB Team Salaries, 2002](MONEYBALLchart.png)
+
+* image source: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:MONEYBALLchart.png)
+
+::::
+
+
+
+
+
+## Data
+
+:::: {.panel-tabset}
+
+### Lahman
+
+Today’s data set comes from the `Lahman` package, which contains a lot of historical data about Major League Baseball.
+
+* [Lahman package CRAN page](https://cran.r-project.org/web/packages/Lahman/index.html)
+
+### Offense
+
+* `R`: runs
+* `H`: hits
+* `X2B`: doubles
+* `X3B`: triples
+* `HR`: home runs
+* `BB`: walks
+* `SO`: strikeouts (by hitters)
+* `SB`: stolen bases
+
+### Defense
+
+* `RA`: runs allowed
+* `ER`: earned runs
+* `HA`: hits allowed
+* `HRA`: home runs allowed
+* `BBA`: walks allowed
+* `SOA`: strikeouts (by pitchers)
+* `E`: errors
+* `FP`: fielding percentage
+
+::::
+
+
+# Searching for Wins
+
+## Correlation
+
+:::: {.panel-tabset}
+
+### Offense
+
+```{r}
+#| echo: false
+#| eval: true
+cor_value <- cor(bb_df$R, bb_df$W)
+
+bb_df |>
+  ggplot(aes(x = R, y = W)) +
+  geom_point(color = oakland_green) + 
+  labs(title = "Wins vs Runs Scored",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and positively correlated"),
+       caption = "seasons 1990 to 1999",
+       x = "runs scored",
+       y = "wins") +
+  theme_minimal()
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+bb_df |>
+  ggplot(aes(x = R, y = W)) +
+  geom_point(color = oakland_green) + 
+  labs(title = "Wins vs Runs Scored",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and positively correlated"),
+       caption = "seasons 1990 to 1999",
+       x = "runs scored",
+       y = "wins") +
+  theme_minimal()
+```
+
+### Defense
+
+```{r}
+#| echo: false
+#| eval: true
+bb_df |>
+  ggplot(aes(x = RA, y = W)) +
+  geom_point(color = oakland_yellow) + 
+  labs(title = "Wins vs Runs Allowed",
+       subtitle = cor2text(bb_df$RA, bb_df$W),
+       caption = "seasons 1990 to 1999",
+       x = "runs allowed",
+       y = "wins") +
+  theme_minimal()
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+cor_value <- cor(bb_df$RA, bb_df$W)
+
+bb_df |>
+  ggplot(aes(x = RA, y = W)) +
+  geom_point(color = oakland_green) + 
+  labs(title = "Wins vs Runs Allowed",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", virtually uncorrelated"),
+       caption = "seasons 1990 to 1999",
+       x = "runs allowed",
+       y = "wins") +
+  theme_minimal()
+```
+
+::::
+
+
+## Correlation Matrices
+
+:::: {.panel-tabset}
+
+### Offense
+
+```{r}
+#| echo: false
+#| eval: true
+bb_df |>
+  select(any_of(offense_cats)) |>
+  cor() |>
+  corrplot.mixed(order = "FPC",
+                 upper = "ellipse")
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+bb_df |>
+  select(any_of(offense_cats)) |>
+  cor() |>
+  corrplot.mixed(order = "FPC",
+                 upper = "ellipse")
+```
+
+### Defense
+
+```{r}
+#| echo: false
+#| eval: true
+bb_df |>
+  select(any_of(defense_cats)) |>
+  cor() |>
+  corrplot(order = "FPC")
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+bb_df |>
+  select(any_of(defense_cats)) |>
+  cor() |>
+  corrplot.mixed(order = "FPC",
+                 upper = "ellipse")
+```
+
+::::
+
+::: {.callout-note collapse="true"}
+## New Directions
+
+So far, a sabermetrician might observe and ask
+
+* Wins are correlated with runs scored
+* What correlates well with runs scored?
+
+:::
+
+
+# Linear Regression
+
+:::: {.panel-tabset}
+
+### Decreasing
+
+```{r}
+#| echo: false
+#| eval: true
+
+bb_df |>
+  ggplot(aes(x = X3B, y = HR)) +
+  geom_point(color = oakland_yellow) + 
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              color = "red") +
+  labs(title = "Home Runs vs Triples",
+       subtitle = cor2text(bb_df$RA, bb_df$W),
+       caption = "seasons 1990 to 1999",
+       x = "triples",
+       y = "home runs") +
+  theme_minimal()
+```
+
+### 2
+
+```{r}
+#| echo: false
+#| eval: true
+summary(lm(HR ~ X3B, data = bb_df))
+```
+
+### 3
+
+* negative correlation $\Longleftrightarrow$ decreasing trend
+* $R^{2} \approx 0.04$: bad model
+
+### code
+
+```{r}
+#| echo: true
+#| eval: false
+
+summary(lm(HR ~ X3B, data = bb_df))
+
+bb_df |>
+  ggplot(aes(x = X3B, y = HR)) +
+  geom_point(color = oakland_yellow) + 
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              color = "red") +
+  labs(title = "Home Runs vs Triples",
+       subtitle = cor2text(bb_df$RA, bb_df$W),
+       caption = "seasons 1990 to 1999",
+       x = "triples",
+       y = "home runs") +
+  theme_minimal()
+```
+
+### Increasing
+
+```{r}
+#| echo: false
+#| eval: true
+
+bb_df |>
+  ggplot(aes(x = H, y = R)) +
+  geom_point(color = oakland_green) + 
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              color = "blue") +
+  labs(title = "Runs Scored vs Hits",
+       subtitle = cor2text(bb_df$R, bb_df$H),
+       caption = "seasons 1990 to 1999",
+       x = "hits",
+       y = "runs scored") +
+  theme_minimal()
+```
+
+### 5
+
+```{r}
+#| echo: false
+#| eval: true
+summary(lm(R ~ H, data = bb_df))
+```
+
+### 6
+
+* positive correlation $\Longleftrightarrow$ increasing trend
+* $R^{2} \approx 0.6893$: good model
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+summary(lm(R ~ H, data = bb_df))
+
+bb_df |>
+  ggplot(aes(x = H, y = R)) +
+  geom_point(color = oakland_green) + 
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              color = "blue") +
+  labs(title = "Runs Scored vs Hits",
+       subtitle = cor2text(bb_df$R, bb_df$H),
+       caption = "seasons 1990 to 1999",
+       x = "hits",
+       y = "runs scored") +
+  theme_minimal()
+```
+
+::::
+
+## Model Equation
+
+:::: {.panel-tabset}
+
+### Math
+
+$$\text{Runs} = \beta_{0} + \beta_{1}(\text{Hits})$$
+
+* $\beta_{0}$: intercept
+* $\beta_{1}$: change in Runs with respect to Hits
+
+### Code
+
+```{r}
+lm(R ~ H, data = bb_df)
+```
+
+* $\beta_{0} \approx -108.7903$
+* $\beta_{1} \approx 0.5934$
+
+$$\text{Runs} = -108.7903 + 0.5934(\text{Hits})$$
+
+### Intercept
+
+In a hypothetical scenario where a team has zero hits,
+
+$$\text{Runs} = -108.7903 + 0.5934(0)$$
+the model estimates that the baseball team will win about negative 109 games in a season.
+
+* see note about "Removing the intercept" below
+
+### Slope
+
+We continue to intercept the rate of change (or slope) 
+
+$$\beta_{1} \approx 0.5934$$
+
+with language like
+
+> For every additional hit, the number of runs increases by about 0.5934.
+
+### Determination
+
+We can get a sense of how useful this model can be with the coefficient of determination.
+
+```{r}
+mod1 <- lm(R ~ H, data = bb_df) #baseline model
+summary(mod1)$adj.r.squared
+```
+
+> According to the coefficient of determination, this model (with "Hits" as an explanatory variable) explains about 69 percent of the variance in runs scored.
+
+::::
+
+::: {.callout-caution collapse="true"}
+## Removing the Intercept
+
+Sometimes an analyst might want to remove the intercept term (here: zero hits should imply zero runs?)
+
+$$\text{Runs} = \beta_{1}(\text{Hits})$$
+
+```{r}
+mod0 <- lm(R ~ H - 1, data = bb_df) #removed intercept
+mod0
+```
+
+```{r}
+summary(mod0)$adj.r.squared #removed intercept
+summary(mod1)$adj.r.squared #baseline model
+```
+
+While removing the intercept seems great in this simple example, in practice removing the intercept does not tend to generalize to larger models or inclusion of additional data.
+
+:::
+
+
+# Multiple Linear Regression
+
+We can include more explanatory variables in our models
+
+:::: {.panel-tabset}
+
+### Math
+
+$$\text{Runs} = \beta_{0} + \beta_{1}(\text{Hits}) + \beta_{2}(\text{Walks})$$
+
+* $\beta_{0}$: intercept
+* $\beta_{1}$: change in Runs with respect to Hits
+* $\beta_{2}$: change in Runs with respect to Walks
+
+### Code
+
+```{r}
+lm(R ~ H + BB, data = bb_df)
+```
+
+### Intercept
+
+In a hypothetical scenario where a team has zero hits and zero walks,
+
+$$\text{Runs} = -124.4358 + 0.4382(0) + 0.4395(0)$$
+the model estimates that the baseball team will win about negative 124 games in a season.
+
+### Slopes
+
+In regression, we say that we *control* for other variables by treating other variables as constants.
+
+$$\text{Runs} = -124.4358 + 0.4382(\text{Hits}) + 0.4395(\text{Walks})$$
+
+> Holding walks constant, for every additional hit, the number of runs increases by about 0.4382.
+
+> Holding hits constant, for every additional walk, the number of runs increases by about 0.4395.
+
+### Determination
+
+Continuing our usage of the coefficient of determination
+
+```{r}
+mod2 <- lm(R ~ H + BB, data = bb_df) 
+
+summary(mod1)$adj.r.squared #baseline model
+summary(mod2)$adj.r.squared #slightly modified model
+```
+
+> According to the coefficient of determination, this model (with 2 explanatory variables) explains about 77 percent of the variance in runs scored.
+
+::::
+
+## Different Models, Different Coefficients
+
+::: {.callout-warning collapse="true"}
+## Coefficients are different in different models
+
+```{r}
+#| echo: false
+#| eval: true
+mod_stats_df <- data.frame(
+  coefs = c("beta_0", "beta_1", "beta_2"),
+  mod1 = c(-108.7903, 0.5934, "-"),
+  mod2 = c(-124.4358, 0.4382, 0.4395)
+)
+
+mod_stats_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Early Baseball Stats Models",
+    subtitle = "Comparing the coefficients"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_green),
+      cell_text(color = oakland_yellow)
+    ),
+    locations = cells_body(columns = mod1)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_yellow),
+      cell_text(color = oakland_green)
+    ),
+    locations = cells_body(columns = mod2)
+  )
+```
+
+```{r}
+#| echo: true
+#| eval: false
+mod_stats_df <- data.frame(
+  coefs = c("beta_0", "beta_1", "beta_2"),
+  mod1 = c(-108.7903, 0.5934, "-"),
+  mod2 = c(-124.4358, 0.4382, 0.4395)
+)
+
+mod_stats_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Early Baseball Stats Models",
+    subtitle = "Comparing the coefficients"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_green),
+      cell_text(color = oakland_yellow)
+    ),
+    locations = cells_body(columns = mod1)
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_yellow),
+      cell_text(color = oakland_green)
+    ),
+    locations = cells_body(columns = mod2)
+  )
+```
+
+:::
+
+In practice, we tend to explore several models through trial-and-error.  After choosing a model, we then scrutinize the interpretation of the $\beta$ coefficients.
+
+
+# Interlude: Sabermetrics
+
+:::: {.panel-tabset}
+
+### Chadwick
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![Henry Chadwick](Henry_Chadwick_pic.png)
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="50%"}
+* Henry Chadwick
+* writer, historian
+* 1824 to 1908
+* "Father of Baseball"
+* invented the box score (how games are summarized in newspapers)
+* refined definitions of concepts like errors and batting average
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="20%"}
+![refined discussion of early baseball statistics](Henry_Chadwick_book.png)
+:::
+
+::::
+
+### Sabermetrics
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![Bill James](Bill_James_pic.png)
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="50%"}
+We tend to call the statistical analysis of baseball **sabermetrics**.  Bill James coined the term in 1980, and described it as "the search for objective knowledge about baseball" ([source](https://www.britannica.com/sports/sabermetrics/The-rise-of-advanced-statistics))
+
+* SABR: Society for American Baseball Research
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="20%"}
+![refined discussion of modern baseball statistics](Bill_James_book.png)
+:::
+
+::::
+
+### Moneyball
+
+![Moneyball meme](Moneyball_meme.png)
+
+### Derived
+
+Over time, baseball writers wanted to talk about batters (offense) in more ways.  From the previous measured variables, here are some of the *derived variables* that became common in baseball discussions.
+
+$$BA = \frac{H}{AB}$$
+$$OBP = \frac{H + BB + HBP}{AB}$$
+$$SLG = \frac{H + 2B + 2*3B + 3*HR}{AB}$$
+$$OPS = OBP + SLG$$
+
+::::
+
+
+# Model Selection
+
+## Augmentation
+
+We can attach new columns and calculations using `mutate`.
+
+```{r}
+bb_df <- bb_df |>
+  mutate(BA = H/AB,               #batting average
+         OBP = (H + BB + HBP)/AB, #on-base percentage
+         SLG = (H + X2B + 2*X3B + 3*HR)/AB, #slugging percentage
+         OPS = OBP + SLG)         #on-base plus slugging
+```
+
+* Stats like runs, hits, walks, and strikeouts are called **count statistics**.  Baseball players tend to accumulate count statistics with more playing time.
+* Stats like `BA`, `OBP`, and `SLG`are called **rate statistics**.  These baseball statistics are adjusted over playing time.
+* These derived statistics may be better to evaluate *individual* baseball players (rather than whole teams).
+* Aside: yes, it may be silly to add together `OBP` and `SLG` (i.e. two rate statistics), but baseball writers really like this calculation.
+
+## Using the Derived Statistics
+
+We build a model for different allocations of explanatory variables.
+
+```{r}
+fit_BA  <- lm(R ~ BA,  data = bb_df)
+fit_OBP <- lm(R ~ OBP, data = bb_df)
+fit_SLG <- lm(R ~ SLG, data = bb_df)
+fit_OPS <- lm(R ~ OBP + SLG, data = bb_df)
+```
+
+## Measuring the Models
+
+We use the coefficients of determination to help us rank the models.
+
+```{r}
+summary(fit_BA)$adj.r.squared
+summary(fit_OBP)$adj.r.squared
+summary(fit_SLG)$adj.r.squared
+summary(fit_OPS)$adj.r.squared
+```
+
+
+## Picking the Best Model
+
+:::: {.panel-tabset}
+
+### gt
+
+```{r}
+#| echo: false
+#| eval: true
+mod_stats_df2 <- data.frame(
+  models = paste0("fit_", c("BA", "OBP", "SLG", "OPS")),
+  r2_vals = round(c(summary(fit_BA)$adj.r.squared,
+                    summary(fit_OBP)$adj.r.squared,
+                    summary(fit_SLG)$adj.r.squared,
+                    summary(fit_OPS)$adj.r.squared), 4)
+)
+
+mod_stats_df2 |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Derived Baseball Stats Models",
+    subtitle = "Comparing the coefficients of determination"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_yellow),
+      cell_text(color = oakland_green,
+                weight = "bold")
+    ),
+    locations = cells_body(columns = c(models, r2_vals),
+                           rows = r2_vals == max(r2_vals))
+    # finds maximum value programmatically
+  )
+```
+
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+mod_stats_df2 <- data.frame(
+  models = paste0("fit_", c("BA", "OBP", "SLG", "OPS")),
+  r2_vals = round(c(summary(fit_BA)$adj.r.squared,
+                    summary(fit_OBP)$adj.r.squared,
+                    summary(fit_SLG)$adj.r.squared,
+                    summary(fit_OPS)$adj.r.squared), 4)
+)
+
+mod_stats_df2 |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Derived Baseball Stats Models",
+    subtitle = "Comparing the coefficients of determination"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = oakland_yellow),
+      cell_text(color = oakland_green,
+                weight = "bold")
+    ),
+    locations = cells_body(columns = c(models, r2_vals),
+                           rows = r2_vals == max(r2_vals))
+    # finds maximum value programmatically
+  )
+```
+
+::::
+
+
+
+
+# Interaction Terms
+
+## Before Interaction
+
+First, let us try another multiple linear regression model
+
+:::: {.panel-tabset}
+
+### Variables
+
+$$\text{Wins} = \beta_{0} + \beta_{1}(\text{Runs Scored}) + \beta_{2}(\text{Runs Allowed})$$
+
+* response variable: Wins
+* explanatory variables:
+
+    * Runs Scored (offense)
+    * Runs Allowed (defense)
+
+### Code
+
+```{r}
+lm(W ~ R + RA, data = bb_df)
+```
+
+### Intercept
+
+In a hypothetical scenario where a team has zero runs and zero runs allowed,
+
+$$\text{Wins} = 42.5006 + 0.1253(0) - 0.0769(0)$$
+
+the model estimates that the baseball team will win about 43 games in a season.
+
+### Slopes
+
+In regression, we say that we *control* for other variables by treating other variables as constants.
+
+$$\text{Wins} = 42.5006 + 0.1253(\text{Runs Scored}) - 0.0769(\text{Runs Allowed})$$
+
+* Holding runs allowed constant, for every additional run *scored*, the number of wins *increases* by about 0.1253.
+
+* Holding runs scored constant, for every additional run *allowed*, the number of wins *decreases* by about 0.0769.
+
+### Determination
+
+With our usage of the coefficient of determination
+
+```{r}
+without_interaction <- lm(W ~ R + RA, data = bb_df)
+
+summary(without_interaction)$adj.r.squared
+```
+
+> According to the coefficient of determination, this model (with 2 explanatory variables) explains about 70 percent of the variance in wins.
+
+::::
+
+## With an Interaction Term
+
+Now let us explore an interaction term
+
+:::: {.panel-tabset}
+
+### Variables
+
+$$\begin{array}{rcl}
+\text{Wins} & = & \beta_{0} \\
+& & + \beta_{1}(\text{Runs Scored}) \\
+& & + \beta_{2}(\text{Runs Allowed}) \\
+& & + \beta_{3}(\text{Runs Scored})(\text{Runs Allowed}) \\
+\end{array}$$
+
+* response variable: Wins
+* explanatory variables:
+
+    * Runs Scored
+    * Runs Allowed
+    * interaction bteween Runs Scored and Runs Allowed
+    
+### Code
+
+```{r}
+lm(W ~ R + RA + R:RA, data = bb_df)
+```
+
+### Intercept
+
+In a hypothetical scenario where a team has zero runs and zero runs allowed,
+
+$$\text{Wins} = -88.96 + 0.3082(0) + 0.1090(0) - 0.0002(0)(0)$$
+
+the model estimates that the baseball team will win about -89 games in a season.
+
+### Slopes
+
+To get a sense of how many runs a MLB team allows in a season, we can use the `summary` command.
+
+```{r}
+summary(bb_df$RA)
+```
+
+#### Strong Defense
+
+Suppose that a MLB team has good defensive skills and allows about 650 runs in a season (i.e. around the 20th percentile).
+
+$$\begin{array}{rcl} 
+\text{Wins} & = & -88.96 + 0.3082(\text{Runs Scored}) + 0.1090(\text{Runs Allowed}) - 0.0002(\text{Runs Scored})(\text{Runs Allowed}) \\
+ ~ & = & -88.96 + 0.3082(\text{Runs Scored}) + 0.1090(650) - 0.0002(\text{Runs Scored})(650) \\
+  ~ & = & -18.11 + 0.1782(\text{Runs Scored})\\
+\end{array}$$
+
+> Holding runs allowed constant at 650, for every additional run scored, the number of wins increases by about 0.1782.
+
+#### Weak Defense
+
+Suppose that a MLB team has weak defensive skills and allows about 800 runs in a season (i.e. around the 80th percentile).
+
+$$\begin{array}{rcl} 
+\text{Wins} & = & -88.96 + 0.3082(\text{Runs Scored}) + 0.1090(\text{Runs Allowed}) - 0.0002(\text{Runs Scored})(\text{Runs Allowed}) \\
+ ~ & = & -88.96 + 0.3082(\text{Runs Scored}) + 0.1090(800) - 0.0002(\text{Runs Scored})(800) \\
+  ~ & = & -1.76 + 0.1482(\text{Runs Scored})\\
+\end{array}$$
+
+> Holding runs allowed constant at 800, for every additional run scored, the number of wins increases by about 0.1482.
+
+### Determination
+
+With our usage of the coefficient of determination
+
+```{r}
+with_interaction <- lm(W ~ R + RA + R:RA, data = bb_df)
+
+summary(without_interaction)$adj.r.squared
+summary(with_interaction)$adj.r.squared
+```
+
+> According to the coefficient of determination, this model (with the interaction term) explains about 76 percent of the variance in wins.
+
+::::
+
+# Epilogue: Picking Players
+
+:::: {.panel-tabset}
+
+### Bradford
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![Chad Bradford](Chad_Bradford.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+"Billy, this is Chad Bradford. He's a relief pitcher. He is one of the most undervalued players in baseball. His defect is that he throws funny. Nobody in the big leagues cares about him, because he looks funny. This guy could be not just the best pitcher in our bullpen, but one of the most effective relief pitchers in all of baseball. This guy should cost $3 million a year. We can get him for $237,000." --- Peter Brand
+:::
+
+::::
+
+### Hatteberg
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![Scott Hatteberg](Scott_Hatteberg.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* <span style = "color:#003831">**Billy Beane**</span>: You don't know how to play 1st base. Scott...
+* <span style = "color:#003831">**Scott Hatteberg**</span>: That's right.
+* <span style = "color:#003831">**Billy Beane**</span>: It's not that hard, Scott. Tell him Wash.
+* <span style = "color:#003831">**Ron Washington**</span>: It's incredibly hard.
+* <span style = "color:#003831">**Billy Beane**</span>: Hey, anything worth doing is. And we're gonna teach you.
+:::
+
+::::
+
+### Winning
+
+![20-game winning streak](Oakland_Athletics_winning_streak.png)
+::::
+
+# Era Adjustment
+
+## Milestone Home Run Totals
+
+:::: {.panel-tabset}
+
+### Records
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![Roger Maris](Roger_Maris.png)
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="50%"}
+* Roger Maris hit 61 home runs in 1961
+* Aaron Judge hit 62 home runs in 2022
+
+    * American League records
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="20%"}
+![Aaron Judge](Aaron_Judge.png)
+:::
+
+::::
+
+### Code
+
+```{r}
+Lahman::Batting |>
+  filter(yearID %in% c("1961", "2022")) |>
+  filter(AB >= 100) |>
+  group_by(yearID) |>
+  summarize(xbar = mean(HR, na.rm = TRUE),
+            s = sd(HR, na.rm = TRUE))
+```
+
+### Z-Scores
+
+$$z_{M} = \frac{61 - \bar{x}_{2022}}{s_{2022}} = \frac{61 - 10.7615}{10.7928} \approx 4.6548$$
+Roger Maris' home run record was about 4.6548 standard deviations above the mean in 1961.
+
+$$z_{J} = \frac{62 - \bar{x}_{2022}}{s_{2022}} = \frac{62 - 10.5729}{8.9065} \approx 5.7741$$
+
+Aaron Judge's home run record was about 5.7741 standard deviations above the mean in 2022.
+
+### Switch
+
+$$4.6548 = \frac{x_{M} - \bar{x}_{2022}}{s_{2022}} = \frac{x_{M} - 10.5729}{8.9065} \Rightarrow x_{M} \approx 52.0388$$
+
+$$5.7741 = \frac{x_{J} - \bar{x}_{1961}}{s_{1961}} = \frac{x_{J} - 10.7615}{10.7928} \Rightarrow x_{J} \approx 73.0802$$
+
+### What If
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![Roger Maris](Roger_Maris_color.png)
+:::
+
+::: {.column width="5%"}
+	
+:::
+
+::: {.column width="50%"}
+* Roger Maris would have hit 52 home runs is 2022
+* Aaron Judge would have hit 73 home runs in 1961
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="20%"}
+![Aaron Judge](Aaron_Judge_grayscale.png)
+:::
+
+::::
+
+::::
+
+
+# Precept 5
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* NBA basketball data
+* 2013 to 2023
+* practice data science skills from semester so far
+* start building linear regression models
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Warriors@Pacers](nba_2013.png)
+:::
+
+::::
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Continue to complete BLTs and precept assignments
+* Project 1 Due: Oct 2
+* Exam 1: Oct 10
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Oakland Coliseum](Oakland_Coliseum.png)
+
+* Derek is reminiscing about the games back in Oakland.
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+If anyone is interested into a deeper study of the data wrangling in *Moneyball*, you can take the online course [Moneyball and Beyond](https://www.coursera.org/specializations/sports-analytics) offered by the University of Michigan as part of the Coursera specialization in Sports Performance Analytics
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
