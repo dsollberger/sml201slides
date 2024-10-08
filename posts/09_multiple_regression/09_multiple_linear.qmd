@@ -1,5 +1,5 @@
 ---
-title: "8: Multiple Linear Regression"
+title: "9: Multiple Linear Regression"
 author: "Derek Sollberger"
 date: "2024-10-01"
 format:

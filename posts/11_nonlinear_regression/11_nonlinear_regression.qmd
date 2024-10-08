@@ -1,0 +1,471 @@
+---
+title: "11: Nonlinear Regression"
+author: "Derek Sollberger"
+date: "2024-10-08"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+```{r}
+#| message: false
+#| warning: false
+library("gt")
+library("janitor")   #tools for data cleaning
+library("tidyverse") #tools for data wrangling and visualization
+
+# user-defined function
+cor2text <- function(x,y, num_digits = 4){
+  # This function will compute a correlation, round the result, and describe the results
+  # INPUTS:
+  ## x: numerical vector
+  ## y: numerical vector
+  ## num_digits: number of digits for rounding (default: 4)
+  # OUTPUT: string
+  
+  r = cor(x,y, use = "pairwise.complete.obs")
+  
+  cor_des <- case_when(
+    r >= 0.7 ~ "strongly and positively correlated",
+    r >= 0.4 & r < 0.7 ~ "slightly and positively correlated",
+    r <= -0.4 & r > -0.7 ~ "slightly and negatively correlated",
+    r <= -0.7 ~ "strongly and negatively correlated",
+    .default = "virtually uncorrelated"
+  )
+  
+  #return
+  paste0("r = ", round(r, num_digits),
+         ", ", cor_des)
+}
+```
+
+```{r}
+#| message: false
+#| warning: false
+hurricane_df <- readr::read_csv("hurricane.csv") |>
+  janitor::clean_names()
+```
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Explore nonlinear variables and regression
+
+* **Objective**: Employ polynomial and exponential fits
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+![power functions](power_functions.png)
+
+* image source: [Lumen Learning](https://courses.lumenlearning.com/suny-dutchess-precalculus/chapter/power-functions-and-polynomial-functions/)
+
+:::
+
+::::
+
+## Data
+
+::::: {.panel-tabset}
+
+## Description
+
+
+Hurricanes that affected the United States from 1994 to 2018
+
+* Source: [Weather Underground](https://www.wunderground.com/hurricane/archive)
+
+## Response Variable
+
+We will try to predict the number of hurricanes that occur this year
+
+* `damage` (in millions of dollars)
+
+## Other Variables
+
+* `year`
+* `storms`: number of tropical storms
+* `hurricanes`: number of tropical storms that became hurricanes
+* `deaths`
+* `retired_names`: hurricanes that were so noteworthy that meteorologists decided not to reuse the name
+
+:::::
+
+
+# Task 1
+
+* **Task 1:** Rank the years by how many retired hurricane names occurred in those years.
+
+```{r}
+hurricane_df |>
+  mutate(num_notable = ifelse(str_detect(retired_names, ","),
+                              str_count(retired_names, ",") + 1,
+                              0)) |>
+  arrange(desc(num_notable), desc(damage)) |>
+  filter(num_notable >= 3) |>
+  select(year, num_notable, retired_names, deaths, damage)
+```
+
+# Task 2
+
+* **Task 2:** Use statistics concepts to show that there might be a relationship between `year` and `damage`.
+
+```{r}
+hurricane_df |>
+  ggplot(aes(x = year, y = damage)) +
+  geom_point(color = "gray40", size = 4) +
+  geom_smooth(formula = "y ~ x", method = "lm", se = TRUE) +
+  labs(title = "US Hurricanes",
+       subtitle = cor2text(hurricane_df$year,
+                           hurricane_df$damage),
+       caption = "SML 201",
+       x = "year", y = "total damage (millions of dollars)") +
+  scale_x_continuous(breaks = 1994:2018,
+                     labels = as.character(1994:2018)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+# Linear Regression
+
+$$y = a + bx$$
+
+```{r}
+mod1 <- lm(damage ~ year, data = hurricane_df)
+```
+
+We continue to use a coefficient of determination to judge the quality of a regression model.
+
+```{r}
+summary(mod1)$adj.r.squared
+```
+
+> This coefficient of determination says that we can explain about 4 percent of the variance in hurricane damage (i.e. monetary damage) with this model.
+
+
+# Quadratic Regression
+
+$$y = a + bx + cx^{2}$$
+
+```{r}
+mod2 <- lm(damage ~ year + I(year^{2}), data = hurricane_df)
+mod2
+```
+
+```{r}
+predict(mod2, newdata = data.frame(year = 2024))
+```
+
+> With this model, we predict that the 2024 hurricane season will incur about 17 billion dollars of damage.
+
+# Polynomial Regression
+
+In math, we say that the **basis** of power functions is the set
+
+$$\{ 1, x, x^{2}, x^{3}, x^{4}, ...\}$$
+
+and we can expand regression models as
+
+$$y = a + bx + cx^{2} + dx^{3} + ...$$
+
+or
+
+$$y = \beta_{0} + \beta_{1}x + \beta_{2}x^{2} + \beta_{3}x^{3} + ...$$
+
+
+## Degree 2
+
+```{r}
+d2_fit <- lm(damage ~ poly(year, 2, raw = TRUE),
+             data = hurricane_df)
+summary(d2_fit)
+```
+
+```{r}
+d2_fit <- lm(damage ~ poly(year, 2, raw = FALSE),
+             data = hurricane_df)
+summary(d2_fit)
+```
+
+::: {.callout-note collapse="true"}
+## (optional) Orthogonal Bases
+
+The use of `poly` in regression tasks has a choice
+
+* `raw = TRUE` employs the power function basis
+
+$$y = \beta_{0} + \beta_{1}x + \beta_{2}x^{2} + \beta_{3}x^{3} + ...$$
+but internal calculations are highly redundant and prone to be unstable.
+
+* `raw = FALSE` (the default setting) employs **orthogonal polynomials** to avoid the redundancy and aim for numerical stability.  The *Chebyshev Polynomials*
+
+$$\{1, x, 2x^{2} - 1, 4x^{3} - 3x, ... \}$$
+are an example of a basis of orthogonal polynomials, but `poly` employs an algorithm whose weights are based on the explanatory variable.
+
+:::
+
+## Degree 3
+
+```{r}
+d3_fit <- lm(damage ~ poly(year, 3, raw = FALSE),
+             data = hurricane_df)
+summary(d3_fit)
+```
+
+
+## Degree 4
+
+```{r}
+d4_fit <- lm(damage ~ poly(year, 4, raw = FALSE),
+             data = hurricane_df)
+summary(d4_fit)
+```
+
+## Linear Revisited
+
+```{r}
+d1_fit <- lm(damage ~ poly(year, 1, raw = FALSE),
+             data = hurricane_df)
+summary(d1_fit)
+```
+
+
+## Graphing Polynomial Fits
+
+```{r}
+new_data = data.frame(year = hurricane_df$year)
+hurricane_wide <- hurricane_df |>
+  mutate(d1_preds = predict(d1_fit, new_data),
+         d2_preds = predict(d2_fit, new_data),
+         d3_preds = predict(d3_fit, new_data),
+         d4_preds = predict(d4_fit, new_data))
+```
+
+```{r}
+hurricane_long <- hurricane_wide |>
+  pivot_longer(cols = matches("preds"),
+               names_to = "model_id",
+               values_to = "preds")
+```
+
+```{r}
+hurricane_long |>
+  ggplot(aes(x = year, y = damage)) +
+  geom_point(color = "gray40", size = 4) +
+  geom_line(aes(x = year, y = preds,
+                color = model_id)) +
+  labs(title = "US Hurricanes",
+       subtitle = cor2text(hurricane_df$year,
+                           hurricane_df$damage),
+       caption = "SML 201",
+       x = "year", y = "total damage (millions of dollars)") +
+  scale_x_continuous(breaks = 1994:2018,
+                     labels = as.character(1994:2018)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+# Exponential Regression
+
+$$\begin{array}{rcl}
+y & = & A(B^{x}) \\
+\ln y & = & \ln A(B^{x}) \\
+\ln y & = & \ln A + x\ln B \\
+\end{array}$$
+
+* response variable: log(`damage`)
+* $\beta_0 = \ln A$ and $\beta_{1} = \ln B$
+
+```{r}
+exp_fit <- lm(log(damage) ~ year, data = hurricane_df)
+exp_fit
+```
+
+```{r}
+exp(predict(exp_fit, data.frame(year = 2024)))
+```
+
+```{r}
+hurricane_df <- hurricane_df |>
+  mutate(exp_preds = exp(predict(exp_fit, new_data)))
+```
+
+```{r}
+hurricane_df |>
+  ggplot(aes(x = year, y = damage)) +
+  geom_point(color = "gray40", size = 4) +
+  geom_line(aes(x = year, y = exp_preds),
+            color = "blue", linewidth = 2) +
+  labs(title = "US Hurricanes",
+       subtitle = cor2text(hurricane_df$year,
+                           hurricane_df$damage),
+       caption = "SML 201",
+       x = "year", y = "total damage (millions of dollars)") +
+  scale_x_continuous(breaks = 1994:2018,
+                     labels = as.character(1994:2018)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
+# Various Predictions
+
+::::: {.panel-tabset}
+
+## gather
+
+```{r}
+new_point <- data.frame(year = 2024)
+model_used <- c("d1_fit", "d2_fit", "d3_fit", "d4_fit", "exp_fit")
+preds2024 <- c(
+  predict(d1_fit, new_point)/1000,
+  predict(d2_fit, new_point)/1000,
+  predict(d3_fit, new_point)/1000,
+  predict(d4_fit, new_point)/1000,
+  exp(predict(exp_fit, new_point))/1000
+)
+model_summary_df <- data.frame(model_used, preds2024)
+```
+
+## gt
+
+```{r}
+#| echo: false
+#| eval: true
+model_summary_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  fmt_scientific() |>
+  tab_footnote(footnote = "Disclaimer: none of the coefficients of determination were good") |>
+  tab_header(
+    title = "Hurricane Damage for the Year 2024",
+    subtitle = "Predictions (in billions of dollars)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+model_summary_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  fmt_scientific() |>
+  tab_footnote(footnote = "Disclaimer: none of the coefficients of determination were good") |>
+  tab_header(
+    title = "Hurricane Damage for the Year 2024",
+    subtitle = "Predictions (in millions of dollars)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
+```
+
+:::::
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Exam 1: Oct 10
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+{{< video https://www.youtube.com/watch?v=LXD4MGINIzQ >}}
+
+* last-minute exam advice from 5 Second Films
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+```{r}
+hurricane_df |>
+  ggplot(aes(x = year, y = hurricanes)) +
+  geom_point() +
+  geom_point(color = "gray40", size = 4) +
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE) +
+  labs(title = "US Hurricanes",
+       subtitle = cor2text(hurricane_df$year,
+                           hurricane_df$hurricanes),
+       caption = "SML 201",
+       x = "year", y = "number of hurricanes") +
+  scale_x_continuous(breaks = 1994:2018,
+                     labels = as.character(1994:2018)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::

@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/11_nonlinear_regression/11_nonlinear_regression.html",
       "/posts/10_modeling_cats/10_modeling_categories.html",
       "/posts/09_multiple_regression/09_multiple_linear.html",
       "/posts/08_linear_regression/08_linear_regression.html",
