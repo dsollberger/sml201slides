@@ -257,6 +257,7 @@ window.Quarto = {
   <li><a href="#visualize-the-simulation" id="toc-visualize-the-simulation" class="nav-link" data-scroll-target="#visualize-the-simulation">Visualize the Simulation</a></li>
   <li><a href="#simulation-statistics" id="toc-simulation-statistics" class="nav-link" data-scroll-target="#simulation-statistics">Simulation Statistics</a></li>
   </ul></li>
+  <li><a href="#project-2" id="toc-project-2" class="nav-link" data-scroll-target="#project-2">Project 2</a></li>
   <li><a href="#quo-vadimus" id="toc-quo-vadimus" class="nav-link" data-scroll-target="#quo-vadimus">Quo Vadimus?</a></li>
   <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
   </ul>
@@ -1002,7 +1003,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">size =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "C" "E" "F" "A" "B"</code></pre>
+<pre><code>[1] "E" "F" "D" "A" "C"</code></pre>
 </div>
 </div>
 <p>Asking for too many observations here leads to an error.</p>
@@ -1013,7 +1014,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">size =</span> <span class="dv">7</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "C" "E" "A" "D" "C" "F" "F"</code></pre>
+<pre><code>[1] "D" "C" "D" "C" "B" "F" "C"</code></pre>
 </div>
 </div>
 <p>Sometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e.&nbsp;get the same answers).</p>
@@ -1147,6 +1148,9 @@ window.Quarto = {
 <figcaption>Tacos or Sandwiches?</figcaption>
 </figure>
 </div>
+<ul>
+<li>image credit: El Pollo Norteño</li>
+</ul>
 </div>
 </div>
 <section id="voter-info" class="level2">
@@ -1363,7 +1367,7 @@ On the computer processing of simulations
 <pre><code>[1] 0.2984293</code></pre>
 </div>
 </div>
-<p>Preview: the <strong>standard error</strong> is the standard error of a sampling distribution.</p>
+<p>Preview: the <strong>standard error</strong> is the standard deviation of a sampling distribution.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(df_simulation<span class="sc">$</span>taco_share_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1372,16 +1376,56 @@ On the computer processing of simulations
 </div>
 </section>
 </section>
+<section id="project-2" class="level1">
+<h1>Project 2</h1>
+<div class="columns">
+<div class="column" style="width:45%;">
+<section id="covid-tracking" class="level3">
+<h3 class="anchored" data-anchor-id="covid-tracking">Covid Tracking</h3>
+<p>Replicate studies of wastewater surveillance and tracking coronaviruses</p>
+<ul>
+<li>concepts: data wrangling and linear regression</li>
+<li>areas: public health, geostatistics</li>
+</ul>
+</section>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Wastewater-Surveillance.png" class="img-fluid figure-img"></p>
+<figcaption>wastewater study</figcaption>
+</figure>
+</div>
+<ul>
+<li>image source: California Department of Public Health</li>
+<li>inspired by work by Dr Davida Smith, Professor of Biology at TAMUSA</li>
+</ul>
+</div>
+</div>
+</section>
 <section id="quo-vadimus" class="level1">
 <h1>Quo Vadimus?</h1>
 <div class="columns">
 <div class="column" style="width:45%;">
-
+<ul>
+<li>Precept 6</li>
+<li>Group Cover Page</li>
+<li>Project 2 (due Oct 30)</li>
+<li>Exam 2 (December 5)</li>
+</ul>
 </div><div class="column" style="width:10%;">
 
 </div><div class="column" style="width:45%;">
 <section id="exam-1-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="exam-1-statistics">Exam 1 Statistics</h3>
+<ul>
+<li>134 students</li>
+<li>out of 60 points</li>
+<li>mean: 54.23 (90.38%)</li>
+<li>median: 55</li>
+<li>standard deviation: 4.97</li>
+</ul>
 </section>
 </div>
 </div>
@@ -1424,7 +1468,7 @@ Session Info
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.4.1 (2024-06-14 ucrt)
 Platform: x86_64-w64-mingw32/x64
-Running under: Windows 11 x64 (build 22631)
+Running under: Windows 10 x64 (build 19045)
 
 Matrix products: default
 
@@ -1445,17 +1489,17 @@ attached base packages:
 other attached packages:
  [1] lubridate_1.9.3 forcats_1.0.0   stringr_1.5.1   dplyr_1.1.4    
  [5] purrr_1.0.2     readr_2.1.5     tidyr_1.3.1     tibble_3.2.1   
- [9] ggplot2_3.5.1   tidyverse_2.0.0 patchwork_1.3.0 gt_0.11.0      
+ [9] ggplot2_3.5.1   tidyverse_2.0.0 patchwork_1.3.0 gt_0.11.1      
 
 loaded via a namespace (and not attached):
  [1] gtable_0.3.5      jsonlite_1.8.8    compiler_4.4.1    tidyselect_1.2.1 
- [5] xml2_1.3.6        scales_1.3.0      yaml_2.3.10       fastmap_1.2.0    
+ [5] xml2_1.3.6        scales_1.3.0      yaml_2.3.8        fastmap_1.2.0    
  [9] R6_2.5.1          labeling_0.4.3    generics_0.1.3    knitr_1.48       
 [13] htmlwidgets_1.6.4 munsell_0.5.1     pillar_1.9.0      tzdb_0.4.0       
-[17] rlang_1.1.4       utf8_1.2.4        stringi_1.8.4     xfun_0.46        
-[21] timechange_0.3.0  cli_3.6.3         withr_3.0.1       magrittr_2.0.3   
-[25] digest_0.6.36     grid_4.4.1        rstudioapi_0.16.0 hms_1.1.3        
-[29] lifecycle_1.0.4   vctrs_0.6.5       evaluate_0.24.0   glue_1.7.0       
+[17] rlang_1.1.4       utf8_1.2.4        stringi_1.8.4     xfun_0.48        
+[21] timechange_0.3.0  cli_3.6.2         withr_3.0.1       magrittr_2.0.3   
+[25] digest_0.6.35     grid_4.4.1        rstudioapi_0.17.0 hms_1.1.3        
+[29] lifecycle_1.0.4   vctrs_0.6.5       evaluate_1.0.1    glue_1.7.0       
 [33] farver_2.1.2      fansi_1.0.6       colorspace_2.1-1  rmarkdown_2.28   
 [37] tools_4.4.1       pkgconfig_2.0.3   htmltools_0.5.8.1</code></pre>
 </div>

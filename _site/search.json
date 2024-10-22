@@ -1677,7 +1677,7 @@
     "href": "posts/12_binomial_distribution/12_binomial_distribution.html#discrete",
     "title": "12: Binomial Distribution",
     "section": "Discrete",
-    "text": "Discrete\nIn R, discrete sampling is handled with sample.\n\nsample(LETTERS[1:6], size = 5)\n\n[1] \"C\" \"E\" \"F\" \"A\" \"B\"\n\n\nAsking for too many observations here leads to an error.\n\n#sample(LETTERS[1:6], size = 7)\n\nBe default, the sampling is performed without replacement. Sometimes we will need to perform sampling with replacement.\n\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"E\" \"A\" \"D\" \"C\" \"F\" \"F\"\n\n\nSometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e. get the same answers).\n\nset.seed(201)\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"F\" \"B\" \"A\" \"E\" \"F\" \"E\""
+    "text": "Discrete\nIn R, discrete sampling is handled with sample.\n\nsample(LETTERS[1:6], size = 5)\n\n[1] \"E\" \"F\" \"D\" \"A\" \"C\"\n\n\nAsking for too many observations here leads to an error.\n\n#sample(LETTERS[1:6], size = 7)\n\nBe default, the sampling is performed without replacement. Sometimes we will need to perform sampling with replacement.\n\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"D\" \"C\" \"D\" \"C\" \"B\" \"F\" \"C\"\n\n\nSometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e. get the same answers).\n\nset.seed(201)\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"F\" \"B\" \"A\" \"E\" \"F\" \"E\""
   },
   {
     "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#continuous",
@@ -1761,6 +1761,6 @@
     "href": "posts/12_binomial_distribution/12_binomial_distribution.html#simulation-statistics",
     "title": "12: Binomial Distribution",
     "section": "Simulation Statistics",
-    "text": "Simulation Statistics\nTo wrap up this example,\n\n“Taco” had this vote share on average:\n\n\nmean(df_simulation$taco_share_vec)\n\n[1] 0.4101442\n\n\nTo compute how often “Taco” would win probabilistically, we could\n\ncount the iterations where taco_share_vec &gt; 0.50\ndivide by the number of iterations\n\n\nmean(df_simulation$taco_share_vec &gt; 0.50)\n\n[1] 0.2984293\n\n\nPreview: the standard error is the standard error of a sampling distribution.\n\nsd(df_simulation$taco_share_vec)\n\n[1] 0.1734641"
+    "text": "Simulation Statistics\nTo wrap up this example,\n\n“Taco” had this vote share on average:\n\n\nmean(df_simulation$taco_share_vec)\n\n[1] 0.4101442\n\n\nTo compute how often “Taco” would win probabilistically, we could\n\ncount the iterations where taco_share_vec &gt; 0.50\ndivide by the number of iterations\n\n\nmean(df_simulation$taco_share_vec &gt; 0.50)\n\n[1] 0.2984293\n\n\nPreview: the standard error is the standard deviation of a sampling distribution.\n\nsd(df_simulation$taco_share_vec)\n\n[1] 0.1734641"
   }
 ]
