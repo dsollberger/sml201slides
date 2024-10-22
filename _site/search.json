@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -1594,5 +1594,173 @@
     "title": "11: Nonlinear Regression",
     "section": "Graphing Polynomial Fits",
     "text": "Graphing Polynomial Fits\n\nnew_data = data.frame(year = hurricane_df$year)\nhurricane_wide &lt;- hurricane_df |&gt;\n  mutate(d1_preds = predict(d1_fit, new_data),\n         d2_preds = predict(d2_fit, new_data),\n         d3_preds = predict(d3_fit, new_data),\n         d4_preds = predict(d4_fit, new_data))\n\n\nhurricane_long &lt;- hurricane_wide |&gt;\n  pivot_longer(cols = matches(\"preds\"),\n               names_to = \"model_id\",\n               values_to = \"preds\")\n\n\nhurricane_long |&gt;\n  ggplot(aes(x = year, y = damage)) +\n  geom_point(color = \"gray40\", size = 4) +\n  geom_line(aes(x = year, y = preds,\n                color = model_id)) +\n  labs(title = \"US Hurricanes\",\n       subtitle = cor2text(hurricane_df$year,\n                           hurricane_df$damage),\n       caption = \"SML 201\",\n       x = \"year\", y = \"total damage (millions of dollars)\") +\n  scale_x_continuous(breaks = 1994:2018,\n                     labels = as.character(1994:2018)) +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html",
+    "title": "12: Binomial Distribution",
+    "section": "",
+    "text": "library(\"gt\")        #great tables\nlibrary(\"patchwork\") #easy side-by-side plots\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\""
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#start",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#start",
+    "title": "12: Binomial Distribution",
+    "section": "Start",
+    "text": "Start\n\n\n\nGoal: Introduce concepts of probability\nObjective: Compute probabilities with the discrete binomial distribution"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#terminology",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#terminology",
+    "title": "12: Binomial Distribution",
+    "section": "Terminology",
+    "text": "Terminology\n\nDefinitionForkFrameworks\n\n\nFor event \\(X\\) with outcomes \\(x\\), the probability \\(P(x)\\) has properties\n\neach probability is between zero and one (inclusive inequalities)\n\n\\[0 \\leq P(x) \\leq 1\\]\n\nall probabilities add up to one (i.e. 100 percent)\n\n\\[\\sum_{x \\in X} P(x) = 1\\]\n\n\nIf a pair of parents have two children, should the genders of the children be represented as\n\n{two girls, mixed, two boys}\n\nOR\n\n{{girl, girl}, {girl, boy}, {boy, girl}, {boy, boy}}\n\n\n\n\nClassical probability: fraction from known observations\n\nexample: With two children, the probability of having one girl and one boy is \\(\\frac{2}{4}\\)\n\nFrequentist probability: If we could repeat an experiment infinitely many iterations, what would the proportion be?\n\nexample: Surveying all families with multiple children, among the first two children, the probability of having one girl and one boy is converging toward 50 percent.\nSML 201\n\nBayesian probability: A posterior distribution is the update from multiplying likelihoods to the prior distribution.\n\nexample: If the first child is a girl, what is the probability that the second child is a boy?\nSML 320"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#coins",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#coins",
+    "title": "12: Binomial Distribution",
+    "section": "Coins",
+    "text": "Coins\n\nFair Coin3 Coins4 Coins5 CoinsCodeExactly\n\n\nFor a flip of a fair coin, the probability of observing “Heads” is 50 percent. The complement, observing “Tails”, also has a probability of 50 percent.\n\\[P(H) = 0.50, \\quad P(T) = 0.50\\] \n\n\n\n\nc(\"HHH\", \"THH\", \"HTH\", \"TTH\", \"HHT\", \"THT\", \"HTT\", \"TTT\")\n\n\n\n\n\n\nc(\"HHHH\", \"THHH\", \"HTHH\", \"TTHH\", \"HHTH\", \"THTH\", \"HTTH\", \"TTTH\", \n\"HHHT\", \"THHT\", \"HTHT\", \"TTHT\", \"HHTT\", \"THTT\", \"HTTT\", \"TTTT\"\n)\n\n\n\n\n\n\nc(\"HHHHH\", \"THHHH\", \"HTHHH\", \"TTHHH\", \"HHTHH\", \"THTHH\", \"HTTHH\", \n\"TTTHH\", \"HHHTH\", \"THHTH\", \"HTHTH\", \"TTHTH\", \"HHTTH\", \"THTTH\", \n\"HTTTH\", \"TTTTH\", \"HHHHT\", \"THHHT\", \"HTHHT\", \"TTHHT\", \"HHTHT\", \n\"THTHT\", \"HTTHT\", \"TTTHT\", \"HHHTT\", \"THHTT\", \"HTHTT\", \"TTHTT\", \n\"HHTTT\", \"THTTT\", \"HTTTT\", \"TTTTT\")\n\n\n\n\n\n# 3 coins\ncoin &lt;- c(\"H\", \"T\")\ndf &lt;- data.frame(expand.grid(coin, coin, coin)) |&gt;\n  tidyr::unite(\"obs\", c(\"Var1\", \"Var2\", \"Var3\"),\n               sep = \"\", remove = FALSE)\ndput(df$obs)\n\n# 4 coins\ndf &lt;- data.frame(expand.grid(coin, coin, coin, coin)) |&gt;\n  tidyr::unite(\"obs\", c(\"Var1\", \"Var2\", \"Var3\", \"Var4\"),\n               sep = \"\", remove = FALSE)\ndput(df$obs)\n\n# 5 coins\ndf &lt;- data.frame(expand.grid(coin, coin, coin, coin, coin)) |&gt;\n  tidyr::unite(\"obs\", c(\"Var1\", \"Var2\", \"Var3\", \"Var4\", \"Var5\"),\n               sep = \"\", remove = FALSE)\ndput(df$obs)\n\n\n\n\nExample: For 6 coin flips, in how many permutations do we observe exactly 2 heads?\none instance:\n\n\\[{H, H, T, T, T, T}\\]\n\nanswer:\n\n\\[\\frac{6!}{2!4!} = 15\\]"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#choose",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#choose",
+    "title": "12: Binomial Distribution",
+    "section": "Choose",
+    "text": "Choose\n\nDefinitionDiscussionBinomial Distribution\n\n\n\n\n\\[\\binom{n}{k} = \\frac{n!}{k!(n-k)!}\\]\n\nsaid ``n choose k’’\nnote \\(0! = 1\\) (to avoid dividing by zero)\n\n\n\n\n\nfrom The Simpsons\n\n\n\n\n\n\n\n\n\nIn SML 201, you will never be directly asked for the distinction between\n\npermutations: number of arrangements when order matters\ncombinations: number of arrangements when order does not matter\n\nExample: To open a combination lock, you need to apply the correct permutation\nBut \\(\\binom{n}{k}\\) is “nCr” on a calculator!\n\nThis choose operator keeps track of the number of permutations in a certain combination\n\n\n\n\n\n\ncombination lock\n\n\n\n\n\n\n\\[P(x = k) = \\binom{n}{k} p^{k}(1-p)^{n-k}\\]\n\n\\(0 \\leq k \\leq n\\), where \\(n\\) and \\(k\\) are whole numbers\n\\(0 \\leq p \\leq 1\\)"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#example-squirtle",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#example-squirtle",
+    "title": "12: Binomial Distribution",
+    "section": "Example: Squirtle",
+    "text": "Example: Squirtle\n\nSetupBattle ArenaMathRDistribution\n\n\n\n\nHistorically, Squirtle defeats Charizard 32% of the time. If there are 5 battles, what is the probability that Squirtle wins exactly 2 times?\n\n\n\n\n\n\nSquirtle the underdog\n\n\n\n\n\n\n\n\nc(\"SSSSS\", \"CSSSS\", \"SCSSS\", \"CCSSS\", \"SSCSS\", \"CSCSS\", \"SCCSS\", \n\"CCCSS\", \"SSSCS\", \"CSSCS\", \"SCSCS\", \"CCSCS\", \"SSCCS\", \"CSCCS\", \n\"SCCCS\", \"CCCCS\", \"SSSSC\", \"CSSSC\", \"SCSSC\", \"CCSSC\", \"SSCSC\", \n\"CSCSC\", \"SCCSC\", \"CCCSC\", \"SSSCC\", \"CSSCC\", \"SCSCC\", \"CCSCC\", \n\"SSCCC\", \"CSCCC\", \"SCCCC\", \"CCCCC\")\n\n\n\nBut these observations have different weights!\nThe outcomes are not uniformly distributed\n\n\n\n\\[P(k = 2) = \\overbrace{\\binom{5}{2}}^{\\text{number of permutations}}\\underbrace{(0.32)^{2}}_{\\text{Squirtle wins}}\\overbrace{(0.68)^{3}}^{\\text{Charizard wins}}\\]\n\n\nHistorically, Squirtle defeats Charizard 32% of the time. If there are 5 battles, what is the probability that Squirtle wins exactly 2 times?\n\n\\(n = 5\\)\n\\(k = 2\\)\n\\(p = 0.32\\)\n\n\ndbinom(2, 5, 0.32)\n\n[1] 0.3219784\n\n\n\n\n\nk_obs &lt;- 2\nn     &lt;- 5\np     &lt;- 0.32\nlabels &lt;- TRUE\n\n# make data frame\nk_vals &lt;- 0:n\npk     &lt;- dbinom(k_vals, n, p)\nk_bool &lt;- k_vals %in% k_obs\ndf_binom &lt;- data.frame(k_vals, pk, k_bool)\n\n# compute requested probability\nanswer_prob = round(sum(dbinom(k_obs, n, p)), 4)\n\n# define bar plot\nthis_plot &lt;- if(labels){\n  df_binom |&gt;\n    ggplot(aes(x = factor(k_vals), y = pk, color = k_bool, fill = k_bool)) +\n    geom_bar(stat = \"identity\") +\n    geom_label(aes(x = factor(k_vals), y = pk, label = round(pk, 4)),\n               color = \"black\", fill = \"white\") +\n    labs(subtitle = paste0(\"n = \", n, \", k = \", list(k_obs), \", p = \", p, \", P(k = \", list(k_obs), \") = \", answer_prob),\n         caption = \"SML 201\",\n         y = \"probability\") +\n    theme(\n      legend.position = \"bottom\",\n      panel.background = element_blank()\n    )\n} else{\n  df_binom |&gt;\n    ggplot(aes(x = factor(k_vals), y = pk, color = k_bool, fill = k_bool)) +\n    geom_bar(stat = \"identity\") +\n    labs(subtitle = paste0(\"n = \", n, \", k = \", list(k_obs), \", p = \", p, \", P(k = \", list(k_obs), \") = \", answer_prob),\n         caption = \"SML 201\",\n         y = \"probability\") +\n    theme(\n      legend.position = \"bottom\",\n      panel.background = element_blank()\n    )\n}\n\n# plot bar chart\nthis_plot +\n  \n  # particular to this example\n  scale_color_manual(values = c(\"black\", \"#ca7721\")) +\n  scale_fill_manual(values = c(\"gray70\", \"#297383\")) +\n  labs(title = \"Squirtle Wins\", \n       x = \"wins\", y = \"probability\")"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#example-charizard",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#example-charizard",
+    "title": "12: Binomial Distribution",
+    "section": "Example: Charizard",
+    "text": "Example: Charizard\n\nSetupMathRFunctionDistribution\n\n\n\n\nHistorically, Charizard defeats Squirtle 68% of the time. If there are 5 battles, what is the probability that Charizard wins exactly 3 times?\n\n\n\n\n\n\nCharizard the favored\n\n\n\n\n\n\n\\[P(k = 3) = \\overbrace{\\binom{5}{3}}^{\\text{number of permutations}}\\underbrace{(0.68)^{3}}_{\\text{Charizard wins}}\\overbrace{(0.32)^{2}}^{\\text{Squirtle wins}}\\]\n\n\nHistorically, Charizard defeats Squirtle 68% of the time. If there are 5 battles, what is the probability that Charizard wins exactly 3 times?\n\n\\(n = 5\\)\n\\(k = 3\\)\n\\(p = 0.68\\)\n\n\ndbinom(3, 5, 0.68)\n\n[1] 0.3219784\n\n\n\n\nLet us make a user-defined function to help us visualize the binomial distribution in the future.\n\nvbinom &lt;- function(k_obs, n, p, labels = TRUE){\n# make data frame\nk_vals &lt;- 0:n\npk     &lt;- dbinom(k_vals, n, p)\nk_bool &lt;- k_vals %in% k_obs\ndf_binom &lt;- data.frame(k_vals, pk, k_bool)\n\n# compute requested probability\nanswer_prob = round(sum(dbinom(k_obs, n, p)), 4)\n\n# define bar plot\nthis_plot &lt;- if(labels){\n  df_binom |&gt;\n    ggplot(aes(x = factor(k_vals), y = pk, color = k_bool, fill = k_bool)) +\n    geom_bar(stat = \"identity\") +\n    geom_label(aes(x = factor(k_vals), y = pk, label = round(pk, 4)),\n               color = \"black\", fill = \"white\") +\n    labs(subtitle = paste0(\"n = \", n, \", k = \", list(k_obs), \", p = \", p, \", P(k = \", list(k_obs), \") = \", answer_prob),\n         caption = \"SML 201\",\n         y = \"probability\") +\n    theme(\n      legend.position = \"bottom\",\n      panel.background = element_blank()\n    )\n} else{\n  df_binom |&gt;\n    ggplot(aes(x = factor(k_vals), y = pk, color = k_bool, fill = k_bool)) +\n    geom_bar(stat = \"identity\") +\n    labs(subtitle = paste0(\"n = \", n, \", k = \", list(k_obs), \", p = \", p, \", P(k = \", list(k_obs), \") = \", answer_prob),\n         caption = \"SML 201\",\n         y = \"probability\") +\n    theme(\n      legend.position = \"bottom\",\n      panel.background = element_blank()\n    )\n}\n\n# plot bar chart\nthis_plot\n}\n\n\n\n\nvbinom(3, 5, 0.68) +\n  # particular to this example\n  scale_color_manual(values = c(\"black\", \"#297383\")) +\n  scale_fill_manual(values = c(\"gray70\", \"#ca7721\")) +\n  labs(title = \"Charizard Wins\", \n       x = \"wins\", y = \"probability\")"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#example-boba",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#example-boba",
+    "title": "12: Binomial Distribution",
+    "section": "Example: Boba",
+    "text": "Example: Boba\n\nSetupExactlyAt Most\n\n\n\n\nThere are 4 parking spaces in front of the boba place. Suppose that each parking space tends to be occupied about 57 percent of the time.\n\n\n\n\n\n\nboba!\n\n\n\n\n\n\nThere are 4 parking spaces in front of the boba place. Suppose that each parking space tends to be occupied about 57 percent of the time. What is the probability that exactly 3 of the parking spaces are open?\n\ndbinom(3, 4, 0.43)\n\n[1] 0.181276\n\n\n\nvbinom(3, 4, 0.43) +\n  labs(title = \"Exactly 3 parking spaces\",\n       x = \"open parking spaces\")\n\n\n\n\n\n\n\n\n\n\nThere are 4 parking spaces in front of the boba place. Suppose that each parking space tends to be occupied about 57 percent of the time. What is the probability that at most 2 of the parking spaces are open?\n\nsum(dbinom(0:2, 4, 0.43))\n\n[1] 0.784536\n\n\n\nvbinom(0:2, 4, 0.43) +\n  labs(title = \"Probability of at most 2 open parking spaces\",\n       x = \"open parking spaces\")\n\n\n\n\n\n\n\n\n\npbinom(2, 4, 0.43) #same as sum(dbinom(0:2, 4, 0.43))\n\n[1] 0.784536"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#cumulative-probability",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#cumulative-probability",
+    "title": "12: Binomial Distribution",
+    "section": "Cumulative Probability",
+    "text": "Cumulative Probability\nThe pbinom function in R computes a cumulative probability (i.e. adds up probabilities).\n\\[P(i \\leq k) = \\sum_{i = 1}^{k}\\binom{n}{i}p^{i}(1-p)^{n-i}\\]\nIn R,\n\npbinom(k, n, p)\n# is the same as\nsum(dbinom(0:k, n, p))"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#example-parking",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#example-parking",
+    "title": "12: Binomial Distribution",
+    "section": "Example: Parking",
+    "text": "Example: Parking\n\nSetupMore Than\n\n\n\n\nThere are 32 parking spaces on a certain stretch of Nassau Street. Suppose that each parking space tends to be occupied about 81 percent of the time.\n\n\n\n\n\n\nNassau Street\n\n\n\n\n\n\nThere are 32 parking spaces on a certain stretch of Nassau Street. Suppose that each parking space tends to be occupied about 81 percent of the time. What is the probability that more than 5 of the parking spaces are open?\n\nvbinom(6:32, 32, 0.19, labels = FALSE) +\n  labs(title = \"Probability of more than 5 open parking spaces\",\n       x = \"open parking spaces\")\n\n\n\n\n\n\n\n\nEach of the following are equivalent ways to compute the requested probability (“more than 5”))\n\nsum(dbinom(6:32, 32, 0.19))\n\n[1] 0.5853578\n\n1 - pbinom(5, 32, 0.19)\n\n[1] 0.5853578\n\npbinom(5, 32, 0.19, lower.tail = FALSE)\n\n[1] 0.5853578"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#venetian-elections",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#venetian-elections",
+    "title": "12: Binomial Distribution",
+    "section": "Venetian Elections",
+    "text": "Venetian Elections\n\n\n\n\n\nElection of Doge\n\n\n\n\n\n\nleft: “Sorting process for the election of the Doge of Venice”, Jacob von Sandrart, 1687\n\nimage credit: The Ballot Boy\n\nright: elementary balls-and-urns probability setup\n\nimage credit: Professor Joyce, Clark University\n\n\n\n\n\n\n\n\nurns"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#discrete",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#discrete",
+    "title": "12: Binomial Distribution",
+    "section": "Discrete",
+    "text": "Discrete\nIn R, discrete sampling is handled with sample.\n\nsample(LETTERS[1:6], size = 5)\n\n[1] \"C\" \"E\" \"F\" \"A\" \"B\"\n\n\nAsking for too many observations here leads to an error.\n\n#sample(LETTERS[1:6], size = 7)\n\nBe default, the sampling is performed without replacement. Sometimes we will need to perform sampling with replacement.\n\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"E\" \"A\" \"D\" \"C\" \"F\" \"F\"\n\n\nSometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e. get the same answers).\n\nset.seed(201)\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"F\" \"B\" \"A\" \"E\" \"F\" \"E\""
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#continuous",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#continuous",
+    "title": "12: Binomial Distribution",
+    "section": "Continuous",
+    "text": "Continuous\nThe most common function for pseudo-random number generation in R is runif\n\npronounced “r unif” (i.e. random numbers from a uniform distribution)\ndefault: random numbers between zero and one\n\n\nrunif(5)\n\n[1] 0.09931186 0.28766776 0.47009467 0.67783012 0.60524130\n\n\n\n\n\n\n\n\n(optional) Math: Discrete versus Continuous\n\n\n\n\n\nIn math classes, we tend to have the students pick up simplistic definitions:\n\ndiscrete data: can be written as a list\n\nmath: “countable”\n\ncontinous data: function can be drawn without lifting your pencil\n\nmath: “uncountable”\n\n\nIf anyone is curious, here are more rigorous definitions from Real Analysis\n\nA set \\(X\\) is discrete if \\(\\exists \\epsilon\\in\\mathbb{R}\\) such that\n\n\\[\\forall x\\in X, \\exists c \\in B(x,\\epsilon) \\text{ such that } c \\in \\mathbb{R}/X\\] where \\(B\\) is a ball of center \\(x\\) and radius \\(\\epsilon\\).\n\nA set \\(X\\) is continuous if\n\n\\[\\forall x \\in X, \\forall\\epsilon \\in \\mathbb{R}, \\exists c \\in B(x,\\epsilon) \\text{ such that } c\\in X\\]"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#not-uniform",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#not-uniform",
+    "title": "12: Binomial Distribution",
+    "section": "Not Uniform",
+    "text": "Not Uniform\nThe previous sampling examples were chosing from uniform distributions (i.e. each outcome was equally likely). We will have situations that are not uniform. For example\n\\[P(red) = 1/3, \\quad P(green) = 2/3\\]\n\nsample(c(\"red\", \"green\"), size = 20, replace = TRUE, prob = c(1/3, 2/3))\n\n [1] \"green\" \"green\" \"green\" \"green\" \"green\" \"green\" \"green\" \"red\"   \"green\"\n[10] \"green\" \"green\" \"green\" \"red\"   \"red\"   \"green\" \"green\" \"green\" \"red\"  \n[19] \"green\" \"green\""
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#weighted-mean",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#weighted-mean",
+    "title": "12: Binomial Distribution",
+    "section": "Weighted Mean",
+    "text": "Weighted Mean\n\nDefinitionExample\n\n\n\nsample mean\n\n\\[\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_{i}\\]\n\nweighted mean\n\n\\[\\bar{x} = \\frac{\\sum_{i=1}^{n} w_{i}*x_{i}}{\\sum_{i=1}^{n} w_{i}}\\]\n\n\nThis banana slicer is popular on Amazon. We will replicate the calculation for the average rating.\n\n\nThe average rating is not \\[\\frac{1 + 2 + 3 + 4 + 5}{5}\\] but rather\n\nstars &lt;- 1:5\nprobs &lt;- c(4, 4, 8, 13, 71)/100\n\n# weighted mean\nsum(probs * stars) / sum(probs)\n\n[1] 4.43\n\n\n\n\n\n\n\n\nbanana slicer"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#voter-info",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#voter-info",
+    "title": "12: Binomial Distribution",
+    "section": "Voter Info",
+    "text": "Voter Info\n\nset.seed(201)\ncollege &lt;- c(\"Butler\", \"Forbes\", \"Mathey\", \"New College West\", \"Rockefeller\", \"Whitman\", \"Yeh College\")\nn &lt;- length(college)\ndelegates &lt;- sample(11:20, size = n, replace = FALSE)\ntaco_prop &lt;- round(runif(n), 2)\n\n# if you want to experiment with this example later, you can explicitly set the weights here\n# college &lt;- c(\"Butler\", \"Forbes\", \"Mathey\", \"New College West\", \"Rockefeller\", \"Whitman\", \"Yeh College\")\n# delegates &lt;- c(13, 16, 17, 12, 11, 15, 18)\n# taco_prop &lt;- c(27, 10, 29, 57, 68, 61, 47) / 100\n\ndf_election &lt;- data.frame(\n  college, delegates, taco_prop\n)"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#complement",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#complement",
+    "title": "12: Binomial Distribution",
+    "section": "Complement",
+    "text": "Complement\n\ndf_election &lt;- df_election |&gt;\n  mutate(sandwich_prop = 1 - taco_prop)"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#simulate-one-election",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#simulate-one-election",
+    "title": "12: Binomial Distribution",
+    "section": "Simulate One Election",
+    "text": "Simulate One Election\n\nset.seed(201)\ndf_election &lt;- df_election |&gt;\n  rowwise() |&gt;\n  mutate(picks = sample(c(\"Taco\", \"Sandwich\"), \n                        size = 1,\n                        prob = c(taco_prop, sandwich_prop)))"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#count-votes",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#count-votes",
+    "title": "12: Binomial Distribution",
+    "section": "Count Votes",
+    "text": "Count Votes\nIn this example, the votes are tabulated as a weighted mean.\n\ndf_election &lt;- df_election |&gt;\n  mutate(picks_bool = ifelse(picks == \"Taco\", 1, 0))\n\ntaco_share &lt;- sum(df_election$delegates * df_election$picks_bool) / sum(df_election$delegates)\n\nprint(taco_share)\n\n[1] 0.254902"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#classify-result",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#classify-result",
+    "title": "12: Binomial Distribution",
+    "section": "Classify Result",
+    "text": "Classify Result\n\nelection_result &lt;- case_when(\n  taco_share &lt; 0.5 ~ \"Sandwich Won\",\n  taco_share &gt; 0.5 ~ \"Taco Won\",\n  .default = \"tie\"\n)\n\nprint(election_result)\n\n[1] \"Sandwich Won\""
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#for-loops",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#for-loops",
+    "title": "12: Binomial Distribution",
+    "section": "for loops",
+    "text": "for loops\nA common programming tool is the for loop. We tend to use letters \\(i\\), \\(j\\), and \\(k\\) historically as counter variables.\n\nN &lt;- 7 #number of iterations\n\n\nfor(i in 1:N){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n[1] 6\n[1] 7\n\n\n\nfor(i in 1:N){\n  print(i^2)\n}\n\n[1] 1\n[1] 4\n[1] 9\n[1] 16\n[1] 25\n[1] 36\n[1] 49\n\n\n\nfor(i in 1:N){\n  print(LETTERS[1:i])\n}\n\n[1] \"A\"\n[1] \"A\" \"B\"\n[1] \"A\" \"B\" \"C\"\n[1] \"A\" \"B\" \"C\" \"D\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\" \"G\""
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#election-simulation",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#election-simulation",
+    "title": "12: Binomial Distribution",
+    "section": "Election Simulation",
+    "text": "Election Simulation\n\nN &lt;- 1337 #number of simulations\n\n# pre-allocate space for storing results\ntaco_share_vec &lt;- rep(NA, N)\n\nfor(i in 1:N){\n  df_election &lt;- df_election |&gt;\n  rowwise() |&gt;\n    mutate(picks = sample(c(\"Taco\", \"Sandwich\"), \n                          size = 1,\n                          prob = c(taco_prop, sandwich_prop)))\n  df_election &lt;- df_election |&gt;\n    mutate(picks_bool = ifelse(picks == \"Taco\", 1, 0))\n  \n  taco_share_vec[i] &lt;- sum(df_election$delegates * df_election$picks_bool) / sum(df_election$delegates)\n}\n\ndf_simulation &lt;- data.frame(iter = 1:N, taco_share_vec)\n\n\n\n\n\n\n\nOn the computer processing of simulations\n\n\n\n\n\nIf your computer is older\n\ntook a while to draw maps\ntook a while to produce network visuals\n\nyou may reduce the number of iterations from 1337 to 201 (for example)."
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#visualize-the-simulation",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#visualize-the-simulation",
+    "title": "12: Binomial Distribution",
+    "section": "Visualize the Simulation",
+    "text": "Visualize the Simulation\nNow, taco_share_vec is itself a numerical variable, so we can visualize its distribution with a histogram.\n\ndf_simulation |&gt;\n  ggplot(aes(x = taco_share_vec)) +\n  geom_histogram(bins = 20, color = princeton_black, fill = princeton_orange) +\n  geom_vline(xintercept = 0.5, color = \"#2A668F\", \n             linewidth = 3, linetype = 3) +\n  labs(title = \"Taco versus Sandwich!\",\n       subtitle = \"Simulated delegation voting of the residential colleges\",\n       caption = \"SML 201\",\n       x = \"taco vote share\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#simulation-statistics",
+    "href": "posts/12_binomial_distribution/12_binomial_distribution.html#simulation-statistics",
+    "title": "12: Binomial Distribution",
+    "section": "Simulation Statistics",
+    "text": "Simulation Statistics\nTo wrap up this example,\n\n“Taco” had this vote share on average:\n\n\nmean(df_simulation$taco_share_vec)\n\n[1] 0.4101442\n\n\nTo compute how often “Taco” would win probabilistically, we could\n\ncount the iterations where taco_share_vec &gt; 0.50\ndivide by the number of iterations\n\n\nmean(df_simulation$taco_share_vec &gt; 0.50)\n\n[1] 0.2984293\n\n\nPreview: the standard error is the standard error of a sampling distribution.\n\nsd(df_simulation$taco_share_vec)\n\n[1] 0.1734641"
   }
 ]

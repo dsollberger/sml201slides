@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/12_binomial_distribution/12_binomial_distribution.html",
       "/posts/11_nonlinear_regression/11_nonlinear_regression.html",
       "/posts/10_modeling_cats/10_modeling_categories.html",
       "/posts/09_multiple_regression/09_multiple_linear.html",
