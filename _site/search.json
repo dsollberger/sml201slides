@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -1677,7 +1677,7 @@
     "href": "posts/12_binomial_distribution/12_binomial_distribution.html#discrete",
     "title": "12: Binomial Distribution",
     "section": "Discrete",
-    "text": "Discrete\nIn R, discrete sampling is handled with sample.\n\nsample(LETTERS[1:6], size = 5)\n\n[1] \"E\" \"F\" \"D\" \"A\" \"C\"\n\n\nAsking for too many observations here leads to an error.\n\n#sample(LETTERS[1:6], size = 7)\n\nBe default, the sampling is performed without replacement. Sometimes we will need to perform sampling with replacement.\n\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"D\" \"C\" \"D\" \"C\" \"B\" \"F\" \"C\"\n\n\nSometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e. get the same answers).\n\nset.seed(201)\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"F\" \"B\" \"A\" \"E\" \"F\" \"E\""
+    "text": "Discrete\nIn R, discrete sampling is handled with sample.\n\nsample(LETTERS[1:6], size = 5)\n\n[1] \"F\" \"C\" \"D\" \"A\" \"E\"\n\n\nAsking for too many observations here leads to an error.\n\n#sample(LETTERS[1:6], size = 7)\n\nBe default, the sampling is performed without replacement. Sometimes we will need to perform sampling with replacement.\n\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"E\" \"D\" \"E\" \"A\" \"C\" \"F\"\n\n\nSometimes, we want to suppress randomization. More precisely, we want to replicate the creation of the pseudo-random numbers. This is useful for working on simulations with groups of researchers (i.e. get the same answers).\n\nset.seed(201)\nsample(LETTERS[1:6], size = 7, replace = TRUE)\n\n[1] \"C\" \"F\" \"B\" \"A\" \"E\" \"F\" \"E\""
   },
   {
     "objectID": "posts/12_binomial_distribution/12_binomial_distribution.html#continuous",
@@ -1762,5 +1762,124 @@
     "title": "12: Binomial Distribution",
     "section": "Simulation Statistics",
     "text": "Simulation Statistics\nTo wrap up this example,\n\n“Taco” had this vote share on average:\n\n\nmean(df_simulation$taco_share_vec)\n\n[1] 0.4101442\n\n\nTo compute how often “Taco” would win probabilistically, we could\n\ncount the iterations where taco_share_vec &gt; 0.50\ndivide by the number of iterations\n\n\nmean(df_simulation$taco_share_vec &gt; 0.50)\n\n[1] 0.2984293\n\n\nPreview: the standard error is the standard deviation of a sampling distribution.\n\nsd(df_simulation$taco_share_vec)\n\n[1] 0.1734641"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html",
+    "title": "13: Normal Distribution",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"gt\")        #great tables\nlibrary(\"janitor\")   #helps with counts and proportions\nlibrary(\"patchwork\") #side-by-side plots\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n\n# helper function\nvnorm &lt;- function(x, mu = 0, sigma = 1, section = \"lower\"){\n  \n  # bell curve\n  x_vals &lt;- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)\n  y_vals &lt;- dnorm(x_vals, mu, sigma)\n  df_for_graph &lt;- data.frame(x_vals, y_vals)\n\n  # outline shaded regions\n  if(length(x) == 1){\n    shade_left &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]))\n    shade_right &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &gt; x[1]))\n  }\n  if(length(x) == 2){\n    shade_between &lt;- rbind(c(x[1],0),\n                       df_for_graph |&gt;\n                         filter(x_vals &gt; x[1] &\n                                  x_vals &lt; x[2]),\n                       c(x[2],0))\n    shade_tails &lt;- rbind(df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]),\n                     c(x[1],0),\n                     c(x[2],0),\n                     df_for_graph |&gt;\n                        filter(x_vals &gt; x[2]))\n  }\n  \n  # compute requested probability\n  # prob_val &lt;- case_when(\n  #   section == \"upper\" ~ round(1 - pnorm(x,mu,sigma), 4),\n  #   section == \"between\" ~ round(diff(pnorm(x,mu,sigma), 4)),\n  #   section == \"tails\" ~ round(1 - diff(pnorm(x,mu,sigma), 4)),\n  #   .default = round(pnorm(x,mu,sigma), 4)\n  # )\n  \n  if(section == \"lower\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_left,\n                   fill = \"#E77500\",) +\n      # geom_segment(aes(x = x, y = 0,\n      #                  xend = x, yend = dnorm(x,mu,sigma))) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"upper\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_right,\n                   fill = \"#E77500\",) +\n      # geom_segment(aes(x = x, y = 0,\n      #                  xend = x, yend = dnorm(x,mu,sigma))) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- 1 - round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"between\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_between,\n                   fill = \"#E77500\",) +\n     #  geom_segment(aes(x = x[1], y = 0,\n     #                   xend = x[1], yend = dnorm(x[1],mu,sigma)))\n     # +\n     #  geom_segment(aes(x = x[2], y = 0,\n     #                   xend = x[2], yend = dnorm(x[2],mu,sigma))) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(diff(pnorm(x,mu,sigma)), 4)\n  }\n  if(section == \"tails\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_tails,\n                   fill = \"#E77500\",) +\n     #  geom_segment(aes(x = x[1], y = 0,\n     #                   xend = x[1], yend = dnorm(x[1],mu,sigma)))\n     # +\n     #  geom_segment(aes(x = x[2], y = 0,\n     #                   xend = x[2], yend = dnorm(x[2],mu,sigma))) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(1 - diff(pnorm(x,mu,sigma)), 4)\n  }\n  \n  # plot bell curve\n  bell_curve + \n    labs(subtitle = paste0(\"Probability: \", prob_val),\n         caption = \"SML 201\", y = \"\") +\n    theme_minimal()\n}\n\n\ngraph_noise &lt;- function(x,y){\n  this_df &lt;- data.frame(x = x, y = y)\n  lin_fit &lt;- lm(y ~ x, data = this_df)\n  coef_det &lt;- summary(lin_fit)$adj.r.squared\n  \n  this_df |&gt;\n    ggplot(aes(x,y)) +\n    geom_point(color = princeton_orange) +\n    geom_smooth(formula = \"y ~ x\",\n                method = \"lm\",\n                se = TRUE) +\n    labs(title = \"The Signal and the Noise\",\n         subtitle = paste0(\"Coefficient of Determination: \", round(coef_det, 4)),\n         caption = \"SML 201\") +\n    theme_minimal()\n}"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#start",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#start",
+    "title": "13: Normal Distribution",
+    "section": "Start",
+    "text": "Start\n\n\n\nGoal: Introduce social science\nObjective: Compute probabilities with the normal distribution"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#frequentist-probability",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#frequentist-probability",
+    "title": "13: Normal Distribution",
+    "section": "Frequentist Probability",
+    "text": "Frequentist Probability\n\nFrequentist probability: If we could repeat an experiment infinitely many iterations, what would the proportion be?"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#for-loops",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#for-loops",
+    "title": "13: Normal Distribution",
+    "section": "for loops",
+    "text": "for loops\nA common programming tool is the for loop. We tend to use letters \\(i\\), \\(j\\), and \\(k\\) historically as counter variables.\n\nN &lt;- 7 #number of iterations\n\n\nfor(i in 1:N){\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 3\n[1] 4\n[1] 5\n[1] 6\n[1] 7\n\n\n\nfor(i in 1:N){\n  print(i^2)\n}\n\n[1] 1\n[1] 4\n[1] 9\n[1] 16\n[1] 25\n[1] 36\n[1] 49\n\n\n\nfor(i in 1:N){\n  print(LETTERS[1:i])\n}\n\n[1] \"A\"\n[1] \"A\" \"B\"\n[1] \"A\" \"B\" \"C\"\n[1] \"A\" \"B\" \"C\" \"D\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\"\n[1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\" \"G\"\n\n\n\nfor(i in 1:N){\n  print(paste0(\"When i = \", i, \" , the first \", i, \" LETTERS are \", \n         paste0(LETTERS[1:i], collapse = \"\")))\n}\n\n[1] \"When i = 1 , the first 1 LETTERS are A\"\n[1] \"When i = 2 , the first 2 LETTERS are AB\"\n[1] \"When i = 3 , the first 3 LETTERS are ABC\"\n[1] \"When i = 4 , the first 4 LETTERS are ABCD\"\n[1] \"When i = 5 , the first 5 LETTERS are ABCDE\"\n[1] \"When i = 6 , the first 6 LETTERS are ABCDEF\"\n[1] \"When i = 7 , the first 7 LETTERS are ABCDEFG\""
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#election-simulation",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#election-simulation",
+    "title": "13: Normal Distribution",
+    "section": "Election Simulation",
+    "text": "Election Simulation\n\nN &lt;- 1337 #number of simulations\n\nstart_time &lt;- Sys.time()\n\n# pre-allocate space for storing results\ntaco_share_vec &lt;- rep(NA, N)\n\nfor(i in 1:N){\n  df_election &lt;- df_election |&gt;\n  rowwise() |&gt;\n    mutate(picks = sample(c(\"Taco\", \"Sandwich\"), \n                          size = 1,\n                          prob = c(taco_prop, sandwich_prop)))\n  df_election &lt;- df_election |&gt;\n    mutate(picks_bool = ifelse(picks == \"Taco\", 1, 0))\n  \n  taco_share_vec[i] &lt;- sum(df_election$delegates * df_election$picks_bool) / sum(df_election$delegates)\n}\n\ndf_simulation &lt;- data.frame(iter = 1:N, taco_share_vec)\n\nprint(Sys.time() - start_time)\n\nTime difference of 6.510849 secs\n\n\n\n\n\n\n\n\nOn the computer processing of simulations\n\n\n\n\n\nIf your computer is older\n\ntook a while to draw maps\ntook a while to produce network visuals\n\nyou may reduce the number of iterations from 1337 to 201 (for example)."
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#visualize-the-simulation",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#visualize-the-simulation",
+    "title": "13: Normal Distribution",
+    "section": "Visualize the Simulation",
+    "text": "Visualize the Simulation\nNow, taco_share_vec is itself a numerical variable, so we can visualize its distribution with a histogram.\n\ndf_simulation |&gt;\n  ggplot(aes(x = taco_share_vec)) +\n  geom_histogram(bins = 20, color = princeton_black, fill = princeton_orange) +\n  geom_vline(xintercept = 0.5, color = \"#2A668F\", \n             linewidth = 3, linetype = 3) +\n  labs(title = \"Taco versus Sandwich!\",\n       subtitle = \"Simulated delegation voting of the residential colleges\",\n       caption = \"SML 201\",\n       x = \"taco vote share\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#simulation-statistics",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#simulation-statistics",
+    "title": "13: Normal Distribution",
+    "section": "Simulation Statistics",
+    "text": "Simulation Statistics\nTo wrap up this example,\n\n“Taco” had this vote share on average:\n\n\nmean(df_simulation$taco_share_vec)\n\n[1] 0.4101442\n\n\nTo compute how often “Taco” would win probabilistically, we could\n\ncount the iterations where taco_share_vec &gt; 0.50\ndivide by the number of iterations\n\n\nmean(df_simulation$taco_share_vec &gt; 0.50)\n\n[1] 0.2984293\n\n\nPreview: the standard error is the standard deviation of a sampling distribution.\n\nsd(df_simulation$taco_share_vec)\n\n[1] 0.1734641"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#density-plot",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#density-plot",
+    "title": "13: Normal Distribution",
+    "section": "Density Plot",
+    "text": "Density Plot\nNow, taco_share_vec is itself a numerical variable, so we can visualize its distribution with a denisty plot.\n\ndf_simulation |&gt;\n  ggplot(aes(x = taco_share_vec)) +\n  geom_density(color = princeton_black, fill = princeton_orange) +\n  geom_vline(xintercept = 0.5, color = \"#2A668F\", \n             linewidth = 3, linetype = 3) +\n  labs(title = \"Taco versus Sandwich!\",\n       subtitle = \"Simulated delegation voting of the residential colleges\",\n       caption = \"SML 201\",\n       x = \"taco vote share\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#examples",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#examples",
+    "title": "13: Normal Distribution",
+    "section": "Examples",
+    "text": "Examples\n\nFewerMoreBetweenCharacterize\n\n\n\n\nSuppose that the incubation period—that is, the time between being infected with the virus and showing symptoms—for Covid-19 is normally distributed with a mean of 8 days and a standard deviation of 3 days. Find the probability that a randomly selected case demonstrated symptoms in fewer than 7 days.\n\n\n\n\n\n\nCovid-19\n\n\n\nimage credit: University of Chicago\npnorm(7, 8, 3)\nvnorm(7, 8, 3)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGirl Scout Thin Mint cookies have a mean size of 0.25 ounces. Find the probability that one randomly selected cookie has a size of more than 0.27 ounces if the standard deviation is 0.03 ounces. Assume a normal distribution.\n\n\n\n\n\n\nThin Mints\n\n\n\npnorm(0.27, 0.25, 0.03, lower.tail = FALSE)\nvnorm(0.27, 0.25, 0.03, section = \"upper\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe cones in the eye detect light. The absorption rate of cones is normally distributed. In particular, the “green” cones have a mean of 535 nanometers and a standard deviation of 65 nanometers. If an incoming ray of light has wavelengths between 550 and 575 nanometers, calculate the percentage of that ray of light that will be absorbed by the green cones.\n\n\n\n\n\n\neye cones\n\n\n\npnorm(575, 535, 65) - pnorm(550, 535, 65)\nvnorm(c(550, 575), 535, 65, section = \"between\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSuppose that the number of french fries in the batches at In-n-Out are normally distributed with a mean of 42 french fries and a standard deviation of 3.7 french fries. Your friend tells you that the In-n-Out employee is flirting with you if you end up with a french fry count in the top 5 percent. How should we characterize the top 5 percent of french fries?\n\n\n\n\n\n\nDouble Double\n\n\n\nqnorm(0.95, 42, 3.7)\nvnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = \"upper\")"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#toward-significance",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#toward-significance",
+    "title": "13: Normal Distribution",
+    "section": "Toward Significance",
+    "text": "Toward Significance\nTraditionally, scientists sought out extreme values among the 5 percent probability combined in the tails. What are the MCV levels for these regions?\n\nqnorm(c(0.025, 0.975), 90, 5)\n\n[1] 80.20018 99.79982\n\n\n\nvnorm(qnorm(c(0.025, 0.975), 90, 5), \n      90, 5, section = \"tails\") +\n  labs(title = \"Two-Tailed Significance\",\n       x = \"fL/cell\")"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#simulation-1",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#simulation-1",
+    "title": "13: Normal Distribution",
+    "section": "Simulation",
+    "text": "Simulation\nSuppose that we have 10000 patients whose MCV has mean \\(\\mu = 90\\) fL/cell with a standard deviation of \\(\\sigma = 5\\) fL/cell. From the simulation, what percentage of patients were in each diagnosis category (reference range, microcyctic anemia, macrocyctic anemia)?\n\nnum_patients &lt;- 1e5\ndf_mcv &lt;- data.frame(\n  id = 1:num_patients,\n  mcv = rnorm(num_patients, 90, 5)\n)\n\n\ndf_mcv &lt;- df_mcv |&gt;\n  mutate(diagnosis = case_when(\n    mcv &gt;= 96 ~ \"macrocyctic anemia\",\n    mcv &lt;= 80 ~ \"microcyctic anemia\",\n    .default = \"reference range\"\n  ))\n\n\n# janitor package helps find proportions\ndf_mcv |&gt;\n  tabyl(diagnosis) |&gt;\n  adorn_totals(\"row\") |&gt;\n  adorn_pct_formatting()\n\n          diagnosis      n percent\n macrocyctic anemia  11542   11.5%\n microcyctic anemia   2208    2.2%\n    reference range  86250   86.2%\n              Total 100000  100.0%"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#exogenous",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#exogenous",
+    "title": "13: Normal Distribution",
+    "section": "Exogenous",
+    "text": "Exogenous\nSuppose that we have 10000 patients from a different population whose MCV has mean \\(\\mu = 88\\) fL/cell with a standard deviation of \\(\\sigma = 3\\) fL/cell. From the simulation, what percentage of patients were in each diagnosis category (reference range, microcyctic anemia, macrocyctic anemia)?\n\ndf_mcv &lt;- df_mcv |&gt;\n  mutate(mcv2 = rnorm(num_patients, 88, 3))\n\n\ndf_mcv &lt;- df_mcv |&gt;\n  mutate(diagnosis2 = case_when(\n    mcv2 &gt;= 96 ~ \"macrocyctic anemia\",\n    mcv2 &lt;= 80 ~ \"microcyctic anemia\",\n    .default = \"reference range\"\n  ))\n\ndf_mcv |&gt;\n  tabyl(diagnosis2) |&gt;\n  adorn_totals(\"row\") |&gt;\n  adorn_pct_formatting()\n\n         diagnosis2      n percent\n macrocyctic anemia    396    0.4%\n microcyctic anemia    373    0.4%\n    reference range  99231   99.2%\n              Total 100000  100.0%"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#gaussian-white-noise",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#gaussian-white-noise",
+    "title": "13: Normal Distribution",
+    "section": "Gaussian White Noise",
+    "text": "Gaussian White Noise\n\nn &lt;- 201 #number of data points\nx_vals &lt;- 1:n\ny_vals &lt;- 0.201*x_vals + rnorm(n, 0, 3)\n\ngraph_noise(x_vals, y_vals)"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#polynomials",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#polynomials",
+    "title": "13: Normal Distribution",
+    "section": "Polynomials",
+    "text": "Polynomials\n\nn &lt;- 201 #number of data points\nx_vals &lt;- 1:n\ny_vals &lt;- (x_vals - n/2)^2 + rnorm(n, 0, 2*n)\n\ngraph_noise(x_vals, y_vals)"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#seasonal",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#seasonal",
+    "title": "13: Normal Distribution",
+    "section": "Seasonal",
+    "text": "Seasonal\n\nn &lt;- 201 #number of data points\nx_vals &lt;- 1:n\ny_vals &lt;- sin((2*pi/75)*x_vals) + rnorm(n, 0, 0.201)\n\ngraph_noise(x_vals, y_vals)"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#heteroscedasticity",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#heteroscedasticity",
+    "title": "13: Normal Distribution",
+    "section": "Heteroscedasticity",
+    "text": "Heteroscedasticity\nHeteroscedasticity is a situation where we can no longer assume that the variance is the same for all observations.\n\nn &lt;- 201 #number of data points\nx_vals &lt;- 1:n\ny_vals &lt;- 0.201*x_vals + 100 +\n  rnorm(n, 0, x_vals/10)\n\ngraph_noise(x_vals, y_vals) +\n  labs(title = \"Heteroscedasticity\")"
+  },
+  {
+    "objectID": "posts/13_normal_distribution/13_normal_distribution.html#grading-curves",
+    "href": "posts/13_normal_distribution/13_normal_distribution.html#grading-curves",
+    "title": "13: Normal Distribution",
+    "section": "Grading Curves",
+    "text": "Grading Curves\n\nSetupScenario 1Scenario 2ComparisonCodes\n\n\nIn a past teaching job, Derek would apply a grading curve as follows:\n\n“A” to the top 9 percentile\n“A-” to the next 9 percentile\netc.\n\n\n\nSuppose that a class of Calculus students took an exam and the grading yielded a sample average of \\(\\bar{x} = 70\\) and a sample standard deviation of \\(s = 15\\) percentage points. Derek’s curve would look like\n\n\n\n\n\n\n\n\n\n\n\nOn a recent exam, data science students had a sample average of \\(\\bar{x} = 60\\) and a sample standard deviation of \\(s = 4.97\\) percentage points. Derek’s curve would look like\n\n\n\n\n\n\n\n\n\n\n\n\n# patchwork\np1 / p2\n\n\n\n\n\n\n\n\n\n\n\nxbar &lt;- 70\ns &lt;- 15\n\ncurve_percentiles &lt;- seq(28, 100, by = 9)/100\nbreakpoints &lt;- qnorm(curve_percentiles, xbar, s)\ndf_vert &lt;- data.frame(\n  x_breakpoints = breakpoints,\n  y_breakpoints = dnorm(breakpoints, xbar, s)\n)\n\np1 &lt;- vnorm(qnorm(0.28, xbar, s), xbar, s, section = \"upper\") +\n  geom_segment(aes(x = x_breakpoints, \n                   y = 0,\n                   xend = x_breakpoints, \n                   yend = y_breakpoints),\n               data = df_vert) +\n  labs(title = \"Grading Curve for a Hypothetical Exam\",\n       x = \"percent\") +\n  scale_x_continuous(\n    breaks = breakpoints,\n    labels = c(\"C-\", \"C\", \"C+\", \"B-\", \"B\", \"B+\", \"A-\", \"A\", \"\"),\n    limits = c(50, 100)\n  )\n\np1\n\n\nxbar &lt;- 90.38\ns &lt;- 8.28\n\ncurve_percentiles &lt;- seq(28, 100, by = 9)/100\nbreakpoints &lt;- qnorm(curve_percentiles, xbar, s)\ndf_vert &lt;- data.frame(\n  x_breakpoints = breakpoints,\n  y_breakpoints = dnorm(breakpoints, xbar, s)\n)\n\np2 &lt;- vnorm(qnorm(0.28, xbar, s), xbar, s, section = \"upper\") +\n  geom_segment(aes(x = x_breakpoints, \n                   y = 0,\n                   xend = x_breakpoints, \n                   yend = y_breakpoints),\n               data = df_vert) +\n  labs(title = \"Grading Curve for Exam 1\",\n       x = \"percent\") +\n  scale_x_continuous(\n    breaks = breakpoints,\n    labels = c(\"C-\", \"C\", \"C+\", \"B-\", \"B\", \"B+\", \"A-\", \"A\", \"\"),\n    limits = c(50, 100)\n  )\n\np2"
   }
 ]
