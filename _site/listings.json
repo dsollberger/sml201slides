@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/14_estimators/14_estimators.html",
       "/posts/13_normal_distribution/13_normal_distribution.html",
       "/posts/12_binomial_distribution/12_binomial_distribution.html",
       "/posts/11_nonlinear_regression/11_nonlinear_regression.html",
