@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -1993,5 +1993,159 @@
     "title": "14: Estimators",
     "section": "Average Observation",
     "text": "Average Observation\n\nWhat is the probability that the average duration of your 28 jobs is less than 57 minutes?\n\n\npnorm(57, 60, 10/sqrt(28))\n\n[1] 0.05620529\n\n\n\nvnorm(57, 60, 10/sqrt(28)) +\n  labs(title = \"Campus Computing Example (n = 28 jobs)\") +\n  xlim(20, 100)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntuition\n\n\n\nAs the sample size (\\(n\\)) increases, it is less likely to observe an average in the tails of a normal distribution."
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html",
+    "title": "15: Confidence Intervals",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"bayesrules\") #data set: Pulse of the Nation\nlibrary(\"ggimage\")    #customize images for scatterpoint points\nlibrary(\"ggtext\")     #adorn ggplot text\nlibrary(\"gt\")         #great tables\nlibrary(\"infer\")      #streamlined code for inference tasks\nlibrary(\"janitor\")    #compute proportions easily\nlibrary(\"tidyverse\")  #tools for data wrangling and visualization\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: Pulse of the Nation\ndata(pulse_of_the_nation)\npulse_df &lt;- pulse_of_the_nation\n\n# data set: SML 201 demographics survey\ndemo_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv\")\n\n\n# helper function\nvnorm &lt;- function(x, mu = 0, sigma = 1, section = \"lower\"){\n  \n  # bell curve\n  x_vals &lt;- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)\n  y_vals &lt;- dnorm(x_vals, mu, sigma)\n  df_for_graph &lt;- data.frame(x_vals, y_vals)\n\n  # outline shaded regions\n  if(length(x) == 1){\n    shade_left &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]))\n    shade_right &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &gt; x[1]))\n  }\n  if(length(x) == 2){\n    shade_between &lt;- rbind(c(x[1],0),\n                       df_for_graph |&gt;\n                         filter(x_vals &gt; x[1] &\n                                  x_vals &lt; x[2]),\n                       c(x[2],0))\n    shade_tails &lt;- rbind(df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]),\n                     c(x[1],0),\n                     c(x[2],0),\n                     df_for_graph |&gt;\n                        filter(x_vals &gt; x[2]))\n  }\n  if(section == \"lower\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_left,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"upper\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_right,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- 1 - round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"between\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_between,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(diff(pnorm(x,mu,sigma)), 4)\n  }\n  if(section == \"tails\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_tails,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(1 - diff(pnorm(x,mu,sigma)), 4)\n  }\n  \n  # plot bell curve\n  bell_curve + \n    labs(subtitle = paste0(\"Probability: \", prob_val),\n         caption = \"SML 201\", y = \"\") +\n    theme_minimal()\n}\n\n\n\n\n\n\n\n\n\nGoal: Estimate unknown population statistics\nObjective: Deploy and interpret confidence intervals\n\n\n\n\n\n\n\nGhostbusters (1984)"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#start",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#start",
+    "title": "15: Confidence Intervals",
+    "section": "",
+    "text": "Goal: Estimate unknown population statistics\nObjective: Deploy and interpret confidence intervals\n\n\n\n\n\n\n\nGhostbusters (1984)"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-believe-in-ghosts",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-believe-in-ghosts",
+    "title": "15: Confidence Intervals",
+    "section": "Scenario: Believe in Ghosts?",
+    "text": "Scenario: Believe in Ghosts?\n\nQueryData\n\n\n\n\n\n\n\nRay Stantz\n\n\n\n\n\nWhat proportion of people believe that ghosts exist?\n\n\n\n\n\n\n\nsource: Pulse of the Nation survey by Cards Against Humanity\nPoll 1: September 2017\n1000 observations\n15 variables\n\n\n\n\n\n\n\nPulse of the Nation"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#normal-distribution",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#normal-distribution",
+    "title": "15: Confidence Intervals",
+    "section": "Normal Distribution",
+    "text": "Normal Distribution\n\n\n\nWalter Peck wants estimates to have at least 95 percent confidence!\n\n# 2.5 and 97.5 percentiles\nqnorm(c(0.025, 0.975))\n\n[1] -1.959964  1.959964\n\n\n\n\n\n\nvnorm(qnorm(c(0.025, 0.975)), section = \"between\") +\n  annotate(\"text\", x = 0, y = 0.2, label = \"95%\", \n           color = \"white\", size = 15) +\n  labs(title = \"Extracting a 95 Percent Interval\",\n       x = \"z\") +\n  scale_x_continuous(breaks = c(-1.96, 1.96),\n                     labels = c(-1.96, 1.96))"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#sample-proportion",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#sample-proportion",
+    "title": "15: Confidence Intervals",
+    "section": "Sample Proportion",
+    "text": "Sample Proportion\n\nDisplayCode\n\n\n\n\n\n\n ghosts    n percent\n     No  621   62.1%\n    Yes  379   37.9%\n  Total 1000  100.0%\n\n\n\\[\\hat{p} = 0.379\\] \\[n = 1000\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npulse_df |&gt;\n  tabyl(ghosts) |&gt;\n  adorn_totals(\"row\") |&gt;\n  adorn_pct_formatting()\n\ntitle_string &lt;- \"&lt;span style = 'color:#23b63c'&gt;Believes that Ghosts Exist&lt;/span&gt;&lt;br&gt;versus&lt;br&gt;&lt;span style = 'color:#ea0000'&gt;Doesn't Believe that Ghosts Exist&lt;/span&gt;\"\n\npulse_df |&gt;\n  ggplot() +\n  geom_bar(aes(x = ghosts, fill = ghosts)) +\n  annotate(\"text\", x = c(\"No\", \"Yes\"), y = c(310, 170), \n           label = c(\"62%\", \"38%\"), \n           color = \"white\", size = 15) +\n  labs(title = title_string,\n       caption = \"SML 201\") +\n  scale_fill_manual(values = c(\"#ea0000\", \"#23b63c\")) +\n  theme_minimal() +\n  theme(legend.position = \"none\",\n        plot.title = element_markdown(hjust = 0.5,\n                                      face = \"bold\",\n                                      size = 20))"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#confidence-interval-for-a-proportion",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#confidence-interval-for-a-proportion",
+    "title": "15: Confidence Intervals",
+    "section": "Confidence Interval for a Proportion",
+    "text": "Confidence Interval for a Proportion\n\nMathR\n\n\n\\[\\hat{p} \\pm E, \\quad\\text{where } E = z_{\\alpha/2}*\\sqrt{\\frac{\\hat{p}(1 - \\hat{p})}{n}} \\text{ and } z_{\\alpha/2} \\approx 1.96\\]\n\\[\\left(0.3489, 0.4091\\right)\\]\nWe are 95 percent confident that the true population proportion of Americans that believe in ghosts is in between 34.89 and 40.91 percent.\n\n\n\n# sample statistics\nphat &lt;- mean(pulse_df$ghosts == \"Yes\")\nn &lt;- sum(!is.na(pulse_df$ghosts))\n\n# margin of error\nE &lt;- qnorm(0.975)*sqrt((phat*(1-phat))/n)\n\n# confidence interval\nphat + c(-1,1)*E\n\n[1] 0.3489314 0.4090686"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-how-old-are-you",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-how-old-are-you",
+    "title": "15: Confidence Intervals",
+    "section": "Scenario: How Old Are You?",
+    "text": "Scenario: How Old Are You?\n\n\n\n\n\nDana Barrett\n\n\n\n\n\nAmong the people that believe in ghosts, how old are you?\n\n\n\nDisplayCode\n\n\n\n\n\n\n# A tibble: 2 × 3\n  ghosts  xbar     n\n  &lt;fct&gt;  &lt;dbl&gt; &lt;int&gt;\n1 No      50.3   621\n2 Yes     48.0   379\n\n\n\\[\\bar{x} \\approx 47.9525\\] \\[n = 379\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npulse_df |&gt;\n  group_by(ghosts) |&gt;\n  summarize(xbar = mean(age, na.rm = TRUE),\n            n = n())\n\ntitle_string &lt;- \"&lt;span style = 'color:#23b63c'&gt;Believes that Ghosts Exist&lt;/span&gt;&lt;br&gt;versus&lt;br&gt;&lt;span style = 'color:#ea0000'&gt;Doesn't Believe that Ghosts Exist&lt;/span&gt;\"\n\npulse_df |&gt;\n  ggplot() +\n  geom_density(aes(x = age, fill = ghosts),\n               alpha = 0.5) +\n  labs(title = title_string,\n       caption = \"SML 201\") +\n  scale_fill_manual(values = c(\"#ea0000\", \"#23b63c\")) +\n  theme_minimal() +\n  theme(legend.position = \"none\",\n        plot.title = element_markdown(hjust = 0.5,\n                                      face = \"bold\",\n                                      size = 20))"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#confidence-interval-for-a-mean",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#confidence-interval-for-a-mean",
+    "title": "15: Confidence Intervals",
+    "section": "Confidence Interval for a Mean",
+    "text": "Confidence Interval for a Mean\n\nMathR\n\n\n\\[\\bar{x} \\pm E, \\quad\\text{where } E = t_{\\alpha/2}*\\frac{s}{n}\\]\n\\[\\left(46.3651, 49.5399\\right)\\]\nWe are 95 percent confident that the true population mean age for people that believe ghosts exist is in between 46.37 and 49.54 years old.\n\n\n\n# subset\nghosts_yes &lt;- pulse_df |&gt; filter(ghosts == \"Yes\")\n\n# sample statistics\nxbar &lt;- mean(ghosts_yes$age, na.rm = TRUE)\ns &lt;- sd(ghosts_yes$age, na.rm = TRUE)\nn &lt;- sum(!is.na(ghosts_yes$age))\n\n# margin of error (here: \"df\" are degrees of freedom)\nE &lt;- qt(0.975, df = n - 1)*s/sqrt(n)\n\n# confidence interval\nxbar + c(-1,1)*E\n\n[1] 46.36511 49.53991"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#student-t-distribution",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#student-t-distribution",
+    "title": "15: Confidence Intervals",
+    "section": "Student t Distribution",
+    "text": "Student t Distribution\n\nIdeaGossetdf\n\n\nThe Student t distribution is an abstraction of the standard normal distribution that adjusts with wider tails to allow for more probability in the tails\n\n\n\nt distribution\n\n\n\n\n\n\n\nWilliam Sealy Gosset\n\n\n\n\nIn advanced statistics, such as the adjusted \\(R^{2}\\) calculation for the coefficient of determination, the degrees of freedom are the difference between\n\nnumber of observations in the data\nnumber of independent variables being modeled\n\nFor this setting—estimating the true population mean—the degrees of freedom are simply\n\\[df = n - 1\\]\n\n\n\n\n\n\n\n\n\nLeaving the t distribution behind\n\n\n\nFor these calculations\n\\[\\bar{x} \\pm E, \\quad\\text{where } E = t_{\\alpha/2}*\\frac{s}{n}\\]\n\nrely more on summary statistics rather than all of the gathered data\n“degrees of freedom” is a rather convoluted notion\nt-distribution is itself an approximation\nleads to more reliance on abstract probability distributions\ndeparts from frequentist probability philosophy\nmore useful before calculators and computers"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-princeton-politics",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-princeton-politics",
+    "title": "15: Confidence Intervals",
+    "section": "Scenario: Princeton Politics",
+    "text": "Scenario: Princeton Politics\nThe survey question was\n\nOn a scale of 0 to 100—with 0 = Democrat and 100 = Republican—where are your political leanings?"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#bootstrap-distribution",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#bootstrap-distribution",
+    "title": "15: Confidence Intervals",
+    "section": "Bootstrap Distribution",
+    "text": "Bootstrap Distribution\n\nset.seed(201)\nbootstrap_distribution &lt;- demo_df |&gt;\n  specify(response = politics) |&gt;\n  generate(reps = 1000, type = \"bootstrap\") |&gt;\n  calculate(stat = \"mean\")\n\nWarning: Removed 16 rows containing missing values."
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#endpoints-standard-error",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#endpoints-standard-error",
+    "title": "15: Confidence Intervals",
+    "section": "Endpoints (Standard Error)",
+    "text": "Endpoints (Standard Error)\n\nxbar &lt;- mean(demo_df$politics, na.rm = TRUE)\nse_ci &lt;- bootstrap_distribution |&gt;\n  get_confidence_interval(level = 0.95,\n                          type = \"se\", \n                          point_estimate = xbar)"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#visualization",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#visualization",
+    "title": "15: Confidence Intervals",
+    "section": "Visualization",
+    "text": "Visualization\n\nbootstrap_distribution |&gt;\n  visualize() +\n  shade_confidence_interval(endpoints = se_ci,\n                            color = princeton_black,\n                            fill = princeton_orange) +\n  labs(title = \"Political Leanings of Princeton Students\",\n       subtitle = \"Fall 2024\",\n       caption = \"SML 201\",\n       x = \"0: Democrat ... 100: Republican\") +\n  theme_minimal() +\n  xlim(0, 100)"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#inference",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#inference",
+    "title": "15: Confidence Intervals",
+    "section": "Inference",
+    "text": "Inference\n\nprint(round(se_ci))\n\n# A tibble: 1 × 2\n  lower_ci upper_ci\n     &lt;dbl&gt;    &lt;dbl&gt;\n1       30       38\n\n\nIn this survey question, “On a scale of 0 to 100—with 0 = Democrat and 100 = Republican—where are your political leanings?”, we are 95 percent confident that the true population mean for Princeton students is in between 30 and 38.\n\n\n\n\n\n\nDiscussion\n\n\n\nThis was a survey among SML 201 students\n\nnot a representative or random sample of Princeton students\nself-reported data"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-pineapple-on-pizza",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-pineapple-on-pizza",
+    "title": "15: Confidence Intervals",
+    "section": "Scenario: Pineapple on Pizza",
+    "text": "Scenario: Pineapple on Pizza\nThe sample proportions (among those who were adamant) were\n\ndemo_df |&gt;\n  filter(pineapplePizza %in% c(\"No!\", \"Yes!\")) |&gt;\n  tabyl(pineapplePizza) |&gt;\n  adorn_totals(\"row\") |&gt;\n  adorn_pct_formatting()\n\n pineapplePizza  n percent\n            No! 32   43.8%\n           Yes! 41   56.2%\n          Total 73  100.0%"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#bootstrap-distribution-1",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#bootstrap-distribution-1",
+    "title": "15: Confidence Intervals",
+    "section": "Bootstrap Distribution",
+    "text": "Bootstrap Distribution\n\nset.seed(201)\nbootstrap_distribution &lt;- demo_df |&gt;\n  filter(pineapplePizza %in% c(\"No!\", \"Yes!\")) |&gt;\n  specify(response = pineapplePizza, success= \"Yes!\") |&gt;\n  generate(reps = 1000, type = \"bootstrap\") |&gt;\n  calculate(stat = \"prop\")"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#endpoints-percentile",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#endpoints-percentile",
+    "title": "15: Confidence Intervals",
+    "section": "Endpoints (Percentile)",
+    "text": "Endpoints (Percentile)\nBuilding the confidence interval from percentiles is perhaps more reasonable than using the standard errors (and less code too).\n\nper_ci &lt;- bootstrap_distribution |&gt;\n  get_ci(level = 0.95, type = \"percentile\")"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#visualization-1",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#visualization-1",
+    "title": "15: Confidence Intervals",
+    "section": "Visualization",
+    "text": "Visualization\n\nbootstrap_distribution |&gt;\n  visualize() +\n  shade_ci(per_ci, \n           color = princeton_black, fill = princeton_orange)"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#inference-1",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#inference-1",
+    "title": "15: Confidence Intervals",
+    "section": "Inference",
+    "text": "Inference\n\nbootstrap_distribution |&gt; get_ci()\n\n# A tibble: 1 × 2\n  lower_ci upper_ci\n     &lt;dbl&gt;    &lt;dbl&gt;\n1    0.438    0.671\n\n\nAmong the Princeton students who have a strong opinion on whether or not pineapple is a good pizza topping, we are 95 percent confident that the true population proportion of students who like pineapple on pizza is in between 44 and 67 percent.\n\n\n\n\n\n\nDiscussion\n\n\n\nThis was a survey among SML 201 students\n\nrelatively smaller sample size (n = 73 students)\nSince 0.5 is contained within the confidence interval, this result is not significally different than simply flipping a fair coin."
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-20-ghosts",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#scenario-20-ghosts",
+    "title": "15: Confidence Intervals",
+    "section": "Scenario: 20 Ghosts",
+    "text": "Scenario: 20 Ghosts\n\n\n\n\n\nLouis Tully\n\n\n\n\n\nRemember when we faced the Dungeon Master and their army of 20 ghosts? Under the equal probabilities of a uniform distribution, we knew that we would face off against \\(\\mu = 10.5\\) ghosts, on average.\n\n\n\n\n\n\nd20"
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#experiment",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#experiment",
+    "title": "15: Confidence Intervals",
+    "section": "Experiment",
+    "text": "Experiment\n\n\n\n\n\nEgon Spengler\n\n\n\n\n\nWe could resample the outcome space and see what proportion of confidence intervals capture the [population mean] ghost."
+  },
+  {
+    "objectID": "posts/15_confidence_intervals/15_confidence_intervals.html#simulation",
+    "href": "posts/15_confidence_intervals/15_confidence_intervals.html#simulation",
+    "title": "15: Confidence Intervals",
+    "section": "Simulation",
+    "text": "Simulation\n\nAnimationCode\n\n\n\n\n\nCI animation\n\n\n\n\n\nset.seed(201)\n# d20\nd20_df &lt;- data.frame(d20_outcomes = 1:20)\n\n# create data frame and allocate space\ndf_for_graph &lt;- data.frame(\n  id = 1:26,\n  a = rep(NA, 26),\n  b = rep(NA, 26),\n  result = rep(NA, 26),\n  result_color = rep(NA, 26)\n)\n\nfor(i in 1:26){\n  # bootstrap_distribution &lt;- d20_df |&gt;\n  #   specify(response = d20_outcomes) |&gt;\n  #   generate(reps = 50, type = \"bootstrap\") |&gt;\n  #   calculate(stat = \"mean\")\n  # CI &lt;- bootstrap_distribution |&gt; get_ci()\n  \n  this_sample &lt;- sample(1:20, size = 10, replace = TRUE)\n  xbar &lt;- mean(this_sample)\n  s &lt;- sd(this_sample)\n  n &lt;- length(this_sample)\n  E &lt;- qt(0.975, df = n-1)*s/sqrt(n)\n  \n  \n  # df_for_graph$a[i] &lt;- unlist(CI[1])\n  # df_for_graph$b[i] &lt;- unlist(CI[2])\n  df_for_graph$a[i] &lt;- xbar - E\n  df_for_graph$b[i] &lt;- xbar + E\n  df_for_graph$result[i] &lt;- ifelse(\n    df_for_graph$a[i] &lt; 10.5 & 10.5 &lt; df_for_graph$b[i],\n    \"captured\",\n    \"not captured\"\n  )\n  df_for_graph$result_color[i] &lt;- ifelse(\n    df_for_graph$a[i] &lt; 10.5 & 10.5 &lt; df_for_graph$b[i],\n    \"#23b63c\",\n    \"#ea0000\"\n  )\n  \n  capture_rate &lt;- mean(df_for_graph$result == \"captured\",\n                       na.rm = TRUE)\n  \n  this_plot &lt;- df_for_graph |&gt;\n    filter(id %in% 1:i) |&gt;\n    ggplot() +\n    # geom_vline(aes(xintercept = 10.5), \n    #            color = \"#ab9f8f\", linewidth = 2) +\n    geom_segment(aes(x = a, y = id, \n                     xend = b, yend = id,\n                     color = result_color)) +\n    geom_point(aes(x = a, y = id, color = result_color),\n               size = 3) +\n    geom_point(aes(x = b, y = id, color = result_color),\n               size = 3) +\n    geom_image(aes(x = 10.5, y = id),\n               image = \"ghostbusters_ghost.png\") +\n    labs(title = \"Confidence Intervals\",\n         subtitle = paste0(\"capture rate: \",\n                           round(100*capture_rate, 2),\n                           \" percent\"),\n         caption = \"SML 201\",\n         x = \"ghosts\", y = \"interval number\") +\n    scale_color_manual(values = c(\"#23b63c\", \"#ea0000\")) +\n    theme_minimal() +\n    theme(legend.position = \"none\")\n  \n  ggsave(paste0(\"images/CI_plot\", LETTERS[i], \".png\"), this_plot)\n}\n\npng_files &lt;- Sys.glob(\"images/CI_plot*.png\")\n\ngifski::gifski(\n  png_files,\n  \"CI_animation.gif\",    #output file name\n  height = 1600, width = 1600, #you may change the resolution\n  delay = 1/2                #seconds\n)"
   }
 ]
