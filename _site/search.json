@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -2147,5 +2147,159 @@
     "title": "15: Confidence Intervals",
     "section": "Simulation",
     "text": "Simulation\n\nAnimationCode\n\n\n\n\n\nCI animation\n\n\n\n\n\nset.seed(201)\n# d20\nd20_df &lt;- data.frame(d20_outcomes = 1:20)\n\n# create data frame and allocate space\ndf_for_graph &lt;- data.frame(\n  id = 1:26,\n  a = rep(NA, 26),\n  b = rep(NA, 26),\n  result = rep(NA, 26),\n  result_color = rep(NA, 26)\n)\n\nfor(i in 1:26){\n  # bootstrap_distribution &lt;- d20_df |&gt;\n  #   specify(response = d20_outcomes) |&gt;\n  #   generate(reps = 50, type = \"bootstrap\") |&gt;\n  #   calculate(stat = \"mean\")\n  # CI &lt;- bootstrap_distribution |&gt; get_ci()\n  \n  this_sample &lt;- sample(1:20, size = 10, replace = TRUE)\n  xbar &lt;- mean(this_sample)\n  s &lt;- sd(this_sample)\n  n &lt;- length(this_sample)\n  E &lt;- qt(0.975, df = n-1)*s/sqrt(n)\n  \n  \n  # df_for_graph$a[i] &lt;- unlist(CI[1])\n  # df_for_graph$b[i] &lt;- unlist(CI[2])\n  df_for_graph$a[i] &lt;- xbar - E\n  df_for_graph$b[i] &lt;- xbar + E\n  df_for_graph$result[i] &lt;- ifelse(\n    df_for_graph$a[i] &lt; 10.5 & 10.5 &lt; df_for_graph$b[i],\n    \"captured\",\n    \"not captured\"\n  )\n  df_for_graph$result_color[i] &lt;- ifelse(\n    df_for_graph$a[i] &lt; 10.5 & 10.5 &lt; df_for_graph$b[i],\n    \"#23b63c\",\n    \"#ea0000\"\n  )\n  \n  capture_rate &lt;- mean(df_for_graph$result == \"captured\",\n                       na.rm = TRUE)\n  \n  this_plot &lt;- df_for_graph |&gt;\n    filter(id %in% 1:i) |&gt;\n    ggplot() +\n    # geom_vline(aes(xintercept = 10.5), \n    #            color = \"#ab9f8f\", linewidth = 2) +\n    geom_segment(aes(x = a, y = id, \n                     xend = b, yend = id,\n                     color = result_color)) +\n    geom_point(aes(x = a, y = id, color = result_color),\n               size = 3) +\n    geom_point(aes(x = b, y = id, color = result_color),\n               size = 3) +\n    geom_image(aes(x = 10.5, y = id),\n               image = \"ghostbusters_ghost.png\") +\n    labs(title = \"Confidence Intervals\",\n         subtitle = paste0(\"capture rate: \",\n                           round(100*capture_rate, 2),\n                           \" percent\"),\n         caption = \"SML 201\",\n         x = \"ghosts\", y = \"interval number\") +\n    scale_color_manual(values = c(\"#23b63c\", \"#ea0000\")) +\n    theme_minimal() +\n    theme(legend.position = \"none\")\n  \n  ggsave(paste0(\"images/CI_plot\", LETTERS[i], \".png\"), this_plot)\n}\n\npng_files &lt;- Sys.glob(\"images/CI_plot*.png\")\n\ngifski::gifski(\n  png_files,\n  \"CI_animation.gif\",    #output file name\n  height = 1600, width = 1600, #you may change the resolution\n  delay = 1/2                #seconds\n)"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"infer\")         #pipeline workflow for hypothesis testing\nlibrary(\"janitor\")       #compute proportions easily\nlibrary(\"moderndive\")    #textbook's package and data\nlibrary(\"patchwork\")     #easily let's me show graphs side-by-side\nlibrary(\"tidyverse\")     #the overall programming style universe\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: SML 201 demographics survey\ndemo_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv\")\n\n# helper function\nvnorm &lt;- function(x, mu = 0, sigma = 1, section = \"lower\"){\n  \n  # bell curve\n  x_vals &lt;- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)\n  y_vals &lt;- dnorm(x_vals, mu, sigma)\n  df_for_graph &lt;- data.frame(x_vals, y_vals)\n\n  # outline shaded regions\n  if(length(x) == 1){\n    shade_left &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]))\n    shade_right &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &gt; x[1]))\n  }\n  if(length(x) == 2){\n    shade_between &lt;- rbind(c(x[1],0),\n                       df_for_graph |&gt;\n                         filter(x_vals &gt; x[1] &\n                                  x_vals &lt; x[2]),\n                       c(x[2],0))\n    shade_tails &lt;- rbind(df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]),\n                     c(x[1],0),\n                     c(x[2],0),\n                     df_for_graph |&gt;\n                        filter(x_vals &gt; x[2]))\n  }\n  if(section == \"lower\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_left,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"upper\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_right,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- 1 - round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"between\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_between,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(diff(pnorm(x,mu,sigma)), 4)\n  }\n  if(section == \"tails\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_tails,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(1 - diff(pnorm(x,mu,sigma)), 4)\n  }\n  \n  # plot bell curve\n  bell_curve + \n    labs(subtitle = paste0(\"Probability: \", prob_val),\n         caption = \"SML 201\", y = \"\") +\n    theme_minimal()\n}\n\n\n\n\n\n\n\n\n\nGoal: Explore hypothesis testing and one-sided tests\nObjective: Deploy t-tests and null distributions"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#start",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#start",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "",
+    "text": "Goal: Explore hypothesis testing and one-sided tests\nObjective: Deploy t-tests and null distributions"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#stacked-bar-chart",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#stacked-bar-chart",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Stacked Bar Chart",
+    "text": "Stacked Bar Chart\n\nplotcode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\npromotions |&gt;\n  ggplot(aes(x = gender)) +\n  geom_bar(aes(fill = decision),\n           stat = \"count\") +\n  labs(title = \"Bank Promotions Study\",\n       subtitle = \"Identical resumes except for applicant name\",\n       caption = \"Source: Journal of Applied Psychology\",\n       x = \"Gender of name on resume\") +\n  theme_minimal(base_size = 16)"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-proportions",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-proportions",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Observed Proportions",
+    "text": "Observed Proportions\n\nCross Tabulationpercentagescode\n\n\n\n\n gender not promoted\n   male   3       21\n female  10       14\n\n\n\n\n\n\n gender    not promoted\n   male 12.50%   87.50%\n female 41.67%   58.33%\n\n\n\n\n\npromotions |&gt;\n  tabyl(gender, decision) |&gt;\n  adorn_percentages(\"row\") |&gt;\n  adorn_pct_formatting(digits = 2)\n\n\n\n\n\nmale promotion rate: 21/24 = 0.875\nfemale promotion rate: 14/24 = 0.583\ndifference in rates: 0.875 - 0.583 = 0.292\n\n\\[\\hat{p}_{m} - \\hat{p}_{f} = 0.292\\]"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#permutation-test",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#permutation-test",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Permutation Test",
+    "text": "Permutation Test\n\n\n\n\n\n\nKey Observation\n\n\n\nIf gender did not matter when it comes to these job promotions, then it should not matter if we shuffle the gender labels in the data."
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#shuffling",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#shuffling",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Shuffling",
+    "text": "Shuffling\n\npatchworkcode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\noriginal_bar_graph &lt;- ggplot(promotions, aes(x = gender, fill = decision)) +\n  geom_bar() +\n  labs(title = \"original\",\n       x = \"Gender of name on resume\") +\n  theme(legend.position = \"none\")\n\ngender_shuffled &lt;- promotions\n\nset.seed(20241104)\ngender_shuffled$gender &lt;- sample(promotions$gender) \n#sampled without replacement\n\nshuffled_bar_graph &lt;- gender_shuffled %&gt;%\n  ggplot(aes(x = gender, fill = decision)) +\n  geom_bar() +\n  labs(title = \"shuffled\",\n       x = \"Gender of name on resume\")\n\n# patchwork\noriginal_bar_graph + shuffled_bar_graph"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#hypothesis-test-of-proportions",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#hypothesis-test-of-proportions",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Hypothesis Test of Proportions",
+    "text": "Hypothesis Test of Proportions\n\n123456\n\n\n“First, a hypothesis is a statement about the value of an unknown population parameter. In our resume activity, our population parameter is the difference in population proportions \\(p_{m} - p_{f}\\)”\n\n\n“Second, a hypothesis test consists of a test between two competing hypotheses … Generally the null hypothesis is a claim that there really is ‘no effect’ or ‘no difference.’” Here our null hypothesis is\n\n\\(H_{0}\\): men and women are promoted at the same rate\n\n“Generally the alternative hypothesis is the claim the experimenter or researcher wants to establish or find evidence for and is viewed as a ‘challenger’ hypothesis to the null hypothesis”. Here our alternative hypothesis is\n\n\\(H_{a}\\): men are promoted at a higher rate than women\n\nIn math symbols, we have\n\\[\\begin{array}{rrcl}\n  H_{o}: p_{m} - p_{f} & = & 0 \\\\\n  H_{a}: p_{m} - p_{f} & &gt; & 0 \\\\\n\\end{array}\\]\n\n\n“Third, a test statistic is a point estimate/sample statistic formula used for hypothesis testing, where a sample statistic is merely a summary statistic based on a sample of observations.” Here, our test statistic \\(\\hat{p}_{m} - \\hat{p}_{f}\\) estimates the parameter of interest: the difference in population proportions \\(p_{m} - p_{f}\\)\n\n\n“Fourth, the observed test statistic is the value of the test statistic that we observed in real-life.” In this example the observed difference was\n\\[\\hat{p}_{m} - \\hat{p}_{f} = 0.875 - 0.583 = 0.292\\]\n\n\n“Fifth, the null distribution is the sampling distribution of the test statistic assuming the null hypothesis \\(H_0\\) is true.”\n\n\n\n\n\n\n\n\np-value\n\n\n\n“The p-value is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis \\(H_0\\) is true”"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#null-distribution",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#null-distribution",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Null Distribution",
+    "text": "Null Distribution\n\nnull_distribution &lt;- promotions %&gt;% \n  specify(formula = decision ~ gender, success = \"promoted\") %&gt;% \n  hypothesize(null = \"independence\") %&gt;% \n  generate(reps = 1000, type = \"permute\") %&gt;% \n  calculate(stat = \"diff in props\", order = c(\"male\", \"female\"))\n\n\nnull_distribution |&gt;\n  visualize(bins = 10)"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-difference",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-difference",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Observed Difference",
+    "text": "Observed Difference\n\n# observed difference in proportions\nobs_diff_prop &lt;- promotions %&gt;% \n  specify(decision ~ gender, success = \"promoted\") %&gt;% \n  calculate(stat = \"diff in props\", order = c(\"male\", \"female\"))\n#print(obs_diff_prop) #0.292\n\n\nnull_distribution |&gt;\n  visualize(bins = 10) +\n  \n  # choices for direction are \"right\", \"left\", and \"both\"\n  shade_p_value(obs_stat = obs_diff_prop,\n                direction = \"right\")"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#p-value-1",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#p-value-1",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "p-value",
+    "text": "p-value\n\nnull_distribution %&gt;% \n  get_p_value(obs_stat = obs_diff_prop, \n              direction = \"right\")\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.029\n\n\n\n\n\n\n\n\nWhen p-value &lt; 0.05\n\n\n\nFor NHST (null hypothesis significance testing), many scientists compare the p-value to a significance level of \\(\\alpha = 0.05\\). Since the p-value &lt; 0.05, we reject the null hypothesis of equal proportions of promotions among men and women."
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#data-cleaning",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#data-cleaning",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Data Cleaning",
+    "text": "Data Cleaning\n\nsummary(demo_df$SAT)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's \n      0    1500    1540    1617    1560   15560      24 \n\n\n\nSAT_df &lt;- demo_df |&gt;\n  select(SAT) |&gt;\n  filter(SAT &gt;= 400 & SAT &lt;= 1600)\n\n\nsummary(SAT_df$SAT)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n   1100    1500    1540    1516    1560    1600 \n\n# observed sample mean: xbar = 1516"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#bootstrap-method",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#bootstrap-method",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Bootstrap Method",
+    "text": "Bootstrap Method\n\nset.seed(20241104)\nbootstrap_distribution &lt;- SAT_df |&gt;\n  specify(response = SAT) |&gt;\n  generate(reps = 1000, type = \"bootstrap\") |&gt;\n  calculate(stat = \"mean\")\n\n\nbootstrap_distribution |&gt;\n  visualize() +\n  shade_ci(endpoints = bootstrap_distribution |&gt;\n             get_ci(level = 0.95))\n\n\n\n\n\n\n\n\n\nbootstrap_distribution |&gt; get_ci(level = 0.95)\n\n# A tibble: 1 × 2\n  lower_ci upper_ci\n     &lt;dbl&gt;    &lt;dbl&gt;\n1    1499.    1530.\n\n\nWe are 95 percent confident that the true average SAT score for a Princeton student is in between 1499 and 1530."
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#design",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#design",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Design",
+    "text": "Design\n\nColloquially: The average SAT score for a Princeton student is above 1510.\nNull hypothesis: The average SAT score for a Princeton student is 1510.\nAlternative hypothesis: The average SAT score for a Princeton student is above 1510.\n\n\\[H_{0}: \\mu = 1510\\] \\[H_{a}: \\mu &gt; 1510\\]"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#boxplot",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#boxplot",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Boxplot",
+    "text": "Boxplot\n\nMedianMeancode\n\n\nUsually, the middle line in a boxplot corresponds to the sample median.\n\n\n\n\n\n\n\n\n\n\n\nThere is an option to change the middle line in a boxplot to refer to the sample mean (but this is rarely done in practice)\n\n\n\n\n\n\n\n\n\n\n\n\nSAT_df |&gt;\n  ggplot() +\n  geom_hline(yintercept = 1510, color = \"red\", linewidth = 3) +\n  geom_boxplot(aes(y = SAT),\n               middle = mean(SAT_df$SAT),\n               alpha = 0.5,\n               color = princeton_black,\n               fill = princeton_orange) +\n  labs(title = \"SAT Scores for Princeton Students\",\n       subtitle = \"middle line: mean\",\n       caption = \"Sample among SML 201 students\", \n       x = \"\", y = \"SAT score\") +\n  scale_y_continuous(limits = c(1400, 1600)) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#t-statistic",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#t-statistic",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "t statistic",
+    "text": "t statistic\n\\[t = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt{n}}}\\]\n\nn      &lt;- sum(!is.na(SAT_df$SAT))\nxbar   &lt;- mean(SAT_df$SAT, na.rm = TRUE)\ns      &lt;- sd(SAT_df$SAT, na.rm = TRUE)\nmu     &lt;- 1510\nt_stat &lt;- (xbar - mu) / (s/sqrt(n))"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#critical-region",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#critical-region",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Critical Region",
+    "text": "Critical Region\n\nplotcodedisclaimer\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# significance level: alpha = 0.05 ==&gt; top 5 percentile\n# df: degrees of freedom\ncrit_value &lt;- qt(0.95, df = n-1)\n\nvnorm(crit_value, section = \"upper\") +\n  labs(title = \"Critical Region\",\n       subtitle = \"One-sided hypothesis test\",\n       caption = \"SML 201\",\n       x = \"t distribution\")\n\n\n\n\n\n\n\n\n\nNormal Distribution Uusage\n\n\n\nWe used the normal distribution here in this example since\n\n\\(n &gt; 30\\)\nThe Central Limit Theorem said that sample distributions of the mean converge toward the normal distribution\nTeacher Derek didn’t have a t-distribution analogue for the vnorm helper function at this time."
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#comparison",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#comparison",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Comparison",
+    "text": "Comparison\n\nplotscode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCritical Region\n\n\n\nThat is, in order to reject the null hypothesis, we wanted the \\(t\\) statistic to be inside of the critical region.\n\n\n\n\n\np1 &lt;- vnorm(crit_value, section = \"upper\") +\n  geom_vline(aes(xintercept = t_stat),\n             color = \"red\", linewidth = 2) +\n  labs(title = \"Critical Region\",\n       subtitle = \"One-sided hypothesis test\",\n       caption = \"SML 201\",\n       x = \"t distribution\") +\n  scale_x_continuous(breaks = t_stat,\n                     labels = \"t statistic\")\n\np2 &lt;- vnorm(t_stat, section = \"upper\") +\n  geom_vline(aes(xintercept = t_stat),\n             color = \"red\", linewidth = 2) +\n  labs(title = \"p-value\",\n       subtitle = \"One-sided hypothesis test\",\n       caption = \"SML 201\",\n       x = \"t distribution\") +\n  scale_x_continuous(breaks = t_stat,\n                     labels = \"t statistic\")\n\n# patchwork\np1 + p2"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#t.test",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#t.test",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "t.test",
+    "text": "t.test\n\nt.test(SAT_df$SAT, mu = 1510, alterative = \"greater\")\n\n\n    One Sample t-test\n\ndata:  SAT_df$SAT\nt = 0.74335, df = 105, p-value = 0.4589\nalternative hypothesis: true mean is not equal to 1510\n95 percent confidence interval:\n 1500.719 1530.413\nsample estimates:\nmean of x \n 1515.566 \n\n\n\n\n\n\n\n\nWhen p-value &gt; 0.05\n\n\n\nFor NHST (null hypothesis significance testing), many scientists compare the p-value to a significance level of \\(\\alpha = 0.05\\). Since the p-value &gt; 0.05, we fail to reject the null hypothesis that the average SAT score of Princeton students is 1510.\n\n\n\n\n\n\n\n\nLeaving the t distribution behind\n\n\n\nFor these calculations\n\\[t = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt{n}}}\\]\n\nrely more on summary statistics rather than all of the gathered data\n“degrees of freedom” is a rather convoluted notion\nt-distribution is itself an approximation\nleads to more reliance on abstract probability distributions\ndeparts from frequentist probability philosophy\nmore useful before calculators and computers"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#design-1",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#design-1",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Design",
+    "text": "Design\n\nColloquially: The average SAT score for a Princeton student is above 1500.\nNull hypothesis: The average SAT score for a Princeton student is at most 1500.\nAlternative hypothesis: The average SAT score for a Princeton student is above 1500.\n\n\\[H_{0}: \\mu \\leq 1500\\] \\[H_{a}: \\mu &gt; 1500\\]"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#bootstrap-distribution",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#bootstrap-distribution",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Bootstrap Distribution",
+    "text": "Bootstrap Distribution\nFor one-sided hypothesis tests, we still employ a bootstrap distribution.\n\nbootstrap_distribution &lt;- SAT_df |&gt;\n  specify(response = SAT) |&gt;\n  hypothesize(null = \"point\", mu = 1500) |&gt;\n  generate(reps = 1000, type = \"bootstrap\") |&gt;\n  calculate(stat = \"mean\")"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-stat",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#observed-stat",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "Observed Stat",
+    "text": "Observed Stat\n\nobs_mean &lt;- SAT_df |&gt;\n  specify(response = SAT) |&gt;\n  # hypothesize(null = \"point\", mu = 40) |&gt;\n  # generate(reps = 1000, type = \"bootstrap\") |&gt;\n  calculate(stat = \"mean\")"
+  },
+  {
+    "objectID": "posts/16_nhst_one_sided/16_NHST_one_sided.html#p-value-2",
+    "href": "posts/16_nhst_one_sided/16_NHST_one_sided.html#p-value-2",
+    "title": "16: Hypothesis Testing (1)",
+    "section": "p-value",
+    "text": "p-value\n\nbootstrap_distribution |&gt;\n  visualize() +\n  shade_p_value(obs_mean, direction = \"right\")\n\n\n\n\n\n\n\n\n\nbootstrap_distribution |&gt;\n  get_p_value(obs_mean, direction = \"right\")\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.012\n\n\n\n\n\n\n\n\nWhen p-value &lt; 0.05\n\n\n\nSince the p-value &lt; 0.05, we reject the null hypothesis that the average SAT score of Princeton students is at most 1500."
   }
 ]

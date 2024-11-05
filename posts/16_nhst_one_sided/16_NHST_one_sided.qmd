@@ -1,0 +1,942 @@
+---
+title: "16: Hypothesis Testing (1)"
+author: "Derek Sollberger"
+date: "2024-11-5"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+::: {.callout-note collapse="true"}
+## Libraries and Helper Functions
+
+```{r}
+#| message: false
+#| warning: false
+
+library("infer")         #pipeline workflow for hypothesis testing
+library("janitor")       #compute proportions easily
+library("moderndive")    #textbook's package and data
+library("patchwork")     #easily let's me show graphs side-by-side
+library("tidyverse")     #the overall programming style universe
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: SML 201 demographics survey
+demo_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv")
+
+# helper function
+vnorm <- function(x, mu = 0, sigma = 1, section = "lower"){
+  
+  # bell curve
+  x_vals <- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)
+  y_vals <- dnorm(x_vals, mu, sigma)
+  df_for_graph <- data.frame(x_vals, y_vals)
+
+  # outline shaded regions
+  if(length(x) == 1){
+    shade_left <- rbind(c(x[1],0), df_for_graph |>
+                        filter(x_vals < x[1]))
+    shade_right <- rbind(c(x[1],0), df_for_graph |>
+                        filter(x_vals > x[1]))
+  }
+  if(length(x) == 2){
+    shade_between <- rbind(c(x[1],0),
+                       df_for_graph |>
+                         filter(x_vals > x[1] &
+                                  x_vals < x[2]),
+                       c(x[2],0))
+    shade_tails <- rbind(df_for_graph |>
+                        filter(x_vals < x[1]),
+                     c(x[1],0),
+                     c(x[2],0),
+                     df_for_graph |>
+                        filter(x_vals > x[2]))
+  }
+  if(section == "lower"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_left,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(pnorm(x,mu,sigma), 4)
+  }
+  if(section == "upper"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_right,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- 1 - round(pnorm(x,mu,sigma), 4)
+  }
+  if(section == "between"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_between,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(diff(pnorm(x,mu,sigma)), 4)
+  }
+  if(section == "tails"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_tails,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(1 - diff(pnorm(x,mu,sigma)), 4)
+  }
+  
+  # plot bell curve
+  bell_curve + 
+    labs(subtitle = paste0("Probability: ", prob_val),
+         caption = "SML 201", y = "") +
+    theme_minimal()
+}
+```
+
+:::
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Explore hypothesis testing and one-sided tests
+
+* **Objective**: Deploy t-tests and null distributions
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+
+:::
+
+::::
+
+
+# Case Study: Job Promotions
+
+::::: {.panel-tabset}
+
+## Data
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* data from a *Journal of Applied Psychology* study published in 1974
+* 48 bank supervisors asked to look at a resume
+* identical resume except the name at the top: 24 "female" names and 24 "male" names
+
+
+
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![The Office same-picture meme](office_same_picture_meme.png)
+
+Source:  **Statistical Inference via Data Science:** *A Modern Dive into R and the Tidyverse*
+
+* Chapter 9: Hypothesis Testing
+* [https://moderndive.com/9-hypothesis-testing.html](https://moderndive.com/9-hypothesis-testing.html)
+
+:::
+
+::::
+
+## Glimpse
+
+```{r}
+set.seed(20241104)
+promotions %>%
+  sample_n(size = 10) %>%
+  arrange(id)
+```
+
+:::::
+
+## Stacked Bar Chart
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+
+promotions |>
+  ggplot(aes(x = gender)) +
+  geom_bar(aes(fill = decision),
+           stat = "count") +
+  labs(title = "Bank Promotions Study",
+       subtitle = "Identical resumes except for applicant name",
+       caption = "Source: Journal of Applied Psychology",
+       x = "Gender of name on resume") +
+  theme_minimal(base_size = 16)
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+promotions |>
+  ggplot(aes(x = gender)) +
+  geom_bar(aes(fill = decision),
+           stat = "count") +
+  labs(title = "Bank Promotions Study",
+       subtitle = "Identical resumes except for applicant name",
+       caption = "Source: Journal of Applied Psychology",
+       x = "Gender of name on resume") +
+  theme_minimal(base_size = 16)
+```
+
+:::::
+
+## Observed Proportions
+
+::::: {.panel-tabset}
+
+## Cross Tabulation
+
+```{r}
+#| echo: false
+#| eval: true
+promotions |>
+  tabyl(gender, decision)
+```
+
+## percentages
+
+```{r}
+#| echo: false
+#| eval: true
+promotions |>
+  tabyl(gender, decision) |>
+  adorn_percentages("row") |>
+  adorn_pct_formatting(digits = 2)
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+promotions |>
+  tabyl(gender, decision) |>
+  adorn_percentages("row") |>
+  adorn_pct_formatting(digits = 2)
+```
+
+:::::
+
+* male promotion rate: 21/24 = 0.875
+* female promotion rate: 14/24 = 0.583
+* *difference in rates*: 0.875 - 0.583 = 0.292
+
+$$\hat{p}_{m} - \hat{p}_{f} = 0.292$$
+
+## Permutation Test
+
+::: {.callout-important}
+## Key Observation
+
+If `gender` did not matter when it comes to these job promotions, then it should not matter if we shuffle the `gender` labels in the data.
+:::
+
+## Shuffling
+
+::::: {.panel-tabset}
+
+## patchwork
+
+```{r}
+#| echo: false
+#| eval: true
+original_bar_graph <- ggplot(promotions, aes(x = gender, fill = decision)) +
+  geom_bar() +
+  labs(title = "original",
+       x = "Gender of name on resume") +
+  theme(legend.position = "none")
+
+gender_shuffled <- promotions
+
+set.seed(20241104)
+gender_shuffled$gender <- sample(promotions$gender) 
+#sampled without replacement
+
+shuffled_bar_graph <- gender_shuffled %>%
+  ggplot(aes(x = gender, fill = decision)) +
+  geom_bar() +
+  labs(title = "shuffled",
+       x = "Gender of name on resume")
+
+# patchwork
+original_bar_graph + shuffled_bar_graph
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+original_bar_graph <- ggplot(promotions, aes(x = gender, fill = decision)) +
+  geom_bar() +
+  labs(title = "original",
+       x = "Gender of name on resume") +
+  theme(legend.position = "none")
+
+gender_shuffled <- promotions
+
+set.seed(20241104)
+gender_shuffled$gender <- sample(promotions$gender) 
+#sampled without replacement
+
+shuffled_bar_graph <- gender_shuffled %>%
+  ggplot(aes(x = gender, fill = decision)) +
+  geom_bar() +
+  labs(title = "shuffled",
+       x = "Gender of name on resume")
+
+# patchwork
+original_bar_graph + shuffled_bar_graph
+```
+
+:::::
+
+
+# NHST Concepts
+
+::: {.callout-note collapse="true"}
+## Terminology
+
+* In the previous session, we did a **bootstrap method** that used *sampling with replacement*
+* Here, we are performing a **permutation test** that uses *sampling without replacement*
+:::
+
+## Hypothesis Test of Proportions
+
+::::: {.panel-tabset}
+
+## 1
+
+"First, a *hypothesis* is a statement about the value of an unknown population parameter. In our resume activity, our population parameter is the difference in population proportions $p_{m} - p_{f}$"
+
+## 2
+
+"Second, a hypothesis test consists of a test between two competing hypotheses ... Generally the *null hypothesis* is a claim that there really is 'no effect' or 'no difference.'" Here our null hypothesis is
+
+* $H_{0}$: men and women are promoted at the same rate
+
+"Generally the *alternative hypothesis* is the claim the experimenter or researcher wants to establish or find evidence for and is viewed as a 'challenger' hypothesis to the null hypothesis".  Here our alternative hypothesis is
+
+* $H_{a}$: men are promoted at a higher rate than women
+
+In math symbols, we have
+
+$$\begin{array}{rrcl}
+  H_{o}: p_{m} - p_{f} & = & 0 \\
+  H_{a}: p_{m} - p_{f} & > & 0 \\
+\end{array}$$
+
+## 3
+
+"Third, a *test statistic* is a point estimate/sample statistic formula used for hypothesis testing, where a sample statistic is merely a summary statistic based on a sample of observations."  Here, our test statistic $\hat{p}_{m} - \hat{p}_{f}$ estimates the parameter of interest: the difference in population proportions $p_{m} - p_{f}$
+
+## 4
+
+"Fourth, the observed test statistic is the value of the test statistic that we observed in real-life."  In this example the observed difference was
+
+$$\hat{p}_{m} - \hat{p}_{f} = 0.875 - 0.583 = 0.292$$
+
+## 5
+
+"Fifth, the null distribution is the sampling distribution of the test statistic assuming the null hypothesis $H_0$ is true."
+
+## 6
+
+::: {.callout-tip}
+## p-value
+
+"The **p-value** is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis $H_0$ is true"
+:::
+
+:::::
+
+# Modern NHST (infer)
+
+## Null Distribution
+
+```{r}
+null_distribution <- promotions %>% 
+  specify(formula = decision ~ gender, success = "promoted") %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+```
+
+```{r}
+null_distribution |>
+  visualize(bins = 10)
+```
+
+## Observed Difference
+
+```{r}
+# observed difference in proportions
+obs_diff_prop <- promotions %>% 
+  specify(decision ~ gender, success = "promoted") %>% 
+  calculate(stat = "diff in props", order = c("male", "female"))
+#print(obs_diff_prop) #0.292
+```
+
+```{r}
+null_distribution |>
+  visualize(bins = 10) +
+  
+  # choices for direction are "right", "left", and "both"
+  shade_p_value(obs_stat = obs_diff_prop,
+                direction = "right")
+```
+
+## p-value
+
+```{r}
+null_distribution %>% 
+  get_p_value(obs_stat = obs_diff_prop, 
+              direction = "right")
+```
+
+::: {.callout-important}
+## When p-value < 0.05
+
+For NHST (null hypothesis significance testing), many scientists compare the p-value to a significance level of $\alpha = 0.05$.  Since the p-value < 0.05, we *reject the null hypothesis* of equal proportions of promotions among men and women.
+:::
+
+
+# Review: Confidence Intervals
+
+## Data Cleaning
+
+```{r}
+summary(demo_df$SAT)
+```
+```{r}
+SAT_df <- demo_df |>
+  select(SAT) |>
+  filter(SAT >= 400 & SAT <= 1600)
+```
+
+```{r}
+summary(SAT_df$SAT)
+# observed sample mean: xbar = 1516
+```
+
+## Bootstrap Method
+
+```{r}
+set.seed(20241104)
+bootstrap_distribution <- SAT_df |>
+  specify(response = SAT) |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "mean")
+```
+
+```{r}
+bootstrap_distribution |>
+  visualize() +
+  shade_ci(endpoints = bootstrap_distribution |>
+             get_ci(level = 0.95))
+```
+
+```{r}
+bootstrap_distribution |> get_ci(level = 0.95)
+```
+
+We are 95 percent confident that the true average SAT score for a Princeton student is in between 1499 and 1530.
+
+
+# Old NHST (t-test)
+
+## Design
+
+* Colloquially: The average SAT score for a Princeton student is *above* 1510.
+* Null hypothesis: The average SAT score for a Princeton student *is* 1510.
+* Alternative hypothesis: The average SAT score for a Princeton student is *above* 1510.
+
+$$H_{0}: \mu = 1510$$
+$$H_{a}: \mu > 1510$$
+
+## Boxplot
+
+::::: {.panel-tabset}
+
+## Median
+
+Usually, the middle line in a boxplot corresponds to the sample median.
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+SAT_df |>
+  ggplot() +
+  geom_hline(yintercept = 1510, color = "red", linewidth = 3) +
+  geom_boxplot(aes(y = SAT)) +
+  labs(title = "SAT Scores for Princeton Students",
+       subtitle = "middle line: median",
+       caption = "Sample among SML 201 students", 
+       x = "", y = "SAT score") +
+  scale_y_continuous(limits = c(1400, 1600)) +
+  theme_minimal()
+```
+
+## Mean
+
+There is an option to change the middle line in a boxplot to refer to the sample mean (but this is rarely done in practice)
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+SAT_df |>
+  ggplot() +
+  geom_hline(yintercept = 1510, color = "red", linewidth = 3) +
+  geom_boxplot(aes(y = SAT),
+               middle = mean(SAT_df$SAT),
+               alpha = 0.5,
+               color = princeton_black,
+               fill = princeton_orange) +
+  labs(title = "SAT Scores for Princeton Students",
+       subtitle = "middle line: mean",
+       caption = "Sample among SML 201 students", 
+       x = "", y = "SAT score") +
+  scale_y_continuous(limits = c(1400, 1600)) +
+  theme_minimal()
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+SAT_df |>
+  ggplot() +
+  geom_hline(yintercept = 1510, color = "red", linewidth = 3) +
+  geom_boxplot(aes(y = SAT),
+               middle = mean(SAT_df$SAT),
+               alpha = 0.5,
+               color = princeton_black,
+               fill = princeton_orange) +
+  labs(title = "SAT Scores for Princeton Students",
+       subtitle = "middle line: mean",
+       caption = "Sample among SML 201 students", 
+       x = "", y = "SAT score") +
+  scale_y_continuous(limits = c(1400, 1600)) +
+  theme_minimal()
+```
+
+:::::
+
+## t statistic
+
+$$t = \frac{\bar{x} - \mu}{\frac{s}{\sqrt{n}}}$$
+
+```{r}
+n      <- sum(!is.na(SAT_df$SAT))
+xbar   <- mean(SAT_df$SAT, na.rm = TRUE)
+s      <- sd(SAT_df$SAT, na.rm = TRUE)
+mu     <- 1510
+t_stat <- (xbar - mu) / (s/sqrt(n))
+```
+
+## Critical Region
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+
+# significance level: alpha = 0.05 ==> top 5 percentile
+# df: degrees of freedom
+crit_value <- qt(0.95, df = n-1)
+
+vnorm(crit_value, section = "upper") +
+  labs(title = "Critical Region",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution")
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+# significance level: alpha = 0.05 ==> top 5 percentile
+# df: degrees of freedom
+crit_value <- qt(0.95, df = n-1)
+
+vnorm(crit_value, section = "upper") +
+  labs(title = "Critical Region",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution")
+```
+
+## disclaimer
+
+::: {.callout-warning}
+## Normal Distribution Uusage
+
+We used the normal distribution here in this example since
+
+* $n > 30$
+* The Central Limit Theorem said that sample distributions of the mean converge toward the normal distribution
+* Teacher Derek didn't have a t-distribution analogue for the `vnorm` helper function at this time.
+:::
+
+:::::
+
+## Comparison
+
+::::: {.panel-tabset}
+
+## plots
+
+```{r}
+#| echo: false
+#| eval: true
+
+p1 <- vnorm(crit_value, section = "upper") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "Critical Region",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+p2 <- vnorm(t_stat, section = "upper") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "p-value",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+# patchwork
+p1 + p2
+```
+
+::: {.callout-important}
+## Critical Region
+
+That is, in order to *reject* the null hypothesis, we wanted the $t$ statistic to be inside of the critical region.
+:::
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+p1 <- vnorm(crit_value, section = "upper") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "Critical Region",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+p2 <- vnorm(t_stat, section = "upper") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "p-value",
+       subtitle = "One-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+# patchwork
+p1 + p2
+```
+
+:::::
+
+## t.test
+
+```{r}
+t.test(SAT_df$SAT, mu = 1510, alterative = "greater")
+```
+
+::: {.callout-important}
+## When p-value > 0.05
+
+For NHST (null hypothesis significance testing), many scientists compare the p-value to a significance level of $\alpha = 0.05$.  Since the p-value > 0.05, we *fail to reject the null hypothesis* that the average SAT score of Princeton students is 1510.
+:::
+
+::: {.callout-warning}
+## Leaving the t distribution behind
+
+For these calculations
+
+$$t = \frac{\bar{x} - \mu}{\frac{s}{\sqrt{n}}}$$
+
+* rely more on *summary statistics* rather than all of the gathered data
+* "degrees of freedom" is a rather convoluted notion
+* t-distribution is itself an approximation
+* leads to more reliance on abstract probability distributions
+* departs from frequentist probability philosophy
+* more useful before calculators and computers
+:::
+
+
+# Modern NHST (infer)
+
+## Design
+
+* Colloquially: The average SAT score for a Princeton student is *above* 1500.
+* Null hypothesis: The average SAT score for a Princeton student is *at most* 1500.
+* Alternative hypothesis: The average SAT score for a Princeton student is *above* 1500.
+
+$$H_{0}: \mu \leq 1500$$
+$$H_{a}: \mu > 1500$$
+
+## Bootstrap Distribution
+
+For one-sided hypothesis tests, we still employ a bootstrap distribution.
+
+```{r}
+bootstrap_distribution <- SAT_df |>
+  specify(response = SAT) |>
+  hypothesize(null = "point", mu = 1500) |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "mean")
+```
+
+## Observed Stat
+
+```{r}
+obs_mean <- SAT_df |>
+  specify(response = SAT) |>
+  # hypothesize(null = "point", mu = 40) |>
+  # generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "mean")
+```
+
+## p-value
+
+```{r}
+bootstrap_distribution |>
+  visualize() +
+  shade_p_value(obs_mean, direction = "right")
+```
+
+```{r}
+bootstrap_distribution |>
+  get_p_value(obs_mean, direction = "right")
+```
+
+::: {.callout-important}
+## When p-value < 0.05
+
+Since the p-value < 0.05, we *reject the null hypothesis* that the average SAT score of Princeton students is at most 1500.
+:::
+
+
+# Inequalities in the Null Hypothesis
+
+$$H_{0}: \mu \leq 1500$$
+$$H_{a}: \mu > 1500$$
+
+Writing null hypotheses with inequalities ($\leq$ or $\geq$() instead of an equals sign (=) is a relatively recent trend in textbooks.  Let is explore why we are doing this.
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+mu_vals <- seq(1400, 1600, by = 5)
+N       <- length(mu_vals)
+p_vals  <- rep(NA, N)
+
+obs_mean <- SAT_df |>
+  specify(response = SAT) |>
+  calculate(stat = "mean")
+
+for(i in 1:N){
+  p_vals[i] <- SAT_df |>
+    specify(response = SAT) |>
+    hypothesize(null = "point", mu = mu_vals[i]) |>
+    generate(reps = 1000, type = "bootstrap") |>
+    calculate(stat = "mean") |>
+    get_p_value(obs_mean, direction = "greater") |>
+    pull()
+}
+
+df_for_graph <- data.frame(mu_vals, p_vals)
+df_for_graph |>
+  mutate(conclusion = ifelse(p_vals < 0.05,
+                             "reject", "fail to reject")) |>
+  ggplot() +
+  geom_point(aes(x = mu_vals, y = p_vals, color = conclusion),
+             size = 3) +
+  labs(title = "Various Null Hypotheses",
+       subtitle = "Null hypotheses: mu <= mu_0",
+       caption = "SML 201",
+       x = "mu_0", y = "p-value") +
+  theme_minimal()
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+mu_vals <- seq(1400, 1600, by = 5)
+N       <- length(mu_vals)
+p_vals  <- rep(NA, N)
+
+obs_mean <- SAT_df |>
+  specify(response = SAT) |>
+  calculate(stat = "mean")
+
+for(i in 1:N){
+  p_vals[i] <- SAT_df |>
+    specify(response = SAT) |>
+    hypothesize(null = "point", mu = mu_vals[i]) |>
+    generate(reps = 1000, type = "bootstrap") |>
+    calculate(stat = "mean") |>
+    get_p_value(obs_mean, direction = "greater") |>
+    pull()
+}
+
+df_for_graph <- data.frame(mu_vals, p_vals)
+df_for_graph |>
+  mutate(conclusion = ifelse(p_vals < 0.05,
+                             "reject", "fail to reject")) |>
+  ggplot() +
+  geom_point(aes(x = mu_vals, y = p_vals, color = conclusion),
+             size = 3) +
+  labs(title = "Various Null Hypotheses",
+       subtitle = "Null hypotheses: mu <= mu_0",
+       caption = "SML 201",
+       x = "mu_0", y = "p-value") +
+  theme_minimal()
+```
+
+:::::
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* Precept 8
+* Historical Case Studies and Ethics 
+* Project 3 (assigned Nov 11)
+* Exam 2 (December 5)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+![The Trading Gap Shuffle](null_distribution_meme.jpg)
+
+* image source: [The Simpsons](https://www.youtube.com/watch?v=kh2fONPkoAU)
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
