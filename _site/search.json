@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -2301,5 +2301,152 @@
     "title": "16: Hypothesis Testing (1)",
     "section": "p-value",
     "text": "p-value\n\nbootstrap_distribution |&gt;\n  visualize() +\n  shade_p_value(obs_mean, direction = \"right\")\n\n\n\n\n\n\n\n\n\nbootstrap_distribution |&gt;\n  get_p_value(obs_mean, direction = \"right\")\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.012\n\n\n\n\n\n\n\n\nWhen p-value &lt; 0.05\n\n\n\nSince the p-value &lt; 0.05, we reject the null hypothesis that the average SAT score of Princeton students is at most 1500."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"ggsignif\")   #put significance \"stars\" on boxplots\nlibrary(\"infer\")      #pipeline workflow for hypothesis testing\nlibrary(\"janitor\")    #compute proportions easily\nlibrary(\"moderndive\") #textbook's package and data\nlibrary(\"patchwork\")  #easily let's me show graphs side-by-side\nlibrary(\"tidyverse\")  #the overall programming style universe\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: SML 201 demographics survey\n# demo_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv\")\ndemo_df &lt;- readr::read_csv(\"sml201survey.csv\")\n\n# helper function\nvnorm &lt;- function(x, mu = 0, sigma = 1, section = \"lower\"){\n  \n  # bell curve\n  x_vals &lt;- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)\n  y_vals &lt;- dnorm(x_vals, mu, sigma)\n  df_for_graph &lt;- data.frame(x_vals, y_vals)\n\n  # outline shaded regions\n  if(length(x) == 1){\n    shade_left &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]))\n    shade_right &lt;- rbind(c(x[1],0), df_for_graph |&gt;\n                        filter(x_vals &gt; x[1]))\n  }\n  if(length(x) == 2){\n    shade_between &lt;- rbind(c(x[1],0),\n                       df_for_graph |&gt;\n                         filter(x_vals &gt; x[1] &\n                                  x_vals &lt; x[2]),\n                       c(x[2],0))\n    shade_tails &lt;- rbind(df_for_graph |&gt;\n                        filter(x_vals &lt; x[1]),\n                     c(x[1],0),\n                     c(x[2],0),\n                     df_for_graph |&gt;\n                        filter(x_vals &gt; x[2]))\n  }\n  if(section == \"lower\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_left,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"upper\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_right,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- 1 - round(pnorm(x,mu,sigma), 4)\n  }\n  if(section == \"between\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_between,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(diff(pnorm(x,mu,sigma)), 4)\n  }\n  if(section == \"tails\"){\n    bell_curve &lt;- df_for_graph |&gt;\n      ggplot(aes(x_vals, y_vals)) +\n      geom_polygon(aes(x = x_vals, y = y_vals),\n                   data = shade_tails,\n                   fill = \"#E77500\",) +\n      geom_line(color = \"gray50\", linewidth = 2)\n    prob_val &lt;- round(1 - diff(pnorm(x,mu,sigma)), 4)\n  }\n  \n  # plot bell curve\n  bell_curve + \n    labs(subtitle = paste0(\"Probability: \", prob_val),\n         caption = \"SML 201\", y = \"\") +\n    theme_minimal()\n}\n\n\n\n\n\n\n\n\n\nGoal: Continue to explore hypothesis testing and two-sided tests\nObjective: Get “stars” and significance levels\n\n\n\n\n\n\n\nFry"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#start",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#start",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "",
+    "text": "Goal: Continue to explore hypothesis testing and two-sided tests\nObjective: Get “stars” and significance levels\n\n\n\n\n\n\n\nFry"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#survey-data",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#survey-data",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Survey Data",
+    "text": "Survey Data\n\nsummary(demo_df$GPA)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's \n  0.000   3.406   3.600   3.547   3.800   4.650      13"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#clean-data",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#clean-data",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Clean Data",
+    "text": "Clean Data\n\ndemo_long &lt;- demo_df |&gt;\n  select(GPA, coffeeTea) |&gt;\n  filter(GPA &gt; 0 & GPA &lt;= 4.0) |&gt;\n  drop_na()\n\n\ndemo_long |&gt;\n  group_by(coffeeTea) |&gt;\n  summarize(xbar = mean(GPA))\n\n# A tibble: 3 × 2\n  coffeeTea  xbar\n  &lt;chr&gt;     &lt;dbl&gt;\n1 (neither)  3.63\n2 coffee     3.57\n3 tea        3.55"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#boxplot",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#boxplot",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Boxplot",
+    "text": "Boxplot\n\ndemo_long |&gt;\n  filter(coffeeTea %in% c(\"coffee\", \"tea\")) |&gt;\n  ggplot(aes(x = coffeeTea, y = GPA)) +\n  geom_boxplot(color = princeton_black, fill = princeton_orange) +\n  labs(title = \"Does Beverage Choice affect GPA?\",\n       subtitle = \"(toward two-means hypothesis testing)\",\n       caption = \"SML 201\",\n       x = \"beverage\", y = \"grade point average\") +\n  theme_minimal(base_size = 16)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntuition\n\n\n\n\n\nThe boxplot visualization lets us guess at whether or not the means for the two groups are significantly different (or not)."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#null-distribution",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#null-distribution",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Null Distribution",
+    "text": "Null Distribution\nIn the modern approach, with the infer code package, we build a null distribution (i.e. assuming the same GPA for coffee and tea drinkers).\n\n\n\n\n\n\nPermutation Test\n\n\n\n\n\nIf the beverage choice here did not affect GPA, then it shouldn’t matter if we permute the “coffee” or “tea” labels.\n\n\n\n\nnull_distribution &lt;- demo_long |&gt;\n  filter(coffeeTea %in% c(\"coffee\", \"tea\")) |&gt;\n  specify(formula = GPA ~ coffeeTea) |&gt;\n  hypothesize(null = \"independence\") |&gt;\n  generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in means\", order = c(\"coffee\", \"tea\"))\n\n\nobs_diff &lt;- demo_long |&gt;\n  filter(coffeeTea %in% c(\"coffee\", \"tea\")) |&gt;\n  specify(formula = GPA ~ coffeeTea) |&gt;\n  # hypothesize(null = \"independence\") |&gt;\n  # generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in means\", order = c(\"coffee\", \"tea\"))"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#visualization",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#visualization",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Visualization",
+    "text": "Visualization\n\n\n\n\n\n\np-value\n\n\n\n“The p-value is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis \\(H_0\\) is true”\n\n\n\nnull_distribution |&gt;\n  visualize() +\n  labs(title = \"Does Beverage Affect GPA?\",\n       subtitle = \"Two-Sided Hypothesis Test\",\n       caption = \"SML 201\",\n       x = \"difference between coffee and tea drinkers\") +\n  shade_p_value(obs_diff, direction = \"two-sided\",\n                color = princeton_black, fill = princeton_orange) +\n  theme_minimal(base_size = 16)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwo-Sided\n\n\n\nSince our p-value search looks at both tails of the null distribution, we call this a two-sided test."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#conclusion",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#conclusion",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Conclusion",
+    "text": "Conclusion\n\nnull_distribution |&gt; get_p_value(obs_diff, direction = \"two-sided\")\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.676\n\n\n\n\n\n\n\n\nInconclusive\n\n\n\nSince the p-value &gt; 0.05, we have failed to reject the null hypothesis that the GPA for coffee and tea drinkers are the same (at the \\(\\alpha = 0.05\\) significance level).\nWe may treat this result as inconclusive or note that we have not found evidence here toward showing that beverage choice affects GPA attainment."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#boxplot-1",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#boxplot-1",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Boxplot",
+    "text": "Boxplot\n\ndemo_long &lt;- demo_df |&gt;\n  select(residentialCollege, flossing) |&gt;\n  drop_na()\n\ndemo_long |&gt;\n  filter(residentialCollege %in% c(\"New College West\", \"Rockefeller\")) |&gt;\n  ggplot(aes(x = residentialCollege, y = flossing)) +\n  geom_boxplot(color = princeton_black, fill = princeton_orange) +\n  labs(title = \"Does Residential College affect Flossing Frequency?\",\n       subtitle = \"(toward two-means hypothesis testing)\",\n       caption = \"SML 201\",\n       x = \"\", y = \"times flossing per week\") +\n  theme_minimal(base_size = 16)"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#permutation-test-1",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#permutation-test-1",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Permutation Test",
+    "text": "Permutation Test\n\nnull_distribution &lt;- demo_long |&gt;\n  filter(residentialCollege %in% c(\"New College West\", \"Rockefeller\")) |&gt;\n  specify(formula = flossing ~ residentialCollege) |&gt;\n  hypothesize(null = \"independence\") |&gt;\n  generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in means\", order = c(\"New College West\", \"Rockefeller\"))\n\nobs_diff &lt;- demo_long |&gt;\n  filter(residentialCollege %in% c(\"New College West\", \"Rockefeller\")) |&gt;\n  specify(formula = flossing ~ residentialCollege) |&gt;\n  # hypothesize(null = \"independence\") |&gt;\n  # generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in means\", order = c(\"New College West\", \"Rockefeller\"))\n\nnull_distribution |&gt;\n  visualize() +\n  labs(title = \"Does Living Location Affect Flossing Rate?\",\n       subtitle = \"Two-Sided Hypothesis Test\",\n       caption = \"SML 201\",\n       x = \"difference between New College West and Rockefeller\") +\n  shade_p_value(obs_diff, direction = \"two-sided\",\n                color = princeton_black, fill = princeton_orange) +\n  theme_minimal(base_size = 16)"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#conclusion-1",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#conclusion-1",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Conclusion",
+    "text": "Conclusion\n\nnull_distribution |&gt; get_p_value(obs_diff, direction = \"two-sided\")\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.018\n\n\n\n\n\n\n\n\nSome Evidence\n\n\n\nSince the p-value &lt; 0.05, we have reject the null hypothesis that the flossing frequency is the same for students at New College West and Rockefeller (at the \\(\\alpha = 0.05\\) significance level).\nWe may treat this result as having found some evidence that there may be a relationship between these two residential colleges and flossing frequency."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#pooled-variance",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#pooled-variance",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Pooled Variance",
+    "text": "Pooled Variance\nThe old-fashioned way of computing a two-means hypothesis test was conducted through the \\(t\\)-distribution through the pooled variance\n\\[t = \\frac{\\bar{x}_{1} - \\bar{x}_{2}}{\\sqrt{\\frac{s_{p}^{2}}{n_{1}} + \\frac{s_{p}^{2}}{n_{2}}}} \\text{ with } s_{p}^{2} = \\frac{(n_{1}-1)s_{1}^{2} + (n_{2}-1)^{2}s_{2}^{2}}{n_{1} + n_{2} - 2}\\]\n\ndemo_wide &lt;- demo_long |&gt;\n  pivot_wider(names_from = residentialCollege,\n              values_from = flossing,\n              values_fn = list)\n\n\nNCW &lt;- unlist(demo_wide$`New College West`)\nRocky &lt;- unlist(demo_wide$Rockefeller)\nxbar1 &lt;- mean(NCW)\nxbar2 &lt;- mean(Rocky)\ns1 &lt;- sd(NCW)\ns2 &lt;- sd(Rocky)\nn1 &lt;- length(NCW)\nn2 &lt;- length(Rocky)\npooled_var &lt;- ((n1 - 1)*s1^2 + (n2-1)*s2^2) / (n1 + n2 - 2)\nt_stat &lt;- (xbar1 - xbar2) / sqrt(pooled_var/n1 + pooled_var/n2)\ncrit_val &lt;- qt(c(0.025, 0.975), df = n1 + n2 - 2)"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#comparison",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#comparison",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Comparison",
+    "text": "Comparison\n\nplotscode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCritical Region\n\n\n\nThat is, in order to reject the null hypothesis, we wanted the \\(t\\) statistic to be inside of the critical region.\n\n\n\n\n\np1 &lt;- vnorm(crit_val, section = \"tails\") +\n  geom_vline(aes(xintercept = t_stat),\n             color = \"red\", linewidth = 2) +\n  labs(title = \"Critical Region\",\n       subtitle = \"Two-sided hypothesis test\",\n       caption = \"SML 201\",\n       x = \"t distribution\") +\n  scale_x_continuous(breaks = t_stat,\n                     labels = \"t statistic\")\n\np2 &lt;- vnorm(t_stat, section = \"lower\") +\n  geom_vline(aes(xintercept = t_stat),\n             color = \"red\", linewidth = 2) +\n  labs(title = \"p-value\",\n       subtitle = \"Two-sided hypothesis test\",\n       caption = \"SML 201\",\n       x = \"t distribution\") +\n  scale_x_continuous(breaks = t_stat,\n                     labels = \"t statistic\")\n\n# patchwork\np1 / p2"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#t.test",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#t.test",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "t.test",
+    "text": "t.test\n\nt.test(NCW, Rocky, alternative = \"two.sided\")\n\n\n    Welch Two Sample t-test\n\ndata:  NCW and Rocky\nt = -2.5613, df = 21.1, p-value = 0.01815\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -5.8556895 -0.6085962\nsample estimates:\nmean of x mean of y \n 3.125000  6.357143 \n\n\n\n\n\n\n\n\nSome Evidence\n\n\n\nSince the p-value &lt; 0.05, we have reject the null hypothesis that the flossing frequency is the same for students at New College West and Rockefeller (at the \\(\\alpha = 0.05\\) significance level).\nWe may treat this result as having found some evidence that there may be a relationship between these two residential colleges and flossing frequency."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#number-of-courses-versus-age",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#number-of-courses-versus-age",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Number of Courses versus Age",
+    "text": "Number of Courses versus Age\n\nsetupplotcode\n\n\n\nresponse variable: numCourses (i.e. number of courses taken before this semester)\nexplanatory variable: age\n\n\\[\\hat{y} = \\beta_{0} + \\beta_{1}X_{1}\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndemo_long &lt;- demo_df |&gt;\n  filter(age &gt;= 18 & age &lt;= 21) |&gt;\n  filter(!is.na(numCourses))\n\ndemo_long |&gt;\n  ggplot(aes(x = age, y = numCourses)) +\n  geom_point() +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = TRUE) +\n  labs(title = \"Number of Courses versus Age\",\n       subtitle = \"Is this slope significant?\",\n       caption = \"SML 201\",\n       y = \"number of courses taken\\nbefore this semester\") +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#model-statistics",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#model-statistics",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Model Statistics",
+    "text": "Model Statistics\n\nlin_fit &lt;- lm(numCourses ~ age, data = demo_long)\nsummary(lin_fit)\n\n\nCall:\nlm(formula = numCourses ~ age, data = demo_long)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-13.6380  -2.7257  -0.7257   2.8181  14.8181 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) -92.9408     8.6081  -10.80   &lt;2e-16 ***\nage           5.4561     0.4408   12.38   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 4.105 on 121 degrees of freedom\nMultiple R-squared:  0.5588,    Adjusted R-squared:  0.5551 \nF-statistic: 153.2 on 1 and 121 DF,  p-value: &lt; 2.2e-16"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#nhst",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#nhst",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "NHST",
+    "text": "NHST\nFor a regression model, each coefficent is treated as a hypothesis test.\n\nnull hypothesis: coefficient \\(\\beta_{1}\\) is zero\nalternative hypothesis: coefficient \\(\\beta_{1}\\) is nonzero\n\n\\[H_{o}: \\beta_{1} = 0\\] \\[H_{a}: \\beta_{1} \\neq 0\\]\n\n\n\n\n\n\nSome Evidence\n\n\n\nSince the p-value &lt; 0.05, we have reject the null hypothesis that the \\(\\beta_{1}\\) coefficient is zero (at the \\(\\alpha = 0.05\\) significance level).\nWe may treat this result as having found some evidence that there may be a relationship between age and and the number of courses taken."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#gpa-versus-shoe-size",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#gpa-versus-shoe-size",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "GPA versus Shoe Size",
+    "text": "GPA versus Shoe Size\n\nsetupplotcode\n\n\n\nresponse variable: GPA\nexplanatory variable: shoeSize\n\n\\[\\hat{y} = \\beta_{0} + \\beta_{1}X_{1}\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndemo_long &lt;- demo_df |&gt;\n  filter(GPA &gt; 0 & GPA &lt;= 4.0) |&gt;\n  filter(shoeSize &gt;= 5 & shoeSize &lt;= 20)\n\ndemo_long |&gt;\n  ggplot(aes(x = shoeSize, y = GPA)) +\n  geom_point() +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = TRUE) +\n  labs(title = \"Number of Courses versus Age\",\n       subtitle = \"Is this slope significant?\",\n       caption = \"SML 201\",\n       y = \"number of courses taken\\nbefore this semester\") +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#model-statistics-1",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#model-statistics-1",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Model Statistics",
+    "text": "Model Statistics\n\nlin_fit &lt;- lm(GPA ~ shoeSize, data = demo_long)\nsummary(lin_fit)\n\n\nCall:\nlm(formula = GPA ~ shoeSize, data = demo_long)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-0.97540 -0.15362  0.03751  0.21608  0.47696 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  3.34304    0.11967  27.935   &lt;2e-16 ***\nshoeSize     0.02582    0.01354   1.907    0.059 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.2943 on 114 degrees of freedom\nMultiple R-squared:  0.03093,   Adjusted R-squared:  0.02243 \nF-statistic: 3.638 on 1 and 114 DF,  p-value: 0.05898\n\n\n\n\n\n\n\n\nInconclusive\n\n\n\nSince the p-value &gt; 0.05, we have failed to reject the null hypothesis that the \\(\\beta_{1}\\) coefficient is zero (at the \\(\\alpha = 0.05\\) significance level).\nWe may treat this result as inconclusive or note that we have not found evidence here toward showing a relationship between GPA and shoe size."
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#significant",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#significant",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Significant",
+    "text": "Significant\n\nplotcode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndemo_long &lt;- demo_df |&gt;\n  select(residentialCollege, flossing) |&gt;\n  drop_na()\n\ndemo_long |&gt;\n  ggplot(aes(x = residentialCollege, y = flossing)) +\n  geom_boxplot(color = princeton_black, fill = princeton_orange) +\n  geom_signif(\n    comparisons = list(c(\"New College West\", \"Rockefeller\")),\n    map_signif_level = TRUE,\n    y_position = 10\n  ) +\n  labs(title = \"Does Residential College affect Flossing Frequency?\",\n       subtitle = \"(stars of significance)\",\n       caption = \"SML 201\",\n       x = \"\", y = \"times flossing per week\") +\n  theme_minimal(base_size = 14) +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))"
+  },
+  {
+    "objectID": "posts/17_nhst_two_sided/17_NHST_two_sided.html#not-significant",
+    "href": "posts/17_nhst_two_sided/17_NHST_two_sided.html#not-significant",
+    "title": "17: Hypothesis Testing (2)",
+    "section": "Not Significant",
+    "text": "Not Significant\n\nplotcode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndemo_long &lt;- demo_df |&gt;\n  select(GPA, coffeeTea) |&gt;\n  filter(GPA &gt; 0 & GPA &lt;= 4.0) |&gt;\n  drop_na()\n\ndemo_long |&gt;\n  ggplot(aes(x = coffeeTea, y = GPA)) +\n  geom_boxplot(color = princeton_black, fill = princeton_orange) +\n  geom_signif(\n    comparisons = list(c(\"coffee\", \"tea\")),\n    map_signif_level = TRUE,\n    y_position = 4.2\n    \n  ) +\n  labs(title = \"Does Beverage Choice affect GPA?\",\n       subtitle = \"(stars of significance)\",\n       caption = \"SML 201\",\n       x = \"beverage\", y = \"grade point average\") +\n  scale_y_continuous(limits = c(2.0, 4.5)) +\n  theme_minimal(base_size = 14)"
   }
 ]

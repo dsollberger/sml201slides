@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/17_nhst_two_sided/17_NHST_two_sided.html",
       "/posts/16_nhst_one_sided/16_NHST_one_sided.html",
       "/posts/15_confidence_intervals/15_confidence_intervals.html",
       "/posts/14_estimators/14_estimators.html",
