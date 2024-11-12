@@ -1,0 +1,766 @@
+---
+title: "18: Introduction to Machine Learning"
+author: "Derek Sollberger"
+date: "2024-11-12"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Start
+
+::: {.callout-note collapse="true"}
+## Libraries and Helper Functions
+
+```{r}
+#| message: false
+#| warning: false
+
+library("ggtext")
+library("tidymodels")
+library("tidyverse")
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: Tour de France
+tdf_winners <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-07/tdf_winners.csv')
+```
+
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Introduce machine learning (ideas and terminology)
+
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+* **Objectives**: 
+
+- introduce `tidymodels` package
+- practice with a `TidyTuesday` data set
+:::
+
+::::
+
+
+## Exploratory Data Analyses
+
+::::: {.panel-tabset}
+
+## structure
+
+```{r}
+str(tdf_winners, give.attr = FALSE)
+```
+
+## colnames
+
+```{r}
+colnames(tdf_winners)
+```
+
+:::::
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+tdf_winners |>
+  mutate(year = edition + 1904) |>
+  ggplot() +
+  # geom_point(aes(x = height, y = time_overall),
+  #            color = "blue") +
+  geom_text(aes(x = height, y = time_overall,
+                label = year), color = "blue") +
+  labs(title = "Are taller bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "height (meters)",
+       y = "time (hours)") +
+  theme_minimal()
+```
+
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+tdf_winners |>
+  mutate(year = edition + 1904) |>
+  ggplot() +
+  # geom_point(aes(x = height, y = time_overall),
+  #            color = "blue") +
+  geom_text(aes(x = height, y = time_overall,
+                label = year), color = "blue") +
+  labs(title = "Are taller bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "height (meters)",
+       y = "time (hours)") +
+  theme_minimal()
+```
+
+:::::
+
+# Cleaning Data
+
+Sometimes we like to perform some *preprocessing* of the data.  In this example, we will 
+
+* focus on the champions that were more athletic than in the early years.
+* focus on biker `pace` (response variable) as the route changes from year to year
+
+::::: {.panel-tabset}
+
+## filters
+
+```{r}
+bike_df <- tdf_winners |>
+  select(distance, time_overall, 
+           height, weight, age) |>
+  drop_na() |>
+  filter(height >= 1.7) |>
+  mutate(pace = distance / time_overall) |>
+  select(pace, height, weight, age)
+```
+
+## dimensions
+
+```{r}
+dim(bike_df)
+```
+
+
+## glimpse
+
+```{r}
+head(bike_df)
+```
+
+:::::
+
+# Multiple Predictor Variables
+
+::::: {.panel-tabset}
+
+### Height
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+bike_df |>
+  ggplot(aes(x = height, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are taller bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "height (meters)",
+       y = "pace (km/hr)") +
+  theme_minimal()
+```
+
+### Age
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+bike_df |>
+  ggplot(aes(x = age, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are older bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "age",
+       y = "pace (km/hr)") +
+  theme_minimal()
+```
+
+### Weight
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+bike_df |>
+  ggplot(aes(x = weight, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are heavier bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "weight (kg)",
+       y = "pace (km/hr)") +
+  theme_minimal()
+```
+
+### R code
+
+```{r}
+#| eval: false
+#| message: false
+#| warning: false
+
+bike_df |>
+  ggplot(aes(x = height, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are taller bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "height (meters)",
+       y = "pace (km/hr)") +
+  theme_minimal()
+
+bike_df |>
+  ggplot(aes(x = age, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are older bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "age",
+       y = "pace (km/hr)") +
+  theme_minimal()
+
+bike_df |>
+  ggplot(aes(x = weight, y = pace)) +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(method = "lm", linewidth = 3,
+              se = FALSE, color = "red") +
+  labs(title = "Are heavier bicyclists faster?",
+       subtitle = "featuring Tour de France winners",
+       caption = "Source: TidyTuesday",
+       x = "weight (kg)",
+       y = "pace (km/hr)") +
+  theme_minimal()
+```
+
+:::::
+
+# Regression via TidyModels
+
+::::: {.panel-tabset}
+
+### Start
+
+“With tidymodels, we start by specifying the functional form of the model that we want using the parsnip package.”
+
+```{r}
+linear_reg()
+```
+
+### Model Engine
+
+“However, now that the type of model has been specified, a method for fitting or training the model can be stated using the engine. The engine value is often a mash-up of the software that can be used to fit or train the model as well as the estimation method.”
+
+```{r}
+linear_reg() |> 
+  set_engine("lm") #linear model
+```
+
+### Fitting a Model
+
+```{r}
+lm_fit <- linear_reg() |> 
+  set_engine("lm") |>
+  fit(pace ~ height + weight + age, data = bike_df)
+lm_fit
+```
+
+### Examining a Model
+
+```{r}
+tidy(lm_fit)
+```
+
+Observe where we have p-values < 0.05
+
+:::::
+
+
+# Interaction Terms
+
+```{r}
+lm_fit_with_interaction <- linear_reg() |> 
+  set_engine("lm") |>
+  fit(pace ~ height + weight + age + height:weight + height:age + weight:age +
+        height:weight:age,
+      data = bike_df)
+lm_fit_with_interaction
+```
+
+```{r}
+tidy(lm_fit_with_interaction)
+```
+
+::: {.callout-warning collapse="true"}
+## Overfitting
+
+Did you notice that even though we added more terms to the model, we did not reach significance in any of the variables? This may be foreshadowing of *overfitting*.
+:::
+
+
+# Prediction
+
+::::: {.panel-tabset}
+
+### New Data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+* SpongeBob is a 26-year-old, 1.77 m tall bicyclist who weighs 55 kg
+* Patrick is a 25-year-old, 1.81 m tall bicyclist who weighs 75 kg
+* Squidward is a 31-year-old, 1.89 m tall bicyclist who weighs 65 kg
+	
+:::
+
+::: {.column width="50%"}
+![](spongebob_patrick_squidward.png)
+:::
+
+::::
+
+### Predictions
+
+```{r}
+new_contestants <- data.frame(name = c("SpongeBob", "Patrick", "Squidward"),
+                              age = c(26, 25, 31),
+                              height = c(1.77, 1.81, 1.89),
+                              weight = c(55, 75, 65))
+mean_predictions <- predict(lm_fit, new_data = new_contestants)
+mean_predictions
+```
+
+### Confidence Intervals
+
+```{r}
+CI_predictions <- predict(lm_fit,
+                          new_data = new_contestants,
+                          type = "conf_int")
+CI_predictions
+```
+
+### Error Bars
+
+```{r}
+df_for_plot <- new_contestants |>
+  bind_cols(mean_predictions) |>
+  bind_cols(CI_predictions)
+df_for_plot
+```
+
+### Plot
+
+```{r}
+df_for_plot |>
+  ggplot(aes(x = name)) +
+  geom_errorbar(aes(ymin = .pred_lower,
+                    ymax = .pred_upper),
+                color = "red",
+                width = 0.32) +
+  geom_point(aes(y = .pred), color = "blue", size = 5) +
+  labs(title = "Tour de Under the Sea",
+       subtitle = "Welcome the new contestants!",
+       caption = "Math 32",
+       x = "",
+       y = "pace (km/hr)") +
+  theme_minimal()
+```
+
+:::::
+
+# Data Splitting
+
+::: {.callout-important}
+## Data Split
+
+How do we *generalize*?  What if we want to predict for more riders or into the future?  One strategy is to go back into the provided data and *split* the data:
+
+* **training set**: about 75 percent of the data is allocated toward building the model
+* Then, the model is applied to the remaining data---the **testing set**---to see if the generalization is working well.
+:::
+
+## Split
+
+```{r}
+data_split <- initial_split(bike_df)
+train_df <- training(data_split)
+test_df <- testing(data_split)
+```
+
+
+```{r}
+print(paste("The number of observations in the training set is:", 
+            nrow(train_df)))
+print(paste("The number of observations in the testing set is:", 
+            nrow(test_df)))
+```
+
+## One Split
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+
+title_string <- "<span style='color:#000000'><b>Training Sets</b></span> <span style='color:#0000FF'>and</span> 
+<span style='color:#FF0000'><b>Testing Sets</b></span>"
+
+train_df |>
+  ggplot(aes(x = height, y = pace)) +
+  geom_point(aes(color = "training set"), 
+             # color = "black"
+             ) +
+  geom_smooth(method = "lm",
+              aes(x = height, y = pace),
+              color = "black",
+              data = train_df,
+              formula = "y ~ x",
+              se = FALSE) +
+  geom_point(aes(x = height, y = pace, color = "testing set"),
+             # color = "red",
+             data = test_df,
+             size = 3) +
+  labs(title = title_string,
+       subtitle = "approx 75-25 percent split",
+       caption = "Math 32",
+       x = "height (meters)",
+       y = "pace (km/hr)") +
+  scale_color_manual(name = "Data Split",
+                     breaks = c("training set", "testing set"),
+                     values = c("training set" = "black",
+                                "testing set" = "red")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_markdown(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+title_string <- "<span style='color:#000000'><b>Training Sets</b></span> <span style='color:#0000FF'>and</span> 
+<span style='color:#FF0000'><b>Testing Sets</b></span>"
+
+train_df |>
+  ggplot(aes(x = height, y = pace)) +
+  geom_point(aes(color = "training set"), 
+             # color = "black"
+             ) +
+  geom_smooth(method = "lm",
+              aes(x = height, y = pace),
+              color = "black",
+              data = train_df,
+              formula = "y ~ x",
+              se = FALSE) +
+  geom_point(aes(x = height, y = pace, color = "testing set"),
+             # color = "red",
+             data = test_df,
+             size = 3) +
+  labs(title = title_string,
+       subtitle = "approx 75-25 percent split",
+       caption = "Math 32",
+       x = "height (meters)",
+       y = "pace (km/hr)") +
+  scale_color_manual(name = "Data Split",
+                     breaks = c("training set", "testing set"),
+                     values = c("training set" = "black",
+                                "testing set" = "red")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_markdown(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+:::::
+
+## Many Splits
+
+::::: {.panel-tabset}
+
+## plot
+
+![](images/many_splits.gif)
+
+## code
+
+```{r}
+#| eval: false
+
+title_string <- "<span style='color:#000000'><b>Training Sets</b></span> <span style='color:#0000FF'>and</span> 
+<span style='color:#FF0000'><b>Testing Sets</b></span>"
+
+for(i in 1:10){
+  
+  data_split <- initial_split(df)
+  train_df <- training(data_split)
+  test_df <- testing(data_split)
+  
+  this_plot <- train_df |>
+    ggplot(aes(x = height, y = pace)) +
+    geom_point(aes(color = "training set"), 
+               # color = "black"
+    ) +
+    geom_smooth(method = "lm",
+                aes(x = height, y = pace),
+                color = "black",
+                data = train_df,
+                formula = "y ~ x",
+              se = FALSE) +
+  geom_point(aes(x = height, y = pace, color = "testing set"),
+             # color = "red",
+             data = test_df,
+             size = 3) +
+  labs(title = title_string,
+       subtitle = "approx 75-25 percent split",
+       caption = "Math 32",
+       x = "height (meters)",
+       y = "pace (km/hr)") +
+  scale_color_manual(name = "Data Split",
+                     breaks = c("training set", "testing set"),
+                     values = c("training set" = "black",
+                                "testing set" = "red")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_markdown(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+  
+  ggsave(paste0("images/plot", i, ".png"),
+         plot = this_plot,
+         device = "png")
+}
+```
+
+:::::
+
+# Metrics
+
+We then should get a sense of the validity of a model.  
+
+## MSE
+
+One metric for evaluating a regression model (i.e. numerical predictions for the response variable) is *mean square error* of the test set.
+
+$$\text{MSE} = \ds\frac{1}{n_{\text{test}}}\sum_{j = 1}^{n_{\text{test}}} (y_{j} - \hat{y}_{j})^{2}$$
+
+```{r}
+data_split <- initial_split(bike_df)
+train_df <- training(data_split)
+test_df <- testing(data_split)
+
+lm_train <- linear_reg() |> 
+  set_engine("lm") |>
+  fit(pace ~ height + weight + age, data = train_df)
+```
+
+
+```{r}
+n_test <- nrow(test_df)
+true_values <- test_df$pace
+predictions <- predict(lm_train, new_data = test_df |> select(-pace))
+
+MSE <- (1/n_test)*sum((true_values - predictions)^2)
+print(MSE)
+```
+
+# Cross-Validation
+
+::: {.callout-note collapse="true"}
+## Cross-Validation
+
+To help generalize to a variety of testing sets, we can perform *cross-validation* by utilizing several training/testing set splits.
+
+We can then compute the *cross-validation error* by computing the mean of the test metric.
+:::
+
+
+```{r}
+set.seed(20241112)
+N <- 10 #number of replicates
+MSE_vec <- rep(NA, N)
+
+for(i in 1:N){
+  data_split <- initial_split(bike_df)
+  train_df <- training(data_split)
+  test_df <- testing(data_split)
+  
+  lm_train <- linear_reg() |> 
+    set_engine("lm") |>
+    fit(pace ~ height + weight + age, data = train_df)
+  
+  n_test <- nrow(test_df)
+  true_values <- test_df$pace
+  predictions <- predict(lm_train, new_data = test_df |> select(-pace))
+  
+  MSE_vec[i] <- (1/n_test)*sum((true_values - predictions)^2)
+}
+
+# vector of MSE
+MSE_vec
+```
+
+```{r}
+# cross-validation error
+cv_error <- mean(MSE_vec)
+cv_error
+```
+
+## Second Model
+
+```{r}
+set.seed(201)
+N <- 25 #number of replicates
+MSE_vec <- rep(NA, N)
+
+for(i in 1:N){
+  data_split <- initial_split(bike_df)
+  train_df <- training(data_split)
+  test_df <- testing(data_split)
+  
+  lm_train <- linear_reg() |> 
+    set_engine("lm") |>
+    # fit(pace ~ height + weight + age, data = train_df)
+    fit(pace ~ height + weight + age + height:weight + height:age + weight:age +
+        height:weight:age,
+      data = train_df)
+  
+  n_test <- nrow(test_df)
+  true_values <- test_df$pace
+  predictions <- predict(lm_train, new_data = test_df |> select(-pace))
+  
+  MSE_vec[i] <- (1/n_test)*sum((true_values - predictions)^2)
+}
+
+# vector of MSE
+MSE_vec
+```
+
+```{r}
+# cross-validation error
+cv_error <- mean(MSE_vec)
+cv_error
+```
+
+
+# Project 3
+
+## MisbehaviorX
+
+* VehiGAN AI algorithm to instantaneouly detect malicious signal attacks
+    
+    * Md Hasan Shahriar, Mohammad Raashid Ansari, Jean-Philippe Monteuuis, Cong Chen, Jonathan Petit, Y. Thomas Hou, Wenjing Lou
+    * presented their work at the [ICDCS 2024 conference](https://icdcs2024.icdcs.org/) in Jersey City in the summer of 2024
+
+* realms: machine learning, artificial intelligence, cybersecurity
+
+![VehiGAN diagrams](VehiGAN_diagrams.png)
+
+* provided 0.1% stratified sample of the MisbehaviorX data set
+      
+    * very new data set (originally 8 GB)
+
+* conduct over 100 hypothesis tests!
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* Precept 9
+* Research Consent
+* Project 3 (Due Nov 20)
+* Exam 2 (December 5)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+![comic](ml_mask.png)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
