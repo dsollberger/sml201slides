@@ -1,0 +1,631 @@
+---
+title: "19: Power Analysis"
+author: "Derek Sollberger"
+date: "2024-11-14"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Start
+
+::: {.callout-note collapse="true"}
+## Libraries and Helper Functions
+
+```{r}
+#| message: false
+#| warning: false
+
+library("infer")
+library("janitor")
+library("pwr")
+library("tidyverse")
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: GPT detectors
+GPT_detectors <- readr::read_csv('detectors.csv')
+# GPT_detectors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-07-18/detectors.csv')
+```
+
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Introduce power analysis
+
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+* **Objectives**: 
+
+- contingency tables
+- p-hacking
+- effect size (Cohen's h)
+- power analyses
+:::
+
+::::
+
+
+## Data: GPT Detectors
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* GPT Detectors for academic dishonesty
+* data hosted at [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-07-18/readme.md)
+* Paper: [GPT Detectors Are Biased Against Non-Native English Writers](https://arxiv.org/abs/2304.02819)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Mr Belding](Belding_GPT.png)
+:::
+
+::::
+
+
+## Exploratory Data Analysis
+
+::::: {.panel-tabset}
+
+## Chatbots
+
+```{r}
+#| echo: false
+#| eval: true
+GPT_detectors |>
+  ggplot(aes(x = model)) +
+  geom_bar(aes(fill = .pred_class), 
+           position = "fill", stat = "count") +
+  labs(title = "GPT Chatbots",
+       subtitle = "Proportions of essays that were deemed AI or human",
+       caption = "SML 201",
+       x = "chatbot",
+       y = "proportions") +
+  theme_minimal(base_size = 14)
+```
+
+## Detectors
+
+```{r}
+#| echo: false
+#| eval: true
+GPT_detectors |>
+  ggplot(aes(x = detector)) +
+  geom_bar(aes(fill = .pred_class), 
+           position = "fill", stat = "count") +
+  labs(title = "GPT Detectors",
+       subtitle = "Proportions of essays that were deemed AI or human",
+       caption = "SML 201",
+       x = "detector",
+       y = "proportions") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+## Counts
+
+```{r}
+#| echo: false
+#| eval: true
+GPT_detectors |>
+  tabyl(kind, .pred_class) |>
+  adorn_totals(c("row", "col"))
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+GPT_detectors |>
+  ggplot(aes(x = model)) +
+  geom_bar(aes(fill = .pred_class), 
+           position = "fill", stat = "count") +
+  labs(title = "GPT Chatbots",
+       subtitle = "Proportions of essays that were deemed AI or human",
+       caption = "SML 201",
+       x = "chatbot",
+       y = "proportions") +
+  theme_minimal(base_size = 14)
+```
+
+```{r}
+#| echo: true
+#| eval: false
+GPT_detectors |>
+  ggplot(aes(x = detector)) +
+  geom_bar(aes(fill = .pred_class), 
+           position = "fill", stat = "count") +
+  labs(title = "GPT Detectors",
+       subtitle = "Proportions of essays that were deemed AI or human",
+       caption = "SML 201",
+       x = "detector",
+       y = "proportions") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+#| echo: true
+#| eval: false
+GPT_detectors |>
+  tabyl(kind, .pred_class) |>
+  adorn_totals(c("row", "col"))
+```
+
+:::::
+
+
+# Confusion Matrix
+
+A **confusion matrix** (aka **contingency table**) tallies the classifications versus their ground truth.
+
+```{r}
+cross_tab <- GPT_detectors |> tabyl(kind, .pred_class)
+print(cross_tab)
+```
+
+## Quartet
+
+Addressing: Are the detectors correctly identifying AI-generated work as works of AI?
+
+* positive: AI
+* negative: human
+
+```{r}
+# True positive: AI classification of AI work
+TP <- cross_tab[1,2]
+# False negative: Human classification of AI work
+FN <- cross_tab[1,3]
+# False positive: AI classification of human work
+FP <- cross_tab[2,2]
+# True negative: Human classification of human work
+TN <- cross_tab[2,3]
+```
+
+## Type I and Type II
+
+* **Type I errors**: false positive
+* **Type II errors**: false negative
+
+```{r}
+print(paste0("The number of Type I errors is: ", FP))
+print(paste0("The number of Type II errors is: ", FN))
+```
+
+## Metrics
+
+There are many [metrics for confusion matrices](https://en.wikipedia.org/wiki/Sensitivity_and_specificity).
+
+### False Positive Rate (Fallout)
+
+$$FPR = \frac{FP}{FP + TN}$$
+
+```{r}
+FPR <- FP / (FP + TN)
+print(paste0("The false positive rate is ", round(100*FPR, 2), " percent"))
+```
+
+### Accuracy
+
+$$\text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN}$$
+
+```{r}
+acc <- (TP + TN) / (TP + FP + FN + TN)
+print(paste0("The accuracy is ", round(100*acc, 2), " percent"))
+```
+
+
+# NHST
+
+* Null hypothesis: the AI classification rate is the *same* for both AI and human generated essays.
+* Alternative hypothesis: the AI classification rate is *greater* for AI generated essays than human generated essays.
+
+$$H_{o}: \rho_{A} \leq \rho_{H}$$
+$$H_{a}: \rho_{A} > \rho_{H}$$
+
+```{r}
+null_distribution <- GPT_detectors |>
+  specify(formula = .pred_class ~ kind, success = "AI") |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in props", order = c("AI", "Human"))
+```
+
+```{r}
+#| warning: false
+obs_diff <- GPT_detectors |>
+  specify(formula = .pred_class ~ kind, success = "AI") |>
+  # hypothesize(null = "independence") |>
+  # generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in props", order = c("AI", "Human"))
+
+null_distribution |>
+  get_p_value(obs_diff, direction = "greater") |> 
+  pull()
+```
+
+Since the p-value < 0.05, we *reject* the null hypothesis that the AI classification rate is the *same* for both AI and human generated essays (at the $\alpha = 0.05$ significance level).
+
+
+# Replication Crisis
+
+## Catalyst
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* [Professor Daryl Bem](https://psychology.cornell.edu/daryl-j-bem), Cornell University
+* 2011 peer-reviewed and publised [paper](https://prevention.ucsf.edu/sites/prevention.ucsf.edu/files/uploads/2011/02/bem2011.pdf)
+* demonstrated that college students have ESP (extra sensory perception)
+
+    * achieved p-value < 0.05
+    * achieved some effect size
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![(not a picture of Daryl Bem)](Peter_Venkman.png)
+:::
+
+::::
+
+
+## p-hacking
+
+:::: {.columns}
+
+::: {.column width="70%"}
+> The more statistical analyses a researcher runs—the more hypotheses they “test”—the more likely that at least one of these analyses will produce a result that appears to be “significant”, simply by chance. --- Sean Trott
+
+* XKCD: [Significant](https://xkcd.com/882/)
+* [p-hacking in R](https://seantrott.github.io/p-hacking/) by Sean Trott
+
+::: {.callout-caution}
+## Project 3
+
+Disclosure: the requested tasks in Project 3 may constitute "p-hacking"
+:::
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="20%"}
+![significant beans!](significant.png)
+:::
+
+::::
+
+## Gaussian White Noise
+
+In this exploration, we are going to try to extract "significance" (p-value < 0.05) from Gaussian white noise
+
+$$X, Y \sim N(\mu = 201, \sigma^{2} = 25^{2})$$
+
+```{r}
+x_vals <- rnorm(100, 201, 25)
+y_vals <- rnorm(100, 201, 25) #that is, same mean
+```
+
+```{r}
+cor_val <- cor(x_vals, y_vals)
+
+data.frame(x_vals, y_vals) |>
+  ggplot(aes(x = x_vals, y = y_vals)) +
+  coord_equal() +
+  geom_point(color = "gray50") +
+  geom_smooth(formula = "y ~ x",
+              method = "lm") +
+  labs(title = "Gaussian White Noise",
+       subtitle = paste0("Two normally distributed vectors\nwith the same mean\nr: ", round(cor_val, 4)),
+       caption = "SML 201") +
+  theme_minimal()
+```
+
+```{r}
+N <- 1000 #number of replicates
+slopes <- rep(NA, N)
+p_vals <- rep(NA, N)
+
+for(i in 1:N){
+  this_x <- sample(x_vals) #permutation
+  this_lm <- summary(lm(y_vals ~ this_x))
+  slopes[i] <- this_lm$coefficients[2]
+  p_vals[i] <- this_lm$coefficients[8]
+}
+```
+
+```{r}
+df_for_graph <- data.frame(slopes, p_vals) |>
+  mutate(result = ifelse(p_vals < 0.05, "significant", "not significant"))
+```
+
+```{r}
+df_for_graph |>
+  ggplot(aes(x = slopes, y = p_vals, color = result)) +
+  geom_point() +
+  labs(title = "The Search for Significance",
+       subtitle = "After resampling the noise, we may have found significance",
+       caption = "Source: Sean Trott",
+       y = "p-value") +
+  theme_minimal()
+```
+
+```{r}
+detection_rate <- mean(p_vals < 0.05)
+```
+
+We have found "significance" in `r round(100*detection_rate, 2)` percent of our replicates.
+
+::: {.callout-caution}
+## p-hacking
+
+What if a research team reported findings of "significance" from the `r round(100*detection_rate, 2)` percent and *discarded* results from the other `r round(100*(1 - detection_rate), 2)` percent?
+:::
+
+::: {.callout-note collapse="true"}
+## Mitigating p-Hacking
+
+* Researchers can **pre-register** their studies (usually around the same time as the ethics approval) to show what they are trying to measure first.
+* Report *confidence intervals* too
+* Report *effect sizes* too
+:::
+
+
+# Effect Size
+
+## Cohen
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* [Professor Jacob Cohen](https://en.wikipedia.org/wiki/Jacob_Cohen_(statistician)), NYU
+* advocate of power analysis and effect size
+* critic of NHST
+* known for
+
+    * Cohen's kappa
+    * Cohen's h
+    * Cohen's d
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![(not a picture of Jacob Cohen)](Egon_Spengler.png)
+:::
+
+::::
+
+
+## Cohens h
+
+[Cohen's h](https://en.wikipedia.org/wiki/Cohen%27s_h) is a measure of distance between two proportions
+
+$$h = |2\text{arcsin}\sqrt{p_{1}} - 2\text{arcsin}\sqrt{p_{2}}|$$
+
+* suggested interpretation:
+
+    * $h = 0.20$: "small effect size"
+    * $h = 0.50$: "medium effect size"
+    * $h = 0.80$: "large effect size"
+
+```{r}
+# sensitivity: probability of detection
+p1 <- TP / (TP + FN)
+# false positive rate
+p2 <- FP / (TN + FP)
+pwr::ES.h(p1, p2)
+```
+
+We have found a *small effect size* in GPT detection rate moving from human-generated essays to AI-generated essays.
+
+
+# Case Study: GPT Detection for non-native English Writing
+
+## Counts
+
+```{r}
+GPT_detectors |>
+  filter(!is.na(native)) |>
+  tabyl(native, .pred_class) |>
+  adorn_totals(c("row", "col"))
+```
+## Confusion Matrix
+
+```{r}
+cross_tab_2 <- GPT_detectors |>
+  filter(!is.na(native)) |>
+  tabyl(native, .pred_class)
+TP_2 <- cross_tab_2[1,2]
+FN_2 <- cross_tab_2[1,3]
+FP_2 <- cross_tab_2[2,2]
+TN_2 <- cross_tab_2[2,3]
+```
+
+## NHST
+
+```{r}
+#| warning: false
+null_distribution <- GPT_detectors |>
+  filter(!is.na(native)) |>
+  specify(formula = .pred_class ~ native, success = "AI") |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in props", order = c("No", "Yes"))
+
+obs_diff <- GPT_detectors |>
+  filter(!is.na(native)) |>
+  specify(formula = .pred_class ~ native, success = "AI") |>
+  # hypothesize(null = "independence") |>
+  # generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in props", order = c("No", "Yes"))
+
+null_distribution |>
+  get_p_value(obs_diff, direction = "greater") |> 
+  pull()
+```
+
+Since the p-value < 0.05, we *reject* the null hypothesis that the AI classification rate is the *same* for essays written by both native and non-native English speakers (at the $\alpha = 0.05$ significance level).
+
+## Effect Size
+
+```{r}
+# sensitivity: probability of detection
+p1_2 <- TP_2 / (TP_2 + FN_2)
+# false positive rate
+p2_2 <- FP_2 / (TN_2 + FP_2)
+pwr::ES.h(p1_2, p2_2)
+```
+
+We have found a *large effect size* in GPT detection rate moving from native-speaker writers to non-native writers.
+
+
+# Power Analysis
+
+::: {.callout-note}
+## Power (TPR)
+
+The *power* of a significance test is the probability of correctly rejecting a null hypothesis when it is actually false.
+
+$$\text{power} = \text{TPR} = \frac{TP}{TP + FN}$$
+* also called true positive rate, recall, sensitivity, probability of detection, hit rate
+
+:::
+
+## Seeking Power
+
+For the first comparison between the AI-generated essays and the human-generated essays, what was the power of the NHST for GPT detection?
+
+```{r}
+pwr.p.test(alternative = "greater",
+           h = ES.h(p1,p2),
+           n = sum(!is.na(GPT_detectors$kind)),
+           # power = ? #i.e. this is what we are trying to find
+           sig.level = 0.05
+           )
+```
+
+
+For the second comparison between the native speaker written essays and the non-native written essays, what was the power of the NHST for GPT detection?
+
+```{r}
+pwr.p.test(alternative = "greater",
+           h = ES.h(p1_2,p2_2),
+           n = sum(!is.na(GPT_detectors$native)),
+           # power = ? #i.e. this is what we are trying to find
+           sig.level = 0.05
+           )
+```
+
+
+## Seeking Sample Size
+
+For the first comparison between the AI-generated essays and the human-generated essays, how large should the sample size be (at least) to achieve (at least) 0.80 power?
+
+
+```{r}
+pwr.p.test(alternative = "greater",
+           h = ES.h(p1,p2),
+           #n = ? #i.e. this is what we are trying to find
+           power = 0.80, 
+           sig.level = 0.05
+           )
+```
+
+> This experiment needed at least 68 essays.
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* Precept 9
+* Research Consent
+* Project 3 (Due Nov 20)
+* Exam 2 (December 5)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+![obligatory Invincible meme](power_invincible_meme.png)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::

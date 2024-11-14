@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "19: Power Analysis\n\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -2511,5 +2511,131 @@
     "title": "18: Introduction to Machine Learning",
     "section": "MisbehaviorX",
     "text": "MisbehaviorX\n\nVehiGAN AI algorithm to instantaneouly detect malicious signal attacks\n\nMd Hasan Shahriar, Mohammad Raashid Ansari, Jean-Philippe Monteuuis, Cong Chen, Jonathan Petit, Y. Thomas Hou, Wenjing Lou\npresented their work at the ICDCS 2024 conference in Jersey City in the summer of 2024\n\nrealms: machine learning, artificial intelligence, cybersecurity\n\n\n\n\nVehiGAN diagrams\n\n\n\nprovided 0.1% stratified sample of the MisbehaviorX data set\n\nvery new data set (originally 8 GB)\n\nconduct over 100 hypothesis tests!"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html",
+    "href": "posts/19_power_analysis/19_power.html",
+    "title": "19: Power Analysis",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"infer\")\nlibrary(\"janitor\")\nlibrary(\"pwr\")\nlibrary(\"tidyverse\")\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: GPT detectors\nGPT_detectors &lt;- readr::read_csv('detectors.csv')\n# GPT_detectors &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-07-18/detectors.csv')\n\n\n\n\n\n\n\nGoal: Introduce power analysis\n\n\n\n\n\nObjectives:\ncontingency tables\np-hacking\neffect size (Cohen’s h)\npower analyses\n\n\n\n\n\n\n\n\n\nGPT Detectors for academic dishonesty\ndata hosted at TidyTuesday\nPaper: GPT Detectors Are Biased Against Non-Native English Writers\n\n\n\n\n\n\n\nMr Belding\n\n\n\n\n\n\n\n\nChatbotsDetectorsCountscode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  kind   AI Human Total\n    AI 1158  2559  3717\n Human  449  2019  2468\n Total 1607  4578  6185\n\n\n\n\n\nGPT_detectors |&gt;\n  ggplot(aes(x = model)) +\n  geom_bar(aes(fill = .pred_class), \n           position = \"fill\", stat = \"count\") +\n  labs(title = \"GPT Chatbots\",\n       subtitle = \"Proportions of essays that were deemed AI or human\",\n       caption = \"SML 201\",\n       x = \"chatbot\",\n       y = \"proportions\") +\n  theme_minimal(base_size = 14)\n\n\nGPT_detectors |&gt;\n  ggplot(aes(x = detector)) +\n  geom_bar(aes(fill = .pred_class), \n           position = \"fill\", stat = \"count\") +\n  labs(title = \"GPT Detectors\",\n       subtitle = \"Proportions of essays that were deemed AI or human\",\n       caption = \"SML 201\",\n       x = \"detector\",\n       y = \"proportions\") +\n  theme_minimal(base_size = 14) +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))\n\n\nGPT_detectors |&gt;\n  tabyl(kind, .pred_class) |&gt;\n  adorn_totals(c(\"row\", \"col\"))"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#start",
+    "href": "posts/19_power_analysis/19_power.html#start",
+    "title": "19: Power Analysis",
+    "section": "",
+    "text": "Libraries and Helper Functions\n\n\n\n\n\n\nlibrary(\"infer\")\nlibrary(\"janitor\")\nlibrary(\"pwr\")\nlibrary(\"tidyverse\")\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: GPT detectors\nGPT_detectors &lt;- readr::read_csv('detectors.csv')\n# GPT_detectors &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-07-18/detectors.csv')\n\n\n\n\n\n\n\nGoal: Introduce power analysis\n\n\n\n\n\nObjectives:\ncontingency tables\np-hacking\neffect size (Cohen’s h)\npower analyses"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#data-gpt-detectors",
+    "href": "posts/19_power_analysis/19_power.html#data-gpt-detectors",
+    "title": "19: Power Analysis",
+    "section": "",
+    "text": "GPT Detectors for academic dishonesty\ndata hosted at TidyTuesday\nPaper: GPT Detectors Are Biased Against Non-Native English Writers\n\n\n\n\n\n\n\nMr Belding"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#exploratory-data-analysis",
+    "href": "posts/19_power_analysis/19_power.html#exploratory-data-analysis",
+    "title": "19: Power Analysis",
+    "section": "",
+    "text": "ChatbotsDetectorsCountscode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  kind   AI Human Total\n    AI 1158  2559  3717\n Human  449  2019  2468\n Total 1607  4578  6185\n\n\n\n\n\nGPT_detectors |&gt;\n  ggplot(aes(x = model)) +\n  geom_bar(aes(fill = .pred_class), \n           position = \"fill\", stat = \"count\") +\n  labs(title = \"GPT Chatbots\",\n       subtitle = \"Proportions of essays that were deemed AI or human\",\n       caption = \"SML 201\",\n       x = \"chatbot\",\n       y = \"proportions\") +\n  theme_minimal(base_size = 14)\n\n\nGPT_detectors |&gt;\n  ggplot(aes(x = detector)) +\n  geom_bar(aes(fill = .pred_class), \n           position = \"fill\", stat = \"count\") +\n  labs(title = \"GPT Detectors\",\n       subtitle = \"Proportions of essays that were deemed AI or human\",\n       caption = \"SML 201\",\n       x = \"detector\",\n       y = \"proportions\") +\n  theme_minimal(base_size = 14) +\n  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))\n\n\nGPT_detectors |&gt;\n  tabyl(kind, .pred_class) |&gt;\n  adorn_totals(c(\"row\", \"col\"))"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#quartet",
+    "href": "posts/19_power_analysis/19_power.html#quartet",
+    "title": "19: Power Analysis",
+    "section": "Quartet",
+    "text": "Quartet\nAddressing: Are the detectors correctly identifying AI-generated work as works of AI?\n\npositive: AI\nnegative: human\n\n\n# True positive: AI classification of AI work\nTP &lt;- cross_tab[1,2]\n# False negative: Human classification of AI work\nFN &lt;- cross_tab[1,3]\n# False positive: AI classification of human work\nFP &lt;- cross_tab[2,2]\n# True negative: Human classification of human work\nTN &lt;- cross_tab[2,3]"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#type-i-and-type-ii",
+    "href": "posts/19_power_analysis/19_power.html#type-i-and-type-ii",
+    "title": "19: Power Analysis",
+    "section": "Type I and Type II",
+    "text": "Type I and Type II\n\nType I errors: false positive\nType II errors: false negative\n\n\nprint(paste0(\"The number of Type I errors is: \", FP))\n\n[1] \"The number of Type I errors is: 449\"\n\nprint(paste0(\"The number of Type II errors is: \", FN))\n\n[1] \"The number of Type II errors is: 2559\""
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#metrics",
+    "href": "posts/19_power_analysis/19_power.html#metrics",
+    "title": "19: Power Analysis",
+    "section": "Metrics",
+    "text": "Metrics\nThere are many metrics for confusion matrices.\n\nFalse Positive Rate (Fallout)\n\\[FPR = \\frac{FP}{FP + TN}\\]\n\nFPR &lt;- FP / (FP + TN)\nprint(paste0(\"The false positive rate is \", round(100*FPR, 2), \" percent\"))\n\n[1] \"The false positive rate is 18.19 percent\"\n\n\n\n\nAccuracy\n\\[\\text{Accuracy} = \\frac{TP + TN}{TP + FP + FN + TN}\\]\n\nacc &lt;- (TP + TN) / (TP + FP + FN + TN)\nprint(paste0(\"The accuracy is \", round(100*acc, 2), \" percent\"))\n\n[1] \"The accuracy is 51.37 percent\""
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#catalyst",
+    "href": "posts/19_power_analysis/19_power.html#catalyst",
+    "title": "19: Power Analysis",
+    "section": "Catalyst",
+    "text": "Catalyst\n\n\n\nProfessor Daryl Bem, Cornell University\n2011 peer-reviewed and publised paper\ndemonstrated that college students have ESP (extra sensory perception)\n\nachieved p-value &lt; 0.05\nachieved some effect size\n\n\n\n\n\n\n\n\n(not a picture of Daryl Bem)"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#p-hacking",
+    "href": "posts/19_power_analysis/19_power.html#p-hacking",
+    "title": "19: Power Analysis",
+    "section": "p-hacking",
+    "text": "p-hacking\n\n\n\nThe more statistical analyses a researcher runs—the more hypotheses they “test”—the more likely that at least one of these analyses will produce a result that appears to be “significant”, simply by chance. — Sean Trott\n\n\nXKCD: Significant\np-hacking in R by Sean Trott\n\n\n\n\n\n\n\nProject 3\n\n\n\nDisclosure: the requested tasks in Project 3 may constitute “p-hacking”\n\n\n\n\n\n\n\n\nsignificant beans!"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#gaussian-white-noise",
+    "href": "posts/19_power_analysis/19_power.html#gaussian-white-noise",
+    "title": "19: Power Analysis",
+    "section": "Gaussian White Noise",
+    "text": "Gaussian White Noise\nIn this exploration, we are going to try to extract “significance” (p-value &lt; 0.05) from Gaussian white noise\n\\[X, Y \\sim N(\\mu = 201, \\sigma^{2} = 25^{2})\\]\n\nx_vals &lt;- rnorm(100, 201, 25)\ny_vals &lt;- rnorm(100, 201, 25) #that is, same mean\n\n\ncor_val &lt;- cor(x_vals, y_vals)\n\ndata.frame(x_vals, y_vals) |&gt;\n  ggplot(aes(x = x_vals, y = y_vals)) +\n  coord_equal() +\n  geom_point(color = \"gray50\") +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\") +\n  labs(title = \"Gaussian White Noise\",\n       subtitle = paste0(\"Two normally distributed vectors\\nwith the same mean\\nr: \", round(cor_val, 4)),\n       caption = \"SML 201\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nN &lt;- 1000 #number of replicates\nslopes &lt;- rep(NA, N)\np_vals &lt;- rep(NA, N)\n\nfor(i in 1:N){\n  this_x &lt;- sample(x_vals) #permutation\n  this_lm &lt;- summary(lm(y_vals ~ this_x))\n  slopes[i] &lt;- this_lm$coefficients[2]\n  p_vals[i] &lt;- this_lm$coefficients[8]\n}\n\n\ndf_for_graph &lt;- data.frame(slopes, p_vals) |&gt;\n  mutate(result = ifelse(p_vals &lt; 0.05, \"significant\", \"not significant\"))\n\n\ndf_for_graph |&gt;\n  ggplot(aes(x = slopes, y = p_vals, color = result)) +\n  geom_point() +\n  labs(title = \"The Search for Significance\",\n       subtitle = \"After resampling the noise, we may have found significance\",\n       caption = \"Source: Sean Trott\",\n       y = \"p-value\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\ndetection_rate &lt;- mean(p_vals &lt; 0.05)\n\nWe have found “significance” in 5 percent of our replicates.\n\n\n\n\n\n\np-hacking\n\n\n\nWhat if a research team reported findings of “significance” from the 5 percent and discarded results from the other 95 percent?\n\n\n\n\n\n\n\n\nMitigating p-Hacking\n\n\n\n\n\n\nResearchers can pre-register their studies (usually around the same time as the ethics approval) to show what they are trying to measure first.\nReport confidence intervals too\nReport effect sizes too"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#cohen",
+    "href": "posts/19_power_analysis/19_power.html#cohen",
+    "title": "19: Power Analysis",
+    "section": "Cohen",
+    "text": "Cohen\n\n\n\nProfessor Jacob Cohen, NYU\nadvocate of power analysis and effect size\ncritic of NHST\nknown for\n\nCohen’s kappa\nCohen’s h\nCohen’s d\n\n\n\n\n\n\n\n\n(not a picture of Jacob Cohen)"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#cohens-h",
+    "href": "posts/19_power_analysis/19_power.html#cohens-h",
+    "title": "19: Power Analysis",
+    "section": "Cohens h",
+    "text": "Cohens h\nCohen’s h is a measure of distance between two proportions\n\\[h = |2\\text{arcsin}\\sqrt{p_{1}} - 2\\text{arcsin}\\sqrt{p_{2}}|\\]\n\nsuggested interpretation:\n\n\\(h = 0.20\\): “small effect size”\n\\(h = 0.50\\): “medium effect size”\n\\(h = 0.80\\): “large effect size”\n\n\n\n# sensitivity: probability of detection\np1 &lt;- TP / (TP + FN)\n# false positive rate\np2 &lt;- FP / (TN + FP)\npwr::ES.h(p1, p2)\n\n[1] 0.3030231\n\n\nWe have found a small effect size in GPT detection rate moving from human-generated essays to AI-generated essays."
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#counts-1",
+    "href": "posts/19_power_analysis/19_power.html#counts-1",
+    "title": "19: Power Analysis",
+    "section": "Counts",
+    "text": "Counts\n\nGPT_detectors |&gt;\n  filter(!is.na(native)) |&gt;\n  tabyl(native, .pred_class) |&gt;\n  adorn_totals(c(\"row\", \"col\"))\n\n native  AI Human Total\n     No 390   247   637\n    Yes  59  1772  1831\n  Total 449  2019  2468"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#confusion-matrix-1",
+    "href": "posts/19_power_analysis/19_power.html#confusion-matrix-1",
+    "title": "19: Power Analysis",
+    "section": "Confusion Matrix",
+    "text": "Confusion Matrix\n\ncross_tab_2 &lt;- GPT_detectors |&gt;\n  filter(!is.na(native)) |&gt;\n  tabyl(native, .pred_class)\nTP_2 &lt;- cross_tab_2[1,2]\nFN_2 &lt;- cross_tab_2[1,3]\nFP_2 &lt;- cross_tab_2[2,2]\nTN_2 &lt;- cross_tab_2[2,3]"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#nhst-1",
+    "href": "posts/19_power_analysis/19_power.html#nhst-1",
+    "title": "19: Power Analysis",
+    "section": "NHST",
+    "text": "NHST\n\nnull_distribution &lt;- GPT_detectors |&gt;\n  filter(!is.na(native)) |&gt;\n  specify(formula = .pred_class ~ native, success = \"AI\") |&gt;\n  hypothesize(null = \"independence\") |&gt;\n  generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in props\", order = c(\"No\", \"Yes\"))\n\nobs_diff &lt;- GPT_detectors |&gt;\n  filter(!is.na(native)) |&gt;\n  specify(formula = .pred_class ~ native, success = \"AI\") |&gt;\n  # hypothesize(null = \"independence\") |&gt;\n  # generate(reps = 1000, type = \"permute\") |&gt;\n  calculate(stat = \"diff in props\", order = c(\"No\", \"Yes\"))\n\nnull_distribution |&gt;\n  get_p_value(obs_diff, direction = \"greater\") |&gt; \n  pull()\n\n[1] 0\n\n\nSince the p-value &lt; 0.05, we reject the null hypothesis that the AI classification rate is the same for essays written by both native and non-native English speakers (at the \\(\\alpha = 0.05\\) significance level)."
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#effect-size-1",
+    "href": "posts/19_power_analysis/19_power.html#effect-size-1",
+    "title": "19: Power Analysis",
+    "section": "Effect Size",
+    "text": "Effect Size\n\n# sensitivity: probability of detection\np1_2 &lt;- TP_2 / (TP_2 + FN_2)\n# false positive rate\np2_2 &lt;- FP_2 / (TN_2 + FP_2)\npwr::ES.h(p1_2, p2_2)\n\n[1] 1.436245\n\n\nWe have found a large effect size in GPT detection rate moving from native-speaker writers to non-native writers."
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#seeking-power",
+    "href": "posts/19_power_analysis/19_power.html#seeking-power",
+    "title": "19: Power Analysis",
+    "section": "Seeking Power",
+    "text": "Seeking Power\nFor the first comparison between the AI-generated essays and the human-generated essays, what was the power of the NHST for GPT detection?\n\npwr.p.test(alternative = \"greater\",\n           h = ES.h(p1,p2),\n           n = sum(!is.na(GPT_detectors$kind)),\n           # power = ? #i.e. this is what we are trying to find\n           sig.level = 0.05\n           )\n\n\n     proportion power calculation for binomial distribution (arcsine transformation) \n\n              h = 0.3030231\n              n = 6185\n      sig.level = 0.05\n          power = 1\n    alternative = greater\n\n\nFor the second comparison between the native speaker written essays and the non-native written essays, what was the power of the NHST for GPT detection?\n\npwr.p.test(alternative = \"greater\",\n           h = ES.h(p1_2,p2_2),\n           n = sum(!is.na(GPT_detectors$native)),\n           # power = ? #i.e. this is what we are trying to find\n           sig.level = 0.05\n           )\n\n\n     proportion power calculation for binomial distribution (arcsine transformation) \n\n              h = 1.436245\n              n = 2468\n      sig.level = 0.05\n          power = 1\n    alternative = greater"
+  },
+  {
+    "objectID": "posts/19_power_analysis/19_power.html#seeking-sample-size",
+    "href": "posts/19_power_analysis/19_power.html#seeking-sample-size",
+    "title": "19: Power Analysis",
+    "section": "Seeking Sample Size",
+    "text": "Seeking Sample Size\nFor the first comparison between the AI-generated essays and the human-generated essays, how large should the sample size be (at least) to achieve (at least) 0.80 power?\n\npwr.p.test(alternative = \"greater\",\n           h = ES.h(p1,p2),\n           #n = ? #i.e. this is what we are trying to find\n           power = 0.80, \n           sig.level = 0.05\n           )\n\n\n     proportion power calculation for binomial distribution (arcsine transformation) \n\n              h = 0.3030231\n              n = 67.33124\n      sig.level = 0.05\n          power = 0.8\n    alternative = greater\n\n\n\nThis experiment needed at least 68 essays."
   }
 ]
