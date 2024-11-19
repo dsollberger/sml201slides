@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "19: Power Analysis\n\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "20: Supervised Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n19: Power Analysis\n\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -2637,5 +2637,124 @@
     "title": "19: Power Analysis",
     "section": "Seeking Sample Size",
     "text": "Seeking Sample Size\nFor the first comparison between the AI-generated essays and the human-generated essays, how large should the sample size be (at least) to achieve (at least) 0.80 power?\n\npwr.p.test(alternative = \"greater\",\n           h = ES.h(p1,p2),\n           #n = ? #i.e. this is what we are trying to find\n           power = 0.80, \n           sig.level = 0.05\n           )\n\n\n     proportion power calculation for binomial distribution (arcsine transformation) \n\n              h = 0.3030231\n              n = 67.33124\n      sig.level = 0.05\n          power = 0.8\n    alternative = greater\n\n\n\nThis experiment needed at least 68 essays."
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html",
+    "title": "20: Supervised Learning",
+    "section": "",
+    "text": "Libraries and Loading the Data\n\n\n\n\n\n\nlibrary(\"corrplot\")\nlibrary(\"tidyclust\")\nlibrary(\"tidymodels\")\nlibrary(\"tidyverse\")\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: GPT detectors\noffice_raw &lt;- readr::read_csv('office_sentiment.csv')\n# office_raw &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/data/office_sentiment.csv\")\n\n\n\n\n\n\n\nGoal: Explore topics in supervised learning\n\n\n\n\n\nObjectives:\ntidymodels\nridge regression\nLASSO regression"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#start",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#start",
+    "title": "20: Supervised Learning",
+    "section": "",
+    "text": "Libraries and Loading the Data\n\n\n\n\n\n\nlibrary(\"corrplot\")\nlibrary(\"tidyclust\")\nlibrary(\"tidymodels\")\nlibrary(\"tidyverse\")\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: GPT detectors\noffice_raw &lt;- readr::read_csv('office_sentiment.csv')\n# office_raw &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/data/office_sentiment.csv\")\n\n\n\n\n\n\n\nGoal: Explore topics in supervised learning\n\n\n\n\n\nObjectives:\ntidymodels\nridge regression\nLASSO regression"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#filtering",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#filtering",
+    "title": "20: Supervised Learning",
+    "section": "Filtering",
+    "text": "Filtering\n\noffice_df &lt;- office_raw |&gt;\n  select(imdb_rating,\n         season, episode, total_votes,\n         sentimentAnalysis_score, sentimentr_score, syuzhet_score) |&gt;\n  rename(ep_in_season = episode,\n         sent1 = syuzhet_score,\n         sent2 = sentimentr_score,\n         sent3 = sentimentAnalysis_score)"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#derived-variables",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#derived-variables",
+    "title": "20: Supervised Learning",
+    "section": "Derived Variables",
+    "text": "Derived Variables\n\noffice_df &lt;- office_df |&gt;\n  group_by(season, ep_in_season) |&gt;\n  mutate(sent1_mean = mean(sent1, na.rm = TRUE),\n         sent2_mean = mean(sent2, na.rm = TRUE),\n         sent3_mean = mean(sent3, na.rm = TRUE),\n         sent1_dev = sd(sent1, na.rm = TRUE),\n         sent2_dev = sd(sent2, na.rm = TRUE),\n         sent3_dev = sd(sent3, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(imdb_rating,\n         sent1_mean, sent2_mean, sent3_mean,\n         sent1_dev, sent2_dev, sent3_dev,\n         season, ep_in_season, total_votes) |&gt;\n  distinct() |&gt;\n  mutate(episode_num = 1:n())"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#correlation-plot",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#correlation-plot",
+    "title": "20: Supervised Learning",
+    "section": "Correlation Plot",
+    "text": "Correlation Plot\n\noffice_df |&gt;\n  cor(use = \"pairwise.complete.obs\") |&gt;\n  corrplot(method = \"number\",\n           order = \"FPC\",\n           type = \"upper\")"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#penalties",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#penalties",
+    "title": "20: Supervised Learning",
+    "section": "Penalties",
+    "text": "Penalties\n\ntidy(ridge_fit, penalty = 0)\n\n\nAttaching package: 'Matrix'\n\n\nThe following objects are masked from 'package:tidyr':\n\n    expand, pack, unpack\n\n\nLoaded glmnet 4.1-8\n\n\n# A tibble: 11 × 3\n   term          estimate penalty\n   &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)   7.48           0\n 2 sent1_mean   -0.336          0\n 3 sent2_mean   -0.911          0\n 4 sent3_mean   -0.247          0\n 5 sent1_dev    -0.684          0\n 6 sent2_dev     1.32           0\n 7 sent3_dev     0.846          0\n 8 season        0.00749        0\n 9 ep_in_season  0.0144         0\n10 total_votes   0.000371       0\n11 episode_num  -0.00222        0\n\n\n\ntidy(ridge_fit, penalty = 201)\n\n# A tibble: 11 × 3\n   term            estimate penalty\n   &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)   8.25           201\n 2 sent1_mean    0.0000141      201\n 3 sent2_mean    0.00537        201\n 4 sent3_mean   -0.000168       201\n 5 sent1_dev    -0.000994       201\n 6 sent2_dev     0.0118         201\n 7 sent3_dev     0.00446        201\n 8 season       -0.000234       201\n 9 ep_in_season  0.0000353      201\n10 total_votes   0.00000117     201\n11 episode_num  -0.0000102      201\n\n\n\nridge_fit |&gt; autoplot()"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#predictions",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#predictions",
+    "title": "20: Supervised Learning",
+    "section": "Predictions",
+    "text": "Predictions\n\npredict(ridge_fit,\n        new_data = office_df |&gt; select(-imdb_rating),\n        penalty = 0) |&gt;\n  head()\n\n# A tibble: 6 × 1\n  .pred\n  &lt;dbl&gt;\n1  8.75\n2  8.68\n3  8.50\n4  8.36\n5  8.67\n6  8.65\n\n\n\npredict(ridge_fit,\n        new_data = office_df |&gt; select(-imdb_rating),\n        penalty = 201) |&gt;\n  head()\n\n# A tibble: 6 × 1\n  .pred\n  &lt;dbl&gt;\n1  8.25\n2  8.25\n3  8.25\n4  8.25\n5  8.25\n6  8.25"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#lambda-grid",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#lambda-grid",
+    "title": "20: Supervised Learning",
+    "section": "Lambda Grid",
+    "text": "Lambda Grid\n\nlambda_vals &lt;- 10^seq(-3,3, length.out = 10)\nformat(lambda_vals, scientific=FALSE)\n\n [1] \"   0.001000000\" \"   0.004641589\" \"   0.021544347\" \"   0.100000000\"\n [5] \"   0.464158883\" \"   2.154434690\" \"  10.000000000\" \"  46.415888336\"\n [9] \" 215.443469003\" \"1000.000000000\"\n\nlambda_grid &lt;- grid_regular(penalty(range = c(-3, 3)),\n                            levels = 50)\n\n\nData Split\n\noffice_split &lt;- initial_split(office_df, strata = \"imdb_rating\")\noffice_train &lt;- training(office_split)\noffice_test  &lt;- testing(office_split)\noffice_fold  &lt;- vfold_cv(office_train, v = 10)\n\n\n\nPreprocessing\n\nridge_recipe &lt;- recipe(formula = imdb_rating ~ ., \n                       data = office_train) |&gt;\n  step_novel(all_nominal_predictors()) |&gt;\n  step_dummy(all_nominal_predictors()) |&gt;\n  step_zv(all_predictors())\n\n\n\nSpecification\n\nridge_spec &lt;- linear_reg(mixture = 0, penalty = tune()) |&gt;\n  set_engine(\"glmnet\")\n\n\n\nWorkflow\n\nridge_workflow &lt;- workflow() |&gt;\n  add_recipe(ridge_recipe) |&gt;\n  add_model(ridge_spec)\n\n\n\nTuning\n\ntune_results &lt;- tune_grid(\n  ridge_workflow,\n  resamples = office_fold,\n  grid = lambda_grid\n)\n\n\ntune_results |&gt; autoplot()\n\n\n\n\n\n\n\n\n\ntune_results |&gt; collect_metrics() |&gt; head()\n\n# A tibble: 6 × 7\n  penalty .metric .estimator  mean     n std_err .config              \n    &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                \n1 0.001   rmse    standard   0.375    10  0.0358 Preprocessor1_Model01\n2 0.001   rsq     standard   0.498    10  0.0956 Preprocessor1_Model01\n3 0.00133 rmse    standard   0.375    10  0.0358 Preprocessor1_Model02\n4 0.00133 rsq     standard   0.498    10  0.0956 Preprocessor1_Model02\n5 0.00176 rmse    standard   0.375    10  0.0358 Preprocessor1_Model03\n6 0.00176 rsq     standard   0.498    10  0.0956 Preprocessor1_Model03\n\n\n\n# tune_results |&gt;\n#   collect_metrics() |&gt;\n#   filter(.metric == \"rmse\") |&gt;\n#   filter(mean == min(mean))"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#predictions-refined",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#predictions-refined",
+    "title": "20: Supervised Learning",
+    "section": "Predictions Refined",
+    "text": "Predictions Refined\n\n# best_lambda &lt;- tune_results |&gt;\n#   collect_metrics() |&gt;\n#   filter(.metric == \"rmse\") |&gt;\n#   filter(mean == min(mean)) |&gt;\n#   distinct() |&gt;\n#   pull(penalty)\n\nbest_lambda &lt;- select_best(tune_results, metric = \"rmse\") |&gt;\n  pull(penalty)\n\npredict(ridge_fit,\n        new_data = office_df |&gt; select(-imdb_rating),\n        penalty = best_lambda) |&gt;\n  head()\n\n# A tibble: 6 × 1\n  .pred\n  &lt;dbl&gt;\n1  8.74\n2  8.67\n3  8.52\n4  8.37\n5  8.66\n6  8.65"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#coefficients",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#coefficients",
+    "title": "20: Supervised Learning",
+    "section": "Coefficients",
+    "text": "Coefficients\n\ntidy(lasso_fit, penalty = 1e-2)\n\n# A tibble: 11 × 3\n   term          estimate penalty\n   &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)   7.62        0.01\n 2 sent1_mean   -0.308       0.01\n 3 sent2_mean   -0.453       0.01\n 4 sent3_mean    0           0.01\n 5 sent1_dev    -0.650       0.01\n 6 sent2_dev     0.852       0.01\n 7 sent3_dev     0.449       0.01\n 8 season        0           0.01\n 9 ep_in_season  0.0135      0.01\n10 total_votes   0.000387    0.01\n11 episode_num  -0.00172     0.01\n\n\n\ntidy(lasso_fit, penalty = 1e-1)\n\n# A tibble: 11 × 3\n   term           estimate penalty\n   &lt;chr&gt;             &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)   7.59          0.1\n 2 sent1_mean    0             0.1\n 3 sent2_mean    0             0.1\n 4 sent3_mean    0             0.1\n 5 sent1_dev     0             0.1\n 6 sent2_dev     0             0.1\n 7 sent3_dev     0             0.1\n 8 season        0             0.1\n 9 ep_in_season  0             0.1\n10 total_votes   0.000314      0.1\n11 episode_num  -0.0000509     0.1"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#lambda-grid-1",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#lambda-grid-1",
+    "title": "20: Supervised Learning",
+    "section": "Lambda Grid",
+    "text": "Lambda Grid\n\nPreprocessing\n\nlasso_recipe &lt;- recipe(formula = imdb_rating ~ ., \n                       data = office_train) |&gt;\n  step_novel(all_nominal_predictors()) |&gt;\n  step_dummy(all_nominal_predictors()) |&gt;\n  step_zv(all_predictors()) |&gt;\n  step_normalize()\n\n\n\nSpecification\n\nlasso_spec &lt;- linear_reg(mixture = 1, penalty = tune()) |&gt;\n  set_engine(\"glmnet\")\n\n\n\nWorkflow\n\nlasso_workflow &lt;- workflow() |&gt;\n  add_recipe(lasso_recipe) |&gt;\n  add_model(lasso_spec)\n\n\n\nTuning\n\nlambda_grid &lt;- grid_regular(penalty(range = c(-2, -1)),\n                            levels = 25)\n\ntune_results &lt;- tune_grid(\n  lasso_workflow,\n  resamples = office_fold,\n  grid = lambda_grid\n)\n\n\ntune_results |&gt; autoplot()"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#explanatory-variables",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#explanatory-variables",
+    "title": "20: Supervised Learning",
+    "section": "Explanatory Variables",
+    "text": "Explanatory Variables\n\ntune_results |&gt;\n  collect_metrics() |&gt;\n  filter(.metric == \"rmse\") |&gt;\n  filter(mean == min(mean))\n\n# A tibble: 1 × 7\n  penalty .metric .estimator  mean     n std_err .config              \n    &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                \n1  0.0215 rmse    standard   0.371    10  0.0392 Preprocessor1_Model09\n\n\n\nbest_lambda &lt;- select_best(tune_results, metric = \"rmse\") |&gt;\n  pull(penalty)\n\ntidy(lasso_fit, penalty = best_lambda)\n\n# A tibble: 11 × 3\n   term          estimate penalty\n   &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)   7.74      0.0215\n 2 sent1_mean   -0.162     0.0215\n 3 sent2_mean    0         0.0215\n 4 sent3_mean    0         0.0215\n 5 sent1_dev    -0.547     0.0215\n 6 sent2_dev     0.444     0.0215\n 7 sent3_dev     0.0297    0.0215\n 8 season        0         0.0215\n 9 ep_in_season  0.0117    0.0215\n10 total_votes   0.000376  0.0215\n11 episode_num  -0.00149   0.0215"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#preprocessing-2",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#preprocessing-2",
+    "title": "20: Supervised Learning",
+    "section": "Preprocessing",
+    "text": "Preprocessing\n\npca_recipe &lt;- \n  recipe(formula = imdb_rating ~ ., data = office_train) |&gt; \n  step_normalize(all_predictors()) |&gt;\n  step_pca(all_predictors(), threshold = tune())"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#specification-2",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#specification-2",
+    "title": "20: Supervised Learning",
+    "section": "Specification",
+    "text": "Specification\n\nlm_spec &lt;- \n  linear_reg() |&gt;\n  set_engine(\"lm\")"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#workflow-2",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#workflow-2",
+    "title": "20: Supervised Learning",
+    "section": "Workflow",
+    "text": "Workflow\n\npca_workflow &lt;- \n  workflow() |&gt;\n  add_recipe(pca_recipe) |&gt;\n  add_model(lm_spec)"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#tuning-2",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#tuning-2",
+    "title": "20: Supervised Learning",
+    "section": "Tuning",
+    "text": "Tuning\n\nlambda_grid &lt;- grid_regular(threshold(),\n                            levels = 20)\n\ntune_results &lt;- tune_grid(\n  pca_workflow,\n  resamples = office_fold,\n  grid = lambda_grid\n)\n\n\ntune_results |&gt; autoplot()\n\n\n\n\n\n\n\n\n\nbest_threshold &lt;- select_best(tune_results, metric = \"rmse\")\npca_refined &lt;- finalize_workflow(pca_workflow, best_threshold)\npca_fit &lt;- fit(pca_refined, data = office_train)"
+  },
+  {
+    "objectID": "posts/20_supervised_learning/20_supervised_learning.html#visualization",
+    "href": "posts/20_supervised_learning/20_supervised_learning.html#visualization",
+    "title": "20: Supervised Learning",
+    "section": "Visualization",
+    "text": "Visualization\n\nflat_data &lt;- pca_recipe &lt;- \n  recipe(formula = imdb_rating ~ ., data = office_train) |&gt; \n  step_normalize(all_predictors()) |&gt;\n  step_pca(all_predictors()) |&gt; \n  prep() |&gt;\n  juice() |&gt;\n  select(imdb_rating, PC1, PC2)\n\n\nkmeans_fit &lt;- k_means(num_clusters = 5) |&gt;\n  set_engine(\"stats\") |&gt;\n  fit(imdb_rating ~ PC1 + PC2, data = flat_data)\n\n\nflat_data |&gt;\n  mutate(cluster_num = extract_cluster_assignment(kmeans_fit) |&gt;\n           pull()) |&gt;\n  ggplot(aes(x = PC1, y = PC2, color = cluster_num)) +\n  geom_point() +\n  labs(title = \"The Office\",\n       subtitle = \"inputs projected onto first two principal components\",\n       caption = \"Source: Schrute package\",\n       x = \"principal component 1\", y = \"principal component 2\") +\n  theme_minimal()"
   }
 ]
