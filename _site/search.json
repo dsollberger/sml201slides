@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Fall 2024)",
     "section": "",
-    "text": "20: Supervised Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n19: Power Analysis\n\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
+    "text": "21: Unsupervised Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 21, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n20: Supervised Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n19: Power Analysis\n\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n18: Introduction to Machine Learning\n\n\n\n\n\n\n\n\n\n\n\nNov 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n17: Hypothesis Testing (2)\n\n\n\n\n\n\n\n\n\n\n\nNov 7, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n16: Hypothesis Testing (1)\n\n\n\n\n\n\n\n\n\n\n\nNov 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n15: Confidence Intervals\n\n\n\n\n\n\n\n\n\n\n\nOct 31, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n14: Estimators\n\n\n\n\n\n\n\n\n\n\n\nOct 29, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n13: Normal Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n12: Binomial Distribution\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Nonlinear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 8, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Modeling Categorical Variables\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Multiple Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nOct 1, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Linear Regression\n\n\n\n\n\n\n\n\n\n\n\nSep 26, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Correlation\n\n\n\n\n\n\n\n\n\n\n\nSep 24, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Geospatial\n\n\n\n\n\n\n\n\n\n\n\nSep 19, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Networks\n\n\n\n\n\n\n\n\n\n\n\nSep 17, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\n\n\n\nSep 12, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\n\n\n\nSep 9, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\n\n\n\nSep 5, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introductions\n\n\n\n\n\n\n\n\n\n\n\nSep 3, 2024\n\n\nDerek Sollberger\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -2756,5 +2756,89 @@
     "title": "20: Supervised Learning",
     "section": "Visualization",
     "text": "Visualization\n\nflat_data &lt;- pca_recipe &lt;- \n  recipe(formula = imdb_rating ~ ., data = office_train) |&gt; \n  step_normalize(all_predictors()) |&gt;\n  step_pca(all_predictors()) |&gt; \n  prep() |&gt;\n  juice() |&gt;\n  select(imdb_rating, PC1, PC2)\n\n\nkmeans_fit &lt;- k_means(num_clusters = 5) |&gt;\n  set_engine(\"stats\") |&gt;\n  fit(imdb_rating ~ PC1 + PC2, data = flat_data)\n\n\nflat_data |&gt;\n  mutate(cluster_num = extract_cluster_assignment(kmeans_fit) |&gt;\n           pull()) |&gt;\n  ggplot(aes(x = PC1, y = PC2, color = cluster_num)) +\n  geom_point() +\n  labs(title = \"The Office\",\n       subtitle = \"inputs projected onto first two principal components\",\n       caption = \"Source: Schrute package\",\n       x = \"principal component 1\", y = \"principal component 2\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html",
+    "title": "21: Unsupervised Learning",
+    "section": "",
+    "text": "Libraries and Loading the Data\n\n\n\n\n\n\nlibrary(\"corrplot\")\nlibrary(\"DiagrammeR\")#easy coding of flowcharts\nlibrary(\"GGally\")    #extensions for ggplot\nlibrary(\"gt\")\nlibrary(\"sf\")\nlibrary(\"tidyclust\")\nlibrary(\"tidymodels\")\nlibrary(\"tidyverse\") #general framework for data wrangling\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: College Scorecard\n# college_raw &lt;- readr::read_csv('Most-Recent-Cohorts-Institution.csv')\n# college_df &lt;- college_raw |&gt;\n#   select(INSTNM, UGDS,\n#          STABBR, LATITUDE, LONGITUDE,\n#          ADM_RATE,\n#          # SATMT75, SATWR75,\n#          C150_4, RET_FT4,\n#          MD_EARN_WNE_P10, ENDOWBEGIN) |&gt;\n#   drop_na() |&gt;\n#   filter(LONGITUDE &gt; -125 & LONGITUDE &lt; -67) |&gt;\n#   filter(LATITUDE &gt; 25 & LATITUDE &lt; 49)\n# readr::write_csv(college_df, \"college_data.csv\")\ncollege_df &lt;- readr::read_csv(\"college_data.csv\")\n# college_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/refs/heads/main/data/college_data.csv\")\nstates_shp &lt;- readr::read_rds(\"us_states_shp.rds\")\n\n\n\n\n\n\n\nGoal: Explore topics in unsupervised learning\n\n\n\n\n\nObjectives:\nclustering\nworkflows\n\n\n\n\n\n\nToday’s data comes from College Scorecard.\n\nINSTNM: institution name\nUGDS: undergraduate enrollment (number of students)\nLATITUDE\nLONGITUDE\nADM_RATE: admission rate\nC150_4: completion rate (at 150% of expected time for 4-year degrees)\nRET_FT4: retention rate (full-time students, 4-year institutions)\nMD_EARN_WNE_P10: median earnings, 10 years after graduation (USD)\nENDOWBEGIN: endowment (beginning of school year)\n\n\n\n\n\ncollege_df |&gt;\n  select_if(is.numeric) |&gt;\n  cor(use = \"pairwise.complete.obs\") |&gt;\n  corrplot(method = \"ellipse\",\n           order = \"FPC\",\n           type = \"upper\")"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#start",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#start",
+    "title": "21: Unsupervised Learning",
+    "section": "",
+    "text": "Libraries and Loading the Data\n\n\n\n\n\n\nlibrary(\"corrplot\")\nlibrary(\"DiagrammeR\")#easy coding of flowcharts\nlibrary(\"GGally\")    #extensions for ggplot\nlibrary(\"gt\")\nlibrary(\"sf\")\nlibrary(\"tidyclust\")\nlibrary(\"tidymodels\")\nlibrary(\"tidyverse\") #general framework for data wrangling\n\n# school colors\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n# data set: College Scorecard\n# college_raw &lt;- readr::read_csv('Most-Recent-Cohorts-Institution.csv')\n# college_df &lt;- college_raw |&gt;\n#   select(INSTNM, UGDS,\n#          STABBR, LATITUDE, LONGITUDE,\n#          ADM_RATE,\n#          # SATMT75, SATWR75,\n#          C150_4, RET_FT4,\n#          MD_EARN_WNE_P10, ENDOWBEGIN) |&gt;\n#   drop_na() |&gt;\n#   filter(LONGITUDE &gt; -125 & LONGITUDE &lt; -67) |&gt;\n#   filter(LATITUDE &gt; 25 & LATITUDE &lt; 49)\n# readr::write_csv(college_df, \"college_data.csv\")\ncollege_df &lt;- readr::read_csv(\"college_data.csv\")\n# college_df &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/refs/heads/main/data/college_data.csv\")\nstates_shp &lt;- readr::read_rds(\"us_states_shp.rds\")\n\n\n\n\n\n\n\nGoal: Explore topics in unsupervised learning\n\n\n\n\n\nObjectives:\nclustering\nworkflows"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#data-college-scorecard",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#data-college-scorecard",
+    "title": "21: Unsupervised Learning",
+    "section": "",
+    "text": "Today’s data comes from College Scorecard.\n\nINSTNM: institution name\nUGDS: undergraduate enrollment (number of students)\nLATITUDE\nLONGITUDE\nADM_RATE: admission rate\nC150_4: completion rate (at 150% of expected time for 4-year degrees)\nRET_FT4: retention rate (full-time students, 4-year institutions)\nMD_EARN_WNE_P10: median earnings, 10 years after graduation (USD)\nENDOWBEGIN: endowment (beginning of school year)"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#correlation-plot",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#correlation-plot",
+    "title": "21: Unsupervised Learning",
+    "section": "",
+    "text": "college_df |&gt;\n  select_if(is.numeric) |&gt;\n  cor(use = \"pairwise.complete.obs\") |&gt;\n  corrplot(method = \"ellipse\",\n           order = \"FPC\",\n           type = \"upper\")"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scene",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scene",
+    "title": "21: Unsupervised Learning",
+    "section": "Scene",
+    "text": "Scene\n\nstates_shp |&gt;\n  ggplot() +\n  geom_sf(color = \"gray80\", fill = \"white\") +\n  geom_point(aes(x = LONGITUDE, y = LATITUDE, \n                 color = STABBR),\n             data = college_df) +\n  labs(title = \"American Universities\",\n       subtitle = \"A selection of insitutions in the continental USA\",\n       caption = \"Source: College Scorecard\",\n       x = \"\", y = \"\") +\n  theme_minimal(base_size = 14) +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#a-first-foray",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#a-first-foray",
+    "title": "21: Unsupervised Learning",
+    "section": "A first foray",
+    "text": "A first foray\n\nset.seed(20241121)\nk4_fit &lt;- k_means(num_clusters = 4) |&gt;\n  set_engine(\"stats\") |&gt;\n  fit(~ LATITUDE + LONGITUDE, data = college_df)"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#centroids",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#centroids",
+    "title": "21: Unsupervised Learning",
+    "section": "Centroids",
+    "text": "Centroids\n\nstates_shp |&gt;\n  ggplot() +\n  geom_sf(color = \"gray80\", fill = \"white\") +\n  geom_point(aes(x = LONGITUDE, y = LATITUDE),\n             color = \"gray60\",\n             data = college_df) +\n  geom_point(aes(x = LONGITUDE, y = LATITUDE, \n                 color = .cluster),\n             data = extract_centroids(k4_fit),\n             size = 7) +\n  labs(title = \"Centroids\",\n       subtitle = \"The clusters will be picked by distance to the nearest centroid\",\n       caption = \"Source: College Scorecard\",\n       x = \"\", y = \"\") +\n  scale_color_brewer(palette = \"Dark2\") +\n  theme_minimal(base_size = 14) +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#clusters",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#clusters",
+    "title": "21: Unsupervised Learning",
+    "section": "Clusters",
+    "text": "Clusters\n\ncluster_df &lt;- college_df |&gt;\n  mutate(cluster_num = extract_cluster_assignment(k4_fit) |&gt;\n           pull())\n\nstates_shp |&gt;\n  ggplot() +\n  geom_sf(color = \"gray80\", fill = \"white\") +\n  geom_point(aes(x = LONGITUDE, y = LATITUDE, \n                 color = cluster_num),\n             data = cluster_df) +\n  labs(title = \"Clusters\",\n       subtitle = \"k = 4\",\n       caption = \"Source: College Scorecard\",\n       x = \"\", y = \"\") +\n  scale_color_brewer(palette = \"Dark2\") +\n  theme_minimal(base_size = 14) +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConsiderations\n\n\n\n\nHow do we place the centroids? Randomly?\nHow do we pick the number of clusters?"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#try-several-arrangements",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#try-several-arrangements",
+    "title": "21: Unsupervised Learning",
+    "section": "Try several arrangements",
+    "text": "Try several arrangements\n\nN &lt;- 10 #max possible number of clusters\nk_vals &lt;- 1:N\nerr_ratios &lt;- rep(NA, N)\n\nfor(i in 1:N){\n  kmeans_fit &lt;- k_means(num_clusters = k_vals[i]) |&gt;\n    set_engine(\"stats\") |&gt;\n    fit(~ LATITUDE + LONGITUDE, data = college_df)\n  err_ratios[i] &lt;- kmeans_fit$fit$tot.withinss / kmeans_fit$fit$totss\n}"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scree-plot",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scree-plot",
+    "title": "21: Unsupervised Learning",
+    "section": "Scree Plot",
+    "text": "Scree Plot\n\ndf_for_graph &lt;- data.frame(num_clusters = 1:N,\n                           err_ratios)\n\ndf_for_graph |&gt;\n  ggplot() +\n  geom_point(aes(x = factor(num_clusters), y = err_ratios),\n             size = 3) +\n  geom_line(aes(x = num_clusters, y = err_ratios)) +\n  labs(title = \"Scree Plot\",\n       subtitle = \"Aiming to choose the number of clusters\",\n       caption = \"SML 201\",\n       x = \"number of clusters\",\n       y = \"within/total SSE ratio\") +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#tidymodels",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#tidymodels",
+    "title": "21: Unsupervised Learning",
+    "section": "Tidymodels",
+    "text": "Tidymodels\n\n# cross-validation folds\ncollege_cv &lt;- vfold_cv(college_df, v = 10)\n\n# specification\ncollege_spec &lt;- k_means(num_clusters = tune())\n\n# recipe\ncollege_recipe &lt;- recipe(~., data = college_df |&gt;\n                         select_if(is.numeric)) |&gt;\n  step_normalize()\n\n# workflow\ncollege_workflow &lt;- workflow(college_recipe, college_spec)\n\n# parameter grid\nkvals_grid &lt;- grid_regular(num_clusters(), levels = 10)\n\n# tuning\ntune_results &lt;- tune_cluster(\n  college_workflow,\n  resamples = college_cv,\n  grid = kvals_grid,\n  metrics = cluster_metric_set(sse_within_total, sse_total, sse_ratio)\n)"
+  },
+  {
+    "objectID": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scree-plot-1",
+    "href": "posts/21_unsupervised_learning/21_unsupervised_learning.html#scree-plot-1",
+    "title": "21: Unsupervised Learning",
+    "section": "Scree Plot",
+    "text": "Scree Plot\n\ntune_results |&gt;\n  collect_metrics() |&gt;\n  filter(.metric == \"sse_ratio\") |&gt;\n  ggplot(aes(x = num_clusters, y = mean)) +\n  geom_point(aes(x = factor(num_clusters), y = mean),\n             size = 3) +\n  geom_line() +\n  labs(title = \"Scree Plot\",\n       subtitle = \"Aiming to choose the number of clusters\",\n       caption = \"SML 201\",\n       x = \"number of clusters\",\n       y = \"within/total SSE ratio\") +\n  theme_minimal(base_size = 14)"
   }
 ]

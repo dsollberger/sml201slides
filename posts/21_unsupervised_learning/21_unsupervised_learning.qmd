@@ -1,0 +1,524 @@
+---
+title: "21: Unsupervised Learning"
+author: "Derek Sollberger"
+date: "2024-11-21"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Start
+
+::: {.callout-note collapse="true"}
+## Libraries and Loading the Data
+
+```{r}
+#| message: false
+#| warning: false
+
+library("corrplot")
+library("DiagrammeR")#easy coding of flowcharts
+library("GGally")    #extensions for ggplot
+library("gt")
+library("sf")
+library("tidyclust")
+library("tidymodels")
+library("tidyverse") #general framework for data wrangling
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: College Scorecard
+# college_raw <- readr::read_csv('Most-Recent-Cohorts-Institution.csv')
+# college_df <- college_raw |>
+#   select(INSTNM, UGDS,
+#          STABBR, LATITUDE, LONGITUDE,
+#          ADM_RATE,
+#          # SATMT75, SATWR75,
+#          C150_4, RET_FT4,
+#          MD_EARN_WNE_P10, ENDOWBEGIN) |>
+#   drop_na() |>
+#   filter(LONGITUDE > -125 & LONGITUDE < -67) |>
+#   filter(LATITUDE > 25 & LATITUDE < 49)
+# readr::write_csv(college_df, "college_data.csv")
+college_df <- readr::read_csv("college_data.csv")
+# college_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/refs/heads/main/data/college_data.csv")
+states_shp <- readr::read_rds("us_states_shp.rds")
+```
+
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Explore topics in unsupervised learning
+
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+* **Objectives**: 
+
+- clustering
+- workflows
+
+:::
+
+::::
+
+## Data: College Scorecard
+
+Today's data comes from [College Scorecard](https://collegescorecard.ed.gov/data).
+
+* `INSTNM`: institution name
+* `UGDS`: undergraduate enrollment (number of students)
+* `LATITUDE`
+* `LONGITUDE`
+* `ADM_RATE`: admission rate
+* `C150_4`: completion rate (at 150% of expected time for 4-year degrees)
+* `RET_FT4`: retention rate (full-time students, 4-year institutions)
+* `MD_EARN_WNE_P10`: median earnings, 10 years after graduation (USD)
+* `ENDOWBEGIN`: endowment (beginning of school year)
+
+## Correlation Plot
+
+```{r}
+college_df |>
+  select_if(is.numeric) |>
+  cor(use = "pairwise.complete.obs") |>
+  corrplot(method = "ellipse",
+           order = "FPC",
+           type = "upper")
+```
+
+
+
+# k-means Clustering
+
+## Scene
+
+```{r}
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = STABBR),
+             data = college_df) +
+  labs(title = "American Universities",
+       subtitle = "A selection of insitutions in the continental USA",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+## A first foray
+
+```{r}
+set.seed(20241121)
+k4_fit <- k_means(num_clusters = 4) |>
+  set_engine("stats") |>
+  fit(~ LATITUDE + LONGITUDE, data = college_df)
+```
+
+## Centroids
+
+```{r}
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE),
+             color = "gray60",
+             data = college_df) +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = .cluster),
+             data = extract_centroids(k4_fit),
+             size = 7) +
+  labs(title = "Centroids",
+       subtitle = "The clusters will be picked by distance to the nearest centroid",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+## Clusters
+
+```{r}
+cluster_df <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k4_fit) |>
+           pull())
+
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = cluster_num),
+             data = cluster_df) +
+  labs(title = "Clusters",
+       subtitle = "k = 4",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+::: {.callout-note}
+## Considerations
+
+1. How do we place the centroids? Randomly?
+2. How do we pick the number of clusters?
+:::
+
+
+# Error Ratios
+
+## Try several arrangements
+
+```{r}
+N <- 10 #max possible number of clusters
+k_vals <- 1:N
+err_ratios <- rep(NA, N)
+
+for(i in 1:N){
+  kmeans_fit <- k_means(num_clusters = k_vals[i]) |>
+    set_engine("stats") |>
+    fit(~ LATITUDE + LONGITUDE, data = college_df)
+  err_ratios[i] <- kmeans_fit$fit$tot.withinss / kmeans_fit$fit$totss
+}
+```
+
+## Scree Plot
+
+```{r}
+df_for_graph <- data.frame(num_clusters = 1:N,
+                           err_ratios)
+
+df_for_graph |>
+  ggplot() +
+  geom_point(aes(x = factor(num_clusters), y = err_ratios),
+             size = 3) +
+  geom_line(aes(x = num_clusters, y = err_ratios)) +
+  labs(title = "Scree Plot",
+       subtitle = "Aiming to choose the number of clusters",
+       caption = "SML 201",
+       x = "number of clusters",
+       y = "within/total SSE ratio") +
+  theme_minimal(base_size = 14)
+```
+
+
+# Workflow
+
+::::: {.panel-tabset}
+
+## Flowchart
+
+```{r}
+#| echo: false
+#| eval: true
+DiagrammeR::mermaid("
+graph LR
+
+data_frame --> cross_validation
+data_frame --> recipe
+recipe --> workflow
+spec --> workflow
+grid_search --> tuning
+workflow --> tuning
+cross_validation --> tuning
+
+tuning --> eval_metrics
+")
+```
+
+## Mermaid code
+
+```{r}
+#| echo: true
+#| eval: false
+DiagrammeR::mermaid("
+graph LR
+
+data_frame --> cross_validation
+data_frame --> recipe
+recipe --> workflow
+spec --> workflow
+grid_search --> tuning
+workflow --> tuning
+cross_validation --> tuning
+
+tuning --> eval_metrics
+")
+```
+
+:::::
+
+## Tidymodels
+
+```{r}
+# cross-validation folds
+college_cv <- vfold_cv(college_df, v = 10)
+
+# specification
+college_spec <- k_means(num_clusters = tune())
+
+# recipe
+college_recipe <- recipe(~., data = college_df |>
+                         select_if(is.numeric)) |>
+  step_normalize()
+
+# workflow
+college_workflow <- workflow(college_recipe, college_spec)
+
+# parameter grid
+kvals_grid <- grid_regular(num_clusters(), levels = 10)
+
+# tuning
+tune_results <- tune_cluster(
+  college_workflow,
+  resamples = college_cv,
+  grid = kvals_grid,
+  metrics = cluster_metric_set(sse_within_total, sse_total, sse_ratio)
+)
+```
+
+## Scree Plot
+
+```{r}
+tune_results |>
+  collect_metrics() |>
+  filter(.metric == "sse_ratio") |>
+  ggplot(aes(x = num_clusters, y = mean)) +
+  geom_point(aes(x = factor(num_clusters), y = mean),
+             size = 3) +
+  geom_line() +
+  labs(title = "Scree Plot",
+       subtitle = "Aiming to choose the number of clusters",
+       caption = "SML 201",
+       x = "number of clusters",
+       y = "within/total SSE ratio") +
+  theme_minimal(base_size = 14)
+```
+
+# Pairs Plot
+
+```{r}
+#| message: false
+college_df |>
+  select_if(is.numeric) |>
+  GGally::ggpairs(title = "American Universities")
+```
+
+```{r}
+set.seed(20241121)
+k4_fit <- k_means(num_clusters = 4) |>
+  set_engine("stats") |>
+  fit(~., data = college_df |>
+        select_if(is.numeric))
+college_k4 <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k4_fit) |>
+           pull())
+```
+
+```{r}
+#| message: false
+college_k4 |>
+  GGally::ggpairs(columns = c(2, 6:9),
+                  aes(color = cluster_num)) +
+  scale_color_brewer(palette = "Dark2")
+```
+
+# Classification
+
+Out of interest, we now seek smaller cluster sizes (i.e. fewer colleges in each cluster), so let us explore an arrangement with $k = 10$ clusters.
+
+```{r}
+set.seed(20241121)
+k10_fit <- k_means(num_clusters = 10) |>
+  set_engine("stats") |>
+  fit(~., data = college_df |>
+        select_if(is.numeric) |>
+        mutate(across(where(is.numeric), scale)))
+college_k10 <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k10_fit) |>
+           pull())
+```
+
+```{r}
+p_clust_id <- college_k10 |> 
+  filter(INSTNM == "Princeton University") |>
+  pull(cluster_num)
+```
+
+```{r}
+college_k10 |>
+  filter(cluster_num == p_clust_id)
+```
+::::: {.panel-tabset}
+
+## table
+
+```{r}
+#| echo: false
+#| eval: true
+college_k10 |>
+  filter(cluster_num == p_clust_id) |>
+  select(INSTNM, STABBR, UGDS,
+         ADM_RATE, C150_4, RET_FT4,
+         MD_EARN_WNE_P10) |>
+  rename(university = INSTNM,
+         state = STABBR,
+         enrollment = UGDS,
+         income = MD_EARN_WNE_P10) |>
+  mutate(admit_rate = 100*ADM_RATE,
+         grad_rate = 100*C150_4,
+         retention = 100*RET_FT4,) |>
+  select(university, state, enrollment,
+         admit_rate, grad_rate, retention,
+         income) |>
+  arrange(university) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Source: College Scorecard") |>
+  tab_header(
+    title = "The Princeton Cluster",
+    subtitle = "of similar universities"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "#E77500"),
+                 cell_text(color = "#121212",
+                           weight = "bold")),
+    locations = cells_body(rows = university == "Princeton University")
+  )
+```
+
+## gt
+
+```{r}
+#| echo: true
+#| eval: false
+college_k10 |>
+  filter(cluster_num == p_clust_id) |>
+  select(INSTNM, STABBR, UGDS,
+         ADM_RATE, C150_4, RET_FT4,
+         MD_EARN_WNE_P10) |>
+  rename(university = INSTNM,
+         state = STABBR,
+         enrollment = UGDS,
+         income = MD_EARN_WNE_P10) |>
+  mutate(admit_rate = 100*ADM_RATE,
+         grad_rate = 100*C150_4,
+         retention = 100*RET_FT4,) |>
+  select(university, state, enrollment,
+         admit_rate, grad_rate, retention,
+         income) |>
+  arrange(university) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Source: College Scorecard") |>
+  tab_header(
+    title = "The Princeton Cluster",
+    subtitle = "of similar universities"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "#E77500"),
+                 cell_text(color = "#121212",
+                           weight = "bold")),
+    locations = cells_body(rows = university == "Princeton University")
+  )
+```
+
+
+:::::
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* Precept 10
+* CLO Assessment
+* Exam 2 (December 5)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+::: {.callout-note collapse="true"}
+## Example Callout Block
+
+`note`, `tip`, `warning`, `caution`, or `important`
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
