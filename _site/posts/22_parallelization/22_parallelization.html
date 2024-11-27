@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Derek Sollberger">
-<meta name="dcterms.date" content="2024-11-21">
+<meta name="dcterms.date" content="2024-11-26">
 
 <title>22: Parallelization – SML 201 Fall 2024</title>
 <style>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 21, 2024</p>
+        <p class="date">November 26, 2024</p>
       </div>
     </div>
     
@@ -473,7 +473,7 @@ W = 0.9633, p-value = 5.357e-11</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(brute_force_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 2.129698 secs</code></pre>
+<pre><code>Time difference of 2.115917 secs</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -483,7 +483,7 @@ W = 0.9633, p-value = 5.357e-11</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(parallelization_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 10.47185 secs</code></pre>
+<pre><code>Time difference of 10.53473 secs</code></pre>
 </div>
 </div>
 </section>
@@ -573,13 +573,13 @@ loaded via a namespace (and not attached):
  [7] lhs_1.2.0           pkgconfig_2.0.3     shape_1.4.6.1      
 [10] crayon_1.5.3        fastmap_1.2.0       backports_1.5.0    
 [13] ellipsis_0.3.2      labeling_0.4.3      utf8_1.2.4         
-[16] rmarkdown_2.28      prodlim_2024.06.25  tzdb_0.4.0         
+[16] rmarkdown_2.29      prodlim_2024.06.25  tzdb_0.4.0         
 [19] bit_4.5.0           xfun_0.48           jsonlite_1.8.8     
 [22] R6_2.5.1            stringi_1.8.4       parallelly_1.37.1  
 [25] rpart_4.1.23        Rcpp_1.0.12         iterators_1.0.14   
-[28] knitr_1.48          future.apply_1.11.2 splines_4.4.1      
+[28] knitr_1.49          future.apply_1.11.2 splines_4.4.1      
 [31] nnet_7.3-19         timechange_0.3.0    tidyselect_1.2.1   
-[34] rstudioapi_0.17.0   yaml_2.3.8          timeDate_4032.109  
+[34] rstudioapi_0.17.1   yaml_2.3.8          timeDate_4032.109  
 [37] codetools_0.2-20    listenv_0.9.1       lattice_0.22-6     
 [40] withr_3.0.2         evaluate_1.0.1      archive_1.1.8      
 [43] survival_3.6-4      pillar_1.9.0        foreach_1.5.2      
@@ -589,7 +589,7 @@ loaded via a namespace (and not attached):
 [55] gower_1.0.1         grid_4.4.1          ipred_0.9-14       
 [58] colorspace_2.1-1    cli_3.6.3           DiceDesign_1.10    
 [61] fansi_1.0.6         lava_1.8.0          doFuture_1.0.1     
-[64] gtable_0.3.5        GPfit_1.0-8         digest_0.6.35      
+[64] gtable_0.3.6        GPfit_1.0-8         digest_0.6.35      
 [67] htmlwidgets_1.6.4   farver_2.1.2        htmltools_0.5.8.1  
 [70] lifecycle_1.0.4     hardhat_1.4.0       bit64_4.5.2        
 [73] MASS_7.3-60.2      </code></pre>

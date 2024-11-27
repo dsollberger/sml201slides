@@ -2,8 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/21_unsupervised_learning/21_unsupervised_learning.html",
       "/posts/22_parallelization/22_parallelization.html",
+      "/posts/21_unsupervised_learning/21_unsupervised_learning.html",
       "/posts/20_supervised_learning/20_supervised_learning.html",
       "/posts/19_power_analysis/19_power.html",
       "/posts/18_intro_ml/18_intro_ml.html",

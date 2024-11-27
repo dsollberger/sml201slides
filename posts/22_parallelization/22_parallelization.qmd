@@ -1,7 +1,7 @@
 ---
 title: "22: Parallelization"
 author: "Derek Sollberger"
-date: "2024-11-21"
+date: "2024-11-26"
 format:
   html:
     toc: true
