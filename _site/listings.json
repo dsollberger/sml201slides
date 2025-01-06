@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/teacher_notes/teacher_notes.html",
       "/posts/23_case_study/23_case_study.html",
       "/posts/22_parallelization/22_parallelization.html",
       "/posts/21_unsupervised_learning/21_unsupervised_learning.html",

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Derek Sollberger">
+<meta name="dcterms.date" content="2025-01-06">
+
+<title>Thoughts After the Semester – SML 201 Fall 2024</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SML 201 Fall 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Thoughts After the Semester</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Derek Sollberger </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 6, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sml-201" id="toc-sml-201" class="nav-link active" data-scroll-target="#sml-201">SML 201</a></li>
+  <li><a href="#attendance" id="toc-attendance" class="nav-link" data-scroll-target="#attendance">Attendance</a></li>
+  <li><a href="#before-lecture-tasks" id="toc-before-lecture-tasks" class="nav-link" data-scroll-target="#before-lecture-tasks">Before-Lecture Tasks</a></li>
+  <li><a href="#course-learning-outcomes" id="toc-course-learning-outcomes" class="nav-link" data-scroll-target="#course-learning-outcomes">Course Learning Outcomes</a>
+  <ul class="collapse">
+  <li><a href="#clo-1" id="toc-clo-1" class="nav-link" data-scroll-target="#clo-1">CLO 1</a></li>
+  <li><a href="#clo-2" id="toc-clo-2" class="nav-link" data-scroll-target="#clo-2">CLO 2</a></li>
+  <li><a href="#clo-3" id="toc-clo-3" class="nav-link" data-scroll-target="#clo-3">CLO 3</a></li>
+  <li><a href="#clo-4" id="toc-clo-4" class="nav-link" data-scroll-target="#clo-4">CLO 4</a></li>
+  </ul></li>
+  <li><a href="#ed-discussion" id="toc-ed-discussion" class="nav-link" data-scroll-target="#ed-discussion">Ed Discussion</a></li>
+  <li><a href="#exams" id="toc-exams" class="nav-link" data-scroll-target="#exams">Exams</a></li>
+  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
+  <li><a href="#precepts" id="toc-precepts" class="nav-link" data-scroll-target="#precepts">Precepts</a></li>
+  <li><a href="#projects" id="toc-projects" class="nav-link" data-scroll-target="#projects">Projects</a>
+  <ul class="collapse">
+  <li><a href="#project-1" id="toc-project-1" class="nav-link" data-scroll-target="#project-1">Project 1</a></li>
+  <li><a href="#project-2" id="toc-project-2" class="nav-link" data-scroll-target="#project-2">Project 2</a></li>
+  <li><a href="#project-3" id="toc-project-3" class="nav-link" data-scroll-target="#project-3">Project 3</a></li>
+  <li><a href="#project-4" id="toc-project-4" class="nav-link" data-scroll-target="#project-4">Project 4</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="sml-201" class="level1">
+<h1>SML 201</h1>
+<p>This past semester, I had the honor of teaching SML 201, <em>Introduction to Data Science</em>, at Princeton University, and here I felt self-motivated to type up a lot of notes and thoughts I had over the semester to continue to build a great course. In particular, I am proud of</p>
+<ul>
+<li>deploying a variety of real-world data sets (most of them less than 10 years old)</li>
+<li>scaffolding tougher statistics concepts</li>
+<li>creating 4 intense take-home group projects</li>
+<li>pushing the students higher on Bloom’s Taxonomy</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+On Comparisons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this blog post, whenever I use words like “more” or “higher”, I am simply comparing my recent performance to iterations of my classes that I delivered at a different university in years past. I mean no implications of my current colleagues at my current university as I haven’t combed through all of their materials.</p>
+</div>
+</div>
+<p>Numerous post-semester thoughts will be organized into several sections, which will be listed alphabetically (as seen in the table of contents)</p>
+</section>
+<section id="attendance" class="level1">
+<h1>Attendance</h1>
+<ul>
+<li>started with 120 students</li>
+<li>wanted to increase to 144 students (i.e.&nbsp;the seating capacity of the classroom times the two lecture sessions)</li>
+<li>ended up with 134 students</li>
+</ul>
+<p>Toward the end of the semester, I observed that about 60 percent of the students attended classes regularly. Some people might think that recording the lecture sessions correlates with the lower attendance, but upon looking at the Panopto Video statistics, only about 10 students were using the recordings. More pertinent is probably these Quarto blog posts (I call them “lecture slides” at work) which include nearly all of the <code>R</code> code that we use.</p>
+</section>
+<section id="before-lecture-tasks" class="level1">
+<h1>Before-Lecture Tasks</h1>
+<p>I have been deploying my before-lecture tasks (whimsically nicknamed BLTs) for several semesters now. Thankfully, as more faculty deploy before-lecture assignments, students do not find this flipping unusual. I use these BLTs to reinforce definitions seen in lecture or preview math coming up in the semester. I deploy these BLTs as quizzes in Canvas, but I assure the students that they may repeat these quizzes as often as they want before the deadline (which is actually 5 PM of the lecture day). For some examples, concepts like skew, distribution tails, factorials, and describing correlation strength are better explored through many short multiple-choice questions instead of a lecture slide.</p>
+<p>I was also able to use some BLTs to ask students to do some selections of reading from the textbooks. The BLT task to the student is to summarize their reading in 3 sentences. I deploy the BLTs this way for deeper concepts such as confidence intervals and the null hypothesis significance testing framework.</p>
+</section>
+<section id="course-learning-outcomes" class="level1">
+<h1>Course Learning Outcomes</h1>
+<p>I asked my students to fill out pre and post surveys that included self-responses on the 4 course learning outcomes. Here I try to present this information as <a href="https://r-charts.com/flow/ggalluvial/">alluvial plots</a>.</p>
+<blockquote class="blockquote">
+<p>Here I ask for your comfort level in completing tasks involving the course learning outcomes (as seen in the syllabus). Please rate your comfort on a scale from 1 = [brand new to you] to 7 = [expert in the material]</p>
+</blockquote>
+<section id="clo-1" class="level2">
+<h2 class="anchored" data-anchor-id="clo-1">CLO 1</h2>
+<blockquote class="blockquote">
+<p>Implement data science and statistical concepts and methods to data sets and real-world scenarios</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teacher_notes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="clo-2" class="level2">
+<h2 class="anchored" data-anchor-id="clo-2">CLO 2</h2>
+<blockquote class="blockquote">
+<p>Utilize software to load files, perform data wrangling, and produce visualizations</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teacher_notes_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="clo-3" class="level2">
+<h2 class="anchored" data-anchor-id="clo-3">CLO 3</h2>
+<blockquote class="blockquote">
+<p>Compute results from data analyses and express the findings to academic and scientific communication audiences</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teacher_notes_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="clo-4" class="level2">
+<h2 class="anchored" data-anchor-id="clo-4">CLO 4</h2>
+<blockquote class="blockquote">
+<p>Discuss ethical and societal impact of data science projects and equitable practices</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="teacher_notes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+On Data Ethics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I had only one assignment that emphasized data ethics, and we talked about data ethics for a small amount of time during the semester. If students are reporting high familiarity with data ethics on these Likert scales, their knowledge probably came from other courses.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ed-discussion" class="level1">
+<h1>Ed Discussion</h1>
+<p>I estimate that about a third of the students used the Ed Discussion (online message board), with more visitors during the weeks where projects were due.</p>
+<p>We did a decent job of establishing that most homework questions should be posted online in Ed Discussion (instead of e-mail).</p>
+<p>Students liked the ability to post anonymously.</p>
+</section>
+<section id="exams" class="level1">
+<h1>Exams</h1>
+<p>Each of the two exams had</p>
+<ul>
+<li><p>20 multiple-choice questions that were similar to the before-lecture tasks</p></li>
+<li><p>4 or 5 essay tasks where I asked students to <em>describe</em> what they would do as a data analyst for a given situation (in at least 5 sentences)</p>
+<ul>
+<li>emphasis on overall technique and concepts</li>
+<li>students were advised to not recite <code>R</code> code (especially not entire code chunks)</li>
+</ul></li>
+</ul>
+<p>These exams imitated job interviews for data analyst and data scientist jobs respectively. Most students did well in these exam settings, but there were some students who struggled with the change of emphasis. For example, instead of asking “What is linear regression?”, these tasks are emphasizing thoughts like, “When do we use linear regression?”</p>
+</section>
+<section id="lectures" class="level1">
+<h1>Lectures</h1>
+<p>Following the example of my current colleagues, I ran most of the lecture sessions as code-along.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Template Files
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>In the second session, we built a Quarto script from scratch</li>
+<li>From the third session onward, I provided a template script file in Canvas to allow us to quickly load packages, data, and skip code that we had already encountered multiple times.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>For each 80-minute lecture session, I aimed for the back-and-forth code-along to take up about 70 percent of the time. Most of the rest of the time was spent introducing the data set or mentioning deeper math/stats concepts.</p>
+<p>The code-along style is somewhat justified by pedagogy and cognitive science studies (as mentioned in works like <em>A Programmer’s Mind</em>). Having audience members type code creates immersion and repetition that eases learning the coding.</p>
+<p>However, in this semester, I did not employ active learning techniques. Some think-pair-share or Slido could invigorate the lecture setting.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What’s Wrong with this Graph?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>One activity I want to deploy several times is “What’s Wrong with this Graph?” I present a half-done data visualization to the audience and ask for feedback (via think-pair-share). Students could point out common issues such as</p>
+<ul>
+<li>overrepresentation of missing data</li>
+<li>should the vertical axis start at zero</li>
+<li>overlapping labels</li>
+<li>is this the best tool for the job (e.g.&nbsp;bar graph versus line graph)?</li>
+</ul>
+<p>I actually deployed this activity on the first day of class, but then didn’t bring it back.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="precepts" class="level1">
+<h1>Precepts</h1>
+<p>My initial vision of the precept assignments was to generate a different case study narrative for each session. For most of these assignments, I used a different data set. Early in the semester, I chose data sets from fields that were unusual for me (such as linguistics and the stock markets) so that I could save topics where I am more familiar (such as bioinformatics and sports) for usage with tougher topics in machine learning. The variety was meant to welcome students from various majors.</p>
+<p>I frequently conflated “precept” (when needed in particular: “precept section” versus “precept assignment”). The reason why I did this was to avoid the “problem set” jargon that gives some anxiety to Princeton students. For these precept assignments, I aimed for about 10 tasks per assignment, where the first task was a common exploration to remind the students to literally look at the data and the column names.</p>
+<p>In the weighted grades, the precepts totaled merely 10 percent of the semester grade (so each precept assignment was one percent). This may be lower than other classes, but we needed to reserve higher weights to the projects and exams to coerce the rigor of the course.</p>
+<p>Following my colleagues’ example, I loved the Friday 5 PM due date. None of the instructors wanted to receive e-mails requesting assistance on a Friday evening.</p>
+<p>Most students did the precept assignments during their assigned precept times</p>
+<ul>
+<li>students could finish an assignment on their own (and submit it before the due date)</li>
+<li>students could start an assignment early and finish it during their precept section</li>
+<li>a small number of students did the precept assignments completely on their own, but several students valued the trade-off that being there in person garnered feedback from the preceptor or tutor before turning-in the assignment</li>
+</ul>
+</section>
+<section id="projects" class="level1">
+<h1>Projects</h1>
+<p>Over the semester, I deployed 4 take-home group projects.</p>
+<p>Each project had about 10 more intense tasks, and there was a substantial writing component.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Student Groups
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I asked the students to pick group members by the end of week 3. For remaining students, I tried to arrange them into groups. My hope was that the students organized by some intrinsic quality (e.g.&nbsp;same sports team, same residential college, same major), but it might also be useful to group students by their most flexible day (e.g.&nbsp;if they can meet their with their group on Sunday).</p>
+<ul>
+<li>groups of 2, 3, or 4 students</li>
+<li>about 5 students opted to work alone</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Quality Request
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For each project, I had the following requests to ensure a reasonable level of quality for a sophomore-level course</p>
+<ul>
+<li><p>After each task, write a paragraph (about 5 sentences) to describe and elaborate on the results, especially in the context of the data set</p></li>
+<li><p>Unless otherwise indicated, all data visualizations were to be done with <code>ggplot2</code> (or something of equivalent technology) for publishable level quality</p>
+<ul>
+<li>include a title, subtitle, and caption</li>
+<li>use colors beyond the default shades of gray</li>
+<li>include the source of the data</li>
+</ul></li>
+<li><p>Unless otherwise indicated, all tables were to be done through <code>gt</code> for publishable level quality</p>
+<ul>
+<li>include a title, subtitle, and caption</li>
+<li>use colors beyond the default shades of gray</li>
+<li>include the source of the data</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<section id="project-1" class="level2">
+<h2 class="anchored" data-anchor-id="project-1">Project 1</h2>
+<ul>
+<li>theme: Electoral College</li>
+<li>concept: exploring data</li>
+<li>areas: politics, management</li>
+<li>main hurdle: merging data</li>
+</ul>
+<p>Initially, my plan was for students to redo the 2020 USA Presidential election, but for the Green and Libertarian parties. Unfortunately, it was trivial because between those two parties, the Libertarian candidate had earned more votes in nearly every county. Furthermore, the Green party did not have a candidate in some counties, or sometimes multiple candidates.</p>
+<p>Instead, I had students explore statistics concepts like error, logarithmic transformation, and z-score standardization. Some student groups did a great job in understanding why these data analyses could be useful to a political campaign.</p>
+</section>
+<section id="project-2" class="level2">
+<h2 class="anchored" data-anchor-id="project-2">Project 2</h2>
+<ul>
+<li>theme: Covid-19 Wastewater</li>
+<li>concepts: correlation and linear regression</li>
+<li>areas: biology, epidemiology, public health</li>
+<li>main hurdle: pivoting data</li>
+</ul>
+<p>Initially, my plan was for students to seek lagged correlation between spikes in wastewater findings of viral levels and hospitalization rates. Unfortunately, very few states (of the United States) kept records of hospitalizations or mortality that could be connected back to the coronaviruses.</p>
+<p>Instead, I had the students replicate the data visualizations that were found on the National Wastewater Surveillance System.</p>
+</section>
+<section id="project-3" class="level2">
+<h2 class="anchored" data-anchor-id="project-3">Project 3</h2>
+<ul>
+<li>theme: Cybersecurity</li>
+<li>concepts: confidence intervals and hypothesis testing</li>
+<li>areas: mechanical engineering, physics, computer science</li>
+<li>main hurdle: connecting the data with the associated research paper</li>
+</ul>
+<p>I found a wonderful data set called MisbehaviorX that was created by a somewhat local group of scientists. That data set was created to allow future scientists to judge the quality of their machine learning algorithms for autonomous cars. The data simulated various possible cyber attacks. I had the students at least use our statistics techniques to measure the signals of the attacks.</p>
+</section>
+<section id="project-4" class="level2">
+<h2 class="anchored" data-anchor-id="project-4">Project 4</h2>
+<ul>
+<li>theme: Ridesharing</li>
+<li>concepts: machine learning</li>
+<li>areas: business, economics, finance</li>
+<li>main hurdle: variable selection</li>
+</ul>
+<p>At some data science conferences, I have seen economists talk about exploring Uber data sets (i.e.&nbsp;the ridesharing company). I was able to find a similarly extensive data set through Chicago Open Portal. I had the students explore the data in a way that reviewed all of the major concepts from the semester. Unfortunately, the anonymized data was rather homongenous (for example, there was little separation between morning and evening commutes), so we didn’t get impressive results at the time.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
