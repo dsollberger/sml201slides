@@ -12,7 +12,8 @@ website:
         href: https://twitter.com
 format:
   html:
-    theme: [cerulean, customstyle.scss]
+    theme: cerulean
+    css: styles.css
 
 
 
