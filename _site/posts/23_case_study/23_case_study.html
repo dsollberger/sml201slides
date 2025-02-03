@@ -9,7 +9,7 @@
 <meta name="author" content="Derek Sollberger">
 <meta name="dcterms.date" content="2024-12-03">
 
-<title>23: One More Case Study – SML 201 Fall 2024</title>
+<title>23: One More Case Study – SML 301</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,7 +144,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">SML 201 Fall 2024</span>
+    <span class="navbar-title">SML 301</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -859,7 +859,7 @@ Session Info
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.4.1 (2024-06-14 ucrt)
+<pre><code>R version 4.4.2 (2024-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
 Running under: Windows 10 x64 (build 19045)
 
@@ -880,7 +880,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] glmnet_4.1-8       Matrix_1.7-0       lubridate_1.9.3    forcats_1.0.0     
+ [1] glmnet_4.1-8       Matrix_1.7-1       lubridate_1.9.3    forcats_1.0.0     
  [5] stringr_1.5.1      readr_2.1.5        tidyverse_2.0.0    yardstick_1.3.1   
  [9] workflowsets_1.1.0 workflows_1.1.4    tune_1.2.1         tidyr_1.3.1       
 [13] tibble_3.2.1       rsample_1.2.1      recipes_1.0.10     purrr_1.0.2       
@@ -889,31 +889,31 @@ other attached packages:
 [25] tidymodels_1.2.0   tidyclust_0.2.3    patchwork_1.3.0    ggsignif_0.6.4    
 
 loaded via a namespace (and not attached):
- [1] rlang_1.1.4         magrittr_2.0.3      furrr_0.3.1        
- [4] flexclust_1.4-2     compiler_4.4.1      vctrs_0.6.5        
+ [1] rlang_1.1.5         magrittr_2.0.3      furrr_0.3.1        
+ [4] flexclust_1.4-2     compiler_4.4.2      vctrs_0.6.5        
  [7] RcppZiggurat_0.1.6  lhs_1.2.0           pkgconfig_2.0.3    
 [10] shape_1.4.6.1       fastmap_1.2.0       backports_1.5.0    
-[13] ellipsis_0.3.2      labeling_0.4.3      utf8_1.2.4         
-[16] rmarkdown_2.29      prodlim_2024.06.25  tzdb_0.4.0         
-[19] xfun_0.48           Rfast_2.1.0         modeltools_0.2-23  
-[22] jsonlite_1.8.8      parallel_4.4.1      R6_2.5.1           
-[25] stringi_1.8.4       parallelly_1.37.1   rpart_4.1.23       
-[28] Rcpp_1.0.12         iterators_1.0.14    knitr_1.49         
-[31] future.apply_1.11.2 splines_4.4.1       nnet_7.3-19        
-[34] timechange_0.3.0    tidyselect_1.2.1    rstudioapi_0.17.1  
-[37] yaml_2.3.8          timeDate_4032.109   codetools_0.2-20   
-[40] listenv_0.9.1       lattice_0.22-6      withr_3.0.2        
-[43] evaluate_1.0.1      future_1.33.2       survival_3.6-4     
-[46] RcppParallel_5.1.9  pillar_1.9.0        foreach_1.5.2      
-[49] stats4_4.4.1        generics_0.1.3      hms_1.1.3          
-[52] munsell_0.5.1       globals_0.16.3      class_7.3-22       
-[55] glue_1.8.0          tools_4.4.1         data.table_1.16.2  
-[58] modelenv_0.2.0      gower_1.0.1         grid_4.4.1         
-[61] ipred_0.9-14        colorspace_2.1-1    cli_3.6.3          
-[64] DiceDesign_1.10     fansi_1.0.6         lava_1.8.0         
-[67] gtable_0.3.6        GPfit_1.0-8         digest_0.6.35      
-[70] htmlwidgets_1.6.4   farver_2.1.2        htmltools_0.5.8.1  
-[73] lifecycle_1.0.4     hardhat_1.4.0       MASS_7.3-60.2      </code></pre>
+[13] ellipsis_0.3.2      labeling_0.4.3      rmarkdown_2.29     
+[16] prodlim_2024.06.25  tzdb_0.4.0          xfun_0.50          
+[19] Rfast_2.1.0         modeltools_0.2-23   jsonlite_1.8.9     
+[22] parallel_4.4.2      R6_2.5.1            stringi_1.8.4      
+[25] parallelly_1.37.1   rpart_4.1.23        Rcpp_1.0.12        
+[28] iterators_1.0.14    knitr_1.49          future.apply_1.11.2
+[31] splines_4.4.2       nnet_7.3-19         timechange_0.3.0   
+[34] tidyselect_1.2.1    rstudioapi_0.17.1   yaml_2.3.10        
+[37] timeDate_4032.109   codetools_0.2-20    listenv_0.9.1      
+[40] lattice_0.22-6      withr_3.0.2         evaluate_1.0.3     
+[43] future_1.33.2       survival_3.7-0      RcppParallel_5.1.9 
+[46] pillar_1.10.1       foreach_1.5.2       stats4_4.4.2       
+[49] generics_0.1.3      hms_1.1.3           munsell_0.5.1      
+[52] globals_0.16.3      class_7.3-22        glue_1.8.0         
+[55] tools_4.4.2         data.table_1.16.2   modelenv_0.2.0     
+[58] gower_1.0.1         grid_4.4.2          ipred_0.9-14       
+[61] colorspace_2.1-1    cli_3.6.3           DiceDesign_1.10    
+[64] lava_1.8.0          gtable_0.3.6        GPfit_1.0-8        
+[67] digest_0.6.37       htmlwidgets_1.6.4   farver_2.1.2       
+[70] htmltools_0.5.8.1   lifecycle_1.0.4     hardhat_1.4.0      
+[73] MASS_7.3-61        </code></pre>
 </div>
 </div>
 </div>

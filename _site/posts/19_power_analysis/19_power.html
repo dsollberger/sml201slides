@@ -9,7 +9,7 @@
 <meta name="author" content="Derek Sollberger">
 <meta name="dcterms.date" content="2024-11-14">
 
-<title>19: Power Analysis – SML 201 Fall 2024</title>
+<title>19: Power Analysis – SML 201</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -144,7 +144,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">SML 201 Fall 2024</span>
+    <span class="navbar-title">SML 201</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -640,7 +640,7 @@ Project 3
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>detection_rate <span class="ot">&lt;-</span> <span class="fu">mean</span>(p_vals <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We have found “significance” in 5 percent of our replicates.</p>
+<p>We have found “significance” in 4.5 percent of our replicates.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -651,7 +651,7 @@ p-hacking
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>What if a research team reported findings of “significance” from the 5 percent and <em>discarded</em> results from the other 95 percent?</p>
+<p>What if a research team reported findings of “significance” from the 4.5 percent and <em>discarded</em> results from the other 95.5 percent?</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -938,7 +938,7 @@ Session Info
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.4.1 (2024-06-14 ucrt)
+<pre><code>R version 4.4.2 (2024-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
 Running under: Windows 10 x64 (build 19045)
 
@@ -965,19 +965,18 @@ other attached packages:
 [13] infer_1.0.7    
 
 loaded via a namespace (and not attached):
- [1] utf8_1.2.4        generics_0.1.3    lattice_0.22-6    stringi_1.8.4    
- [5] hms_1.1.3         digest_0.6.35     magrittr_2.0.3    evaluate_1.0.1   
- [9] grid_4.4.1        timechange_0.3.0  fastmap_1.2.0     Matrix_1.7-0     
-[13] jsonlite_1.8.8    mgcv_1.9-1        fansi_1.0.6       scales_1.3.0     
-[17] cli_3.6.3         crayon_1.5.3      rlang_1.1.4       splines_4.4.1    
-[21] bit64_4.5.2       munsell_0.5.1     withr_3.0.2       yaml_2.3.8       
-[25] parallel_4.4.1    tools_4.4.1       tzdb_0.4.0        colorspace_2.1-1 
-[29] vctrs_0.6.5       R6_2.5.1          lifecycle_1.0.4   snakecase_0.11.1 
-[33] htmlwidgets_1.6.4 bit_4.5.0         vroom_1.6.5       archive_1.1.8    
-[37] pkgconfig_2.0.3   pillar_1.9.0      gtable_0.3.5      glue_1.8.0       
-[41] xfun_0.48         tidyselect_1.2.1  rstudioapi_0.17.0 knitr_1.48       
-[45] farver_2.1.2      nlme_3.1-164      htmltools_0.5.8.1 labeling_0.4.3   
-[49] rmarkdown_2.28    compiler_4.4.1   </code></pre>
+ [1] generics_0.1.3    lattice_0.22-6    stringi_1.8.4     hms_1.1.3        
+ [5] digest_0.6.37     magrittr_2.0.3    evaluate_1.0.3    grid_4.4.2       
+ [9] timechange_0.3.0  fastmap_1.2.0     Matrix_1.7-1      jsonlite_1.8.9   
+[13] mgcv_1.9-1        scales_1.3.0      cli_3.6.3         rlang_1.1.5      
+[17] crayon_1.5.3      splines_4.4.2     bit64_4.6.0-1     munsell_0.5.1    
+[21] withr_3.0.2       yaml_2.3.10       tools_4.4.2       parallel_4.4.2   
+[25] tzdb_0.4.0        colorspace_2.1-1  vctrs_0.6.5       R6_2.5.1         
+[29] lifecycle_1.0.4   snakecase_0.11.1  htmlwidgets_1.6.4 bit_4.5.0.1      
+[33] vroom_1.6.5       archive_1.1.8     pkgconfig_2.0.3   pillar_1.10.1    
+[37] gtable_0.3.6      glue_1.8.0        xfun_0.50         tidyselect_1.2.1 
+[41] rstudioapi_0.17.1 knitr_1.49        farver_2.1.2      nlme_3.1-166     
+[45] htmltools_0.5.8.1 labeling_0.4.3    rmarkdown_2.29    compiler_4.4.2   </code></pre>
 </div>
 </div>
 </div>
