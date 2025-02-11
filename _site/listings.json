@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/highcharter_example/highcharter_example.html",
       "/posts/teacher_notes/teacher_notes.html",
       "/posts/23_case_study/23_case_study.html",
       "/posts/22_parallelization/22_parallelization.html",
