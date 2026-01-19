@@ -1,0 +1,173 @@
+---
+title: "1: Introduction"
+author: "Derek Sollberger"
+date: "2026-01-27"
+format:
+  html:
+    toc: true
+---
+
+
+# 1: Introduction
+
+## Learning Objectives
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- explore Gradio
+- outline semester project
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![gradio](gradio_icon.png)
+
+:::
+
+::::
+
+## Packages
+
+```{r}
+#| message: false
+#| warning: false
+library("tidyverse")
+```
+
+
+# Data-Driven Course Design
+
+## Prior
+
+During the Fall 2024 semester, the `Demographics Survey` yielded the following information about majors and minors.
+
+```{r}
+df_major <- readr::read_csv("majors_minors_Fall_2024.csv")
+```
+
+```{r}
+df_minor <- data.frame(c(df_major$minor1, df_major$minor2))
+colnames(df_minor) <- "minor"
+df_minor <- df_minor |> filter(!is.na(minor))
+```
+
+
+::::: {.panel-tabset}
+
+## majors
+
+```{r}
+#| echo: false
+#| eval: true
+
+df_major |>
+  ggplot(aes(y = fct_rev(fct_infreq(major)))) +
+  geom_bar(color = "#000000", fill = "#EE7F2D", stat = "count") +
+  labs(title = "Student Majors for SML 201",
+       subtitle = "Fall 2024 semester",
+       caption = "SML 201",
+       x = "count", y = "") +
+  theme_minimal()
+```
+
+
+## minors
+
+```{r}
+#| echo: false
+#| eval: true
+
+df_minor |>
+  group_by(minor) |>
+  mutate(n = n()) |>
+  ungroup() |>
+  filter(n > 1) |>
+  ggplot(aes(y = fct_rev(fct_infreq(minor)))) +
+  geom_bar(color = "#000000", fill = "#EE7F2D", stat = "count") +
+  labs(title = "Student Minors for SML 201",
+       subtitle = "Fall 2024 semester",
+       caption = "SML 201\n
+       subgroups with n > 1",
+       x = "count", y = "") +
+  theme_minimal()
+```
+
+:::::
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* due this Friday (Dec 5):
+
+    - surveys:
+        - **CLO Assessment (after)** (10 minutes)
+        - **CuriosityPost** (5 minutes)
+        - **Literature Review Survey (post)** (10 minutes)
+
+
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-tip}
+## Semester Project due December 16
+
+* Project Code
+* Project Presentation
+* Project Report
+:::
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources and References
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::

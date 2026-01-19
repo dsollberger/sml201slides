@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -32,15 +32,17 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-870b6070356b2f6ba798b4fc2bd491a6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -112,7 +114,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -131,13 +133,15 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">SML 201</span>
     </a>
@@ -191,7 +195,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(25)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -205,706 +209,24 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1739336400000" data-listing-file-modified-sort="1739299426302" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="298">
-<div class="thumbnail">
-<p><a href="./posts/highcharter_example/highcharter_example.html" class="no-external"></a></p><a href="./posts/highcharter_example/highcharter_example.html" class="no-external">
-<p class="card-img-top"><img src="posts\highcharter_example\highcharter_example_files\figure-html\unnamed-chunk-3-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/highcharter_example/highcharter_example.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/highcharter_example/highcharter_example.html" class="no-external">Highcharter Example</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/highcharter_example/highcharter_example.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/highcharter_example/highcharter_example.html" class="no-external">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1769490000000" data-listing-file-modified-sort="1765151585828" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="299">
+<div class="thumbnail"><a href="./posts/01_intro/01_intro.html" class="no-external">
 
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu">colnames</span>(penguins)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "species"           "island"            "bill_length_mm"   
-[4] "bill_depth_mm"     "flipper_length_mm" "body_mass_g"      
-[7] "sex"             …</code></pre></div></div></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/highcharter_example/highcharter_example.html" class="no-external">
-<div class="listing-date">
-Feb 12, 2025
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1736139600000" data-listing-file-modified-sort="1736157827752" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2435">
-<div class="thumbnail">
-<p><a href="./posts/teacher_notes/teacher_notes.html" class="no-external"></a></p><a href="./posts/teacher_notes/teacher_notes.html" class="no-external">
-<p class="card-img-top"><img src="posts\teacher_notes\teacher_notes_files\figure-html\unnamed-chunk-2-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/teacher_notes/teacher_notes.html" class="no-external"></a></p>
-</div>
+<p class="card-img-top"><img src="posts\01_intro\gradio_icon.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/teacher_notes/teacher_notes.html" class="no-external">Thoughts After the Semester</a>
+<a href="./posts/01_intro/01_intro.html" class="no-external">1: Introduction</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/teacher_notes/teacher_notes.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/teacher_notes/teacher_notes.html" class="no-external">This past semester, I had the honor of teaching SML 201, <em>Introduction to Data Science</em>, at Princeton University, and here I felt self-motivated to type up a lot of notes and…</a>
-</div>
+<div class="delink listing-description"><a href="./posts/01_intro/01_intro.html" class="no-external">
+During the Fall 2024 semester, the <code>Demographics Survey</code> yielded the following information about majors and minors.
+</a></div>
 </div>
 <div class="metadata">
-<a href="./posts/teacher_notes/teacher_notes.html" class="no-external">
+<a href="./posts/01_intro/01_intro.html" class="no-external">
 <div class="listing-date">
-Jan 6, 2025
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1733202000000" data-listing-file-modified-sort="1733190338204" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2616">
-<div class="thumbnail">
-<p><a href="./posts/23_case_study/23_case_study.html" class="no-external"></a></p><a href="./posts/23_case_study/23_case_study.html" class="no-external">
-<p class="card-img-top"><img src="posts\23_case_study\23_case_study_files\figure-html\unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/23_case_study/23_case_study.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/23_case_study/23_case_study.html" class="no-external">23: One More Case Study</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/23_case_study/23_case_study.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/23_case_study/23_case_study.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/23_case_study/23_case_study.html" class="no-external">
-<div class="listing-date">
-Dec 3, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1732597200000" data-listing-file-modified-sort="1732743702439" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="801">
-<div class="thumbnail">
-<p><a href="./posts/22_parallelization/22_parallelization.html" class="no-external"></a></p><a href="./posts/22_parallelization/22_parallelization.html" class="no-external">
-<p class="card-img-top"><img src="posts\22_parallelization\22_parallelization_files\figure-html\unnamed-chunk-3-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/22_parallelization/22_parallelization.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/22_parallelization/22_parallelization.html" class="no-external">22: Parallelization</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/22_parallelization/22_parallelization.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/22_parallelization/22_parallelization.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/22_parallelization/22_parallelization.html" class="no-external">
-<div class="listing-date">
-Nov 26, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1732165200000" data-listing-file-modified-sort="1732167353994" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1832">
-<div class="thumbnail">
-<p><a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external"></a></p><a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external">
-<p class="card-img-top"><img src="posts\21_unsupervised_learning\21_unsupervised_learning_files\figure-html\unnamed-chunk-2-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external">21: Unsupervised Learning</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/21_unsupervised_learning/21_unsupervised_learning.html" class="no-external">
-<div class="listing-date">
-Nov 21, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1731992400000" data-listing-file-modified-sort="1731993666114" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1448">
-<div class="thumbnail">
-<p><a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external"></a></p><a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external">
-<p class="card-img-top"><img src="posts\20_supervised_learning\20_supervised_learning_files\figure-html\unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external">20: Supervised Learning</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/20_supervised_learning/20_supervised_learning.html" class="no-external">
-<div class="listing-date">
-Nov 19, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1731560400000" data-listing-file-modified-sort="1731559317306" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1959">
-<div class="thumbnail">
-<p><a href="./posts/19_power_analysis/19_power.html" class="no-external"></a></p><a href="./posts/19_power_analysis/19_power.html" class="no-external">
-<p class="card-img-top"><img src="posts\19_power_analysis\Belding_GPT.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/19_power_analysis/19_power.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/19_power_analysis/19_power.html" class="no-external">19: Power Analysis</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/19_power_analysis/19_power.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/19_power_analysis/19_power.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/19_power_analysis/19_power.html" class="no-external">
-<div class="listing-date">
-Nov 14, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1731387600000" data-listing-file-modified-sort="1731543283701" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3330">
-<div class="thumbnail">
-<p><a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external"></a></p><a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external">
-<p class="card-img-top"><img src="posts\18_intro_ml\18_intro_ml_files\figure-html\unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external">18: Introduction to Machine Learning</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external"><strong>Objectives</strong>:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/18_intro_ml/18_intro_ml.html" class="no-external">
-<div class="listing-date">
-Nov 12, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1730955600000" data-listing-file-modified-sort="1731543283688" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3747">
-<div class="thumbnail">
-<p><a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external"></a></p><a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external">
-<p class="card-img-top"><img src="posts\17_nhst_two_sided\Fry_coffee.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external">17: Hypothesis Testing (2)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external"><strong>Goal</strong>: Continue to explore hypothesis testing and two-sided tests</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/17_nhst_two_sided/17_NHST_two_sided.html" class="no-external">
-<div class="listing-date">
-Nov 7, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1730782800000" data-listing-file-modified-sort="1730780801945" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3862">
-<div class="thumbnail">
-<p><a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external"></a></p><a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external">
-<p class="card-img-top"><img src="posts\16_nhst_one_sided\office_same_picture_meme.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external">16: Hypothesis Testing (1)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external"><strong>Goal</strong>: Explore hypothesis testing and one-sided tests</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/16_nhst_one_sided/16_NHST_one_sided.html" class="no-external">
-<div class="listing-date">
-Nov 5, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1730347200000" data-listing-file-modified-sort="1730350970377" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4048">
-<div class="thumbnail">
-<p><a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external"></a></p><a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external">
-<p class="card-img-top"><img src="posts\15_confidence_intervals\ghostbusters_1984_movie_poster.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external">15: Confidence Intervals</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external"><strong>Goal</strong>: Estimate unknown population statistics</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/15_confidence_intervals/15_confidence_intervals.html" class="no-external">
-<div class="listing-date">
-Oct 31, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1730174400000" data-listing-file-modified-sort="1730170878651" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3835">
-<div class="thumbnail">
-<p><a href="./posts/14_estimators/14_estimators.html" class="no-external"></a></p><a href="./posts/14_estimators/14_estimators.html" class="no-external">
-<p class="card-img-top"><img src="posts\14_estimators\d20_die.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/14_estimators/14_estimators.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/14_estimators/14_estimators.html" class="no-external">14: Estimators</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/14_estimators/14_estimators.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/14_estimators/14_estimators.html" class="no-external"><strong>Goal</strong>: Estimate known population statistics</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/14_estimators/14_estimators.html" class="no-external">
-<div class="listing-date">
-Oct 29, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1729742400000" data-listing-file-modified-sort="1729741463737" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4321">
-<div class="thumbnail">
-<p><a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external"></a></p><a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external">
-<p class="card-img-top"><img src="posts\13_normal_distribution\taco_sandwich.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external">13: Normal Distribution</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external"><strong>Goal</strong>: Introduce social science</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/13_normal_distribution/13_normal_distribution.html" class="no-external">
-<div class="listing-date">
-Oct 24, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-listing-date-sort="1729569600000" data-listing-file-modified-sort="1729727277393" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2997">
-<div class="thumbnail">
-<p><a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external"></a></p><a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external">
-<p class="card-img-top"><img src="posts\12_binomial_distribution\onecoin.png" alt="coins"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external">12: Binomial Distribution</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external"><strong>Goal</strong>: Introduce concepts of probability</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/12_binomial_distribution/12_binomial_distribution.html" class="no-external">
-<div class="listing-date">
-Oct 22, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1728360000000" data-listing-file-modified-sort="1728356436415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1706">
-<div class="thumbnail">
-<p><a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external"></a></p><a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external">
-<p class="card-img-top"><img src="posts\11_nonlinear_regression\power_functions.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external">11: Nonlinear Regression</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external"><strong>Goal</strong>: Explore nonlinear variables and regression</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/11_nonlinear_regression/11_nonlinear_regression.html" class="no-external">
-<div class="listing-date">
-Oct 8, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="15" data-listing-date-sort="1727928000000" data-listing-file-modified-sort="1727927516212" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3664">
-<div class="thumbnail">
-<p><a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external"></a></p><a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external">
-<p class="card-img-top"><img src="posts\10_modeling_cats\multiple_slopes.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external">10: Modeling Categorical Variables</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external"><strong>Goal</strong>: Utilize categorical variables in regression models</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/10_modeling_cats/10_modeling_categories.html" class="no-external">
-<div class="listing-date">
-Oct 3, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1727755200000" data-listing-file-modified-sort="1728357017717" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3987">
-<div class="thumbnail">
-<p><a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external"></a></p><a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external">
-<p class="card-img-top"><img src="posts\09_multiple_regression\moneyball_movie.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external">9: Multiple Linear Regression</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external"><strong>Goal</strong>: Expand to larger regression models</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/09_multiple_regression/09_multiple_linear.html" class="no-external">
-<div class="listing-date">
-Oct 1, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="17" data-listing-date-sort="1727323200000" data-listing-file-modified-sort="1727313422332" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2566">
-<div class="thumbnail">
-<p><a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external"></a></p><a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external">
-<p class="card-img-top"><img src="posts\08_linear_regression\xkcd_2533.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external">8: Linear Regression</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external"><strong>Goal</strong>: Make predictions</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/08_linear_regression/08_linear_regression.html" class="no-external">
-<div class="listing-date">
-Sep 26, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="18" data-listing-date-sort="1727150400000" data-listing-file-modified-sort="1727219872902" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2215">
-<div class="thumbnail">
-<p><a href="./posts/07_correlation/07_correlation.html" class="no-external"></a></p><a href="./posts/07_correlation/07_correlation.html" class="no-external">
-<p class="card-img-top"><img src="posts\07_correlation\xkcd552.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/07_correlation/07_correlation.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/07_correlation/07_correlation.html" class="no-external">7: Correlation</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/07_correlation/07_correlation.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/07_correlation/07_correlation.html" class="no-external"><strong>Goal</strong>: Explore covariance</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/07_correlation/07_correlation.html" class="no-external">
-<div class="listing-date">
-Sep 24, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="19" data-listing-date-sort="1726718400000" data-listing-file-modified-sort="1726711476660" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="854">
-<div class="thumbnail">
-<p><a href="./posts/06_geospatial/06_geospatial.html" class="no-external"></a></p><a href="./posts/06_geospatial/06_geospatial.html" class="no-external">
-<p class="card-img-top"><img src="posts\06_geospatial\nj_cutting_board.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/06_geospatial/06_geospatial.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/06_geospatial/06_geospatial.html" class="no-external">6: Geospatial</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/06_geospatial/06_geospatial.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/06_geospatial/06_geospatial.html" class="no-external"><strong>Goal</strong>: Visualize geospatial data</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/06_geospatial/06_geospatial.html" class="no-external">
-<div class="listing-date">
-Sep 19, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="20" data-listing-date-sort="1726545600000" data-listing-file-modified-sort="1728356988553" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2539">
-<div class="thumbnail">
-<p><a href="./posts/05_networks/05_networks.html" class="no-external"></a></p><a href="./posts/05_networks/05_networks.html" class="no-external">
-<p class="card-img-top"><img src="posts\05_networks\graph_example_terms.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/05_networks/05_networks.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/05_networks/05_networks.html" class="no-external">5: Networks</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/05_networks/05_networks.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/05_networks/05_networks.html" class="no-external"><strong>Goal</strong>: Visualize network data</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/05_networks/05_networks.html" class="no-external">
-<div class="listing-date">
-Sep 17, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1726113600000" data-listing-file-modified-sort="1726103786399" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="954">
-<div class="thumbnail">
-<p><a href="./posts/04_categories/04_categories.html" class="no-external"></a></p><a href="./posts/04_categories/04_categories.html" class="no-external">
-<p class="card-img-top"><img src="posts\04_categories\short_names.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/04_categories/04_categories.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/04_categories/04_categories.html" class="no-external">4: Categories</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/04_categories/04_categories.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/04_categories/04_categories.html" class="no-external"><strong>Goal</strong>: Explore data wrangling with categorical variables</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/04_categories/04_categories.html" class="no-external">
-<div class="listing-date">
-Sep 12, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="22" data-listing-date-sort="1725854400000" data-listing-file-modified-sort="1725974754157" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3033">
-<div class="thumbnail">
-<p><a href="./posts/03_variance/03_Variance.html" class="no-external"></a></p><a href="./posts/03_variance/03_Variance.html" class="no-external">
-<p class="card-img-top"><img src="posts\03_variance\variance_splash.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/03_variance/03_Variance.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/03_variance/03_Variance.html" class="no-external">3: Variance</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/03_variance/03_Variance.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/03_variance/03_Variance.html" class="no-external"><strong>Goal</strong>: Introduce the concept of variance</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/03_variance/03_Variance.html" class="no-external">
-<div class="listing-date">
-Sep 9, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="23" data-listing-date-sort="1725508800000" data-listing-file-modified-sort="1725538010213" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2927">
-<div class="thumbnail">
-<p><a href="./posts/02_centrality/02_Centrality.html" class="no-external"></a></p><a href="./posts/02_centrality/02_Centrality.html" class="no-external">
-<p class="card-img-top"><img src="posts\02_centrality\median_girls_meme.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/02_centrality/02_Centrality.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external">2: Centrality</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external"><strong>Goal</strong>: Summarize data by centrality</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external">
-<div class="listing-date">
-Sep 5, 2024
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="24" data-listing-date-sort="1725336000000" data-listing-file-modified-sort="1725316755415" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3494">
-<div class="thumbnail">
-<p><a href="./posts/01_introduction/01_introduction.html" class="no-external"></a></p><a href="./posts/01_introduction/01_introduction.html" class="no-external">
-<p class="card-img-top"><img src="posts\01_introduction\R_for_DS_book_cover.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/01_introduction/01_introduction.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/01_introduction/01_introduction.html" class="no-external">1: Introductions</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/01_introduction/01_introduction.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/01_introduction/01_introduction.html" class="no-external"><strong>Goal</strong>: Introduce data science</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/01_introduction/01_introduction.html" class="no-external">
-<div class="listing-date">
-Sep 3, 2024
+Jan 27, 2026
 </div>
 <div class="listing-author">
 Derek Sollberger
@@ -913,244 +235,246 @@ Derek Sollberger
 </div>
 </div>
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1158,185 +482,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 
 
