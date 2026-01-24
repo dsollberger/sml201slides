@@ -1201,10 +1201,10 @@ readr::write_csv(NSF_wordcloud_df, "NSF_for_wordcloud.csv")
 
 By the end of this course, students will be able to:
 
-* Implement data science and statistical concepts and methods to data sets and real-world scenarios
-* Utilize software to load files, perform data wrangling, and produce visualizations
-* Compute results from data analyses and express the findings to academic and scientific communication audiences
-* Discuss ethical and societal impact of data science projects and equitable practices
+1. Implement data science and statistical concepts and methods to data sets and real-world scenarios
+2. Utilize software to load files, perform data wrangling, and produce visualizations
+3. Compute results from data analyses and express the findings to academic and scientific communication audiences
+4. Discuss ethical and societal impact of data science projects and equitable practices
 
 :::
 
@@ -1825,13 +1825,14 @@ topics_df |>
 Between the Fall 2024 semesters and the Spring 2026 semester, Derek made adjustments to SML 201, including
 
 * removed "Networks" (too niche and provincial)
-* restored "ANOVA" (classical statistics concept)
+* restoring "ANOVA" (classical statistics concept)
 * higher emphasis on exams; lower emphasis on projects
-* added DCPs and Slido for interactivity
+* adding DCPs and Slido for interactivity
 * removed before-lecture quizzes (too many deadlines)
 
-    * moved to Practice Quizzes
+    * moving to Practice Quizzes
     * worth zero percent of semester grade (to remove deadlines)
+* adding data ethics and/or history to each session (CLO4)
 
 :::
 
