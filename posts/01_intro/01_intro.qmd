@@ -349,8 +349,8 @@ Introduction to Data Science provides a practical introduction to the burgeoning
 
 * 50 percent of semester grade
 
-    * Exam 1 (20%): October 10
-    * Exam 2 (30%): December 5
+    * Exam 1 (20%): March 5
+    * Exam 2 (30%): April 23
 
 * content:
 
