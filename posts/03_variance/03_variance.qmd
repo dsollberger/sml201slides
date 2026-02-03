@@ -1,0 +1,1337 @@
+---
+title: "3: Variance"
+author: "Derek Sollberger"
+date: "2025-02-03"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Introduce the concept of variance
+
+* **Objective**: Compute range, variance, and standard deviation
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![Spread!](variance_splash.png)
+:::
+
+::::
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library("ggtext")
+library("gt")
+library("tidyverse")
+
+dow_df <- readr::read_csv("DOW_2025.csv")
+```
+
+# Samples
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![population and sample](population-sample.png)
+
+* image source: [Penn State](https://medium.com/@kshitiz.k26/statistics-research-principles-and-terminologies-efc277810268)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+* In theory, we want to learn about the entire **population**
+* In practice, we measure a representative **sample**
+* Goal: *infer* population stats from the sample stats
+:::
+
+::::
+
+::: {.callout-note}
+## Cardinality
+
+* population size denoted $N$ (capital letter)
+* sample size denoted $n$ (lower case)
+
+$$n \leq N$$
+:::
+
+::: {.callout-warning}
+# DCP1
+:::
+
+# Simple Example
+
+Consider the two sets below:
+
+$$\begin{array}{rcl}
+  A & = & \{-3, -2, -1, 0, 1, 2, 3\} \\
+  B & = & \{-9, -6, -3, 0, 3, 6, 9\} \\
+\end{array}$$
+
+We can create these *sequences* in R using the `seq` command.
+
+```{r}
+A <- seq(-3, 3)
+B <- seq(-9, 9, by = 3)
+```
+
+## Centrality
+
+Recall that we can compute means and medians.
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+mean(A)
+mean(B)
+```	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+median(A)
+median(B)
+```
+:::
+
+::::
+
+
+## Visualization
+
+:::: {.panel-tabset}
+
+## Viz
+
+```{r}
+#| echo: false
+#| eval: true
+
+simple_df <- data.frame(A,B)
+title_string <- "Compare and Contrast: <span style='color:blue'>Set A</span> versus <span style='color:red'>Set B</span>"
+
+simple_df |>
+  ggplot() +
+  geom_point(aes(x = A, y = 1), color = "blue", size = 10) +
+  geom_point(aes(x = B, y = 2), color = "red", size = 10) +
+  labs(title = title_string,
+       subtitle = "What is alike?  What is different?",
+       caption = "SML 201",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_markdown(face = "bold", hjust = 0.5,size = 20),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 15)) +
+  ylim(0,3)
+```
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+simple_df <- data.frame(A,B)
+title_string <- "Compare and Contrast: <span style='color:blue'>Set A</span> versus <span style='color:red'>Set B</span>"
+
+simple_df |>
+  ggplot() +
+  geom_point(aes(x = A, y = 1), color = "blue", size = 10) +
+  geom_point(aes(x = B, y = 2), color = "red", size = 10) +
+  labs(title = title_string,
+       subtitle = "What is alike?  What is different?",
+       caption = "SML 201",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_markdown(face = "bold", hjust = 0.5,size = 20),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 15)) +
+  ylim(0,3)
+```
+
+::::
+
+# Range
+
+To describe variance, an early draft was the **range**
+
+$$\text{range}(x) = \text{max}(x) - \text{min}(x)$$
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+# range in R computes min and max values
+range(A)
+range(B)
+```	
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+```{r}
+# range in statistics
+diff(range(A))
+diff(range(B))
+```	
+:::
+
+::::
+
+::: {.callout-warning}
+## Why we don't use range
+
+* highly affected by outliers
+* uses only two data points
+:::
+
+
+# Definitions
+
+Sample variance:
+
+$$s^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}$$
+
+Sample standard deviation:
+
+$$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}}$$
+
+where
+
+* $n$: sample size
+* $\bar{x}$: sample mean
+
+
+# Case Study: Hot Dogs
+
+:::: {.columns}
+
+::: {.column width="60%"}
+Each year on Independence Day in New York City's Coney Island, Major League Eating hosts the annual [Nathan's Hot Dog Eating Contest](https://en.wikipedia.org/wiki/Nathan%27s_Hot_Dog_Eating_Contest).  Contestants vie to eat the most hot dogs (and buns) within the 10-minute time frame.  Here are recent results for the winners of the men's contest over the past 5 years.
+
+$$\{75,76,63,62,58\}$$
+
+We will compute a sample variance and a sample standard deviation.
+
+$$s^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}$$	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Joey Chestnut](Joey_Chestnut_Nathans.png)
+:::
+
+::::
+
+
+
+## Sample Mean
+
+Recall that we compute the sample mean of the data as
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_{i}$$
+```{r}
+H <- c(75,76,63,62,58)
+xbar <- mean(H)
+```
+
+## Deviations
+
+Next, we can compute deviations from the mean
+
+```{r}
+deviations <- H - xbar
+deviations
+```
+
+## Squared Deviations
+
+We don't need negative signs in this calculations.  One way around this is to square the deviations.
+
+```{r}
+sq_deviations <- deviations^2
+sq_deviations
+```
+
+## Tabulation
+
+So far we have
+
+:::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| echo: false
+#| eval: true
+hot_dog_data <- data.frame(hot_dogs = c(75,76,63,62,58))
+hot_dog_data |>
+  mutate(xbar = mean(hot_dogs, na.rm = TRUE),
+         deviations = hot_dogs - xbar,
+         sq_deviations = deviations^2) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Men's competition") |>
+  tab_header(
+    title = "Nathan's Hot Dog Eating Contest",
+    subtitle = "Recent winning amounts") |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+hot_dog_data <- data.frame(hot_dogs = c(75,76,63,62,58))
+hot_dog_data |>
+  mutate(xbar = mean(hot_dogs, na.rm = TRUE),
+         deviations = hot_dogs - xbar,
+         sq_deviations = deviations^2) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Men's competition") |>
+  tab_header(
+    title = "Nathan's Hot Dog Eating Contest",
+    subtitle = "Recent winning amounts") |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  )
+```
+
+::::
+
+## Summarizing
+
+Like before, we want to summarize a list of numbers.
+
+$$s^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2} = \frac{266.8}{4} = 66.7$$ 
+
+At this point, the calculation has produced a **sample variance**
+
+* Why "n-1"?  See later session about "Estimators"
+* But what are the units?
+
+## Dimensional Analysis
+
+:::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| echo: false
+#| eval: true
+hot_dog_data <- data.frame(hot_dogs = c(75,76,63,62,58))
+hot_dog_data |>
+  mutate(xbar = mean(hot_dogs, na.rm = TRUE),
+         deviations = hot_dogs - xbar,
+         sq_deviations = paste(round(deviations^2,2), 
+                               "(hot dogs)^2")) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Men's competition") |>
+  tab_header(
+    title = "Nathan's Hot Dog Eating Contest",
+    subtitle = "Recent winning amounts") |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = cell_text(color = "red"),
+    locations = cells_body(columns = sq_deviations)
+  )
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+hot_dog_data <- data.frame(hot_dogs = c(75,76,63,62,58))
+hot_dog_data |>
+  mutate(xbar = mean(hot_dogs, na.rm = TRUE),
+         deviations = hot_dogs - xbar,
+         sq_deviations = paste(round(deviations^2,2), 
+                               "(hot dogs)^2")) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Men's competition") |>
+  tab_header(
+    title = "Nathan's Hot Dog Eating Contest",
+    subtitle = "Recent winning amounts") |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = cell_text(color = "red"),
+    locations = cells_body(columns = sq_deviations)
+  )
+```
+
+## What?
+
+The sample variance is
+
+$$s^{2} = 66.7 \,(\text{hot dogs})^{2}$$
+
+![square hot dogs?](square_hot_dog.png)
+
+* image created with Canva AI
+
+::::
+
+## Rectify
+
+If we need to use these results in subsequent calculations, we can fix the units by taking the square root of the sample variance.  This yields the **sample standard deviation**
+
+$$s = \sqrt{66.7} \approx 8.1670 \text{ hot dogs}$$
+
+
+# Simple Example Revisited
+
+:::: {.panel-tabset}
+
+## Calculations
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+var(A)
+var(B)
+```
+Set B has more variance than set A	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+sd(A)
+sd(B)
+```
+
+Set B has more variance than set A
+:::
+
+::::
+
+
+## Viz 1
+
+```{r}
+#| echo: false
+#| eval: true
+
+simple_df <- data.frame(A,B)
+title_string <- "<span style='color:blue'>Set A</span> versus <span style='color:red'>Set B</span>"
+subtitle_string <- "<span style='color:blue'>Var(A) = 4.6667</span>, <span style='color:red'>Var(B) = 42</span>"
+
+simple_df |>
+  ggplot() +
+  geom_point(aes(x = A, y = 1), color = "blue", size = 10) +
+  geom_point(aes(x = B, y = 2), color = "red", size = 10) +
+  labs(title = title_string,
+       subtitle = subtitle_string,
+       caption = "SML 201",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_markdown(face = "bold", hjust = 0.5,size = 25),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 20)) +
+  ylim(0,3)
+```
+
+## Viz 2
+
+```{r}
+#| echo: false
+#| eval: true
+
+simple_df <- data.frame(A,B)
+title_string <- "<span style='color:blue'>Set A</span> versus <span style='color:red'>Set B</span>"
+subtitle_string <- "<span style='color:blue'>SD(A) = 2.1602</span>, <span style='color:red'>SD(B) = 6.4807</span>"
+
+simple_df |>
+  ggplot() +
+  geom_point(aes(x = A, y = 1), color = "blue", size = 10) +
+  geom_point(aes(x = B, y = 2), color = "red", size = 10) +
+  labs(title = title_string,
+       subtitle = subtitle_string,
+       caption = "SML 201",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_markdown(face = "bold", hjust = 0.5,size = 25),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 20)) +
+  ylim(0,3)
+```
+
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+simple_df <- data.frame(A,B)
+title_string <- "<span style='color:blue'>Set A</span> versus <span style='color:red'>Set B</span>"
+subtitle_string <- "<span style='color:blue'>SD(A) = 2.1602</span>, <span style='color:red'>SD(B) = 6.4807</span>"
+
+simple_df |>
+  ggplot() +
+  geom_point(aes(x = A, y = 1), color = "blue", size = 10) +
+  geom_point(aes(x = B, y = 2), color = "red", size = 10) +
+  labs(title = title_string,
+       subtitle = subtitle_string,
+       caption = "SML 201",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_markdown(face = "bold", hjust = 0.5,size = 25),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 20)) +
+  ylim(0,3)
+```
+
+::::
+
+
+# Z-Scores
+
+One way to rescale or **standardize** data is to use $z$-scores
+
+$$z = \frac{x - \bar{x}}{s}$$
+
+* $\bar{x}$: sample mean
+* $s$: sample standard deviation
+* Units?  Number of standard deviations above/below the mean
+* Intuition: about 95% of data falls within two standard deviations of the mean
+
+::: {.callout-warning}
+# DCP2
+:::
+
+# Example: Ledecky Swimming
+
+:::: {.panel-tabset}
+
+## 2024
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+
+In the 2024 Summer Olympic games, US swimmer Katie Ledecky won 4 medals, including gold in
+
+* 800 m freestyle
+* 1500 m freestyle	
+
+Which winning time was more impressive?
+
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Katie Ledecky](Ledecky2024.png)
+:::
+
+::::
+
+## Data
+
+Here is a small data set of the times from the final meets of those two events (times in seconds).
+
+```{r}
+Ledecky_df <- data.frame(
+  place = c(1, 2, 3, 4, 5, 6, 7, 8), 
+  times800 = c(491, 492, 493, 495, 498, 502, 503, 503), 
+  times1500 = c(930, 941, 941, 944, 961, 963, 964, 973))
+```
+
+* [source 1](https://en.wikipedia.org/wiki/Swimming_at_the_2024_Summer_Olympics_%E2%80%93_Women%27s_800_metre_freestyle)
+* [source 2](https://en.wikipedia.org/wiki/Swimming_at_the_2024_Summer_Olympics_%E2%80%93_Women%27s_1500_metre_freestyle)
+
+## 800 m
+
+```{r}
+xbar <- mean(Ledecky_df$times800)
+s <- sd(Ledecky_df$times800)
+z1 <- (491 - xbar) / s
+```
+
+$$z_{1} \approx -1.21$$
+
+Ledecky's 800 m time was about 1.21 standard deviations below the mean.
+
+## 1500 m
+
+```{r}
+xbar <- mean(Ledecky_df$times1500)
+s <- sd(Ledecky_df$times1500)
+z2 <- (930 - xbar) / s
+```
+
+$$z_{2} \approx -1.47$$
+
+Ledecky's 800 m time was about 1.47 standard deviations below the mean.
+
+## Commentary
+
+* Ledecky's 800 m time was about 1.21 standard deviations below the mean.
+* Ledecky's 800 m time was about 1.47 standard deviations below the mean.
+
+According to these rescaled calculations, Ledecky's 1500 m time was more impressive.
+
+
+::::
+
+
+
+
+
+
+
+
+
+
+# Side Quest: Minimizing Error
+
+## SSE
+
+For the **sum of squared errors**, what value of $c$ will minimize the error?
+
+$$\text{SSE} = \sum_{i=1}^{n} (x_{i} - c)^{2}, \quad H = \{75,76,63,62,58\}$$
+
+```{r}
+cvals <- seq(58, 76)
+SSE <- rep(NA, length(cvals))
+for(i in 1:length(cvals)){
+  SSE[i] <- sum((H - cvals[i])^{2})
+}
+min(SSE)
+cvals[which.min(SSE)]
+```
+
+```{r}
+cvals <- seq(58, 76, by = 0.1)
+SSE <- rep(NA, length(cvals))
+for(i in 1:length(cvals)){
+  SSE[i] <- sum((H - cvals[i])^{2})
+}
+min(SSE)
+cvals[which.min(SSE)]
+mean(H)
+```
+
+**Claim:** The sample mean minimizes the sum of squared errors.
+
+::: {.callout-note collapse="true"}
+## (optional, not on exam) Calculus proof
+
+For a non-constant data set $\{x_{i}\}_{i=1}^{n}$, and for the sum of squared errors
+
+$$S(c) = \sum_{i=1}^{n} (x_{i} - c)^{2}$$
+
+we can set the derivative equal to zero
+
+$$\begin{array}{rcl}
+  0 & = & \frac{dS}{dc} \\
+  0 & = & \frac{d}{dc} \sum_{i=1}^{n} (x_{i} - c)^{2} \\
+  0 & = & \sum_{i=1}^{n} \frac{d}{dc} (x_{i} - c)^{2} \\
+  0 & = & \sum_{i=1}^{n} 2(x_{i} - c) \\
+  0 & = &  2\sum_{i=1}^{n} x_{i} - 2nc \\
+  0 & = &  \sum_{i=1}^{n} x_{i} - nc \\
+  nc & = &  \sum_{i=1}^{n} x_{i} \\
+  c & = & \frac{1}{n}\sum_{i=1}^{n} x_{i} \\
+\end{array}$$
+
+We recognize that the right-hand side is the sample mean.  Since the function was a concave up parabola, we know that this critical point is a global minimum.
+:::
+
+
+## Absolute Value
+
+What if we had used the absolute value instead? We can use a similar argument on the sum of absolute errors.
+
+```{r}
+cvals <- seq(58, 76, by = 0.1)
+SE <- rep(NA, length(cvals))
+for(i in 1:length(cvals)){
+  SE[i] <- sum(abs(H - cvals[i]))
+}
+min(SE)
+cvals[which.min(SE)]
+median(H)
+```
+
+**Claim:** The sample median minimizes the sum of absolute errors.
+
+$$SE(c) = \sum_{i=1}^{n} |x_{i} - c|$$
+
+::: {.callout-note collapse="true"}
+## (optional, not on exam) Outline of proof
+
+* argue that the summation is smallest when one of terms is zero
+* interpolate for the case when the number of observations is even
+
+:::
+
+
+# Case Study: Stock Volatility
+
+:::: {.columns}
+
+::: {.column width="45%"}
+In many financial applications, the **volatility** of a price is the standard deviation.
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Jonah Hill](Jonah_Hill_Wolf.png)
+:::
+
+::::
+
+## Data: Dow Jones Industrial Average
+
+:::: {.columns}
+
+::: {.column width="30%"}
+* 30 popular stocks
+* Year 2025
+* source: Yahoo Finance
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="60%"}
+![Dow Jones Industrial Average](DJIA.png)
+
+* image source: [OPO Finance](https://blog.opofinance.com/en/what-is-the-dow-jones-industrial-average/)
+
+:::
+
+::::
+
+## Exploration
+
+```{r}
+head(dow_df)
+```
+
+```{r}
+str(dow_df, give.attr = FALSE)
+```
+
+```{r}
+colnames(dow_df)
+```
+
+## Which Stocks?
+
+The `table` command tallys the observations in a categorical variable.
+
+```{r}
+table(dow_df$ticker)
+```
+
+
+## Histograms
+
+::: {.callout-note}
+### Data Visualization Guideline
+
+A histogram shows the distribution of one numerical variable.
+:::
+
+```{r}
+dow_df |>
+  filter(ticker == "VZ") |>
+  ggplot(aes(x = price_close)) +
+  geom_histogram(bins = 25) +
+  labs(title = "Verizon stock",
+       subtitle = "2025",
+       caption = "SML 201")
+```
+
+```{r}
+dow_df |>
+  filter(ticker == "GS") |>
+  ggplot(aes(x = price_close)) +
+  geom_histogram(bins = 25) +
+  labs(title = "Goldman Sachs stock",
+       subtitle = "2025",
+       caption = "SML 201")
+```
+
+## Z-scores
+
+Sometimes, we want to `rescale` numerical columns to be able to compare them together.
+
+```{r}
+summary(dow_df$price_close)
+```
+
+```{r}
+dow_df <- dow_df |>
+  mutate(price_scaled = scale(price_close)) #z-scores
+```
+
+```{r}
+summary(dow_df$price_scaled)
+```
+
+
+# Side Quest: Imputation by Mean
+
+The process of filling in missing values is called **imputation**
+
+::: {.callout-note collapse="true"}
+## (optional) Adding Missing Values
+
+```{r}
+dow_df$price_sparse <- (dow_df$price_high + dow_df$price_low)/2
+
+n <- nrow(dow_df)
+set.seed(201)
+dow_df$price_sparse[sample(1:n, 
+                           round(0.201*n), 
+                           replace = FALSE)] <- NA
+```
+
+:::
+
+```{r}
+before_imputation <- dow_df$price_sparse
+summary(before_imputation)
+```
+
+
+```{r}
+xbar <- mean(before_imputation, na.rm = TRUE)
+toward_imputation <- before_imputation
+
+# where there is a missing value, replace it with the mean value
+toward_imputation[is.na(toward_imputation)] <- xbar
+
+after_imputation <- toward_imputation
+summary(after_imputation)
+```
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+sd(before_imputation, na.rm = TRUE)
+```
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+sd(after_imputation)
+```
+
+:::
+
+::::
+
+::: {.callout-warning}
+## Should we impute missing values?
+
+* In general, Derek recommends to **not** impute missing values with the mean (or median)
+* For machine learning (or AI), the *information* is in the variance
+* But imputation by the mean decreases the variance
+:::
+
+::: {.callout-warning}
+# DCP3
+:::
+
+# Segmentation
+
+## Expensive Stocks
+
+Which stocks have had the highest average `price_close` this year?
+
+```{r}
+#| echo: true
+#| eval: false
+dow_df |>
+  group_by(ticker) |>
+  mutate(avg_price = mean(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, avg_price) |>
+  distinct() |>
+  arrange(desc(avg_price))
+```
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+dow_df |>
+  group_by(ticker) |>
+  mutate(avg_price = mean(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, avg_price) |>
+  distinct() |>
+  arrange(desc(avg_price))
+```	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+1. Goldman Sachs
+2. Microsoft
+3. Caterpillar
+4. United Health Group
+5. Home Depot
+6. Sherwin-Williams
+7. Visa
+8. American Express
+9. McDonald's
+10. Amgen
+:::
+
+::::
+
+
+## Volatility
+
+::::: {.panel-tabset}
+
+### Most Volatile
+
+Which stocks were the most volatile last year?
+
+```{r}
+#| echo: true
+#| eval: false
+dow_df |>
+  group_by(ticker) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, volatility) |>
+  distinct() |>
+  arrange(desc(volatility)) #from largest to smallest
+```
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+dow_df |>
+  group_by(ticker) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, volatility) |>
+  distinct() |>
+  arrange(desc(volatility)) #from largest to smallest
+```	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+1. Goldman Sachs
+2. Caterpillar
+3. United Health Group
+4. Microsoft
+5. American Express
+6. NVidia
+7. Salesforce
+8. JP Morgan Chase
+9. IBM
+10. Apple
+:::
+
+::::
+
+### Least Volatile
+
+Which stocks were the least volatile last year?
+
+```{r}
+#| echo: true
+#| eval: false
+dow_df |>
+  group_by(ticker) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, volatility) |>
+  distinct() |>
+  arrange(volatility) #from smallest to largest
+```
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+dow_df |>
+  group_by(ticker) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, volatility) |>
+  distinct() |>
+  arrange(volatility) #from smallest to largest
+```	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+1. Verizon
+2. Coca-Cola
+3. Cisco
+4. Nike
+5. Walmart
+6. Chevron
+7. McDonald's
+8. Disney
+9. Proctor and Gamble
+10. Merck
+:::
+
+::::
+
+:::::
+
+
+## Line Plots
+
+Let us compare the stocks with the lowest and the most volatility.
+
+:::: {.panel-tabset}
+
+### Viz
+
+```{r}
+#| echo: false
+#| eval: true
+title_string <- "<span style='color:blue'>Verizon</span> and <span style='color:red'>Goldman Sachs</span>"
+subtitle_string <- "2025 stock prices"
+
+dow_df |>
+  ggplot() +
+  geom_line(aes(x = ref_date, y = price_close),
+            color = "blue", linewidth = 2,
+            data = dow_df |> filter(ticker == "VZ")) +
+  geom_line(aes(x = ref_date, y = price_close),
+            color = "red", linewidth = 3,
+            data = dow_df |> filter(ticker == "GS")) +
+  labs(title = title_string,
+       subtitle = subtitle_string,
+       caption = "SML 201",
+       x = "date", y = "closing price") +
+  theme_minimal() +
+  theme(plot.title = element_markdown(face = "bold", hjust = 0.5,size = 25),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 20))
+```
+
+### Code
+
+```{r}
+#| echo: true
+#| eval: false
+title_string <- "<span style='color:blue'>Verizon</span> and <span style='color:red'>Goldman Sachs</span>"
+subtitle_string <- "2025 stock prices"
+
+dow_df |>
+  ggplot() +
+  geom_line(aes(x = ref_date, y = price_close),
+            color = "blue", linewidth = 2,
+            data = dow_df |> filter(ticker == "VZ")) +
+  geom_line(aes(x = ref_date, y = price_close),
+            color = "red", linewidth = 3,
+            data = dow_df |> filter(ticker == "GS")) +
+  labs(title = title_string,
+       subtitle = subtitle_string,
+       caption = "SML 201",
+       x = "date", y = "closing price") +
+  theme_minimal() +
+  theme(plot.title = element_markdown(face = "bold", hjust = 0.5,size = 25),
+        plot.subtitle = element_markdown(hjust = 0.5,size = 20))
+```
+
+::::
+
+
+
+
+
+## Coefficient of Variation
+
+Wouldn't the most expensive stocks naturally vary more?
+
+$$\text{CoV} = \frac{s}{\bar{x}}$$
+
+* $\bar{x}$: sample mean
+* $s$: sample standard deviation
+
+Which stocks have the highest coefficients of variation this year?
+
+```{r}
+#| echo: true
+#| eval: false
+dow_df |>
+  group_by(ticker) |>
+  mutate(avg_price = mean(price_close, na.rm = TRUE)) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, avg_price, volatility) |>
+  distinct() |>
+  mutate(coef_var = volatility / avg_price) |>
+  arrange(desc(coef_var))
+```
+
+:::: {.columns}
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| eval: true
+dow_df |>
+  group_by(ticker) |>
+  mutate(avg_price = mean(price_close, na.rm = TRUE)) |>
+  mutate(volatility = sd(price_close, na.rm = TRUE)) |>
+  ungroup() |>
+  select(ticker, avg_price, volatility) |>
+  distinct() |>
+  mutate(coef_var = volatility / avg_price) |>
+  arrange(desc(coef_var))
+```	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+1. United Health Care
+2. Caterpillar
+3. NVidia
+4. Goldman Sachs
+5. Johnson and Johnson
+6. Boeing
+7. American Express
+8. Apple
+9. Salesforce
+10. Merck
+:::
+
+::::
+
+
+# Precept 2
+
+:::: {.panel-tabset}
+
+## Objective
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* TV show scripts from `schrute` package
+* sentiment analyses
+
+   * negative values: negative emotion
+   * positive values: positive emotion
+
+* 3 measurements of sentiment analysis
+
+    * `syuzhet`
+    * `sentimentr`
+    * `sentimentAnalysis`
+    
+* areas: media arts, linguistics
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![The Office](the_office_cast.png)
+:::
+
+::::
+
+## Goal
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![cringe](the_office_cringe.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+### Can we measure cringe?
+:::
+
+::::
+
+::::
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Assignments (due Friday):
+
+    * Precept 2
+    * Group Membership
+    * Coloring Assignment 1
+    
+* Project 1:
+
+    * assigned: Feb 9
+    * due: Feb 24
+    
+* Exam 1: Mar 5
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Joey Chestnut, still a champion!](Joey_Chestnut_2024.png)
+
+* image source: Netflix
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) How the data set was obtained
+
+If you want to download stock market data, this code chunk is a good start.
+
+```{r}
+#| echo: true
+#| eval: false
+
+library("yfR")
+today <- Sys.Date()
+start_date <- "2025-01-01"
+stock_market_example <- yf_collection_get(collection = "SP500", 
+                                          first_date = start_date, 
+                                          last_date = today)
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::

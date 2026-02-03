@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2025\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -3386,5 +3386,159 @@
     "title": "2: Centrality",
     "section": "Application (optional): Rolling Mean",
     "text": "Application (optional): Rolling Mean\n\nDataWrangling\n\n\n\n\n\nsource: TidyTuesday (2019-12-03)\nOpen Data Philly\n\nfiltered to year 2017 data that had latitude/longitude\n\nobjective: summarize trends in ticketing\n\n\n\n\n\n\n\nPhiladelphia Parking Authority\n\n\n\nimage source: Matt Rourke/AP Photo\n\n\n\n\n\n\n# i.e. started with a very large data set\n# and needed to pare it down\ntickets_raw &lt;- readr::read_csv(\"tickets.csv\")\ntickets_days &lt;- tickets_raw |&gt;\n  separate(issue_datetime, sep = \" \",\n           into = c(\"date\", \"time\")) |&gt;\n  group_by(date) |&gt;\n  count(date) |&gt;\n  ungroup() |&gt;\n  select(date, n)\nreadr::write_csv(tickets_days, \"tickets_days.csv\")\n\ntickets_df &lt;- readr::read_csv(\"tickets_days.csv\")\n\n\n\n\n\nTime Series\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  ggplot(aes(x = date, y = n)) +\n  geom_line() +\n  labs(title = \"Parking Tickets in Philadelphia\",\n       subtitle = \"Street Sweeping Violations (2017)\",\n       caption = \"Source: Open Data Philly\",\n       y = \"number of tickets\") +\n  theme_minimal()\n\n\n\n\n\n\nMoving Average\n\nConcept357911Code\n\n\nA rolling mean or moving average compues the mean across a group of \\(L\\) (lag) consecutive data points in a time series and slides the “window”.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_mean = zoo::rollapply(\n    n, 3, mean, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_mean),\n            color = \"blue\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling mean in blue (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()\n\n\n\n\n\n\nRolling Median\n\n357911Code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntickets_df |&gt;\n  mutate(roll_median = zoo::rollapply(\n    n, 3, median, align = 'left', fill = NA\n  )) |&gt;\n    ggplot() +\n    geom_point(aes(x = date, y = n),\n               color = \"black\") +\n  geom_line(aes(x = date, y = roll_median),\n            color = \"red\") +\n    labs(title = \"Parking Tickets in Philadelphia\",\n         subtitle = \"Rolling median in red (n = 3 day window)\",\n         caption = \"Source: Open Data Philly\",\n         y = \"number of tickets\") +\n    theme_minimal()\n\n\n\n\n\n\n\n\n\n\nNoteSession Info\n\n\n\n\n\n\nsessionInfo()\n\nR version 4.5.2 (2025-10-31 ucrt)\nPlatform: x86_64-w64-mingw32/x64\nRunning under: Windows 10 x64 (build 19045)\n\nMatrix products: default\n  LAPACK version 3.12.1\n\nlocale:\n[1] LC_COLLATE=English_United States.utf8 \n[2] LC_CTYPE=English_United States.utf8   \n[3] LC_MONETARY=English_United States.utf8\n[4] LC_NUMERIC=C                          \n[5] LC_TIME=English_United States.utf8    \n\ntime zone: America/New_York\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nother attached packages:\n [1] zoo_1.8-14      lubridate_1.9.4 forcats_1.0.0   stringr_1.5.1  \n [5] dplyr_1.1.4     purrr_1.1.0     readr_2.1.5     tidyr_1.3.1    \n [9] tibble_3.3.0    ggplot2_4.0.0   tidyverse_2.0.0 gt_1.0.0       \n\nloaded via a namespace (and not attached):\n [1] sass_0.4.10        generics_0.1.4     xml2_1.3.8         stringi_1.8.7     \n [5] lattice_0.22-7     hms_1.1.3          digest_0.6.37      magrittr_2.0.3    \n [9] evaluate_1.0.4     grid_4.5.2         timechange_0.3.0   RColorBrewer_1.1-3\n[13] fastmap_1.2.0      jsonlite_2.0.0     scales_1.4.0       cli_3.6.5         \n[17] rlang_1.1.6        crayon_1.5.3       bit64_4.6.0-1      withr_3.0.2       \n[21] yaml_2.3.10        tools_4.5.2        parallel_4.5.2     tzdb_0.5.0        \n[25] curl_6.4.0         vctrs_0.6.5        R6_2.6.1           lifecycle_1.0.4   \n[29] htmlwidgets_1.6.4  bit_4.6.0          vroom_1.6.5        pkgconfig_2.0.3   \n[33] pillar_1.11.0      gtable_0.3.6       glue_1.8.0         xfun_0.52         \n[37] tidyselect_1.2.1   rstudioapi_0.17.1  knitr_1.50         farver_2.1.2      \n[41] htmltools_0.5.8.1  rmarkdown_2.29     labeling_0.4.3     compiler_4.5.2    \n[45] S7_0.2.0"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html",
+    "href": "posts/03_variance/03_variance.html",
+    "title": "3: Variance",
+    "section": "",
+    "text": "Goal: Introduce the concept of variance\nObjective: Compute range, variance, and standard deviation\n\n\n\n\n\n\n\nSpread!\n\n\n\n\n\nlibrary(\"ggtext\")\nlibrary(\"gt\")\nlibrary(\"tidyverse\")\n\ndow_df &lt;- readr::read_csv(\"DOW_2025.csv\")"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#start",
+    "href": "posts/03_variance/03_variance.html#start",
+    "title": "3: Variance",
+    "section": "",
+    "text": "Goal: Introduce the concept of variance\nObjective: Compute range, variance, and standard deviation\n\n\n\n\n\n\n\nSpread!\n\n\n\n\n\nlibrary(\"ggtext\")\nlibrary(\"gt\")\nlibrary(\"tidyverse\")\n\ndow_df &lt;- readr::read_csv(\"DOW_2025.csv\")"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#centrality",
+    "href": "posts/03_variance/03_variance.html#centrality",
+    "title": "3: Variance",
+    "section": "Centrality",
+    "text": "Centrality\nRecall that we can compute means and medians.\n\n\n\nmean(A)\n\n[1] 0\n\nmean(B)\n\n[1] 0\n\n\n\n\n\n\nmedian(A)\n\n[1] 0\n\nmedian(B)\n\n[1] 0"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#visualization",
+    "href": "posts/03_variance/03_variance.html#visualization",
+    "title": "3: Variance",
+    "section": "Visualization",
+    "text": "Visualization\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsimple_df &lt;- data.frame(A,B)\ntitle_string &lt;- \"Compare and Contrast: &lt;span style='color:blue'&gt;Set A&lt;/span&gt; versus &lt;span style='color:red'&gt;Set B&lt;/span&gt;\"\n\nsimple_df |&gt;\n  ggplot() +\n  geom_point(aes(x = A, y = 1), color = \"blue\", size = 10) +\n  geom_point(aes(x = B, y = 2), color = \"red\", size = 10) +\n  labs(title = title_string,\n       subtitle = \"What is alike?  What is different?\",\n       caption = \"SML 201\",\n       x = \"\", y = \"\") +\n  theme_minimal() +\n  theme(axis.text.y = element_blank(),\n        plot.title = element_markdown(face = \"bold\", hjust = 0.5,size = 20),\n        plot.subtitle = element_markdown(hjust = 0.5,size = 15)) +\n  ylim(0,3)"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#sample-mean",
+    "href": "posts/03_variance/03_variance.html#sample-mean",
+    "title": "3: Variance",
+    "section": "Sample Mean",
+    "text": "Sample Mean\nRecall that we compute the sample mean of the data as\n\\[\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_{i}\\]\n\nH &lt;- c(75,76,63,62,58)\nxbar &lt;- mean(H)"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#deviations",
+    "href": "posts/03_variance/03_variance.html#deviations",
+    "title": "3: Variance",
+    "section": "Deviations",
+    "text": "Deviations\nNext, we can compute deviations from the mean\n\ndeviations &lt;- H - xbar\ndeviations\n\n[1]  8.2  9.2 -3.8 -4.8 -8.8"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#squared-deviations",
+    "href": "posts/03_variance/03_variance.html#squared-deviations",
+    "title": "3: Variance",
+    "section": "Squared Deviations",
+    "text": "Squared Deviations\nWe don’t need negative signs in this calculations. One way around this is to square the deviations.\n\nsq_deviations &lt;- deviations^2\nsq_deviations\n\n[1] 67.24 84.64 14.44 23.04 77.44"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#tabulation",
+    "href": "posts/03_variance/03_variance.html#tabulation",
+    "title": "3: Variance",
+    "section": "Tabulation",
+    "text": "Tabulation\nSo far we have\n\nTableCode\n\n\n\n\n\n\n\n\n\n\nNathan's Hot Dog Eating Contest\n\n\nRecent winning amounts\n\n\nhot_dogs\nxbar\ndeviations\nsq_deviations\n\n\n\n\n75\n66.8\n8.2\n67.24\n\n\n76\n66.8\n9.2\n84.64\n\n\n63\n66.8\n-3.8\n14.44\n\n\n62\n66.8\n-4.8\n23.04\n\n\n58\n66.8\n-8.8\n77.44\n\n\n\nMen's competition\n\n\n\n\n\n\n\n\n\n\n\nhot_dog_data &lt;- data.frame(hot_dogs = c(75,76,63,62,58))\nhot_dog_data |&gt;\n  mutate(xbar = mean(hot_dogs, na.rm = TRUE),\n         deviations = hot_dogs - xbar,\n         sq_deviations = deviations^2) |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"Men's competition\") |&gt;\n  tab_header(\n    title = \"Nathan's Hot Dog Eating Contest\",\n    subtitle = \"Recent winning amounts\") |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  )"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#summarizing",
+    "href": "posts/03_variance/03_variance.html#summarizing",
+    "title": "3: Variance",
+    "section": "Summarizing",
+    "text": "Summarizing\nLike before, we want to summarize a list of numbers.\n\\[s^{2} = \\frac{1}{n-1}\\sum_{i=1}^{n} (x_{i} - \\bar{x})^{2} = \\frac{266.8}{4} = 66.7\\]\nAt this point, the calculation has produced a sample variance\n\nWhy “n-1”? See later session about “Estimators”\nBut what are the units?"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#dimensional-analysis",
+    "href": "posts/03_variance/03_variance.html#dimensional-analysis",
+    "title": "3: Variance",
+    "section": "Dimensional Analysis",
+    "text": "Dimensional Analysis\n\nTableCodeWhat?\n\n\n\n\n\n\n\n\n\n\nNathan's Hot Dog Eating Contest\n\n\nRecent winning amounts\n\n\nhot_dogs\nxbar\ndeviations\nsq_deviations\n\n\n\n\n75\n66.8\n8.2\n67.24 (hot dogs)^2\n\n\n76\n66.8\n9.2\n84.64 (hot dogs)^2\n\n\n63\n66.8\n-3.8\n14.44 (hot dogs)^2\n\n\n62\n66.8\n-4.8\n23.04 (hot dogs)^2\n\n\n58\n66.8\n-8.8\n77.44 (hot dogs)^2\n\n\n\nMen's competition\n\n\n\n\n\n\n\n\n\n\n\nhot_dog_data &lt;- data.frame(hot_dogs = c(75,76,63,62,58))\nhot_dog_data |&gt;\n  mutate(xbar = mean(hot_dogs, na.rm = TRUE),\n         deviations = hot_dogs - xbar,\n         sq_deviations = paste(round(deviations^2,2), \n                               \"(hot dogs)^2\")) |&gt;\n  gt() |&gt;\n  cols_align(align = \"center\") |&gt;\n  tab_footnote(footnote = \"Men's competition\") |&gt;\n  tab_header(\n    title = \"Nathan's Hot Dog Eating Contest\",\n    subtitle = \"Recent winning amounts\") |&gt;\n  tab_style(\n    style = cell_text(weight = \"bold\"),\n    locations = cells_column_labels()\n  ) |&gt;\n  tab_style(\n    style = cell_text(color = \"red\"),\n    locations = cells_body(columns = sq_deviations)\n  )\n\n\n\nThe sample variance is\n\\[s^{2} = 66.7 \\,(\\text{hot dogs})^{2}\\]\n\n\n\nsquare hot dogs?\n\n\n\nimage created with Canva AI"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#rectify",
+    "href": "posts/03_variance/03_variance.html#rectify",
+    "title": "3: Variance",
+    "section": "Rectify",
+    "text": "Rectify\nIf we need to use these results in subsequent calculations, we can fix the units by taking the square root of the sample variance. This yields the sample standard deviation\n\\[s = \\sqrt{66.7} \\approx 8.1670 \\text{ hot dogs}\\]"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#sse",
+    "href": "posts/03_variance/03_variance.html#sse",
+    "title": "3: Variance",
+    "section": "SSE",
+    "text": "SSE\nFor the sum of squared errors, what value of \\(c\\) will minimize the error?\n\\[\\text{SSE} = \\sum_{i=1}^{n} (x_{i} - c)^{2}, \\quad H = \\{75,76,63,62,58\\}\\]\n\ncvals &lt;- seq(58, 76)\nSSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SSE[i] &lt;- sum((H - cvals[i])^{2})\n}\nmin(SSE)\n\n[1] 267\n\ncvals[which.min(SSE)]\n\n[1] 67\n\n\n\ncvals &lt;- seq(58, 76, by = 0.1)\nSSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SSE[i] &lt;- sum((H - cvals[i])^{2})\n}\nmin(SSE)\n\n[1] 266.8\n\ncvals[which.min(SSE)]\n\n[1] 66.8\n\nmean(H)\n\n[1] 66.8\n\n\nClaim: The sample mean minimizes the sum of squared errors.\n\n\n\n\n\n\nNote(optional, not on exam) Calculus proof\n\n\n\n\n\nFor a non-constant data set \\(\\{x_{i}\\}_{i=1}^{n}\\), and for the sum of squared errors\n\\[S(c) = \\sum_{i=1}^{n} (x_{i} - c)^{2}\\]\nwe can set the derivative equal to zero\n\\[\\begin{array}{rcl}\n  0 & = & \\frac{dS}{dc} \\\\\n  0 & = & \\frac{d}{dc} \\sum_{i=1}^{n} (x_{i} - c)^{2} \\\\\n  0 & = & \\sum_{i=1}^{n} \\frac{d}{dc} (x_{i} - c)^{2} \\\\\n  0 & = & \\sum_{i=1}^{n} 2(x_{i} - c) \\\\\n  0 & = &  2\\sum_{i=1}^{n} x_{i} - 2nc \\\\\n  0 & = &  \\sum_{i=1}^{n} x_{i} - nc \\\\\n  nc & = &  \\sum_{i=1}^{n} x_{i} \\\\\n  c & = & \\frac{1}{n}\\sum_{i=1}^{n} x_{i} \\\\\n\\end{array}\\]\nWe recognize that the right-hand side is the sample mean. Since the function was a concave up parabola, we know that this critical point is a global minimum."
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#absolute-value",
+    "href": "posts/03_variance/03_variance.html#absolute-value",
+    "title": "3: Variance",
+    "section": "Absolute Value",
+    "text": "Absolute Value\nWhat if we had used the absolute value instead? We can use a similar argument on the sum of absolute errors.\n\ncvals &lt;- seq(58, 76, by = 0.1)\nSE &lt;- rep(NA, length(cvals))\nfor(i in 1:length(cvals)){\n  SE[i] &lt;- sum(abs(H - cvals[i]))\n}\nmin(SE)\n\n[1] 31\n\ncvals[which.min(SE)]\n\n[1] 63\n\nmedian(H)\n\n[1] 63\n\n\nClaim: The sample median minimizes the sum of absolute errors.\n\\[SE(c) = \\sum_{i=1}^{n} |x_{i} - c|\\]\n\n\n\n\n\n\nNote(optional, not on exam) Outline of proof\n\n\n\n\n\n\nargue that the summation is smallest when one of terms is zero\ninterpolate for the case when the number of observations is even"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#data-dow-jones-industrial-average",
+    "href": "posts/03_variance/03_variance.html#data-dow-jones-industrial-average",
+    "title": "3: Variance",
+    "section": "Data: Dow Jones Industrial Average",
+    "text": "Data: Dow Jones Industrial Average\n\n\n\n30 popular stocks\nYear 2025\nsource: Yahoo Finance\n\n\n\n\n\n\n\nDow Jones Industrial Average\n\n\n\nimage source: OPO Finance"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#exploration",
+    "href": "posts/03_variance/03_variance.html#exploration",
+    "title": "3: Variance",
+    "section": "Exploration",
+    "text": "Exploration\n\nhead(dow_df)\n\n# A tibble: 6 × 11\n  ticker ref_date   price_open price_high price_low price_close   volume\n  &lt;chr&gt;  &lt;date&gt;          &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;\n1 AAPL   2025-01-02       249.       249.      242.        244. 55740700\n2 AAPL   2025-01-03       243.       244.      242.        243. 40244100\n3 AAPL   2025-01-06       244.       247.      243.        245  45045600\n4 AAPL   2025-01-07       243.       246.      241.        242. 40856000\n5 AAPL   2025-01-08       242.       244.      240.        243. 37628900\n6 AAPL   2025-01-10       240.       240.      233         237. 61710900\n# ℹ 4 more variables: price_adjusted &lt;dbl&gt;, ret_adjusted_prices &lt;dbl&gt;,\n#   ret_closing_prices &lt;dbl&gt;, cumret_adjusted_prices &lt;dbl&gt;\n\n\n\nstr(dow_df, give.attr = FALSE)\n\nspc_tbl_ [8,100 × 11] (S3: spec_tbl_df/tbl_df/tbl/data.frame)\n $ ticker                : chr [1:8100] \"AAPL\" \"AAPL\" \"AAPL\" \"AAPL\" ...\n $ ref_date              : Date[1:8100], format: \"2025-01-02\" \"2025-01-03\" ...\n $ price_open            : num [1:8100] 249 243 244 243 242 ...\n $ price_high            : num [1:8100] 249 244 247 246 244 ...\n $ price_low             : num [1:8100] 242 242 243 241 240 ...\n $ price_close           : num [1:8100] 244 243 245 242 243 ...\n $ volume                : num [1:8100] 55740700 40244100 45045600 40856000 37628900 ...\n $ price_adjusted        : num [1:8100] 243 242 244 241 242 ...\n $ ret_adjusted_prices   : num [1:8100] NA -0.00201 0.00674 -0.01139 0.00202 ...\n $ ret_closing_prices    : num [1:8100] NA -0.00201 0.00674 -0.01139 0.00202 ...\n $ cumret_adjusted_prices: num [1:8100] 1 0.998 1.005 0.993 0.995 ...\n\n\n\ncolnames(dow_df)\n\n [1] \"ticker\"                 \"ref_date\"               \"price_open\"            \n [4] \"price_high\"             \"price_low\"              \"price_close\"           \n [7] \"volume\"                 \"price_adjusted\"         \"ret_adjusted_prices\"   \n[10] \"ret_closing_prices\"     \"cumret_adjusted_prices\""
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#which-stocks",
+    "href": "posts/03_variance/03_variance.html#which-stocks",
+    "title": "3: Variance",
+    "section": "Which Stocks?",
+    "text": "Which Stocks?\nThe table command tallys the observations in a categorical variable.\n\ntable(dow_df$ticker)\n\n\nAAPL AMGN AMZN  AXP   BA  CAT  CRM CSCO  CVX  DIS   GS   HD  HON  IBM  JNJ  JPM \n 270  270  270  270  270  270  270  270  270  270  270  270  270  270  270  270 \n  KO  MCD  MMM  MRK MSFT  NKE NVDA   PG  SHW  TRV  UNH    V   VZ  WMT \n 270  270  270  270  270  270  270  270  270  270  270  270  270  270"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#histograms",
+    "href": "posts/03_variance/03_variance.html#histograms",
+    "title": "3: Variance",
+    "section": "Histograms",
+    "text": "Histograms\n\n\n\n\n\n\nNoteData Visualization Guideline\n\n\n\nA histogram shows the distribution of one numerical variable.\n\n\n\ndow_df |&gt;\n  filter(ticker == \"VZ\") |&gt;\n  ggplot(aes(x = price_close)) +\n  geom_histogram(bins = 25) +\n  labs(title = \"Verizon stock\",\n       subtitle = \"2025\",\n       caption = \"SML 201\")\n\n\n\n\n\n\n\n\n\ndow_df |&gt;\n  filter(ticker == \"GS\") |&gt;\n  ggplot(aes(x = price_close)) +\n  geom_histogram(bins = 25) +\n  labs(title = \"Goldman Sachs stock\",\n       subtitle = \"2025\",\n       caption = \"SML 201\")"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#z-scores-1",
+    "href": "posts/03_variance/03_variance.html#z-scores-1",
+    "title": "3: Variance",
+    "section": "Z-scores",
+    "text": "Z-scores\nSometimes, we want to rescale numerical columns to be able to compare them together.\n\nsummary(dow_df$price_close)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  37.81  137.82  227.69  241.77  317.19  975.86 \n\n\n\ndow_df &lt;- dow_df |&gt;\n  mutate(price_scaled = scale(price_close)) #z-scores\n\n\nsummary(dow_df$price_scaled)\n\n       V1          \n Min.   :-1.38266  \n 1st Qu.:-0.70469  \n Median :-0.09546  \n Mean   : 0.00000  \n 3rd Qu.: 0.51134  \n Max.   : 4.97654"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#expensive-stocks",
+    "href": "posts/03_variance/03_variance.html#expensive-stocks",
+    "title": "3: Variance",
+    "section": "Expensive Stocks",
+    "text": "Expensive Stocks\nWhich stocks have had the highest average price_close this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(avg_price = mean(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, avg_price) |&gt;\n  distinct() |&gt;\n  arrange(desc(avg_price))\n\n\n\n\n\n# A tibble: 30 × 2\n   ticker avg_price\n   &lt;chr&gt;      &lt;dbl&gt;\n 1 GS          706.\n 2 MSFT        464.\n 3 CAT         435.\n 4 UNH         378.\n 5 HD          377.\n 6 SHW         346.\n 7 V           343.\n 8 AXP         318.\n 9 MCD         305.\n10 AMGN        299.\n# ℹ 20 more rows\n\n\n\n\n\n\nGoldman Sachs\nMicrosoft\nCaterpillar\nUnited Health Group\nHome Depot\nSherwin-Williams\nVisa\nAmerican Express\nMcDonald’s\nAmgen"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#volatility",
+    "href": "posts/03_variance/03_variance.html#volatility",
+    "title": "3: Variance",
+    "section": "Volatility",
+    "text": "Volatility\n\nMost VolatileLeast Volatile\n\n\nWhich stocks were the most volatile last year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, volatility) |&gt;\n  distinct() |&gt;\n  arrange(desc(volatility)) #from largest to smallest\n\n\n\n\n\n# A tibble: 30 × 2\n   ticker volatility\n   &lt;chr&gt;       &lt;dbl&gt;\n 1 GS          124. \n 2 CAT         104. \n 3 UNH          92.8\n 4 MSFT         48.8\n 5 AXP          36.0\n 6 NVDA         29.9\n 7 CRM          29.8\n 8 JPM          28.5\n 9 IBM          26.7\n10 AAPL         26.4\n# ℹ 20 more rows\n\n\n\n\n\n\nGoldman Sachs\nCaterpillar\nUnited Health Group\nMicrosoft\nAmerican Express\nNVidia\nSalesforce\nJP Morgan Chase\nIBM\nApple\n\n\n\n\n\nWhich stocks were the least volatile last year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, volatility) |&gt;\n  distinct() |&gt;\n  arrange(volatility) #from smallest to largest\n\n\n\n\n\n# A tibble: 30 × 2\n   ticker volatility\n   &lt;chr&gt;       &lt;dbl&gt;\n 1 VZ           1.86\n 2 KO           2.83\n 3 CSCO         6.37\n 4 NKE          6.78\n 5 WMT          8.27\n 6 CVX          8.32\n 7 MCD          8.86\n 8 DIS          8.86\n 9 PG           8.87\n10 MRK          9.66\n# ℹ 20 more rows\n\n\n\n\n\n\nVerizon\nCoca-Cola\nCisco\nNike\nWalmart\nChevron\nMcDonald’s\nDisney\nProctor and Gamble\nMerck"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#line-plots",
+    "href": "posts/03_variance/03_variance.html#line-plots",
+    "title": "3: Variance",
+    "section": "Line Plots",
+    "text": "Line Plots\nLet us compare the stocks with the lowest and the most volatility.\n\nVizCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntitle_string &lt;- \"&lt;span style='color:blue'&gt;Verizon&lt;/span&gt; and &lt;span style='color:red'&gt;Goldman Sachs&lt;/span&gt;\"\nsubtitle_string &lt;- \"2025 stock prices\"\n\ndow_df |&gt;\n  ggplot() +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"blue\", linewidth = 2,\n            data = dow_df |&gt; filter(ticker == \"VZ\")) +\n  geom_line(aes(x = ref_date, y = price_close),\n            color = \"red\", linewidth = 3,\n            data = dow_df |&gt; filter(ticker == \"GS\")) +\n  labs(title = title_string,\n       subtitle = subtitle_string,\n       caption = \"SML 201\",\n       x = \"date\", y = \"closing price\") +\n  theme_minimal() +\n  theme(plot.title = element_markdown(face = \"bold\", hjust = 0.5,size = 25),\n        plot.subtitle = element_markdown(hjust = 0.5,size = 20))"
+  },
+  {
+    "objectID": "posts/03_variance/03_variance.html#coefficient-of-variation",
+    "href": "posts/03_variance/03_variance.html#coefficient-of-variation",
+    "title": "3: Variance",
+    "section": "Coefficient of Variation",
+    "text": "Coefficient of Variation\nWouldn’t the most expensive stocks naturally vary more?\n\\[\\text{CoV} = \\frac{s}{\\bar{x}}\\]\n\n\\(\\bar{x}\\): sample mean\n\\(s\\): sample standard deviation\n\nWhich stocks have the highest coefficients of variation this year?\n\ndow_df |&gt;\n  group_by(ticker) |&gt;\n  mutate(avg_price = mean(price_close, na.rm = TRUE)) |&gt;\n  mutate(volatility = sd(price_close, na.rm = TRUE)) |&gt;\n  ungroup() |&gt;\n  select(ticker, avg_price, volatility) |&gt;\n  distinct() |&gt;\n  mutate(coef_var = volatility / avg_price) |&gt;\n  arrange(desc(coef_var))\n\n\n\n\n\n# A tibble: 30 × 4\n   ticker avg_price volatility coef_var\n   &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;\n 1 UNH        378.       92.8     0.245\n 2 CAT        435.      104.      0.239\n 3 NVDA       156.       29.9     0.191\n 4 GS         706.      124.      0.176\n 5 JNJ        174.       22.0     0.127\n 6 BA         202.       25.5     0.126\n 7 AXP        318.       36.0     0.113\n 8 AAPL       234.       26.4     0.113\n 9 CRM        267.       29.8     0.112\n10 MRK         88.8       9.66    0.109\n# ℹ 20 more rows\n\n\n\n\n\n\nUnited Health Care\nCaterpillar\nNVidia\nGoldman Sachs\nJohnson and Johnson\nBoeing\nAmerican Express\nApple\nSalesforce\nMerck"
   }
 ]
