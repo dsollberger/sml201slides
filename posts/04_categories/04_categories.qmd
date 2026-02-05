@@ -1,0 +1,468 @@
+---
+title: "4: Categories"
+author: "Derek Sollberger"
+date: "2025-02-05"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Explore data wrangling with categorical variables
+
+* **Objective**: Compute counts, make bar graphs, and discuss data
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![demographics survey](short_names.png)
+:::
+
+::::
+
+# First Glance
+
+## Obtaining the Data
+
+```{r}
+#| echo: true
+#| eval: true
+#| message: false
+
+library("tidyverse")
+
+# downloading data directly from Derek's (online) GitHub repository
+# demo_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/data/demographics_data.csv.csv")
+
+# or if you have the file also in your SML 201 folder
+demo_df <- readr::read_csv("demographics_data.csv")
+```
+
+## Quick Exploration
+
+:::: {.panel-tabset}
+
+### head
+
+```{r}
+head(demo_df)
+```
+
+### structure
+
+```{r}
+str(demo_df, give.attr = FALSE)
+```
+
+### column names
+
+```{r}
+colnames(demo_df)
+```
+
+::::
+
+## Preprocessing
+
+::: {.callout-note collapse="true"}
+### Here is how the data was cleaned
+
+* Advice: you should understand each part of this code by the first exam.
+
+```{r}
+#| echo: true
+#| eval: false
+demo_raw <- readr::read_csv("Demographics Survey Survey Student Analysis Report.csv",
+                          col_names = FALSE, skip = 1)
+
+short_names <- c("course", "stats_background", "class_standing",
+                 "num_courses_past", "major", "minor1",
+                 "minor2", "residential_college", "dining_hall",
+                 "GPA_uni", "gender", "ethnicity",
+                 "hours_study", "birth_month", "age",
+                 "height", "shoe_size", "weight",
+                 "calories", "exercise", "sleep_start",
+                 "sleep_duration", "social_media", "smart_phones",
+                 "baseball", "football", "basketball", 
+                 "hockey", "politics", "religious",
+                 "sexuality", "happiness_campus", "happiness_city",
+                 "anxious_201", "high_school_type", "college_transition",
+                 "drug_use", "first_generation", "languages_spoken",
+                 "making_friends", "campus_sports", "office_hours",
+                 "study_groups", "financial_planning", "happiness",
+                 "intelligence", "attractiveness", "favorite_color",
+                 "favorite_number", "showering", "brushing_teeth",
+                 "flossing", "hair_washing", "water_drinking",
+                 "financial_aid", "future_career", "siblings",
+                 "favorite_movie", "loneliness", "organized",
+                 "GPA_HS", "SAT", "social_active",
+                 "num_friends", "music_studying", "family_influence",
+                 "living_on_campus", "college_job", "campus_groups",
+                 "attendance", "pancakes_waffles", "coffee_tea",
+                 "dogs_cats", "ocean_snow", "pineapple_pizza",
+                 "spicy_food", "campus_acceptance", "social_media_duration",
+                 "continents", "superhero", "supervillain",
+                 "season", "handedness", "musical",
+                 "campus_safety", "campus_resources", "laundry",
+                 "favorite_class", "favorite_teacher", "uni_applied",
+                 "uni_accepted", "gap_year", "survey_comfort", 
+                 "additional_questions"
+                 )
+
+demo_df <- demo_raw |>
+  # remove student names and Canvas metadeta
+  select(seq(9, 193, 2)) |>
+
+  # apply short column names (i.e. ease programming)
+  setNames(short_names) |>
+  
+  # shuffle all rows (i.e. no longer alphabetical by student name)
+  sample_frac(1.0) |>
+  
+  # mask majors who are underrepresented
+  group_by(major) |>
+  mutate(majorCount = n()) |>
+  ungroup() |>
+  mutate(major = ifelse(majorCount >= 3, major, "other")) |>
+  select(-majorCount) |>
+  
+  # remove other possible ID factors
+  select(-c(ethnicity, minor1, minor2, uni_accepted)) |>
+  mutate(age = ifelse(age < 19 | age > 21, NA, age)) |>
+  mutate(class_standing = ifelse(class_standing %in% c("Sophomore", "Junior", "Senior"), class_standing, "Senior")) |>
+  mutate(gender = ifelse(gender %in% c("Female", "Male"), gender, NA)) |>
+  mutate(num_courses_past = ifelse(num_courses_past < 10, NA, num_courses_past)) |>
+  
+  # remove outliers
+  mutate(GPA_uni = ifelse(GPA_uni < 2 | GPA_uni > 4, NA, GPA_uni)) |>
+  mutate(GPA_HS = ifelse(GPA_HS < 3 | GPA_HS > 4, NA, GPA_HS)) |>
+  mutate(SAT = ifelse(SAT < 1200 | SAT > 1600, NA, SAT)) |>
+  mutate(politics = ifelse(politics < 0, 0, politics)) |>
+  mutate(politics = ifelse(politics > 100, 100, politics)) |>
+  mutate(siblings = ifelse(siblings > 4, 4, siblings)) |>
+  mutate(spicy_food = ifelse(spicy_food > 7, 7, spicy_food))
+
+readr::write_csv(demo_df, "demographics_data..csv")
+  
+```
+:::
+
+::: {.callout-warning}
+# DCP1
+:::
+
+# Queries
+
+:::: {.columns}
+
+::: {.column width="20%"}
+For the *Demographics Survey*, here are the variable names that represent the responses to the survey questions.	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="70%"}
+![demographics survey](short_names.png)
+:::
+
+::::
+
+## Numerical Summary
+
+"On a scale from 0 to 100---with 0 = very anxious and 100 = comfortable---how comfortable were you taking this survey?"
+
+```{r}
+summary(demo_df$survey_comfort)
+```
+
+## Categorical Summary
+
+"What is your favorite season?"
+
+```{r}
+table(demo_df$season)
+```
+
+## Cross-Tabulation
+
+```{r}
+table(demo_df$season, demo_df$gap_year)
+```
+
+::: {.callout-warning}
+# DCP2
+:::
+
+## Numerical Across a Category
+
+```{r}
+demo_df |>
+  group_by(gap_year) |>
+  summarize(avg_age = mean(age, na.rm = TRUE))
+```
+
+## Seeking Proportions
+
+"Did you take a gap year?"
+
+```{r}
+# carefully defining denominator without missing values
+n <- sum(!is.na(demo_df$gap_year))
+table(demo_df$gap_year) / n
+```
+```{r}
+mean(demo_df$gap_year == "Yes", na.rm = TRUE)
+```
+
+## Bar Chart --- Count
+
+"Do you play a musical instrument(s)?"
+
+* Later: discern difference between `stat = "count"` and `stat = "identity"`
+
+```{r}
+demo_df |>
+  # filter(!is.na(musical)) |>
+  ggplot(aes(x = musical)) +
+  geom_bar(color = "black", fill = "green", stat = "count") +
+  labs(title = "Do you play a musical instrument(s)?",
+       subtitle = "SML 201, Spring 2026",
+       x = "",
+       y = "count") +
+  theme_minimal()
+```
+
+
+## Most Represented Major by Residential College
+
+```{r}
+demo_df |>
+  group_by(residential_college, major) |>
+  mutate(major_count = n()) |>
+  ungroup() |>
+  group_by(residential_college) |>
+  filter(major_count == max(major_count)) |>
+  ungroup() |>
+  select(residential_college, major) |>
+  distinct() |>
+  arrange(residential_college)
+```
+
+::: {.callout-warning}
+# DCP3
+:::
+
+
+# Case Study: AI Detection
+
+Suppose that we had a controlled experiment where we
+
+* asked students to write an essay
+
+    * without extra assistance ("not cheat")
+    * with chatbot assistance ("cheat")
+
+* then asked an AI detection bot to try to detect each essay as AI assisted or not.
+
+::: {.callout-note collapse="true"}
+## Creating Synthetic Data
+
+* Advice: you should understand each part of this code by the second exam
+
+```{r}
+set.seed(201) #supress randomization
+essay_cheat <- sample(c(TRUE, FALSE), 
+                      size = 201,
+                      prob = c(0.45, 0.55), 
+                      replace = TRUE)
+detect_cheat <- sample(c(TRUE, FALSE),
+                       size = 201,
+                       prob = c(0.75, 0.25),
+                       replace = TRUE)
+
+# make data frame
+bot_df <- data.frame(student_id = 1:201,
+                     essay_cheat,
+                     detect_cheat)
+```
+:::
+
+```{r}
+head(bot_df)
+```
+
+## Outcomes
+
+### Logical AND
+
+```{r}
+bot_df <- bot_df |>
+  mutate(outcome = case_when(
+    essay_cheat & detect_cheat ~ "true positive",
+    !essay_cheat & detect_cheat ~ "false positive",
+    essay_cheat & !detect_cheat ~ "false negative",
+    !essay_cheat & !detect_cheat ~ "true negative",
+    TRUE ~ "unknown classification"
+  ))
+```
+
+## Counts
+
+```{r}
+TP <- sum(bot_df$outcome == "true positive")
+TN <- sum(bot_df$outcome == "true negative")
+FP <- sum(bot_df$outcome == "false positive")
+FN <- sum(bot_df$outcome == "false negative")
+```
+
+```{r}
+table(bot_df$essay_cheat, bot_df$detect_cheat)
+```
+```{r}
+print(paste0("There were ", TP, " true positives"))
+print(paste0("There were ", TN, " true negatives"))
+print(paste0("There were ", FP, " false positives"))
+print(paste0("There were ", FN, " false negatives"))
+```
+
+
+
+## Metrics
+
+### Logical OR
+
+::: {.callout-note}
+### Accuracy
+
+**Accuracy** is the ratio of true positives OR true negatives over all outcomes
+
+$$\text{accuracy} = \frac{TP + TN}{TP + FP + FN + TN}$$
+:::
+
+```{r}
+# accuracy = (TP + TN) / (TP + FP + FN + TN)
+accuracy <- mean(bot_df$outcome == "true positive" |
+               bot_df$outcome == "true negative")
+print(round(accuracy, 2))
+```
+* This AI bot made correct classifications 44 percent of the time.
+
+
+### Precision
+
+$$\text{precision} = \frac{TP}{TP + FP}$$
+
+```{r}
+precision = TP / (TP + FP)
+print(round(precision, 2))
+```
+* Out of all of the essays were participants intentionally cheated, the bot correctly classified those essays as "AI assisted" 40 percent of the time.
+
+### Recall
+
+$$\text{recall} = \frac{TP}{TP + FN}$$
+
+```{r}
+recall = TP / (TP + FN)
+print(round(recall, 2))
+```
+
+* Among all of the essays that were marked as "AI assisted", 70 percent of those were created by cheating.
+
+::: {.callout-note}
+### Sensitivity and specificity
+
+All of these contingency table formulas are collected nicely on the Wikipedia page for [sensitivity and specificity](https://en.wikipedia.org/wiki/Sensitivity_and_specificity).
+:::
+
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Assignments (due Friday):
+
+    * Precept 2
+    * Pick Group Partners
+    * Coloring Assignment 1
+    
+* Project 1:
+
+    * assigned: Feb 9
+    * due: Feb 24
+    
+* Exam 1: Mar 5
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+"The first [lesson] was always to make the choice to learn.  That meant embracing change and mustering the courage to fail; success and failure are two sides of the same coin.  You cannot succeed if at some point you haven't failed" --- Maria Ressa
+
+:::
+
+::::
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+* Colors: [useful glossary](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) by Dr Ying Wei
+* a great [blog post](https://blog.albertkuo.me/post/2022-01-04-reordering-geom-col-and-geom-bar-by-count-or-value/) about the `forcats` package by Albert Kuo
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+:::: {.panel-tabset}
+
+
+
+::::
