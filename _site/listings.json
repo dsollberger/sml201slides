@@ -2,10 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/04_categories/04_categories.html",
       "/posts/03_variance/03_variance.html",
       "/posts/02_centrality/02_Centrality.html",
-      "/posts/01_intro/01_intro.html",
-      "/posts/04_categories/04_categories.html"
+      "/posts/01_intro/01_intro.html"
     ]
   }
 ]
