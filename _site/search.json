@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -3631,5 +3631,75 @@
     "title": "4: Categories",
     "section": "Metrics",
     "text": "Metrics\n\nLogical OR\n\n\n\n\n\n\nNoteAccuracy\n\n\n\nAccuracy is the ratio of true positives OR true negatives over all outcomes\n\\[\\text{accuracy} = \\frac{TP + TN}{TP + FP + FN + TN}\\]\n\n\n\n# accuracy = (TP + TN) / (TP + FP + FN + TN)\naccuracy &lt;- mean(bot_df$outcome == \"true positive\" |\n               bot_df$outcome == \"true negative\")\nprint(round(accuracy, 2))\n\n[1] 0.44\n\n\n\nThis AI bot made correct classifications 44 percent of the time.\n\n\n\nPrecision\n\\[\\text{precision} = \\frac{TP}{TP + FP}\\]\n\nprecision = TP / (TP + FP)\nprint(round(precision, 2))\n\n[1] 0.4\n\n\n\nOut of all of the essays were participants intentionally cheated, the bot correctly classified those essays as “AI assisted” 40 percent of the time.\n\n\n\nRecall\n\\[\\text{recall} = \\frac{TP}{TP + FN}\\]\n\nrecall = TP / (TP + FN)\nprint(round(recall, 2))\n\n[1] 0.7\n\n\n\nAmong all of the essays that were marked as “AI assisted”, 70 percent of those were created by cheating.\n\n\n\n\n\n\n\nNoteSensitivity and specificity\n\n\n\nAll of these contingency table formulas are collected nicely on the Wikipedia page for sensitivity and specificity."
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html",
+    "href": "posts/05_geospatial/05_geospatial.html",
+    "title": "5: Geospatial",
+    "section": "",
+    "text": "Goal: Visualize geospatial data\nObjective: Merge shapefiles and data files\n\n\n\n\n\n\n\nNJ at a glance\n\n\n\nimage source: Totally Bamboo\n\n\n\n\n\n\n\nlibrary(\"gt\")\nlibrary(\"sf\") #special features, useful for geography\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\n# nj_health &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv\")\n# nj_pop    &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv\")\n# nj_shp    &lt;- readr::read_rds(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds\")\n\nnj_health &lt;- readr::read_csv(\"nj_health.csv\")\nnj_pop    &lt;- readr::read_csv(\"nj_pop.csv\")\nnj_shp    &lt;- readr::read_rds(\"nj_shp.rds\")"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#start",
+    "href": "posts/05_geospatial/05_geospatial.html#start",
+    "title": "5: Geospatial",
+    "section": "",
+    "text": "Goal: Visualize geospatial data\nObjective: Merge shapefiles and data files\n\n\n\n\n\n\n\nNJ at a glance\n\n\n\nimage source: Totally Bamboo"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#load-data-and-packages",
+    "href": "posts/05_geospatial/05_geospatial.html#load-data-and-packages",
+    "title": "5: Geospatial",
+    "section": "",
+    "text": "library(\"gt\")\nlibrary(\"sf\") #special features, useful for geography\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\n# nj_health &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv\")\n# nj_pop    &lt;- readr::read_csv(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv\")\n# nj_shp    &lt;- readr::read_rds(\"https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds\")\n\nnj_health &lt;- readr::read_csv(\"nj_health.csv\")\nnj_pop    &lt;- readr::read_csv(\"nj_pop.csv\")\nnj_shp    &lt;- readr::read_rds(\"nj_shp.rds\")"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#centroids",
+    "href": "posts/05_geospatial/05_geospatial.html#centroids",
+    "title": "5: Geospatial",
+    "section": "Centroids",
+    "text": "Centroids\n\n# Calculate the centroid of each hexagon to add the label\n# https://stackoverflow.com/questions/49343958/do-the-values-returned-by-rgeosgcentroid-and-sfst-centroid-differ\ncenters &lt;- data.frame(\n  st_coordinates(st_centroid(nj_shp$geometry)),\n  id=nj_shp$COUNTY)\n\nnj_counties &lt;- nj_shp |&gt;\n  left_join(centers, by = c(\"COUNTY\" = \"id\"))"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#text-for-labels",
+    "href": "posts/05_geospatial/05_geospatial.html#text-for-labels",
+    "title": "5: Geospatial",
+    "section": "Text (for labels)",
+    "text": "Text (for labels)\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_text(aes(x = X, y = Y, label = COUNTY)) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#labels",
+    "href": "posts/05_geospatial/05_geospatial.html#labels",
+    "title": "5: Geospatial",
+    "section": "Labels",
+    "text": "Labels\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_label(aes(x = X, y = Y, label = COUNTY)) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#subset",
+    "href": "posts/05_geospatial/05_geospatial.html#subset",
+    "title": "5: Geospatial",
+    "section": "Subset",
+    "text": "Subset\n\nnj_label_subset &lt;- nj_counties |&gt;\n  filter(COUNTY %in% c(\"MERCER\", \"SUSSEX\", \"SALEM\"))\n\nnj_counties |&gt;\n  ggplot() +\n  geom_sf(aes(fill = COUNTY)) +\n  geom_label(aes(x = X, y = Y, label = COUNTY),\n             data = nj_label_subset,\n             size = 2) +\n  labs(title = \"Counties of New Jersey\",\n       subtitle = \"categorical data\",\n       caption = \"SML 201\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#example-one-county",
+    "href": "posts/05_geospatial/05_geospatial.html#example-one-county",
+    "title": "5: Geospatial",
+    "section": "Example: One County",
+    "text": "Example: One County\n\nnj_df |&gt;\n  ggplot() +\n  geom_sf(fill = \"gray90\") +\n  geom_sf(fill = \"orange\",\n          data = nj_counties |&gt;\n            filter(COUNTY == \"MERCER\")) +\n  labs(title = \"Princeton University\",\n       subtitle = \"is in Mercer County\",\n       caption = \"SML 201\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#example-cluster-of-counties",
+    "href": "posts/05_geospatial/05_geospatial.html#example-cluster-of-counties",
+    "title": "5: Geospatial",
+    "section": "Example: Cluster of Counties",
+    "text": "Example: Cluster of Counties\n\ncoastal_counties &lt;- c(\"MONMOUTH\", \"OCEAN\", \"ATLANTIC\", \"CAPE MAY\")\n\nnj_df |&gt;\n  ggplot() +\n  geom_sf(fill = \"gray90\") +\n  geom_sf(fill = \"bisque\",\n          data = nj_counties |&gt;\n            filter(COUNTY %in% coastal_counties)) +\n  labs(title = \"Atlantic Ocean Beaches\",\n       subtitle = \"among New Jersey counties\",\n       caption = \"SML 201\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/05_geospatial/05_geospatial.html#examples-of-results",
+    "href": "posts/05_geospatial/05_geospatial.html#examples-of-results",
+    "title": "5: Geospatial",
+    "section": "Examples of Results",
+    "text": "Examples of Results\nThese images were from year 2023 data (but you will work on year 2025 data).\n\nExercise 5Exercise 8Exercise 10\n\n\n\n\n\nmap\n\n\n\n\n\n\n\nbar graph\n\n\n\n\n\n\n\nbar graph"
   }
 ]

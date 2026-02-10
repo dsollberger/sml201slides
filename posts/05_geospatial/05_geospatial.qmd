@@ -1,0 +1,825 @@
+---
+title: "5: Geospatial"
+author: "Derek Sollberger"
+date: "2026-02-10"
+# format:
+#   revealjs:
+#     scrollable: true
+format:
+  html:
+    toc: true
+---
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Visualize geospatial data
+
+* **Objective**: Merge shapefiles and data files
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![NJ at a glance](nj_cutting_board.png)
+
+* image source: Totally Bamboo
+:::
+
+::::
+
+
+## Load Data and Packages
+
+```{r}
+#| message: false
+#| warning: false
+
+library("gt")
+library("sf") #special features, useful for geography
+library("tidyverse") #tools for data wrangling and visualization
+
+# nj_health <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_health.csv")
+# nj_pop    <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_pop.csv")
+# nj_shp    <- readr::read_rds("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/06_geospatial/nj_shp.rds")
+
+nj_health <- readr::read_csv("nj_health.csv")
+nj_pop    <- readr::read_csv("nj_pop.csv")
+nj_shp    <- readr::read_rds("nj_shp.rds")
+```
+
+
+# Data
+
+::::: {.panel-tabset}
+
+## Shapefile
+
+:::: {.columns}
+
+::: {.column width="45%"}
+A **shapefile** has labeled geography data 	
+
+* points
+* lines
+* polygons
+
+In `R`, a shapefile has to have a column about the `geometry`.
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+nj_shp |>
+  ggplot() +
+  geom_sf()
+```
+
+:::
+
+::::
+
+## Health
+
+[New Jersey Health Data](https://www.countyhealthrankings.org/health-data/new-jersey/data-and-resources)
+
+![New Jersey Health Data](nj_health_splash.png)
+:::::
+
+::: {.callout-warning}
+# DCP1
+:::
+
+# Categorical
+
+Let us produce a colorful map of the counties of New Jersey.
+
+```{r}
+nj_shp |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Centroids
+
+```{r}
+# Calculate the centroid of each hexagon to add the label
+# https://stackoverflow.com/questions/49343958/do-the-values-returned-by-rgeosgcentroid-and-sfst-centroid-differ
+centers <- data.frame(
+  st_coordinates(st_centroid(nj_shp$geometry)),
+  id=nj_shp$COUNTY)
+
+nj_counties <- nj_shp |>
+  left_join(centers, by = c("COUNTY" = "id"))
+```
+
+
+## Text (for labels)
+
+```{r}
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_text(aes(x = X, y = Y, label = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Labels
+
+```{r}
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_label(aes(x = X, y = Y, label = COUNTY)) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Subset
+
+```{r}
+nj_label_subset <- nj_counties |>
+  filter(COUNTY %in% c("MERCER", "SUSSEX", "SALEM"))
+
+nj_counties |>
+  ggplot() +
+  geom_sf(aes(fill = COUNTY)) +
+  geom_label(aes(x = X, y = Y, label = COUNTY),
+             data = nj_label_subset,
+             size = 2) +
+  labs(title = "Counties of New Jersey",
+       subtitle = "categorical data",
+       caption = "SML 201") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+
+
+
+# Joins
+
+::: {.callout-note collapse="true"}
+## Synthetic Data
+
+```{r}
+left_df <- data.frame(
+  student = c("Arctozolt", "Bulbasaur", "Charmander", "Eevee"),
+  major = c("Antropology", "Bioengineering", "Classics", "Economics")
+)
+right_df <- data.frame(
+  STUDENT = c("Bulbasaur", "Charmander", "Drednaw", "Furfrou"),
+  RESIDENCE = c("Butler", "Forbes", "Mathey", "Whitman")
+)
+
+left_table <- left_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Left Table",
+    subtitle = "Students and Majors"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(student, major))
+  )
+
+right_table <- right_df |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Right Table",
+    subtitle = "Students and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = c(STUDENT, RESIDENCE))
+  )
+```
+
+:::
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+
+left_table
+```
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: false
+#| eval: true
+
+right_table
+```
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+## Left Join
+
+```{r}
+#| echo: false
+#| eval: true
+
+after_join <- left_df |>
+  left_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Left Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(student, major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = c(RESIDENCE),
+                           rows = !is.na(RESIDENCE))
+  )
+```
+
+```{r}
+#| echo: true
+#| eval: false
+
+after_join <- left_df |>
+  left_join(right_df, by = join_by(student == STUDENT))
+```
+
+## Right Join
+
+```{r}
+#| echo: false
+#| eval: true
+
+after_join <- left_df |>
+  right_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Right Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(major),
+                           rows = !is.na(major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = c(student, RESIDENCE))
+  )
+```
+
+```{r}
+#| echo: true
+#| eval: false
+
+after_join <- left_df |>
+  right_join(right_df, by = join_by(student == STUDENT))
+```
+
+## Inner Join
+
+```{r}
+#| echo: false
+#| eval: true
+
+after_join <- left_df |>
+  inner_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Inner Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(student, major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = RESIDENCE)
+  )
+```
+
+```{r}
+#| echo: true
+#| eval: false
+
+after_join <- left_df |>
+  inner_join(right_df, by = join_by(student == STUDENT))
+```
+
+## Outer Join
+
+```{r}
+#| echo: false
+#| eval: true
+
+after_join <- left_df |>
+  full_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Outer Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = major,
+                           rows = !is.na(major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = RESIDENCE,
+                           rows = !is.na(RESIDENCE))
+  )
+```
+
+```{r}
+#| echo: true
+#| eval: false
+
+after_join <- left_df |>
+  full_join(right_df, by = join_by(student == STUDENT))
+```
+
+## gt codes
+
+```{r}
+#| echo: true
+#| eval: false
+
+after_join <- left_df |>
+  left_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Left Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(student, major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = c(RESIDENCE),
+                           rows = !is.na(RESIDENCE))
+  )
+
+after_join <- left_df |>
+  right_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Right Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(major),
+                           rows = !is.na(major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = c(student, RESIDENCE))
+  )
+
+after_join <- left_df |>
+  inner_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Inner Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = c(student, major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = RESIDENCE)
+  )
+
+after_join <- left_df |>
+  full_join(right_df, by = join_by(student == STUDENT))
+
+after_join |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "SML 201") |>
+  tab_header(
+    title = "Outer Join",
+    subtitle = "Students, Majors, and Residence Halls"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "turquoise1")
+    ),
+    locations = cells_body(columns = major,
+                           rows = !is.na(major))
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "violetred1")
+    ),
+    locations = cells_body(columns = RESIDENCE,
+                           rows = !is.na(RESIDENCE))
+  )
+```
+
+
+:::::
+
+::: {.callout-tip}
+## Which join do we use?
+
+When in doubt, use `left_join` (i.e. Derek tends to find that left join is the easiest to understand).
+:::
+
+# Gradient
+
+```{r}
+nj_df <- nj_counties |>
+  mutate(COUNTY = str_to_title(COUNTY)) |>
+  left_join(nj_health, by = c("COUNTY" = "county"))
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = number_unemployed)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "numerical data",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "OrRd",
+                       direction = 1) +
+  theme_minimal()
+```
+
+::: {.callout-warning}
+# DCP2
+:::
+
+
+# Normalization
+
+```{r}
+nj_df <- nj_df |>
+  left_join(nj_pop, by = c("COUNTY" = "county"))
+```
+
+```{r}
+nj_df <- nj_df |>
+  mutate(unemployed_per_cap = number_unemployed / population)
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = unemployed_per_cap)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "per capita",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "OrRd",
+                       direction = 1) +
+  theme_minimal()
+```
+
+
+# Divergent
+
+```{r}
+nj_df <- nj_df |>
+  mutate(unemployed_scaled = scale(unemployed_per_cap))
+```
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(aes(fill = unemployed_scaled)) +
+  labs(title = "New Jersey Unemployment",
+       subtitle = "standardized data",
+       caption = "SML 201") +
+  scale_fill_distiller(palette = "RdYlGn",
+                       direction = -1) +
+  theme_minimal()
+```
+
+
+::: {.callout-warning}
+# DCP3
+:::
+
+
+# Highlighting
+
+::: {.callout-tip}
+## One Highlight Color
+
+Rather than using a whole palette of colors, contemporary advice from data visualization experts says to use one color to highlight information (and gray for the rest)---especially for business meetings.
+:::
+
+## Example: One County
+
+```{r}
+nj_df |>
+  ggplot() +
+  geom_sf(fill = "gray90") +
+  geom_sf(fill = "orange",
+          data = nj_counties |>
+            filter(COUNTY == "MERCER")) +
+  labs(title = "Princeton University",
+       subtitle = "is in Mercer County",
+       caption = "SML 201") +
+  theme_minimal()
+```
+
+## Example: Cluster of Counties
+
+```{r}
+coastal_counties <- c("MONMOUTH", "OCEAN", "ATLANTIC", "CAPE MAY")
+
+nj_df |>
+  ggplot() +
+  geom_sf(fill = "gray90") +
+  geom_sf(fill = "bisque",
+          data = nj_counties |>
+            filter(COUNTY %in% coastal_counties)) +
+  labs(title = "Atlantic Ocean Beaches",
+       subtitle = "among New Jersey counties",
+       caption = "SML 201") +
+  theme_minimal()
+```
+
+
+# Precept 3
+
+* S&P 500 (stock market indicators)
+* NVIDIA stock narrative
+
+## Examples of Results
+
+These images were from year 2023 data (but you will work on year 2025 data).
+
+::::: {.panel-tabset}
+
+### Exercise 5
+
+![map](precept_3_2023_1.png)
+
+### Exercise 8
+
+![bar graph](precept_3_2023_2.png)
+
+### Exercise 10
+
+![bar graph](precept_3_2023_3.png)
+
+:::::
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+* Assignments (due Friday):
+
+    * Precept 3
+    * Introducting Gradescope
+
+* Project 1:
+    
+    * due: Feb 24
+    
+* Exam 1: March 5
+
+    * McDonnell A02
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Pork Roll vs Taylor Ham](pork_roll_Taylor_Ham.png)
+
+* poll from NJ.com
+
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) How the data sets were simplified
+
+```{r}
+#| echo: true
+#| eval: false
+
+# shape file
+nj_shp_raw <- sf::st_read("County_Boundaries_of_NJ/County_Boundaries_of_NJ.shp")
+readr::write_rds(nj_shp_raw, "nj_shp.rds") #save as R binary file
+
+# data files
+nj_health <- readxl::read_xlsx(
+  "2024 County Health Rankings New Jersey Data - v2.xlsx",
+  sheet = 2,
+  skip = 1) |>
+  janitor::clean_names() |>
+  filter(!is.na(county))
+nj_pop <- readxl::read_xlsx(
+  "2024 County Health Rankings New Jersey Data - v2.xlsx",
+  sheet = 4,
+  skip = 1) |>
+  janitor::clean_names() |>
+  filter(!is.na(county))
+
+readr::write_csv(nj_health, "nj_health.csv") 
+readr::write_csv(nj_pop, "nj_pop.csv") 
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+* more about Rcolorbrewer: [https://r-graph-gallery.com/38-rcolorbrewers-palettes.html](https://r-graph-gallery.com/38-rcolorbrewers-palettes.html)
+
+* more about joins: [http://lindsaydbrin.github.io/CREATE_R_Workshop/Lesson_-_dplyr_join.html](http://lindsaydbrin.github.io/CREATE_R_Workshop/Lesson_-_dplyr_join.html)
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
