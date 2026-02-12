@@ -1,0 +1,27 @@
+---
+title: "implicit wrangler"
+author: "Derek Sollberger"
+format: html
+---
+
+```{r}
+library("tidyverse")
+```
+
+```{r}
+implicit_raw <- readr::read_csv("DCP0129 Survey Student Analysis Report.csv")
+```
+
+```{r}
+implicit_df <- implicit_raw |>
+  select(seq(13, 25, 2)) |>
+  set_names(paste0("graph", 1:7)) |>
+  mutate(id = 1:n()) |>
+  mutate(section = ifelse(id <= 73, "L02", "L01")) |>
+  filter(id != 3)
+```
+
+```{r}
+readr::write_csv(implicit_df, "implicit_bias_data.csv")
+```
+

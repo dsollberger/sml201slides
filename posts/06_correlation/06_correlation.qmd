@@ -1,0 +1,1554 @@
+---
+title: "6: Correlation and Paradoxes"
+author: "Derek Sollberger"
+date: "2026-02-12"
+format:
+  html:
+    toc: true
+---
+
+
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="30%"}
+* **Goal**: Explore covariance
+
+* **Objective**: Compute interquartile ranges and correlations
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="60%"}
+![correlation](xkcd552.png)
+
+* image source: [XKCD](https://xkcd.com/552/)
+:::
+
+::::
+
+```{r}
+#| message: false
+#| warning: false
+library("corrplot")  # plots correlation matrices
+library("ggsignif")  # significance levels in boxplots
+library("gt")        # great tables
+library("patchwork") # arrange plots side-by-side
+library("tidyverse") # data wrangling and visualization
+
+correlatedValues = function(x, r = 0.9){
+  r2 = r**2
+  ve = 1-r2
+  SD = sqrt(ve)
+  e  = rnorm(length(x), mean=0, sd=SD)
+  y  = r*x + e
+  return(y)
+}
+```
+
+
+## Data
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* Coffee Ratings
+* source: [Coffee Quality Database](https://github.com/jldbc/coffee-quality-database)
+* host: [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md) --- July 7, 2020
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+```{r}
+#| message: false
+#| warning: false
+
+# coffee_df <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
+coffee_df <- readr::read_csv("coffee_ratings.csv")
+```
+:::
+
+::::
+
+
+## Glance
+
+::::: {.panel-tabset}
+
+### head
+
+```{r}
+head(coffee_df)
+```
+
+
+### structure
+
+```{r}
+str(coffee_df, give.attr = FALSE)
+```
+
+### colnames
+
+```{r}
+colnames(coffee_df)
+```
+
+:::::
+
+
+# Scatterplots
+
+::: {.callout-note}
+## Scatterplots
+
+A **scatterplot** helps us visualize two numerical variables.
+:::
+
+```{r}
+coffee_df |>
+  filter(total_cup_points > 0) |>
+  ggplot(aes(x = acidity, y = body)) +
+  geom_point() +
+  labs(title = "Coffee Ratings",
+       subtitle = "Do the data vary together?",
+       caption = "Source: Coffee Quality Database") +
+  theme_minimal()
+```
+
+
+## Covariance
+
+:::: {.panel-tabset}
+
+## Formula
+
+For data $(X,Y)$ listed as $n$ data points $(x_{i}, y_{i})$, the **covariance** is defined as
+
+$$\begin{array}{rcl}
+  \text{Cov}(X,Y) & = & \frac{1}{2n^{2}}\sum_{i=1}^{n}\sum_{j=1}^{n}(x_{i} - x_{j})(y_{i} - y_{j}) \\
+  ~ & = & \text{E}[X] \cdot \text{E}[Y] - \text{E}[XY] \\
+  \end{array}$$
+
+## Intuition
+
+![constructive or destructive waves](constructive_destructive_waves.png)
+
+* image source: [Fissics](https://www.fizzics.org/interference-of-waves/)
+
+## Commentary
+
+* Are resultant numbers large or small?
+* Units? (e.g. "hot-dog-fries")
+
+::::
+
+## Standardization
+
+:::: {.columns}
+
+::: {.column width="45%"}
+### z-score
+
+$$\begin{array}{ccc}
+z & = & \frac{x - \bar{x}}{s} \\
+~ & = & \frac{\text{deviation}}{\text{standard deviation}} \\
+\end{array}$$
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+### Correlation
+
+$$\begin{array}{ccc}
+  r & = & \frac{\sum_{i=1}^{n} (x_{i} - \bar{x})(y_{i} - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_{i} - \bar{x})}\sqrt{\sum_{i=1}^{n} (y_{i} - \bar{y})}} \\
+  ~ & = & \frac{\text{Cov}(X,Y)}{\text{SD}(X) \cdot \text{SD}(Y)} \\
+  ~ & = & \frac{1}{n-1}\sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right) \\
+\end{array}$$
+:::
+
+::::
+
+::: {.callout-tip}
+## Claim: Range of Correlation
+
+The *correlation coefficient* $r$ has a mathematical range in $[-1,1]$:
+
+$$-1 \leq r \leq 1$$
+:::
+
+
+
+::: {.callout-note collapse="true"}
+## (optional) Outline of Proof
+
+1. Show that $\text{Corr}(X,Y) \geq -1$ by starting with
+
+$$0 \leq \text{Var}\left( \frac{X}{\sqrt{\text{Var}(X)}} + \frac{Y}{\sqrt{\text{Var}(Y)}} \right)$$
+
+2. Replace $X$ with $-X$ in the previous part to show that $\text{Corr}(X,Y) \leq 1$
+3. Combine the above results
+:::
+
+
+# Correlation (Concept)
+
+:::: {.columns}
+
+::: {.column width="60%"}
+In this course, we will simply follow the Pearson suggestions for interpreting correlation values:
+
+* $-1.0 \leq r \leq -0.7$: highly and negatively correlated
+* $-0.7 < r < -0.4$: slightly and negatively correlated
+* $-0.4 \leq r \leq 0.4$: virtually uncorrelated
+* $0.4 < r < 0.7$: slightly and positively correlated
+* $0.7 \leq r \leq 1.0$: highly and positively correlated	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Karl Pearson](Karl_Pearson.png)
+:::
+
+::::
+
+## Demonstration
+
+::: {.panel-tabset}
+
+### 1
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = -0.9)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", strongly and negatively correlated"),
+       caption = "SML 201")
+```
+
+### 2
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = -0.5)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and negatively correlated"),
+       caption = "SML 201")
+```
+
+### 3
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", virtually uncorrelated"),
+       caption = "SML 201")
+```
+
+### 4
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0.5)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", slightly and positively correlated"),
+       caption = "SML 201")
+```
+
+### 5
+
+```{r}
+#| echo: false
+x <- rnorm(100, mean = 0, sd = 1)
+y <- correlatedValues(x, r = 0.9)
+
+cor_value <- cor(x,y, use = "pairwise.complete.obs")
+
+df_for_graph <- data.frame(x,y)
+df_for_graph |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Correlation Example",
+       subtitle = paste0("r = ", round(cor_value, 4), 
+                         ", strongly and positively correlated"),
+       caption = "SML 201")
+```
+
+:::
+
+::: {.callout-warning}
+# DCP 1
+:::
+
+# Correlation (Calculations)
+
+## What is piping?
+
+::: {.callout-warning}
+### Step-by-Step
+
+Early in learning computer programming, we could create a new data frame after each calculation, but
+
+* prone to typos and other errors
+* more needs on computer memory
+:::
+
+```{r}
+#| eval: false
+coffee_df2 <- select(coffee_df, flavor, aftertaste)
+coffee_df3 <- mutate(coffee_df2, scale_x = scale(flavor))
+coffee_df4 <- mutate(coffee_df3, scale_y = scale(aftertaste))
+covariance_ops <- mutate(coffee_df4, products = scale_x * scale_y)
+```
+
+```{r}
+#| eval: false
+covariance_ops <- coffee_df |>
+  select(flavor, aftertaste) |>
+  mutate(scale_x = scale(flavor)) |>
+  mutate(scale_y = scale(aftertaste)) |>
+  mutate(products = scale_x * scale_y)
+```
+
+::: {.callout-warning}
+### Piping for Efficiency
+
+Piping in `R` allows us to code processes naturally 
+
+* as a chain of thought
+* removes temporary data frames afterward
+:::
+
+## Long Way
+
+::: {.callout-note}
+### Long Way Digressions
+
+These "Long Way" digressions are here to show more R functions, reveal internal calculations, and/or preview future ideas.
+:::
+
+### Scatterplots
+
+::::: {.panel-tabset}
+
+#### plot
+
+```{r}
+#| echo: false
+#| eval: true
+
+p1 <- coffee_df |>
+  filter(total_cup_points > 0) |> #avoids outliers
+  ggplot() +
+  geom_point(aes(x = flavor, y = aftertaste),
+             color = "brown") +
+  labs(title = "Aftertaste vs Flavor",
+       subtitle = "Coffee Ratings Data",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal()
+
+p2 <- coffee_df |>
+  filter(total_cup_points > 0) |> #avoids outliers
+  mutate(scale_x = scale(flavor)) |>
+  mutate(scale_y = scale(aftertaste)) |>
+  ggplot() +
+  geom_point(aes(x = scale_x, y = scale_y),
+             color = "brown") +
+  labs(title = "Aftertaste vs Flavor",
+       subtitle = "Standardized Data",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal()
+
+p1 + p2 #patchwork
+```
+
+#### code
+
+```{r}
+#| echo: true
+#| eval: false
+
+p1 <- coffee_df |>
+  filter(total_cup_points > 0) |> #avoids outliers
+  ggplot() +
+  geom_point(aes(x = flavor, y = aftertaste),
+             color = "brown") +
+  labs(title = "Aftertaste vs Flavor",
+       subtitle = "Coffee Ratings Data",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal()
+
+p2 <- coffee_df |>
+  filter(total_cup_points > 0) |> #avoids outliers
+  mutate(scale_x = scale(flavor)) |>
+  mutate(scale_y = scale(aftertaste)) |>
+  ggplot() +
+  geom_point(aes(x = scale_x, y = scale_y),
+             color = "brown") +
+  labs(title = "Aftertaste vs Flavor",
+       subtitle = "Standardized Data",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal()
+
+p1 + p2 #patchwork
+```
+
+:::::
+
+```{r}
+covariance_ops <- coffee_df |>
+  select(flavor, aftertaste) |>
+  mutate(scale_x = scale(flavor)) |>
+  mutate(scale_y = scale(aftertaste)) |>
+  mutate(products = scale_x * scale_y)
+```
+
+### gt
+
+::::: {.panel-tabset}
+
+#### table
+
+```{r}
+#| echo: false
+#| eval: true
+
+covariance_ops |>
+  slice(1:10) |> #for visual brevity
+  gt() |>
+  cols_align(align = "center") |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  tab_footnote(footnote = "Source: Tidy Tuesday") |>
+  tab_header(
+    title = "Correlation Internal Calculations",
+    subtitle = "Rescaled Data and Products (first 10 rows shown)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "lightblue1")),
+    locations = cells_body(columns = "scale_x")
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "indianred1")),
+    locations = cells_body(columns = "scale_y")
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "mediumorchid1")),
+    locations = cells_body(columns = "products")
+  )
+```
+
+#### code
+
+```{r}
+#| echo: true
+#| eval: false
+
+covariance_ops |>
+  slice(1:10) |> #for visual brevity
+  gt() |>
+  cols_align(align = "center") |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  tab_footnote(footnote = "Source: Tidy Tuesday") |>
+  tab_header(
+    title = "Correlation Internal Calculations",
+    subtitle = "Rescaled Data and Products (first 10 rows shown)"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "lightblue1")),
+    locations = cells_body(columns = "scale_x")
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "indianred1")),
+    locations = cells_body(columns = "scale_y")
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "mediumorchid1")),
+    locations = cells_body(columns = "products")
+  )
+```
+
+:::::
+
+### Finish
+
+$$r = \frac{1}{n-1}\sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right)$$
+
+```{r}
+# sample size
+# (carefully calculated in case of missing values)
+n <- sum(!is.na(coffee_df$flavor))
+
+corr_val <- sum(covariance_ops$products) / (n - 1)
+print(round(corr_val, 4))
+```
+
+* The data for `flavor` and `aftertaste` are strongly and positively correlated
+
+
+
+
+
+
+
+
+## Short Way
+
+::: {.callout-note}
+### Short Way Tools
+
+You may use code in the "Short Way" in precepts and projects (unless otherwise instructed)
+:::
+
+* Compute the correlation between `flavor` and `aftertaste`
+
+```{r}
+cor(coffee_df$flavor, coffee_df$aftertaste)
+```
+
+* Compute the correlation between `uniformity` and `clean_cup`
+
+::: {.callout-note}
+### Missing Values
+
+Derek recommends using `use = "pairwise.complete.obs"` to avoid missing values in the `cor()` calculation(s).
+
+*  See: Precept 4
+:::
+
+```{r}
+cor(coffee_df$uniformity, coffee_df$clean_cup,
+    use = "pairwise.complete.obs")
+```
+
+* Compute the correlation between `aroma` and `sweetness`
+
+```{r}
+coffee_df |>
+  summarize(r = cor(aroma, sweetness,
+                    use = "pairwise.complete.obs"))
+```
+
+
+# Data Ethics: Causation?
+
+::: {.callout-warning}
+# DCP 2
+:::
+
+::: {.callout-warning}
+## Correlation is Not Causation
+
+* High values of $r$ can appear by coincidence
+* Even if there was some causation, how would we show the direction?
+* Popular website of examples: [Spurious Correlations](https://tylervigen.com/spurious-correlations) by Tyler Vigen
+
+:::
+
+# Paradoxes
+
+## Simpson's Paradox
+
+::: {.callout-note collapse="true"}
+### demonstration code
+
+```{r}
+x1 = rnorm(100, mean = -6, sd = 1)
+y1 = correlatedValues(x1, r = 0.75) + 6
+x2 = rnorm(100, mean = -3, sd = 1)
+y2 = correlatedValues(x2, r = 0.75) + 3
+x3 = rnorm(100, mean = 0, sd = 1)
+y3 = correlatedValues(x3, r = 0.75)
+x4 = rnorm(100, mean = 3, sd = 1)
+y4 = correlatedValues(x4, r = 0.75) - 3
+x5 = rnorm(100, mean = 6, sd = 1)
+y5 = correlatedValues(x5, r = 0.75) - 6
+
+df1 <- data.frame(x1, y1, "group 1")
+df2 <- data.frame(x2, y2, "group 2")
+df3 <- data.frame(x3, y3, "group 3")
+df4 <- data.frame(x4, y4, "group 4")
+df5 <- data.frame(x5, y5, "group 5")
+names(df1) <- c("xdata", "ydata", "group")
+names(df2) <- c("xdata", "ydata", "group")
+names(df3) <- c("xdata", "ydata", "group")
+names(df4) <- c("xdata", "ydata", "group")
+names(df5) <- c("xdata", "ydata", "group")
+demo_df <- rbind(df1, df2, df3, df4, df5)
+```
+:::
+
+
+
+Now we will visualize the data in `demo_df`
+
+```{r}
+demo_df |>
+ggplot(aes(x = xdata, y = ydata)) +
+  geom_point() +
+  labs(title = "all together")
+
+# compute correlation
+demo_df |>
+  summarize(cor = cor(xdata, ydata))
+```
+
+Now let us treat the groups separately.
+
+```{r}
+demo_df |>
+ggplot(aes(x = xdata, y = ydata, color = group)) +
+  geom_point() +
+  labs(title = "separate groups")
+
+# compute correlation
+demo_df |>
+  group_by(group) |>
+  summarize(cor = cor(xdata, ydata))
+```
+
+
+## Berkson's Paradox
+
+### College Admission Stats
+
+```{r}
+#| echo: false
+#| eval: true
+
+x1 = rnorm(1000, mean = 0, sd = 1)
+y1 = correlatedValues(x1, r = 0.75)
+gpa_hs <- 0.5*x1 + 3
+sat_hs <- 200*y1 + 1200
+data_hs <- data.frame(gpa_hs, sat_hs) |>
+  filter(gpa_hs <= 4.0) |>
+  filter(sat_hs <= 1600)
+data_ivy <- data_hs |>
+  filter(gpa_hs > 3.6) |>
+  filter(sat_hs > 1400)
+
+corr_val_before <- cor(data_hs$gpa_hs, data_hs$sat_hs)
+corr_val_after <- cor(data_ivy$gpa_hs, data_ivy$sat_hs)
+
+p1 <- data_hs |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "gray75") +
+  labs(title = "High School Statistics",
+       subtitle = paste0("correlation: r = ", round(corr_val_before, 4)),
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+
+p2 <- data_hs |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "gray75") +
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "#FF671F",
+             data = data_ivy,
+             size = 3) +
+  geom_vline(xintercept = 3.6, color = "black",
+             linewidth = 2, linetype = 2) +
+  geom_hline(yintercept = 1400, color = "black", 
+             linewidth = 2, linetype = 2) +
+  labs(title = "Selection Bias",
+       subtitle = "(subsetting)",
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+
+p3 <- data_ivy |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "#FF671F",
+             size = 3) +
+  labs(title = "Princeton Students",
+       subtitle = paste0("correlation: r = ", round(corr_val_after, 4)),
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+```
+
+::::: {.panel-tabset}
+
+#### overall
+
+```{r}
+#| echo: false
+
+p1
+```
+
+#### subset
+
+```{r}
+#| echo: false
+
+p2
+```
+
+#### bias
+
+```{r}
+#| echo: false
+
+p3
+```
+
+#### code
+
+```{r}
+#| echo: true
+#| eval: false
+
+x1 = rnorm(1000, mean = 0, sd = 1)
+y1 = correlatedValues(x1, r = 0.75)
+gpa_hs <- 0.5*x1 + 3
+sat_hs <- 200*y1 + 1200
+data_hs <- data.frame(gpa_hs, sat_hs) |>
+  filter(gpa_hs <= 4.0) |>
+  filter(sat_hs <= 1600)
+data_ivy <- data_hs |>
+  filter(gpa_hs > 3.6) |>
+  filter(sat_hs > 1400)
+
+corr_val_before <- cor(data_hs$gpa_hs, data_hs$sat_hs)
+corr_val_after <- cor(data_ivy$gpa_hs, data_ivy$sat_hs)
+
+p1 <- data_hs |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "gray75") +
+  labs(title = "High School Statistics",
+       subtitle = paste0("correlation: r = ", round(corr_val_before, 4)),
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+
+p2 <- data_hs |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "gray75") +
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "#FF671F",
+             data = data_ivy,
+             size = 3) +
+  geom_vline(xintercept = 3.6, color = "black",
+             linewidth = 2, linetype = 2) +
+  geom_hline(yintercept = 1400, color = "black", 
+             linewidth = 2, linetype = 2) +
+  labs(title = "Selection Bias",
+       subtitle = "(subsetting)",
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+
+p3 <- data_ivy |>
+  ggplot() + 
+  geom_point(aes(x = gpa_hs, y = sat_hs),
+             color = "#FF671F",
+             size = 3) +
+  labs(title = "Princeton Students",
+       subtitle = paste0("correlation: r = ", round(corr_val_after, 4)),
+       caption = "SML 201",
+       x = "High School GPA", 
+       y = "SAT Score") +
+  theme_minimal()
+```
+
+:::::
+
+### Rizz
+
+::::: {.panel-tabset}
+
+#### dating pool
+
+![dating pool](bp0.png)
+
+* image source: [Cristóbal Alcázar](https://alkzar.cl/blog/2021-02-14-berkson-s-paradox/)
+
+#### subset 1
+
+![subset 1](bp1.png)
+
+* image source: [Cristóbal Alcázar](https://alkzar.cl/blog/2021-02-14-berkson-s-paradox/)
+
+#### subset 2
+
+![subset 2](bp2.png)
+
+::: {.callout-warning}
+## This is why everyone you date is a jerk!
+:::
+
+* image source: [Cristóbal Alcázar](https://alkzar.cl/blog/2021-02-14-berkson-s-paradox/)
+* as mentioned in a book by Carl T Bergstrom and Jevin D West
+
+:::::
+
+
+# Correlation Matrices
+
+```{r}
+coffee_df |>
+  select_if(is.numeric) |>
+  cor(use = "pairwise.complete.obs") |>
+  corrplot.mixed(order = "FPC", upper = "ellipse")
+```
+
+```{r}
+judging_categories <- c("aroma", "flavor", "aftertaste", "acidity", "body", "balance", "uniformity", "clean_cup", "sweetness")
+
+coffee_df |>
+  select(any_of(c(judging_categories, "total_cup_points"))) |>
+  cor() |>
+  corrplot.mixed(order = "FPC", upper = "ellipse")
+```
+
+
+# Research Considerations
+
+::: {.callout-tip}
+## Correlation is not inherently bad!
+
+If correlation is not causation, then ... ?
+
+* Humanities and life sciences tend to seek high correlation values
+
+    * hint at possible causation
+    
+* Physical sciences and engineering tend to seek low correlation
+
+    * dimensionality reduction
+
+* Causation? Seek out econometrics or graduate studies
+
+:::
+
+
+# Quantiles
+
+Recall that we can use `summary` on a numerical variable.
+
+```{r}
+summary(coffee_df$total_cup_points)
+```
+
+The `dplyr` way to compute quantiles includes
+
+```{r}
+coffee_df |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+
+We can verify that about 50% of the data are below the median value
+
+```{r}
+mean(coffee_df$total_cup_points < 
+       median(coffee_df$total_cup_points))
+```
+
+
+We can verify that about 75% of the data are indeed below that value for the 0.75 quantile (i.e. 75th percentile.)
+
+```{r}
+mean(coffee_df$total_cup_points < 83.67)
+```
+
+The *interquartile range* is the 75th percentile minus the 25th percentile.
+
+```{r}
+summary(coffee_df$total_cup_points)
+```
+
+```{r}
+IQR(coffee_df$total_cup_points, na.rm = TRUE)
+```
+
+
+## Categorical Group
+
+The `dplyr` code is easily adaptable to grouped data.
+
+```{r}
+coffee_df |>
+  group_by(species) |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+
+
+## Histograms
+
+::::: {.panel-tabset}
+
+### plots
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+
+arabica <- coffee_df |>
+  filter(total_cup_points > 0) |>
+  filter(species == "Arabica")
+
+robusta <- coffee_df |>
+  filter(total_cup_points > 0) |>
+  filter(species == "Robusta")
+
+q25 <- quantile(arabica$total_cup_points, 0.25, na.rm = TRUE)
+q50 <- quantile(arabica$total_cup_points, 0.50, na.rm = TRUE)
+q75 <- quantile(arabica$total_cup_points, 0.75, na.rm = TRUE)
+IQR <- q75 - q25
+bottom <- q25 - 1.5*IQR
+top    <- q75 + 1.5*IQR
+
+# points of interest
+POI <- c(bottom, q25, q50, q75, top)
+
+p1 <- arabica |>
+  ggplot() +
+  geom_histogram(aes(x = total_cup_points),
+                 bins = 25,
+                 color = "black",
+                 fill = "gray80") +
+  geom_vline(xintercept = POI, color = "red",
+             linewidth = 2) +
+  labs(title = "Arabica Coffee",
+       subtitle = "Distribution of Total Cup Points",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal() +
+  xlim(55, 95)
+
+q25 <- quantile(robusta$total_cup_points, 0.25, na.rm = TRUE)
+q50 <- quantile(robusta$total_cup_points, 0.50, na.rm = TRUE)
+q75 <- quantile(robusta$total_cup_points, 0.75, na.rm = TRUE)
+IQR <- q75 - q25
+bottom <- q25 - 1.5*IQR
+top    <- q75 + 1.5*IQR
+
+# points of interest
+POI <- c(bottom, q25, q50, q75, top)
+
+p2 <- robusta |>
+  ggplot() +
+  geom_histogram(aes(x = total_cup_points),
+                 bins = 25,
+                 color = "black",
+                 fill = "gray80") +
+  geom_vline(xintercept = POI, color = "blue",
+             linewidth = 2) +
+  labs(title = "Robusta Coffee",
+       subtitle = "Distribution of Total Cup Points",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal() +
+  xlim(55, 95)
+
+p1 / p2 #patchwork
+```
+
+### code
+
+```{r}
+#| echo: true
+#| eval: false
+arabica <- coffee_df |>
+  filter(total_cup_points > 0) |>
+  filter(species == "Arabica")
+
+robusta <- coffee_df |>
+  filter(total_cup_points > 0) |>
+  filter(species == "Robusta")
+
+q25 <- quantile(arabica$total_cup_points, 0.25, na.rm = TRUE)
+q50 <- quantile(arabica$total_cup_points, 0.50, na.rm = TRUE)
+q75 <- quantile(arabica$total_cup_points, 0.75, na.rm = TRUE)
+IQR <- q75 - q25
+bottom <- q25 - 1.5*IQR
+top    <- q75 + 1.5*IQR
+
+# points of interest
+POI <- c(bottom, q25, q50, q75, top)
+
+p1 <- arabica |>
+  ggplot() +
+  geom_histogram(aes(x = total_cup_points),
+                 bins = 25,
+                 color = "black",
+                 fill = "gray80") +
+  geom_vline(xintercept = POI, color = "red",
+             linewidth = 2) +
+  labs(title = "Arabica Coffee",
+       subtitle = "Distribution of Total Cup Points",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal() +
+  xlim(55, 95)
+
+q25 <- quantile(robusta$total_cup_points, 0.25, na.rm = TRUE)
+q50 <- quantile(robusta$total_cup_points, 0.50, na.rm = TRUE)
+q75 <- quantile(robusta$total_cup_points, 0.75, na.rm = TRUE)
+IQR <- q75 - q25
+bottom <- q25 - 1.5*IQR
+top    <- q75 + 1.5*IQR
+
+# points of interest
+POI <- c(bottom, q25, q50, q75, top)
+
+p2 <- robusta |>
+  ggplot() +
+  geom_histogram(aes(x = total_cup_points),
+                 bins = 25,
+                 color = "black",
+                 fill = "gray80") +
+  geom_vline(xintercept = POI, color = "blue",
+             linewidth = 2) +
+  labs(title = "Robusta Coffee",
+       subtitle = "Distribution of Total Cup Points",
+       caption = "Source: Tidy Tuesday") +
+  theme_minimal() +
+  xlim(55, 95)
+
+#| echo: false
+#| eval: true
+
+p1 / p2 #patchwork
+```
+
+:::::
+
+
+
+
+# Boxplots
+
+::: {.callout-note}
+## Boxplots
+
+A *boxplot* is useful to graph a numerical variable (on the vertical axis) across a categorical variable (on the horizontal axis).
+:::
+
+
+```{r}
+coffee_df |>
+  filter(total_cup_points > 0) |> #avoid one outlier
+  ggplot() +
+  geom_boxplot(aes(x = species, y = total_cup_points, color = species)) +
+  labs(title = "Coffee Ratings",
+       subtitle = "Are these quantities different?",
+       caption = "Source: Coffee Quality Database",
+       x = "species", y = "total points") +
+  scale_color_manual(values = c("red","blue")) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## More than Two Groups
+
+:::: {.panel-tabset}
+
+### 1
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  group_by(processing_method) |>
+  summarize(min = min(total_cup_points, na.rm = TRUE),
+            q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+            q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+            q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+            max = max(total_cup_points, na.rm = TRUE))
+```
+
+### 2
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  group_by(processing_method) |>
+  mutate(min_val = min(total_cup_points, na.rm = TRUE),
+         q25 = quantile(total_cup_points, 0.25, na.rm = TRUE),
+         q50 = quantile(total_cup_points, 0.50, na.rm = TRUE),
+         q75 = quantile(total_cup_points, 0.75, na.rm = TRUE),
+         max_val = max(total_cup_points, na.rm = TRUE)) |>
+  ungroup() |>
+  select(processing_method, min_val, q25, q50, q75, max_val) |>
+  distinct()
+```
+
+### Boxplot
+
+```{r}
+coffee_df |>
+  filter(!is.na(processing_method)) |>
+  ggplot() +
+  geom_boxplot(aes(x = processing_method, y = total_cup_points,
+                   color = processing_method)) +
+  labs(title = "Coffee Ratings",
+       subtitle = "Are these quantities different?",
+       caption = "Source: Coffee Quality Database",
+       x = "", y = "total points") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45),
+        legend.position = "none")
+```
+
+::::
+
+::: {.callout-warning}
+# DCP 3
+:::
+
+# Case Study: Implicit Bias
+
+::::: {.panel-tabset}
+
+## setup
+
+A couple of weeks ago, we rated a group of visuals (graphs).
+
+### A/B Testing
+
+* L01 saw one set of graphs
+* L02 saw a slightly different set of graphs
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+implicit_df <- readr::read_csv("implicit_bias/implicit_bias_data.csv")
+```
+
+
+## 1
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/plot1A.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/plot1B.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph1)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 1",
+       subtitle = "Male vs Female Name",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 2
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/plot2A.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/plot2B.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph2)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 2",
+       subtitle = "Different Ethnicities",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 3
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/plot3A.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/plot3B.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph3)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 3",
+       subtitle = "Color Palettes",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 4
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/plot4A_3.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/plot4B_3.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph4)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 4",
+       subtitle = "Male vs Female Content",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 5
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/plot6A.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/plot6B.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph5)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 5",
+       subtitle = "Original versus Retweet",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 6
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/Rapp_A.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/Rapp_B.png)	
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph6)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 6",
+       subtitle = "Cluttered versus Small Multiples",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+## 7
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![L01](implicit_bias/grade_inflation_princeton.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![L02](implicit_bias/grade_inflation_harvard.png)		
+:::
+
+::::
+
+```{r}
+#| echo: false
+#| eval: true
+implicit_df |>
+  ggplot(aes(x = section, y = graph7)) +
+  geom_boxplot(aes(fill = section)) +
+  geom_signif(
+    comparisons = list(c("L01", "L02")),
+    map_signif_level = TRUE,
+    y_position = 8
+  ) +
+  labs(title = "Ratings for Graph 7",
+       subtitle = "Alligience",
+       caption = "SML 201\nSpring 2026",
+       y = "rating") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+:::::
+
+
+
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+* Assignments (due Friday):
+
+    * Precept 3
+    * Introducting Gradescope
+
+* Project 1:
+    
+    * due: Feb 24
+    
+* Exam 1: March 5
+
+    * McDonnell A02
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+![Piracy and Global Warming are strongly and negatively correlated](pirates_global_warming.png)
+
+* image source: [Dr Sandy Dersham](https://donhillson.wordpress.com/2011/04/01/link-found-between-piracy-and-global-warming/)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+
+## (optional) Additional Resources
+
+* [vignette](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) about `corrplot` by Taiyun Wei and Viliam Simko
+
+* [Simpsons Paradox song](https://www.youtube.com/watch?v=nGqzoqXZch0) by The Raf (to the tune of "Blinding Lights" by the Weeknd)
+
+* books about causation
+
+    * [The Effect](https://theeffectbook.net/index.html) by Nick Huntington-Klein
+    * [Causal Mixtape](https://mixtape.scunning.com/) by Scott Cunningham
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
