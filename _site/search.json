@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -3813,5 +3813,229 @@
     "title": "implicit wrangler",
     "section": "",
     "text": "library(\"tidyverse\")\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   4.0.0     ✔ tibble    3.3.0\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.1.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\n\nimplicit_raw &lt;- readr::read_csv(\"DCP0129 Survey Student Analysis Report.csv\")\n\nNew names:\nRows: 154 Columns: 33\n── Column specification\n──────────────────────────────────────────────────────── Delimiter: \",\" chr\n(7): name, section, section_id, section_sis_id, submitted, 165273: Prom... dbl\n(24): id, sis_id, attempt, 0.0...10, 0...12, 165274: Prompt 2-1, 1.0...1... lgl\n(2): 165489: Prompt 2 refers to the 7 graphs respectively at this set o...\nℹ Use `spec()` to retrieve the full column specification for this data. ℹ\nSpecify the column types or set `show_col_types = FALSE` to quiet this message.\n• `0.0` -&gt; `0.0...10`\n• `0` -&gt; `0...12`\n• `1.0` -&gt; `1.0...14`\n• `1.0` -&gt; `1.0...16`\n• `1.0` -&gt; `1.0...18`\n• `1.0` -&gt; `1.0...20`\n• `1.0` -&gt; `1.0...22`\n• `1.0` -&gt; `1.0...24`\n• `1.0` -&gt; `1.0...26`\n• `0.0` -&gt; `0.0...28`\n• `0` -&gt; `0...30`\n\n\n\nimplicit_df &lt;- implicit_raw |&gt;\n  select(seq(13, 25, 2)) |&gt;\n  set_names(paste0(\"graph\", 1:7)) |&gt;\n  mutate(id = 1:n()) |&gt;\n  mutate(section = ifelse(id &lt;= 73, \"L02\", \"L01\")) |&gt;\n  filter(id != 3)\n\n\nreadr::write_csv(implicit_df, \"implicit_bias_data.csv\")"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html",
+    "href": "posts/07_linear_regression/07_linear_regression.html",
+    "title": "7: Linear Regression",
+    "section": "",
+    "text": "library(\"gt\")        #great tables\nlibrary(\"HistData\")  #historical data sets\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nliquor_df &lt;- data.frame(\n  year = 2014:2023,\n  LLV = c(129, 54, 103, 50, 15, 10, 18, 49, 57, 262)\n)\nMM_df &lt;- data.frame(\n  S = c(0.08, 0.12, 0.54, 1.23, 1.82, 2.72, 4.94, 10.00),\n  v = c(0.15, 0.21, 0.7, 1.1, 1.3, 1.5, 1.7, 1.8)\n)"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#start",
+    "href": "posts/07_linear_regression/07_linear_regression.html#start",
+    "title": "7: Linear Regression",
+    "section": "Start",
+    "text": "Start\n\n\n\nGoal: Make predictions\nObjective: Perform linear regression and compute coefficients of determination\n\n\n\n\n\n\n\nlinear regression\n\n\n\nimage source: XKCD"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#linear-regression-in-r",
+    "href": "posts/07_linear_regression/07_linear_regression.html#linear-regression-in-r",
+    "title": "7: Linear Regression",
+    "section": "Linear Regression in R",
+    "text": "Linear Regression in R\n\nresponse variable (y): LLV\nexplanatory variable (x): year\n\n\nlin_fit &lt;- lm(LLV ~ year, data = liquor_df)\n\nIn a model equation, the tilde ~ is read as “explained by”. In this model, we can say that the response variable LLV is explained by the year."
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#prediction-in-r",
+    "href": "posts/07_linear_regression/07_linear_regression.html#prediction-in-r",
+    "title": "7: Linear Regression",
+    "section": "Prediction in R",
+    "text": "Prediction in R\nWe use the predict function where the input is a data frame. In this example, we are predicting the number of judicial referrals for liquor law violations in the year 2024.\n\nyhat &lt;- predict(lin_fit,\n                newdata = data.frame(year = 2024))"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#validation",
+    "href": "posts/07_linear_regression/07_linear_regression.html#validation",
+    "title": "7: Linear Regression",
+    "section": "Validation",
+    "text": "Validation\nIn this simple example, we know the true answer: there were 218 judicial referrals for liquor law violations in the year 2024\n\n# true value\ny &lt;- 218\n\n\n# prediction\nprint(yhat)\n\n\n\n102.9333\n\n\n\n# absolute error\nabs(y - yhat)\n\n\n\n115.0667\n\n\n\n# relative error\nabs(y - yhat) / y\n\n\n\n0.5278287\n\n\n\n\n\n\n\n\nWarningDCP1"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#scatterplot",
+    "href": "posts/07_linear_regression/07_linear_regression.html#scatterplot",
+    "title": "7: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\nIt is a good idea to look at the data (when practical).\n\nliquor_df |&gt;\n  ggplot() +\n  geom_point(aes(x = factor(year), y = LLV),\n             size = 4, color = \"black\") +\n  labs(title = \"Liquor Law Violations\",\n       subtitle = \"Princeton University, main campus\",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#smooth",
+    "href": "posts/07_linear_regression/07_linear_regression.html#smooth",
+    "title": "7: Linear Regression",
+    "section": "Smooth",
+    "text": "Smooth\nOn the visual size, linear regression summarizes a scatterplot.\n\nliquor_df |&gt;\n  ggplot(aes(x = factor(year), y = LLV)) +\n  geom_point(size = 4, color = \"black\") +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE,\n              color = \"blue\", linewidth = 2) +\n  labs(title = \"Liquor Law Violations\",\n       subtitle = \"Princeton University, main campus\",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#corollary-centroid",
+    "href": "posts/07_linear_regression/07_linear_regression.html#corollary-centroid",
+    "title": "7: Linear Regression",
+    "section": "Corollary: Centroid",
+    "text": "Corollary: Centroid\nClaim: a linear regression model goes through the centroid\n\\[(\\bar{x}, \\bar{y})\\]\n\nxbar &lt;- mean(liquor_df$year)\nybar &lt;- mean(liquor_df$LLV)\n\nliquor_df |&gt;\n  ggplot(aes(x = year, y = LLV)) +\n  geom_point(size = 4, color = \"black\") +\n  geom_vline(xintercept = xbar, color = \"green\") +\n  geom_hline(yintercept = ybar, color = \"green\") +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE,\n              color = \"blue\", linewidth = 2) +\n  labs(title = \"Linear Regression\",\n       subtitle = \"A linear regression model goes through the centroid \",\n       caption = \"SML 201\",\n       x = \"year\", y = \"judicial referrals\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#vector-space",
+    "href": "posts/07_linear_regression/07_linear_regression.html#vector-space",
+    "title": "7: Linear Regression",
+    "section": "Vector Space",
+    "text": "Vector Space\nHow was the line drawn?\n\n\n\nWhere to draw the line?"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#formulas",
+    "href": "posts/07_linear_regression/07_linear_regression.html#formulas",
+    "title": "7: Linear Regression",
+    "section": "Formulas",
+    "text": "Formulas\n\n\n\n\n\n\nNoteSimple linear regression\n\n\n\n\\[\\hat{y} = a + bx\\]\nFor simple linear regression (today’s materials, before more complicated models), the intercept and slope can be written in terms of previously studied sample statistics:\n\\[b = r \\cdot \\frac{s_{y}}{s_{x}}, \\quad a = \\bar{y} - b*\\bar{x}\\]\n\n\n\n\n\n\n\n\nTipConcept Map\n\n\n\nWith slope \\(b\\) defined as\n\\[b = r \\cdot \\frac{s_{y}}{s_{x}}\\]\nin simple linear regression, and recalling that\n\\[s_{x} &gt; 0 \\quad\\text{and}\\quad s_{y} &gt; 0\\]\nfor non-trivial examples (i.e. data is not constant), it follows that\n\nslope of regression line is positive iff correlation is positive\nslope of regression line is negative iff correlation is negative\n\n\n\n\n\n\n\n\n\nTipCorollary: Centroid\n\n\n\n\n\nClaim: a linear regression model goes through the centroid\n\\[(\\bar{x}, \\bar{y})\\]\nProof:\nThis proof is easy if we’re allowed to start with these formulas\n\\[y = a + bx, \\quad a = \\bar{y} - b*\\bar{x}\\]\nWe then verify that \\((x,y) = (\\bar{x}, \\bar{y})\\) is a valid location in this model.\n\\[\\begin{array}{rcl}\n  y & = & a + bx \\\\\n  \\bar{y} & = & a + b\\bar{x} \\\\\n  \\bar{y} & = & \\bar{y} - b*\\bar{x} + b\\bar{x} \\\\\n  \\bar{y} & = & \\bar{y}\n\\end{array}\\]"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#prediction",
+    "href": "posts/07_linear_regression/07_linear_regression.html#prediction",
+    "title": "7: Linear Regression",
+    "section": "Prediction",
+    "text": "Prediction\nPredict the number of judicial referrals for liquor law violations in the year 2024.\n\n\n\n\n\n\nTipWrite a math expression …\n\n\n\n\n\n-10286.933 + (5.133)x\n\n\n\n\n\n# mathematically\na &lt;- summary(lin_fit)$coefficients[1]\nb &lt;- summary(lin_fit)$coefficients[2]\n\na + b*(2024)\n\n\n\n102.9333\n\n\n\n# properly programmatically\npredict(lin_fit, newdata = data.frame(year = 2024))\n\n\n\n102.9333"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#inference",
+    "href": "posts/07_linear_regression/07_linear_regression.html#inference",
+    "title": "7: Linear Regression",
+    "section": "Inference",
+    "text": "Inference\nWhy is that denoted “\\(R^2\\)”? For linear regression, the coefficient of determination is literally the square of the correlation coefficient (\\(r\\))\n\ncorrelation \\(-1 \\leq r \\leq 1\\) implies coefficient of determination \\[0 \\leq R^{2} \\leq 1\\]\nwant more “explained variation”, thus higher \\(R^{2}\\) means a better model"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#guidelines",
+    "href": "posts/07_linear_regression/07_linear_regression.html#guidelines",
+    "title": "7: Linear Regression",
+    "section": "Guidelines",
+    "text": "Guidelines\n\n\nIn this course, we will simply follow the Pearson suggestions for interpreting coefficient of determination values:\n\n\\(0 \\leq R^{2} &lt; 0.4\\): poor model\n\\(0.4 \\leq R^{2} &lt; 0.7\\): good model\n\\(0.7 \\leq R^{2} \\leq 1.0\\): great model\n\n\n\n\n\n\n\nKarl Pearson"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#model-statistics",
+    "href": "posts/07_linear_regression/07_linear_regression.html#model-statistics",
+    "title": "7: Linear Regression",
+    "section": "Model Statistics",
+    "text": "Model Statistics\nIn R, we can use summary to access model statistics.\n\nsummary(lin_fit)\n\n\nCall:\nlm(formula = LLV ~ year, data = liquor_df)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-67.27 -52.48 -26.33  30.17 164.20 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept) -10286.933  17504.409  -0.588    0.573\nyear             5.133      8.672   0.592    0.570\n\nResidual standard error: 78.77 on 8 degrees of freedom\nMultiple R-squared:  0.04196,   Adjusted R-squared:  -0.07779 \nF-statistic: 0.3504 on 1 and 8 DF,  p-value: 0.5702"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#multiple-r-squared",
+    "href": "posts/07_linear_regression/07_linear_regression.html#multiple-r-squared",
+    "title": "7: Linear Regression",
+    "section": "Multiple R-Squared",
+    "text": "Multiple R-Squared\n\n\n\n\n\n\nNoteSum of Squares\n\n\n\nThe coefficient of determination can be a measure of how much better model2 is than model1 (later: model selection).\n\\[R^{2} = \\frac{\\text{SSR}(\\text{model1}) - \\text{SSR}(\\text{model2})}{\\text{SSR}(\\text{model1})}\\]\n\n\n\n\n\n\n\n\nTipBaseline\n\n\n\nIn this example (liquor law violations), we could treat \\(\\bar{y}\\), the average of the output data, as a baseline and see if the linear regression model leads to better predictions.\n\\[R^{2} = \\frac{\\text{SSR}(\\text{mean}) - \\text{SSR}(\\text{line})}{\\text{SSR}(\\text{mean})}\\]\n\n\n\nCalculationcode\n\n\n\\[\\begin{array}{rcccl}\n  \\text{SSR}(\\text{mean}) & = & \\sum_{i=0}^{n}\\left(y - \\bar{y}\\right)^{2} & \\approx & 51808 \\\\\n  \\text{SSR}(\\text{line}) & = & \\sum_{i=0}^{n}\\left(y - \\hat{y}\\right)^{2} & \\approx & 49634 \\\\\n  R^{2} & = & \\frac{\\text{SSR}(\\text{mean}) - \\text{SSR}(\\text{line})}{\\text{SSR}(\\text{mean})} & \\approx & 0.04196\n\\end{array}\\]\n\n\n\nyhat &lt;- mean(liquor_df$LLV, na.rm = TRUE)\ndeviations &lt;- liquor_df$LLV - yhat\n\nlin_fit &lt;- lm(LLV ~ year, data = liquor_df)\npredictions &lt;- predict(lin_fit,\n                      newdata = data.frame(year = liquor_df$year))\nresiduals &lt;- liquor_df$LLV - predictions\n\nSSR_mean &lt;- sum(deviations * deviations)\nSSR_line &lt;- sum(residuals * residuals)\n\nR_squared &lt;- (SSR_mean - SSR_line) / SSR_mean\ncat(round(R_squared, 5))\n\n0.04196\n\n\n\n\n\n\n\n\n\n\n\nWarningInterpreting Multiple R-Squared\n\n\n\nIn this example, with the small value\n\\[R^{2} \\approx 0.04196\\]\nthe linear regression model was barely better than simply reporting the average output value."
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#adjusted-r-squared",
+    "href": "posts/07_linear_regression/07_linear_regression.html#adjusted-r-squared",
+    "title": "7: Linear Regression",
+    "section": "Adjusted R-Squared",
+    "text": "Adjusted R-Squared\n\n\n\n\n\n\nNoteAdjusting for Degrees of Freedom\n\n\n\nHere in SML 201, we will use the “Adjusted R-squared” value that accounts for the number of predictor variables (later: degrees of freedom), and then look for the highest adjusted R-squared values.\n\n\n\nsummary(lin_fit)$adj.r.squared #negative result??\n\n[1] -0.07779285\n\n\n\n\n\n\n\n\nWarningInterpreting Adjusted R-Squared\n\n\n\nIn this example, with the negative value\n\\[R^{2} \\approx -0.07779\\]\nthe linear regression model was worse than simply reporting the average output value."
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#francis-galton",
+    "href": "posts/07_linear_regression/07_linear_regression.html#francis-galton",
+    "title": "7: Linear Regression",
+    "section": "Francis Galton",
+    "text": "Francis Galton\n\n\n\n\n\nSir Francis Galton\n\n\n\n\n\n\n1822 - 1911\ncousin of Charles Darwin\ncorrelation discovery\n\n1846: August Bravais\n1888: Francis Galton"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#do-tall-parents-have-tall-children",
+    "href": "posts/07_linear_regression/07_linear_regression.html#do-tall-parents-have-tall-children",
+    "title": "7: Linear Regression",
+    "section": "Do tall parents have tall children?",
+    "text": "Do tall parents have tall children?\nThe Galton data set in the HistData package has two variables\n\nparents’ height (see documentation for weighted formula)\nchild’s height\n\nfor about 200 families\n\nheredity_df &lt;- HistData::Galton"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#scatterplot-1",
+    "href": "posts/07_linear_regression/07_linear_regression.html#scatterplot-1",
+    "title": "7: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nlin_fit &lt;- lm(child ~ parent, data = heredity_df)\na &lt;- summary(lin_fit)$coefficients[1]\nb &lt;- summary(lin_fit)$coefficients[2]\n\nheredity_df |&gt;\n  ggplot(aes(x = parent, y = child)) +\n  geom_point() +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE) +\n  labs(title = \"Do tall parents have tall children?\",\n       subtitle = paste0(\"y = \", round(a, 4), \" + \", round(b, 4), \"x\"),\n       caption = \"Source: Galton Survey of Heights\",\n       x = \"parent's heights (weighted average)\",\n       y = \"child's height\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#linear-model",
+    "href": "posts/07_linear_regression/07_linear_regression.html#linear-model",
+    "title": "7: Linear Regression",
+    "section": "Linear Model",
+    "text": "Linear Model\n\nlin_fit &lt;- lm(child ~ parent, data = heredity_df)\n\nprint(lin_fit)\n\n\nCall:\nlm(formula = child ~ parent, data = heredity_df)\n\nCoefficients:\n(Intercept)       parent  \n    23.9415       0.6463  \n\n\nFor every one inch increase in parents’ height, the child’s height increases by about 0.65 inches."
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#determination-1",
+    "href": "posts/07_linear_regression/07_linear_regression.html#determination-1",
+    "title": "7: Linear Regression",
+    "section": "Determination",
+    "text": "Determination\n\nsummary(lin_fit)$adj.r.squared #still a bad model\n\n[1] 0.2096103"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#prediction-1",
+    "href": "posts/07_linear_regression/07_linear_regression.html#prediction-1",
+    "title": "7: Linear Regression",
+    "section": "Prediction",
+    "text": "Prediction\nIf the parents are 70 inches in height, what do we predict for the height of the child?\n\npredict(lin_fit, newdata = data.frame(parent = 70))\n\n       1 \n69.18187 \n\n\nIf the parents are 58 inches in height, what do we predict for the height of the child?\n\npredict(lin_fit, newdata = data.frame(parent = 58))\n\n       1 \n61.42638"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#legacy",
+    "href": "posts/07_linear_regression/07_linear_regression.html#legacy",
+    "title": "7: Linear Regression",
+    "section": "Legacy",
+    "text": "Legacy\n\n\n\n\n\n\nWarningRegression to the Mean\n\n\n\nIn these early studies of heredity, Galton coined the phrase\n\\[\\text{regression to the mean}\\]\nand similar calculations have been called regression ever since.\n\n\n\n\n\n\n\n\nWarningDCP3"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#michaelis-and-menton",
+    "href": "posts/07_linear_regression/07_linear_regression.html#michaelis-and-menton",
+    "title": "7: Linear Regression",
+    "section": "Michaelis and Menton",
+    "text": "Michaelis and Menton\n\n\n\n\n\nLeonor Michaelis and Maud Menton\n\n\n\n\n\nLeonor Michaelis\n\nBerlin University (1897)\n\nMaud Menton\n\nUniversity of Toronto (1911)\n\nDie Kinetik der Invertinwirkung (1913)\n\\[v = \\frac{V_{\\text{max}}[S]}{K_{m} + [S]}\\]\n\n\\(v\\): reaction rate (micromolars per minute)\n\\([S]\\): substrate concentration (micromolars)"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#enzyme-kinetics",
+    "href": "posts/07_linear_regression/07_linear_regression.html#enzyme-kinetics",
+    "title": "7: Linear Regression",
+    "section": "Enzyme Kinetics",
+    "text": "Enzyme Kinetics\n\n\n\n\n\nEssential Cell Biology\n\n\n\n\n\nThe reaction rates of the reaction S \\(\\rightarrow\\) P catalyzed by enzyme E were determined under conditions such that only very little product was formed. Compute the maximum reaction velocity asymptote \\(V_{\\text{max}}\\) and the Michaelis-Menton constant \\(K_{m}\\)\n\n\n\n\n\n\n\n\nMichaelis Menton Experiment\n\n\nreaction rate vs substrate concentration\n\n\nS\nv\n\n\n\n\n0.08\n0.15\n\n\n0.12\n0.21\n\n\n0.54\n0.70\n\n\n1.23\n1.10\n\n\n1.82\n1.30\n\n\n2.72\n1.50\n\n\n4.94\n1.70\n\n\n10.00\n1.80\n\n\n\nDie Kinetik der Invertinwirkung"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#scatterplot-2",
+    "href": "posts/07_linear_regression/07_linear_regression.html#scatterplot-2",
+    "title": "7: Linear Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nreaction rate (lower case v)\nsubstrate concentration (capital S)\n\n\nMM_df |&gt;\n  ggplot(aes(x = S, y = v)) +\n  geom_smooth(formula = \"y ~ x\", method = \"loess\", se = TRUE) +\n  geom_point(color = \"black\", size = 4) +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"reaction rate vs substrate concentration\",\n       caption = \"Essential Cell Biology\",\n       x = \"substrate concentration (micromolars)\",\n       y = \"reaction rate (micromolars per minute)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#transformation",
+    "href": "posts/07_linear_regression/07_linear_regression.html#transformation",
+    "title": "7: Linear Regression",
+    "section": "Transformation",
+    "text": "Transformation\nHans Lineweaver (George Washington Univ., 1934)\n\\[v = \\frac{V_{\\text{max}}[S]}{K_{m} + [S]} \\quad\\rightarrow\\quad \\frac{1}{v} = \\frac{K_{m}}{V_{\\text{max}}} \\cdot \\frac{1}{[S]} + \\frac{1}{V_{\\text{max}}}\\]\nThe reciprocal of the reaction rate is linear with respect to the reciprocal of the substrate concentration."
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#double-reciprocal-plot",
+    "href": "posts/07_linear_regression/07_linear_regression.html#double-reciprocal-plot",
+    "title": "7: Linear Regression",
+    "section": "Double-Reciprocal Plot",
+    "text": "Double-Reciprocal Plot\n\nMM_df &lt;- MM_df |&gt;\n  mutate(rS = 1/S,\n         rv = 1/v)\n\n\nMM_df |&gt;\n  ggplot(aes(x = rS, y = rv)) +\n  geom_smooth(formula = \"y ~ x\", method = \"lm\", se = FALSE) +\n  geom_point(color = \"black\", size = 4) +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"Double Reciprocal Plot\",\n       caption = \"Essential Cell Biology\",\n       x = \"1/[S] (1/micromoles)\",\n       y = \"1/v (minutes per micromolar)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#linear-model-1",
+    "href": "posts/07_linear_regression/07_linear_regression.html#linear-model-1",
+    "title": "7: Linear Regression",
+    "section": "Linear Model",
+    "text": "Linear Model\n\nlin_fit &lt;- lm(rv ~ rS, data = MM_df)"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#determination-2",
+    "href": "posts/07_linear_regression/07_linear_regression.html#determination-2",
+    "title": "7: Linear Regression",
+    "section": "Determination",
+    "text": "Determination\n\nsummary(lin_fit)$adj.r.squared #great model!\n\n[1] 0.9995051"
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#extracting-the-constants",
+    "href": "posts/07_linear_regression/07_linear_regression.html#extracting-the-constants",
+    "title": "7: Linear Regression",
+    "section": "Extracting the Constants",
+    "text": "Extracting the Constants\n\nslope &lt;- lin_fit$coefficients[2]\nintercept &lt;- lin_fit$coefficients[1]\n\nVmax &lt;- 1/intercept\nKm &lt;- slope * Vmax\n\nprint(paste(\"The Vmax asymptote is \", Vmax))\n\n[1] \"The Vmax asymptote is  1.9894653306508\"\n\nprint(paste(\"The Michaelis-Menton constant is \", Km))\n\n[1] \"The Michaelis-Menton constant is  0.991986524114476\""
+  },
+  {
+    "objectID": "posts/07_linear_regression/07_linear_regression.html#mm-experiment-revisited",
+    "href": "posts/07_linear_regression/07_linear_regression.html#mm-experiment-revisited",
+    "title": "7: Linear Regression",
+    "section": "MM Experiment Revisited",
+    "text": "MM Experiment Revisited\n\nMM_df |&gt;\n  ggplot(aes(x = S, y = v)) +\n  geom_smooth(formula = \"y ~ x\", method = \"loess\", se = TRUE) +\n  geom_point(color = \"black\", size = 4) +\n  geom_abline(slope = Km, intercept = 0, color = \"red\") +\n  geom_abline(slope = 0, intercept = Vmax, color = \"purple\") +\n  labs(title = \"Michaelis Menton Enzyme Kinetics Experiment\",\n       subtitle = \"maximum reaction velocity asymptote (purple)\\nMichaelis-Menton constant (red slope)\",\n       caption = \"Essential Cell Biology\",\n       x = \"substrate concentration (micromolars)\",\n       y = \"reaction rate (micromolars per minute)\") +\n  theme_minimal()"
   }
 ]

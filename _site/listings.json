@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/07_linear_regression/07_linear_regression.html",
       "/posts/06_correlation/06_correlation.html",
       "/posts/05_geospatial/05_geospatial.html",
       "/posts/04_categories/04_categories.html",
