@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/09_explain_cats/09_explain_cats.html",
       "/posts/08_multiple_linear/08_multiple_linear.html",
       "/posts/07_linear_regression/07_linear_regression.html",
       "/posts/06_correlation/06_correlation.html",

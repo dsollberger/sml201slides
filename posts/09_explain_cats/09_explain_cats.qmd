@@ -1,0 +1,680 @@
+---
+title: "9: Modeling Categorical Variables"
+author: "Derek Sollberger"
+date: "2026-02-24"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Utilize categorical variables in regression models
+
+* **Objective**: Explore one-hot encoding and start classification
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![multiple slopes!](multiple_slopes.png)
+:::
+
+::::
+
+::: {.callout-note collapse="true"}
+## code packages
+
+```{r}
+#| message: false
+#| warning: false
+library("janitor")   #tools for data cleaning
+library("tidyverse") #tools for data wrangling and visualization
+
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+```
+
+```{r}
+#| message: false
+#| warning: false
+loan_df <- readr::read_csv("loan_data_set.csv") |>
+  janitor::clean_names()
+```
+:::
+
+## Data
+
+::::: {.panel-tabset}
+
+## Description
+
+:::: {.columns}
+
+::: {.column width="60%"}
+"Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan."	
+
+* Source: [Kaggle](https://www.kaggle.com/datasets/burak3ergun/loan-data-set)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Dream Home Finance](Dream_Home_Finance.png)
+:::
+
+::::
+
+## Scenario
+
+"Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set."
+
+## Response Variable
+
+We will try to predict the loan amount (i.e. numerical variable)
+
+* Loan amount (in thousands of dollars)
+
+## Explanatory Variables
+
+* Gender (of primary applicant)
+* Marital status (of primary applicant)
+* Dependents 
+* Education
+* Self-employed
+* Applicant income (monthly, in dollars)
+* Co-applicant income (monthly, in dollars)
+* loan amount terms (in months)
+* Credit history
+* Property area
+
+:::::
+
+## Cleaning
+
+* remove rows that have missing values in the response variable (`loan_amount`)
+* convert `dependents` to a numerical variable
+
+    * here, replace "+" with nothing
+
+* combine "income" columns
+
+    * ensure all dollar amounts are in the same units (thousands of dollars)
+
+* convert `credit_history` to a factor variable (i.e. categorical)
+
+* retain relevant columns
+
+```{r}
+loan_df <- loan_df |>
+  filter(!is.na(loan_amount)) |>
+  mutate(dependents_num = as.numeric(
+    str_replace(dependents, "\\+", "")
+  )) |>
+  mutate(income = applicant_income/1000 + coapplicant_income/1000) |>
+  mutate(credit_history = factor(credit_history)) |>
+  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)
+```
+
+After cleaning the data, we should report the size of the resultant data frame
+
+```{r}
+nrow(loan_df) #number of observations
+ncol(loan_df) #number of variables
+```
+
+and the structure of the data frame.
+
+```{r}
+str(loan_df, give.attr = FALSE)
+```
+
+
+# Multiple Linear Regression
+
+## Scenario 1:
+
+* response variable: `loan_amount`
+* explanatory variables:
+
+    * `income`
+    * `dependents_num`
+
+## Build the Model
+    
+```{r}
+mod1 <- lm(loan_amount ~ income + dependents_num, data = loan_df)
+```
+
+## Interpretation
+
+Sometimes we interpret the slopes to see if the found coefficients make sense in context.
+
+```{r}
+mod1
+```
+
+> Holding dependents constant, for each $1000 increase in monthly income, the loan amount increases by about $8000
+
+> Holding income constant, for each additional dependent, the loan amount increases by about $7000
+
+::: {.callout-tip collapse="true"}
+## Intercept
+
+Can you interpret the intercept value too?  Does that make sense to you?
+:::
+
+
+## Determination
+
+```{r}
+summary(mod1)$adj.r.squared
+```
+
+> For this baseline model, the coefficient of determination states that we can explain about 40 percent of the variance in loan amount with these two numerical explanatory variables.
+
+
+# Categorical Input
+
+Let us expand the model to include `credit_history`.
+
+$$\text{Credit History} = \begin{cases} 1, & \text{passed credit check} \\
+0, & \text{did not pass credit check} \\ \end{cases}$$
+
+We are treating this variable as *categorical*.
+
+## Scatterplot
+
+```{r}
+loan_df |>
+  filter(!is.na(credit_history)) |>
+  ggplot(aes(x = income, y = loan_amount, color = credit_history)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Interaction Plot",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan amount (thousands)") +
+  theme_minimal()
+```
+
+## Model 2
+
+```{r}
+mod2_without_interaction <- lm(loan_amount ~ income + 
+                                 dependents_num +
+                                 credit_history,
+                               data = loan_df)
+```
+
+## Model Statistics
+
+```{r}
+summary(mod2_without_interaction)
+```
+
+## Interpretation
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+~ & \approx & 81.7427 + 6.4019X_{1} + 9.3093X_{2} + 1.9206X_{3}
+\end{array}$$
+
+where
+
+$$X_{1}: \text{income}, \quad X_{2}: \text{number of dependents}$$
+
+and
+
+$$X_{3} = \begin{cases} 1, & \text{passed credit check} \\
+0, & \text{did not pass credit check} \\ \end{cases}$$
+
+> Passing the credit check increases the home loan by about $2000 (??)
+
+::: {.callout-warning}
+## DCP1
+:::
+
+
+# Interaction Term
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+\end{array}$$
+
+```{r}
+mod2_with_interaction <- lm(loan_amount ~ income +
+                              dependents_num +
+                              income:credit_history,
+                            data = loan_df)
+```
+
+## Refined Interpretation
+
+```{r}
+summary(mod2_with_interaction)
+```
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+~ & = & 81.7427 + 6.4019X_{1} + 9.3093X_{2} + 1.9206X_{1}X_{3} \\
+\end{array}$$
+
+* For a family with $X_{2} = 0$ dependents and bad credit history ($X_{3} = 0$)
+
+$$Y = 81.7427 + 6.4019X_{1}$$
+
+> For each $1000 increase in monthly income, the loan amount increases by about $6400.
+
+* For a family with $X_{2} = 0$ dependents and good credit history ($X_{3} = 1$)
+
+$$Y = 81.7427 + 6.4019X_{1} + 1.9206X_{1}$$
+
+> For each $1000 increase in monthly income, the loan amount increases by about $8300.
+
+::: {.callout-warning}
+## DCP2
+:::
+
+
+## Determination
+
+```{r}
+summary(mod2_with_interaction)$adj.r.squared
+```
+
+> For this model with an interaction term and the two original explanatory variables, the coefficient of determination shows that we can explain about 40 percent of the variance in the loan amount.
+
+::: {.callout-note collapse="true"}
+## How Complex Should Models Be?
+
+Did you catch that?
+
+* `mod1` had a coefficient of determination of about 0.3955
+* `mod2_with_interaction` had a coefficient of determination of about 0.3957
+
+With hardly any gains in explaning variance, an analyst might opt to continue with the *simpler model* (here: `mod1`) moving forward in an analysis since it eases *interpretability*
+
+:::
+
+# Parallel Slopes
+
+## Scatterplot
+
+```{r}
+loan_df |>
+  filter(!is.na(credit_history)) |>
+  ggplot(aes(x = income, y = loan_amount, color = education)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Parallel Slopes?",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan amount (thousands)") +
+  scale_color_manual(values = c("gray", "darkgreen")) +
+  theme_minimal()
+```
+
+## Model 3
+
+```{r}
+mod3_without_interaction <- lm(loan_amount ~ income + 
+                                 dependents_num +
+                                 education,
+                               data = loan_df)
+```
+
+## Model Statistics
+
+```{r}
+summary(mod3_without_interaction)
+```
+
+## Interpretation
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+~ & \approx & 89.1379 + 7.8672X_{1} + 7.4332X_{2} - 17.4739X_{3}
+\end{array}$$
+
+where
+
+$$X_{1}: \text{income}, \quad X_{2}: \text{number of dependents}$$
+
+and
+
+$$X_{3} = \begin{cases} 1, & \text{did not graduate from college} \\
+0, & \text{graduated college} \\ \end{cases}$$
+
+> Those who did not graduate from college had a home loan value that was lower by about $17500.
+
+## Interaction Term
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+\end{array}$$
+
+```{r}
+mod3_with_interaction <- lm(loan_amount ~ income +
+                              dependents_num +
+                              income:education,
+                            data = loan_df)
+```
+
+## Refined Interpretation
+
+```{r}
+summary(mod3_with_interaction)
+```
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{1}X_{3} \\
+~ & = & 87.3028 + 7.9834X_{1} + 7.1590X_{2} - 2.3047X_{1}X_{3} \\
+\end{array}$$
+
+* For a family with $X_{2} = 2$ dependents and graduated from college ($X_{3} = 0$)
+
+$$Y = 87.3028 + 7.9834X_{1} + 14.3180$$
+
+> For each $1000 increase in monthly income, the loan amount increases by about $8000.
+
+* For a family with $X_{2} = 2$ dependents and did not graduate from college ($X_{3} = 1$)
+
+$$Y = 81.7427 + 7.9834X_{1} + 14.3180 - 2.3047X_{1}$$
+
+> For each $1000 increase in monthly income, the loan amount increases by about $5600.
+
+
+## Determination
+
+```{r}
+summary(mod3_with_interaction)$adj.r.squared
+```
+
+> For this model with an interaction term and the two original explanatory variables, the coefficient of determination shows that we can explain about 40 percent of the variance in the loan amount.
+
+::: {.callout-note collapse="true"}
+## Reordering Factors
+
+You may have noticed that `R` tends to output categorical variables in alphabetical order by default (e.g. the bars in a bar chart).  If you want to customize the order presented, you would need to employ a **factor** variable where you can explicitly set the **levels**.
+
+```{r}
+loan_df <- loan_df |>
+  mutate(education_fac = 
+           factor(education,
+                  levels = c("Not Graduate", "Graduate")))
+```
+
+Now, the software will treat "Not Graduate" as the baseline and "Graduate" as the augmentation.
+
+```{r}
+mod4 <- lm(loan_amount ~ income + dependents_num + 
+             education_fac,
+           data = loan_df)
+summary(mod4)
+```
+
+```{r}
+loan_df |>
+  filter(!is.na(education_fac)) |>
+  ggplot(aes(x = income, y = loan_amount, color = education_fac)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Parallel Slopes?",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan amount (thousands)") +
+  scale_color_manual(values = c("gray", "#E77500")) +
+  theme_minimal()
+```
+
+:::
+
+
+# Multiple Categories
+
+What if our categorical variable has *more than two* labels?  Here, let us explore the `property_area` categorical variable.
+
+```{r}
+table(loan_df$property_area)
+```
+
+```{r}
+loan_df |>
+  filter(!is.na(property_area)) |>
+  ggplot(aes(x = income, y = loan_amount, color = property_area)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Parallel Slopes?",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan amount (thousands)") +
+  theme_minimal()
+```
+
+
+## Label Encoding
+
+::: {.callout-warning}
+### Labeller in practice
+
+*Caution*: Label encoding is usually not recommended in general.  I include this section here for posterity.
+:::
+
+```{r}
+set.seed(1337)
+loan_df |>
+  mutate(property_type = case_when(
+    property_area == "Rural" ~ 0,
+    property_area == "Semiurban" ~ 1,
+    property_area == "Urban" ~ 2,
+    TRUE ~ -1
+  )) |>
+  select(property_area, property_type) |>
+  sample_n(size = 10, replace = FALSE)
+```
+
+::: {.callout-tip}
+## Numerical?
+
+Could we then use `property_type` in a regression model?
+:::
+
+::: {.callout-warning}
+## Ordinal
+
+*Caution*: Label encoding here implied ranking
+
+* *order*: "Rural", then "Semiurban", then "Urban"
+* *proportions*: Is "Urban" (with a coefficient of 2) twice as valuable as "Semiurban"?
+:::
+
+
+## One-Hot Encoding
+
+Similar to previous calculations, our `R` software employs **dummy variables** or **one-hot encoding** to represent categories as ones and zeroes.
+
+```{r}
+set.seed(1337)
+loan_df |>
+  mutate(rural_bool = ifelse(property_area == "Rural", 1, 0),
+         semiu_bool = ifelse(property_area == "Semiurban", 1, 0),
+         urban_bool = ifelse(property_area == "Urban", 1, 0)) |>
+  select(property_area, rural_bool, semiu_bool, urban_bool) |>
+  sample_n(size = 10, replace = FALSE)
+```
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{3} + \beta_{4}X_{4} \\
+\end{array}$$
+
+where
+
+$$X_{1}: \text{income}, \quad X_{2}: \text{number of dependents}$$
+
+and
+
+$$\begin{array}{rcl}
+  X_{3} & = & \begin{cases} 1, \text{semiurban area} \\ 0, \text{otherwise} \\ \end{cases} \\
+  X_{4} & = & \begin{cases} 1, \text{urban area} \\ 0, \text{otherwise} \\ \end{cases} \\
+\end{array}$$
+
+::: {.callout-warning}
+## DCP3
+:::
+
+
+## Model 5
+
+```{r}
+mod5 <- lm(loan_amount ~ income + 
+             dependents_num +
+             property_area,
+           data = loan_df)
+```
+
+## Model Statistics
+
+```{r}
+summary(mod5)
+```
+
+## Interpretation
+
+$$\begin{array}{rcl}
+Y & = & \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + \beta_{3}X_{3} + \beta_{4}X_{4} \\
+~ & = & 89.1639 + 8.0575X_{1} + 6.9669X_{2} - 3.3175X_{3} - 10.8084X_{4} \\
+\end{array}$$
+
+For a family with one dependent ($X_{2} = 1$) and a combined monthly income of \$5000 ($X_{1} = 5$),
+
+* if they are seeking a home in a *rural* area ($X_{3} = 0, X_{4} = 0$), the loan amount is predicted to be about 136 thousand
+* if they are seeking a home in a *semi-urban* area ($X_{3} = 1, X_{4} = 0$), the loan amount is predicted to be about 133 thousand (i.e. 3 thousand less than the baseline rural  scenario)
+* if they are seeking a home in an *urban* area ($X_{3} = 0, X_{4} = 1$), the loan amount is predicted to be about 126 thousand (i.e. 10 thousand less than the baseline rural scenario)
+
+
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* This week: 
+
+  * Precept 5
+  * Read Chapter 6
+
+* Exam 1: March 5
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+![Cloak of Wisdom](cloak_of_wisdom.png)
+
+* image source: [Up and Out Comics](https://www.juliakaye.com/chbeaqv6vde7qjpcppullvaooox6gj)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+```{r}
+loan_df |>
+  filter(!is.na(credit_history)) |>
+  filter(!is.na(dependents_num)) |>
+  ggplot(aes(x = dependents_num, y = loan_amount, color = credit_history, group = credit_history)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Parallel Slopes?",
+       caption = "SML 201",
+       x = "number of dependents",
+       y = "loan amount") +
+  theme_minimal()
+```
+
+```{r}
+loan_df |>
+  filter(!is.na(credit_history)) |>
+  filter(!is.na(gender)) |>
+  ggplot(aes(x = income, y = loan_amount, color = gender, group = gender)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Interaction Plot",
+       caption = "SML 201",
+       x = "income",
+       y = "loan amount") +
+  theme_minimal()
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::

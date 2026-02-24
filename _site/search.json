@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "9: Modeling Categorical Variables\n\n\n\n\n\n\n\n\nFeb 24, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -4156,5 +4156,187 @@
     "title": "8: Multiple Linear Regression",
     "section": "Milestone Home Run Totals",
     "text": "Milestone Home Run Totals\n\nRecordsCodeZ-ScoresSwitchWhat If\n\n\n\n\n\n\n\nRoger Maris\n\n\n\n\n\n\nRoger Maris hit 61 home runs in 1961\nAaron Judge hit 62 home runs in 2022\n\nAmerican League records\n\n\n\n\n\n\n\n\nAaron Judge\n\n\n\n\n\n\n\nLahman::Batting |&gt;\n  filter(yearID %in% c(\"1961\", \"2022\")) |&gt;\n  filter(AB &gt;= 100) |&gt;\n  group_by(yearID) |&gt;\n  summarize(xbar = mean(HR, na.rm = TRUE),\n            s = sd(HR, na.rm = TRUE))\n\n# A tibble: 2 × 3\n  yearID  xbar     s\n   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;\n1   1961  10.8 10.8 \n2   2022  10.6  8.91\n\n\n\n\n\\[z_{M} = \\frac{61 - \\bar{x}_{2022}}{s_{2022}} = \\frac{61 - 10.7615}{10.7928} \\approx 4.6548\\] Roger Maris’ home run record was about 4.6548 standard deviations above the mean in 1961.\n\\[z_{J} = \\frac{62 - \\bar{x}_{2022}}{s_{2022}} = \\frac{62 - 10.5729}{8.9065} \\approx 5.7741\\]\nAaron Judge’s home run record was about 5.7741 standard deviations above the mean in 2022.\n\n\n\\[4.6548 = \\frac{x_{M} - \\bar{x}_{2022}}{s_{2022}} = \\frac{x_{M} - 10.5729}{8.9065} \\Rightarrow x_{M} \\approx 52.0388\\]\n\\[5.7741 = \\frac{x_{J} - \\bar{x}_{1961}}{s_{1961}} = \\frac{x_{J} - 10.7615}{10.7928} \\Rightarrow x_{J} \\approx 73.0802\\]\n\n\n\n\n\n\n\nRoger Maris\n\n\n\n\n\n\nRoger Maris would have hit 52 home runs is 2022\nAaron Judge would have hit 73 home runs in 1961\n\n\n\n\n\n\n\nAaron Judge"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html",
+    "href": "posts/09_explain_cats/09_explain_cats.html",
+    "title": "9: Modeling Categorical Variables",
+    "section": "",
+    "text": "Goal: Utilize categorical variables in regression models\nObjective: Explore one-hot encoding and start classification\n\n\n\n\n\n\n\nmultiple slopes!\n\n\n\n\n\n\n\n\n\n\nNotecode packages\n\n\n\n\n\n\nlibrary(\"janitor\")   #tools for data cleaning\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n\nloan_df &lt;- readr::read_csv(\"loan_data_set.csv\") |&gt;\n  janitor::clean_names()\n\n\n\n\n\n\n\n\nDescriptionScenarioResponse VariableExplanatory Variables\n\n\n\n\n“Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan.”\n\nSource: Kaggle\n\n\n\n\n\n\n\nDream Home Finance\n\n\n\n\n\n\n“Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set.”\n\n\nWe will try to predict the loan amount (i.e. numerical variable)\n\nLoan amount (in thousands of dollars)\n\n\n\n\nGender (of primary applicant)\nMarital status (of primary applicant)\nDependents\nEducation\nSelf-employed\nApplicant income (monthly, in dollars)\nCo-applicant income (monthly, in dollars)\nloan amount terms (in months)\nCredit history\nProperty area\n\n\n\n\n\n\n\n\nremove rows that have missing values in the response variable (loan_amount)\nconvert dependents to a numerical variable\n\nhere, replace “+” with nothing\n\ncombine “income” columns\n\nensure all dollar amounts are in the same units (thousands of dollars)\n\nconvert credit_history to a factor variable (i.e. categorical)\nretain relevant columns\n\n\nloan_df &lt;- loan_df |&gt;\n  filter(!is.na(loan_amount)) |&gt;\n  mutate(dependents_num = as.numeric(\n    str_replace(dependents, \"\\\\+\", \"\")\n  )) |&gt;\n  mutate(income = applicant_income/1000 + coapplicant_income/1000) |&gt;\n  mutate(credit_history = factor(credit_history)) |&gt;\n  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)\n\nAfter cleaning the data, we should report the size of the resultant data frame\n\nnrow(loan_df) #number of observations\n\n[1] 592\n\nncol(loan_df) #number of variables\n\n[1] 10\n\n\nand the structure of the data frame.\n\nstr(loan_df, give.attr = FALSE)\n\ntibble [592 × 10] (S3: tbl_df/tbl/data.frame)\n $ loan_amount   : num [1:592] 128 66 120 141 267 95 158 168 349 70 ...\n $ income        : num [1:592] 6.09 3 4.94 6 9.61 ...\n $ dependents_num: num [1:592] 1 0 0 0 2 0 3 2 1 2 ...\n $ gender        : chr [1:592] \"Male\" \"Male\" \"Male\" \"Male\" ...\n $ married       : chr [1:592] \"Yes\" \"Yes\" \"Yes\" \"No\" ...\n $ education     : chr [1:592] \"Graduate\" \"Graduate\" \"Not Graduate\" \"Graduate\" ...\n $ self_employed : chr [1:592] \"No\" \"Yes\" \"No\" \"No\" ...\n $ credit_history: Factor w/ 2 levels \"0\",\"1\": 2 2 2 2 2 2 1 2 2 2 ...\n $ property_area : chr [1:592] \"Rural\" \"Urban\" \"Urban\" \"Urban\" ...\n $ loan_status   : chr [1:592] \"N\" \"Y\" \"Y\" \"Y\" ..."
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#start",
+    "href": "posts/09_explain_cats/09_explain_cats.html#start",
+    "title": "9: Modeling Categorical Variables",
+    "section": "",
+    "text": "Goal: Utilize categorical variables in regression models\nObjective: Explore one-hot encoding and start classification\n\n\n\n\n\n\n\nmultiple slopes!\n\n\n\n\n\n\n\n\n\n\nNotecode packages\n\n\n\n\n\n\nlibrary(\"janitor\")   #tools for data cleaning\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n\nloan_df &lt;- readr::read_csv(\"loan_data_set.csv\") |&gt;\n  janitor::clean_names()"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#data",
+    "href": "posts/09_explain_cats/09_explain_cats.html#data",
+    "title": "9: Modeling Categorical Variables",
+    "section": "",
+    "text": "DescriptionScenarioResponse VariableExplanatory Variables\n\n\n\n\n“Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan.”\n\nSource: Kaggle\n\n\n\n\n\n\n\nDream Home Finance\n\n\n\n\n\n\n“Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set.”\n\n\nWe will try to predict the loan amount (i.e. numerical variable)\n\nLoan amount (in thousands of dollars)\n\n\n\n\nGender (of primary applicant)\nMarital status (of primary applicant)\nDependents\nEducation\nSelf-employed\nApplicant income (monthly, in dollars)\nCo-applicant income (monthly, in dollars)\nloan amount terms (in months)\nCredit history\nProperty area"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#cleaning",
+    "href": "posts/09_explain_cats/09_explain_cats.html#cleaning",
+    "title": "9: Modeling Categorical Variables",
+    "section": "",
+    "text": "remove rows that have missing values in the response variable (loan_amount)\nconvert dependents to a numerical variable\n\nhere, replace “+” with nothing\n\ncombine “income” columns\n\nensure all dollar amounts are in the same units (thousands of dollars)\n\nconvert credit_history to a factor variable (i.e. categorical)\nretain relevant columns\n\n\nloan_df &lt;- loan_df |&gt;\n  filter(!is.na(loan_amount)) |&gt;\n  mutate(dependents_num = as.numeric(\n    str_replace(dependents, \"\\\\+\", \"\")\n  )) |&gt;\n  mutate(income = applicant_income/1000 + coapplicant_income/1000) |&gt;\n  mutate(credit_history = factor(credit_history)) |&gt;\n  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)\n\nAfter cleaning the data, we should report the size of the resultant data frame\n\nnrow(loan_df) #number of observations\n\n[1] 592\n\nncol(loan_df) #number of variables\n\n[1] 10\n\n\nand the structure of the data frame.\n\nstr(loan_df, give.attr = FALSE)\n\ntibble [592 × 10] (S3: tbl_df/tbl/data.frame)\n $ loan_amount   : num [1:592] 128 66 120 141 267 95 158 168 349 70 ...\n $ income        : num [1:592] 6.09 3 4.94 6 9.61 ...\n $ dependents_num: num [1:592] 1 0 0 0 2 0 3 2 1 2 ...\n $ gender        : chr [1:592] \"Male\" \"Male\" \"Male\" \"Male\" ...\n $ married       : chr [1:592] \"Yes\" \"Yes\" \"Yes\" \"No\" ...\n $ education     : chr [1:592] \"Graduate\" \"Graduate\" \"Not Graduate\" \"Graduate\" ...\n $ self_employed : chr [1:592] \"No\" \"Yes\" \"No\" \"No\" ...\n $ credit_history: Factor w/ 2 levels \"0\",\"1\": 2 2 2 2 2 2 1 2 2 2 ...\n $ property_area : chr [1:592] \"Rural\" \"Urban\" \"Urban\" \"Urban\" ...\n $ loan_status   : chr [1:592] \"N\" \"Y\" \"Y\" \"Y\" ..."
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#scenario-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#scenario-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Scenario 1:",
+    "text": "Scenario 1:\n\nresponse variable: loan_amount\nexplanatory variables:\n\nincome\ndependents_num"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#build-the-model",
+    "href": "posts/09_explain_cats/09_explain_cats.html#build-the-model",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Build the Model",
+    "text": "Build the Model\n\nmod1 &lt;- lm(loan_amount ~ income + dependents_num, data = loan_df)"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#interpretation",
+    "href": "posts/09_explain_cats/09_explain_cats.html#interpretation",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Interpretation",
+    "text": "Interpretation\nSometimes we interpret the slopes to see if the found coefficients make sense in context.\n\nmod1\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num, data = loan_df)\n\nCoefficients:\n   (Intercept)          income  dependents_num  \n        84.518           8.048           6.943  \n\n\n\nHolding dependents constant, for each $1000 increase in monthly income, the loan amount increases by about $8000\n\n\nHolding income constant, for each additional dependent, the loan amount increases by about $7000\n\n\n\n\n\n\n\nTipIntercept\n\n\n\n\n\nCan you interpret the intercept value too? Does that make sense to you?"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#determination",
+    "href": "posts/09_explain_cats/09_explain_cats.html#determination",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Determination",
+    "text": "Determination\n\nsummary(mod1)$adj.r.squared\n\n[1] 0.3955349\n\n\n\nFor this baseline model, the coefficient of determination states that we can explain about 40 percent of the variance in loan amount with these two numerical explanatory variables."
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#scatterplot",
+    "href": "posts/09_explain_cats/09_explain_cats.html#scatterplot",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nloan_df |&gt;\n  filter(!is.na(credit_history)) |&gt;\n  ggplot(aes(x = income, y = loan_amount, color = credit_history)) +\n  geom_point() +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = FALSE) +\n  labs(title = \"Dream Home Finance\",\n       subtitle = \"Interaction Plot\",\n       caption = \"SML 201\",\n       x = \"combined monthly income (thousands)\",\n       y = \"loan amount (thousands)\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-2",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-2",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model 2",
+    "text": "Model 2\n\nmod2_without_interaction &lt;- lm(loan_amount ~ income + \n                                 dependents_num +\n                                 credit_history,\n                               data = loan_df)"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-statistics",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-statistics",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model Statistics",
+    "text": "Model Statistics\n\nsummary(mod2_without_interaction)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + credit_history, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-372.17  -28.38   -5.71   21.62  356.55 \n\nCoefficients:\n                Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)      82.5113     8.2910   9.952  &lt; 2e-16 ***\nincome            7.6934     0.4386  17.539  &lt; 2e-16 ***\ndependents_num    8.8323     2.8231   3.129  0.00185 ** \ncredit_history1   2.2122     7.9957   0.277  0.78214    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 65.84 on 526 degrees of freedom\n  (62 observations deleted due to missingness)\nMultiple R-squared:  0.3908,    Adjusted R-squared:  0.3873 \nF-statistic: 112.5 on 3 and 526 DF,  p-value: &lt; 2.2e-16"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#interpretation-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#interpretation-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Interpretation",
+    "text": "Interpretation\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{1}X_{3} \\\\\n~ & \\approx & 81.7427 + 6.4019X_{1} + 9.3093X_{2} + 1.9206X_{3}\n\\end{array}\\]\nwhere\n\\[X_{1}: \\text{income}, \\quad X_{2}: \\text{number of dependents}\\]\nand\n\\[X_{3} = \\begin{cases} 1, & \\text{passed credit check} \\\\\n0, & \\text{did not pass credit check} \\\\ \\end{cases}\\]\n\nPassing the credit check increases the home loan by about $2000 (??)\n\n\n\n\n\n\n\nWarningDCP1"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#refined-interpretation",
+    "href": "posts/09_explain_cats/09_explain_cats.html#refined-interpretation",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Refined Interpretation",
+    "text": "Refined Interpretation\n\nsummary(mod2_with_interaction)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + income:credit_history, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-327.08  -28.02   -4.70   21.74  346.79 \n\nCoefficients:\n                       Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)             81.7427     4.6271  17.666  &lt; 2e-16 ***\nincome                   6.4019     0.6430   9.957  &lt; 2e-16 ***\ndependents_num           9.3093     2.8080   3.315 0.000979 ***\nincome:credit_history1   1.9206     0.7048   2.725 0.006646 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 65.38 on 526 degrees of freedom\n  (62 observations deleted due to missingness)\nMultiple R-squared:  0.3992,    Adjusted R-squared:  0.3957 \nF-statistic: 116.5 on 3 and 526 DF,  p-value: &lt; 2.2e-16\n\n\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{1}X_{3} \\\\\n~ & = & 81.7427 + 6.4019X_{1} + 9.3093X_{2} + 1.9206X_{1}X_{3} \\\\\n\\end{array}\\]\n\nFor a family with \\(X_{2} = 0\\) dependents and bad credit history (\\(X_{3} = 0\\))\n\n\\[Y = 81.7427 + 6.4019X_{1}\\]\n\nFor each $1000 increase in monthly income, the loan amount increases by about $6400.\n\n\nFor a family with \\(X_{2} = 0\\) dependents and good credit history (\\(X_{3} = 1\\))\n\n\\[Y = 81.7427 + 6.4019X_{1} + 1.9206X_{1}\\]\n\nFor each $1000 increase in monthly income, the loan amount increases by about $8300.\n\n\n\n\n\n\n\nWarningDCP2"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#determination-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#determination-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Determination",
+    "text": "Determination\n\nsummary(mod2_with_interaction)$adj.r.squared\n\n[1] 0.3957492\n\n\n\nFor this model with an interaction term and the two original explanatory variables, the coefficient of determination shows that we can explain about 40 percent of the variance in the loan amount.\n\n\n\n\n\n\n\nNoteHow Complex Should Models Be?\n\n\n\n\n\nDid you catch that?\n\nmod1 had a coefficient of determination of about 0.3955\nmod2_with_interaction had a coefficient of determination of about 0.3957\n\nWith hardly any gains in explaning variance, an analyst might opt to continue with the simpler model (here: mod1) moving forward in an analysis since it eases interpretability"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#scatterplot-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#scatterplot-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nloan_df |&gt;\n  filter(!is.na(credit_history)) |&gt;\n  ggplot(aes(x = income, y = loan_amount, color = education)) +\n  geom_point(alpha = 0.5) +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = FALSE) +\n  labs(title = \"Dream Home Finance\",\n       subtitle = \"Parallel Slopes?\",\n       caption = \"SML 201\",\n       x = \"combined monthly income (thousands)\",\n       y = \"loan amount (thousands)\") +\n  scale_color_manual(values = c(\"gray\", \"darkgreen\")) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-3",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-3",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model 3",
+    "text": "Model 3\n\nmod3_without_interaction &lt;- lm(loan_amount ~ income + \n                                 dependents_num +\n                                 education,\n                               data = loan_df)"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-statistics-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-statistics-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model Statistics",
+    "text": "Model Statistics\n\nsummary(mod3_without_interaction)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + education, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-388.68  -28.33   -6.10   20.14  402.21 \n\nCoefficients:\n                      Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)            89.1379     4.7793  18.651  &lt; 2e-16 ***\nincome                  7.8672     0.4314  18.238  &lt; 2e-16 ***\ndependents_num          7.4332     2.7706   2.683  0.00751 ** \neducationNot Graduate -17.4739     6.8909  -2.536  0.01148 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 66.82 on 575 degrees of freedom\n  (13 observations deleted due to missingness)\nMultiple R-squared:  0.4043,    Adjusted R-squared:  0.4012 \nF-statistic: 130.1 on 3 and 575 DF,  p-value: &lt; 2.2e-16"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#interpretation-2",
+    "href": "posts/09_explain_cats/09_explain_cats.html#interpretation-2",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Interpretation",
+    "text": "Interpretation\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{1}X_{3} \\\\\n~ & \\approx & 89.1379 + 7.8672X_{1} + 7.4332X_{2} - 17.4739X_{3}\n\\end{array}\\]\nwhere\n\\[X_{1}: \\text{income}, \\quad X_{2}: \\text{number of dependents}\\]\nand\n\\[X_{3} = \\begin{cases} 1, & \\text{did not graduate from college} \\\\\n0, & \\text{graduated college} \\\\ \\end{cases}\\]\n\nThose who did not graduate from college had a home loan value that was lower by about $17500."
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#interaction-term-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#interaction-term-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Interaction Term",
+    "text": "Interaction Term\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{1}X_{3} \\\\\n\\end{array}\\]\n\nmod3_with_interaction &lt;- lm(loan_amount ~ income +\n                              dependents_num +\n                              income:education,\n                            data = loan_df)"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#refined-interpretation-1",
+    "href": "posts/09_explain_cats/09_explain_cats.html#refined-interpretation-1",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Refined Interpretation",
+    "text": "Refined Interpretation\n\nsummary(mod3_with_interaction)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + income:education, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-395.44  -28.18   -6.58   21.03  401.70 \n\nCoefficients:\n                             Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                   87.3028     4.6628  18.723   &lt;2e-16 ***\nincome                         7.9834     0.4278  18.662   &lt;2e-16 ***\ndependents_num                 7.1590     2.7728   2.582   0.0101 *  \nincome:educationNot Graduate  -2.3047     1.2066  -1.910   0.0566 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 66.98 on 575 degrees of freedom\n  (13 observations deleted due to missingness)\nMultiple R-squared:  0.4014,    Adjusted R-squared:  0.3983 \nF-statistic: 128.5 on 3 and 575 DF,  p-value: &lt; 2.2e-16\n\n\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{1}X_{3} \\\\\n~ & = & 87.3028 + 7.9834X_{1} + 7.1590X_{2} - 2.3047X_{1}X_{3} \\\\\n\\end{array}\\]\n\nFor a family with \\(X_{2} = 2\\) dependents and graduated from college (\\(X_{3} = 0\\))\n\n\\[Y = 87.3028 + 7.9834X_{1} + 14.3180\\]\n\nFor each $1000 increase in monthly income, the loan amount increases by about $8000.\n\n\nFor a family with \\(X_{2} = 2\\) dependents and did not graduate from college (\\(X_{3} = 1\\))\n\n\\[Y = 81.7427 + 7.9834X_{1} + 14.3180 - 2.3047X_{1}\\]\n\nFor each $1000 increase in monthly income, the loan amount increases by about $5600."
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#determination-2",
+    "href": "posts/09_explain_cats/09_explain_cats.html#determination-2",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Determination",
+    "text": "Determination\n\nsummary(mod3_with_interaction)$adj.r.squared\n\n[1] 0.3983014\n\n\n\nFor this model with an interaction term and the two original explanatory variables, the coefficient of determination shows that we can explain about 40 percent of the variance in the loan amount.\n\n\n\n\n\n\n\nNoteReordering Factors\n\n\n\n\n\nYou may have noticed that R tends to output categorical variables in alphabetical order by default (e.g. the bars in a bar chart). If you want to customize the order presented, you would need to employ a factor variable where you can explicitly set the levels.\n\nloan_df &lt;- loan_df |&gt;\n  mutate(education_fac = \n           factor(education,\n                  levels = c(\"Not Graduate\", \"Graduate\")))\n\nNow, the software will treat “Not Graduate” as the baseline and “Graduate” as the augmentation.\n\nmod4 &lt;- lm(loan_amount ~ income + dependents_num + \n             education_fac,\n           data = loan_df)\nsummary(mod4)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + education_fac, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-388.68  -28.33   -6.10   20.14  402.21 \n\nCoefficients:\n                      Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)            71.6640     6.7245  10.657  &lt; 2e-16 ***\nincome                  7.8672     0.4314  18.238  &lt; 2e-16 ***\ndependents_num          7.4332     2.7706   2.683  0.00751 ** \neducation_facGraduate  17.4739     6.8909   2.536  0.01148 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 66.82 on 575 degrees of freedom\n  (13 observations deleted due to missingness)\nMultiple R-squared:  0.4043,    Adjusted R-squared:  0.4012 \nF-statistic: 130.1 on 3 and 575 DF,  p-value: &lt; 2.2e-16\n\n\n\nloan_df |&gt;\n  filter(!is.na(education_fac)) |&gt;\n  ggplot(aes(x = income, y = loan_amount, color = education_fac)) +\n  geom_point(alpha = 0.5) +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = FALSE) +\n  labs(title = \"Dream Home Finance\",\n       subtitle = \"Parallel Slopes?\",\n       caption = \"SML 201\",\n       x = \"combined monthly income (thousands)\",\n       y = \"loan amount (thousands)\") +\n  scale_color_manual(values = c(\"gray\", \"#E77500\")) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#label-encoding",
+    "href": "posts/09_explain_cats/09_explain_cats.html#label-encoding",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Label Encoding",
+    "text": "Label Encoding\n\n\n\n\n\n\nWarningLabeller in practice\n\n\n\nCaution: Label encoding is usually not recommended in general. I include this section here for posterity.\n\n\n\nset.seed(1337)\nloan_df |&gt;\n  mutate(property_type = case_when(\n    property_area == \"Rural\" ~ 0,\n    property_area == \"Semiurban\" ~ 1,\n    property_area == \"Urban\" ~ 2,\n    TRUE ~ -1\n  )) |&gt;\n  select(property_area, property_type) |&gt;\n  sample_n(size = 10, replace = FALSE)\n\n# A tibble: 10 × 2\n   property_area property_type\n   &lt;chr&gt;                 &lt;dbl&gt;\n 1 Semiurban                 1\n 2 Semiurban                 1\n 3 Semiurban                 1\n 4 Rural                     0\n 5 Rural                     0\n 6 Semiurban                 1\n 7 Semiurban                 1\n 8 Semiurban                 1\n 9 Urban                     2\n10 Semiurban                 1\n\n\n\n\n\n\n\n\nTipNumerical?\n\n\n\nCould we then use property_type in a regression model?\n\n\n\n\n\n\n\n\nWarningOrdinal\n\n\n\nCaution: Label encoding here implied ranking\n\norder: “Rural”, then “Semiurban”, then “Urban”\nproportions: Is “Urban” (with a coefficient of 2) twice as valuable as “Semiurban”?"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#one-hot-encoding",
+    "href": "posts/09_explain_cats/09_explain_cats.html#one-hot-encoding",
+    "title": "9: Modeling Categorical Variables",
+    "section": "One-Hot Encoding",
+    "text": "One-Hot Encoding\nSimilar to previous calculations, our R software employs dummy variables or one-hot encoding to represent categories as ones and zeroes.\n\nset.seed(1337)\nloan_df |&gt;\n  mutate(rural_bool = ifelse(property_area == \"Rural\", 1, 0),\n         semiu_bool = ifelse(property_area == \"Semiurban\", 1, 0),\n         urban_bool = ifelse(property_area == \"Urban\", 1, 0)) |&gt;\n  select(property_area, rural_bool, semiu_bool, urban_bool) |&gt;\n  sample_n(size = 10, replace = FALSE)\n\n# A tibble: 10 × 4\n   property_area rural_bool semiu_bool urban_bool\n   &lt;chr&gt;              &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;\n 1 Semiurban              0          1          0\n 2 Semiurban              0          1          0\n 3 Semiurban              0          1          0\n 4 Rural                  1          0          0\n 5 Rural                  1          0          0\n 6 Semiurban              0          1          0\n 7 Semiurban              0          1          0\n 8 Semiurban              0          1          0\n 9 Urban                  0          0          1\n10 Semiurban              0          1          0\n\n\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{3} + \\beta_{4}X_{4} \\\\\n\\end{array}\\]\nwhere\n\\[X_{1}: \\text{income}, \\quad X_{2}: \\text{number of dependents}\\]\nand\n\\[\\begin{array}{rcl}\n  X_{3} & = & \\begin{cases} 1, \\text{semiurban area} \\\\ 0, \\text{otherwise} \\\\ \\end{cases} \\\\\n  X_{4} & = & \\begin{cases} 1, \\text{urban area} \\\\ 0, \\text{otherwise} \\\\ \\end{cases} \\\\\n\\end{array}\\]\n\n\n\n\n\n\nWarningDCP3"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-5",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-5",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model 5",
+    "text": "Model 5\n\nmod5 &lt;- lm(loan_amount ~ income + \n             dependents_num +\n             property_area,\n           data = loan_df)"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#model-statistics-2",
+    "href": "posts/09_explain_cats/09_explain_cats.html#model-statistics-2",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Model Statistics",
+    "text": "Model Statistics\n\nsummary(mod5)\n\n\nCall:\nlm(formula = loan_amount ~ income + dependents_num + property_area, \n    data = loan_df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-402.72  -28.36   -7.05   19.80  409.16 \n\nCoefficients:\n                       Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)             89.1639     6.1868  14.412   &lt;2e-16 ***\nincome                   8.0575     0.4275  18.849   &lt;2e-16 ***\ndependents_num           6.9669     2.7760   2.510   0.0124 *  \nproperty_areaSemiurban  -3.3175     6.8229  -0.486   0.6270    \nproperty_areaUrban     -10.8084     7.1188  -1.518   0.1295    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 67.1 on 574 degrees of freedom\n  (13 observations deleted due to missingness)\nMultiple R-squared:  0.4002,    Adjusted R-squared:  0.396 \nF-statistic: 95.75 on 4 and 574 DF,  p-value: &lt; 2.2e-16"
+  },
+  {
+    "objectID": "posts/09_explain_cats/09_explain_cats.html#interpretation-3",
+    "href": "posts/09_explain_cats/09_explain_cats.html#interpretation-3",
+    "title": "9: Modeling Categorical Variables",
+    "section": "Interpretation",
+    "text": "Interpretation\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{3} + \\beta_{4}X_{4} \\\\\n~ & = & 89.1639 + 8.0575X_{1} + 6.9669X_{2} - 3.3175X_{3} - 10.8084X_{4} \\\\\n\\end{array}\\]\nFor a family with one dependent (\\(X_{2} = 1\\)) and a combined monthly income of $5000 (\\(X_{1} = 5\\)),\n\nif they are seeking a home in a rural area (\\(X_{3} = 0, X_{4} = 0\\)), the loan amount is predicted to be about 136 thousand\nif they are seeking a home in a semi-urban area (\\(X_{3} = 1, X_{4} = 0\\)), the loan amount is predicted to be about 133 thousand (i.e. 3 thousand less than the baseline rural scenario)\nif they are seeking a home in an urban area (\\(X_{3} = 0, X_{4} = 1\\)), the loan amount is predicted to be about 126 thousand (i.e. 10 thousand less than the baseline rural scenario)"
   }
 ]
