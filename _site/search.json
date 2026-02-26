@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "9: Modeling Categorical Variables\n\n\n\n\n\n\n\n\nFeb 24, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "10: Logistic Regression\n\n\n\n\n\n\n\n\nFeb 26, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Modeling Categorical Variables\n\n\n\n\n\n\n\n\nFeb 24, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -4338,5 +4338,145 @@
     "title": "9: Modeling Categorical Variables",
     "section": "Interpretation",
     "text": "Interpretation\n\\[\\begin{array}{rcl}\nY & = & \\beta_{0} + \\beta_{1}X_{1} + \\beta_{2}X_{2} + \\beta_{3}X_{3} + \\beta_{4}X_{4} \\\\\n~ & = & 89.1639 + 8.0575X_{1} + 6.9669X_{2} - 3.3175X_{3} - 10.8084X_{4} \\\\\n\\end{array}\\]\nFor a family with one dependent (\\(X_{2} = 1\\)) and a combined monthly income of $5000 (\\(X_{1} = 5\\)),\n\nif they are seeking a home in a rural area (\\(X_{3} = 0, X_{4} = 0\\)), the loan amount is predicted to be about 136 thousand\nif they are seeking a home in a semi-urban area (\\(X_{3} = 1, X_{4} = 0\\)), the loan amount is predicted to be about 133 thousand (i.e. 3 thousand less than the baseline rural scenario)\nif they are seeking a home in an urban area (\\(X_{3} = 0, X_{4} = 1\\)), the loan amount is predicted to be about 126 thousand (i.e. 10 thousand less than the baseline rural scenario)"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html",
+    "title": "10: Logistic Regression",
+    "section": "",
+    "text": "Goal: Classify Binary Responses\nObjectives:\n\ndefine classification\ncarry out logistic regression\n\n\n\n\n\n\n\n\npoint of inflection\n\n\n\n\n\n\n\n\n\n\nNotecode packages\n\n\n\n\n\n\nlibrary(\"janitor\")   #tools for data cleaning\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n\nloan_df &lt;- readr::read_csv(\"loan_data_set.csv\") |&gt;\n  janitor::clean_names()\n\n\n\n\n\n\n\n\nDescriptionScenarioResponse VariableExplanatory Variables\n\n\n\n\n“Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan.”\n\nSource: Kaggle\n\n\n\n\n\n\n\nDream Home Finance\n\n\n\n\n\n\n“Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set.”\n\n\nWe will try to predict the loan status (i.e. categorical variable)\n\nLoan status: Yes (Y) or No (N)\n\n\n\n\nGender (of primary applicant)\nMarital status (of primary applicant)\nDependents\nEducation\nSelf-employed\nApplicant income (monthly, in dollars)\nCo-applicant income (monthly, in dollars)\nloan amount terms (in months)\nCredit history\nProperty area\n\n\n\n\n\n\n\n\nremove rows that have missing values in the response variable (loan_amount)\nconvert dependents to a numerical variable\n\nhere, replace “+” with nothing\n\ncombine “income” columns\n\nensure all dollar amounts are in the same units (thousands of dollars)\n\nconvert credit_history to a factor variable (i.e. categorical)\nretain relevant columns\n\n\nloan_df &lt;- loan_df |&gt;\n  filter(!is.na(loan_amount)) |&gt;\n  mutate(dependents_num = as.numeric(\n    str_replace(dependents, \"\\\\+\", \"\")\n  )) |&gt;\n  mutate(income = applicant_income/1000 + coapplicant_income/1000) |&gt;\n  mutate(credit_history = factor(credit_history)) |&gt;\n  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)\n\nAfter cleaning the data, we should report the size of the resultant data frame\n\nnrow(loan_df) #number of observations\n\n[1] 592\n\nncol(loan_df) #number of variables\n\n[1] 10\n\n\nand the structure of the data frame.\n\nstr(loan_df, give.attr = FALSE)\n\ntibble [592 × 10] (S3: tbl_df/tbl/data.frame)\n $ loan_amount   : num [1:592] 128 66 120 141 267 95 158 168 349 70 ...\n $ income        : num [1:592] 6.09 3 4.94 6 9.61 ...\n $ dependents_num: num [1:592] 1 0 0 0 2 0 3 2 1 2 ...\n $ gender        : chr [1:592] \"Male\" \"Male\" \"Male\" \"Male\" ...\n $ married       : chr [1:592] \"Yes\" \"Yes\" \"Yes\" \"No\" ...\n $ education     : chr [1:592] \"Graduate\" \"Graduate\" \"Not Graduate\" \"Graduate\" ...\n $ self_employed : chr [1:592] \"No\" \"Yes\" \"No\" \"No\" ...\n $ credit_history: Factor w/ 2 levels \"0\",\"1\": 2 2 2 2 2 2 1 2 2 2 ...\n $ property_area : chr [1:592] \"Rural\" \"Urban\" \"Urban\" \"Urban\" ...\n $ loan_status   : chr [1:592] \"N\" \"Y\" \"Y\" \"Y\" ..."
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#start",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#start",
+    "title": "10: Logistic Regression",
+    "section": "",
+    "text": "Goal: Classify Binary Responses\nObjectives:\n\ndefine classification\ncarry out logistic regression\n\n\n\n\n\n\n\n\npoint of inflection\n\n\n\n\n\n\n\n\n\n\nNotecode packages\n\n\n\n\n\n\nlibrary(\"janitor\")   #tools for data cleaning\nlibrary(\"tidyverse\") #tools for data wrangling and visualization\n\nprinceton_orange &lt;- \"#E77500\"\nprinceton_black  &lt;- \"#121212\"\n\n\nloan_df &lt;- readr::read_csv(\"loan_data_set.csv\") |&gt;\n  janitor::clean_names()"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#data",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#data",
+    "title": "10: Logistic Regression",
+    "section": "",
+    "text": "DescriptionScenarioResponse VariableExplanatory Variables\n\n\n\n\n“Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan.”\n\nSource: Kaggle\n\n\n\n\n\n\n\nDream Home Finance\n\n\n\n\n\n\n“Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set.”\n\n\nWe will try to predict the loan status (i.e. categorical variable)\n\nLoan status: Yes (Y) or No (N)\n\n\n\n\nGender (of primary applicant)\nMarital status (of primary applicant)\nDependents\nEducation\nSelf-employed\nApplicant income (monthly, in dollars)\nCo-applicant income (monthly, in dollars)\nloan amount terms (in months)\nCredit history\nProperty area"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#cleaning",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#cleaning",
+    "title": "10: Logistic Regression",
+    "section": "",
+    "text": "remove rows that have missing values in the response variable (loan_amount)\nconvert dependents to a numerical variable\n\nhere, replace “+” with nothing\n\ncombine “income” columns\n\nensure all dollar amounts are in the same units (thousands of dollars)\n\nconvert credit_history to a factor variable (i.e. categorical)\nretain relevant columns\n\n\nloan_df &lt;- loan_df |&gt;\n  filter(!is.na(loan_amount)) |&gt;\n  mutate(dependents_num = as.numeric(\n    str_replace(dependents, \"\\\\+\", \"\")\n  )) |&gt;\n  mutate(income = applicant_income/1000 + coapplicant_income/1000) |&gt;\n  mutate(credit_history = factor(credit_history)) |&gt;\n  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)\n\nAfter cleaning the data, we should report the size of the resultant data frame\n\nnrow(loan_df) #number of observations\n\n[1] 592\n\nncol(loan_df) #number of variables\n\n[1] 10\n\n\nand the structure of the data frame.\n\nstr(loan_df, give.attr = FALSE)\n\ntibble [592 × 10] (S3: tbl_df/tbl/data.frame)\n $ loan_amount   : num [1:592] 128 66 120 141 267 95 158 168 349 70 ...\n $ income        : num [1:592] 6.09 3 4.94 6 9.61 ...\n $ dependents_num: num [1:592] 1 0 0 0 2 0 3 2 1 2 ...\n $ gender        : chr [1:592] \"Male\" \"Male\" \"Male\" \"Male\" ...\n $ married       : chr [1:592] \"Yes\" \"Yes\" \"Yes\" \"No\" ...\n $ education     : chr [1:592] \"Graduate\" \"Graduate\" \"Not Graduate\" \"Graduate\" ...\n $ self_employed : chr [1:592] \"No\" \"Yes\" \"No\" \"No\" ...\n $ credit_history: Factor w/ 2 levels \"0\",\"1\": 2 2 2 2 2 2 1 2 2 2 ...\n $ property_area : chr [1:592] \"Rural\" \"Urban\" \"Urban\" \"Urban\" ...\n $ loan_status   : chr [1:592] \"N\" \"Y\" \"Y\" \"Y\" ..."
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#one-hot-encoding",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#one-hot-encoding",
+    "title": "10: Logistic Regression",
+    "section": "One-Hot Encoding",
+    "text": "One-Hot Encoding\n\nloan_df &lt;- loan_df |&gt;\n  mutate(approved = ifelse(loan_status == \"Y\", 1, 0),\n         approved_fac = factor(approved,\n                               levels = c(0,1)))"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#scatterplot",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#scatterplot",
+    "title": "10: Logistic Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nloan_df |&gt;\n  ggplot(aes(x = income, y = approved)) +\n  geom_point(aes(color = approved_fac)) +\n  geom_smooth(formula = \"y ~ x\",\n              method = \"lm\",\n              se = FALSE) +\n  labs(title = \"Dream Home Finance\",\n       subtitle = \"Linear Regression?\",\n       caption = \"SML 201\",\n       x = \"combined monthly income (thousands)\",\n       y = \"loan status\") +\n  scale_color_manual(values = c(\"gray\", \"darkgreen\")) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#logistic-function",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#logistic-function",
+    "title": "10: Logistic Regression",
+    "section": "Logistic Function",
+    "text": "Logistic Function\n\n\n\n\n\nlogistic function\n\n\n\n\n\n\ndomain: \\((-\\infty, \\infty)\\)\nrange: \\((0,1)\\)\none-to-one and invertible\n\n\n\n\n\n\n\n\n\nWarningDCP1"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#logistic-fit",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#logistic-fit",
+    "title": "10: Logistic Regression",
+    "section": "Logistic Fit",
+    "text": "Logistic Fit\n\nloan_df &lt;- loan_df |&gt;\n  mutate(preds6 = predict(mod6,\n                         data.frame(income = loan_df$income),\n                         type = \"response\"))\n\n\nloan_df |&gt;\n  select(income, approved_fac, preds6) |&gt;\n  head(20)"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#scatterplot-1",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#scatterplot-1",
+    "title": "10: Logistic Regression",
+    "section": "Scatterplot",
+    "text": "Scatterplot\n\nloan_df |&gt;\n  ggplot(aes(x = income, y = approved)) +\n  geom_point(aes(color = approved_fac)) +\n  geom_point(aes(x = income, y = preds6),\n             color = \"blue\") +\n  labs(title = \"Dream Home Finance\",\n       subtitle = \"Logistic Regression?\",\n       caption = \"SML 201\",\n       x = \"combined monthly income (thousands)\",\n       y = \"loan status\") +\n  scale_color_manual(values = c(\"gray\", \"darkgreen\")) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#metric",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#metric",
+    "title": "10: Logistic Regression",
+    "section": "Metric",
+    "text": "Metric\n\ncutoff &lt;- median(loan_df$preds6, na.rm = TRUE)\n\nloan_df &lt;- loan_df |&gt;\n  mutate(pred_class = ifelse(preds6 &gt; cutoff, 1, 0))\n\n\nloan_df |&gt;\n  select(income, approved_fac, preds6) |&gt;\n  head(20)\n\n\nloan_df |&gt;\n  janitor::tabyl(approved_fac, pred_class)\n\n approved_fac   0   1\n            0  88  93\n            1 208 203\n\n\n\\[\\text{accuracy} = \\frac{88 + 203}{88 + 93 + 208 + 203} \\approx 0.4916\\]\nSo far, this automated system would classify the loan applications correctly about 49 percent of the time—not better than flipping a coin!\n\n# accuracy, the R way\nmean(loan_df$approved_fac == loan_df$pred_class, na.rm = TRUE)\n\n[1] 0.4915541"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#bar-plot",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#bar-plot",
+    "title": "10: Logistic Regression",
+    "section": "Bar Plot",
+    "text": "Bar Plot\n\nloan_df |&gt;\n  ggplot(aes(x = approved_fac, )) +\n  geom_bar(aes(color = approved_fac,\n             fill = approved_fac),\n           stat = \"count\") +\n  labs(title = \"Dream Home Financial\",\n       subtitle = \"Class imbalance\",\n       caption = \"SML 201\") +\n  scale_color_manual(values = c(princeton_orange, princeton_black)) +\n  scale_fill_manual(values = c(princeton_black, princeton_orange)) +\n  theme_minimal() +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\nloan_df |&gt;\n  tabyl(approved_fac) |&gt;\n  adorn_pct_formatting()\n\n approved_fac   n percent\n            0 181   30.6%\n            1 411   69.4%"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#majority-classifier",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#majority-classifier",
+    "title": "10: Logistic Regression",
+    "section": "Majority Classifier",
+    "text": "Majority Classifier\n\nloan_df &lt;- loan_df |&gt;\n  mutate(always_approve = 1)\n\n\nloan_df |&gt;\n  select(income, approved_fac, always_approve) |&gt;\n  head(20)"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#metric-1",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#metric-1",
+    "title": "10: Logistic Regression",
+    "section": "Metric",
+    "text": "Metric\n\nmean(loan_df$approved_fac == loan_df$always_approve)\n\n[1] 0.6942568\n\n\n\n\n\n\n\n\nNoteImproving from the Baseline\n\n\n\nIf this simple strategy is correct 69.4 percent of the time, any future machine learning model should achieve an accuracy level that is higher than 69.4 percent.\n\n\n\n\n\n\n\n\nWarningDCP2"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#logistic-fit-1",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#logistic-fit-1",
+    "title": "10: Logistic Regression",
+    "section": "Logistic Fit",
+    "text": "Logistic Fit\n\nexplanatory_vars &lt;- c(\"income\", \"dependents_num\", \"credit_history\", \"education\", \"property_area\", \"loan_amount\")\n\nloan_df &lt;- loan_df |&gt;\n  mutate(preds7 = predict(mod7,\n                         loan_df |&gt; select(all_of(explanatory_vars)),\n                         type = \"response\"))\n\n\ncutoff &lt;- median(loan_df$preds7, na.rm = TRUE)\n\nloan_df &lt;- loan_df |&gt;\n  mutate(pred_class = ifelse(preds7 &gt; cutoff, 1, 0))"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#metric-2",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#metric-2",
+    "title": "10: Logistic Regression",
+    "section": "Metric",
+    "text": "Metric\n\nloan_df |&gt;\n  filter(!is.na(pred_class)) |&gt;\n  janitor::tabyl(approved_fac, pred_class)\n\n approved_fac   0   1\n            0 127  36\n            1 138 229\n\n\n\\[\\text{accuracy} = \\frac{127 + 229}{127 + 36 + 138 + 229} \\approx 0.6717\\]\nSo far, this automated system would classify the loan applications correctly about 67 percent of the time\n\nbetter than random guessing\nworse than (baseline) majority classifier"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#confusion-matrics",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#confusion-matrics",
+    "title": "10: Logistic Regression",
+    "section": "Confusion Matrics",
+    "text": "Confusion Matrics\n\ncutoff &lt;- median(loan_df$preds7, na.rm = TRUE)\n\nmodel_findings &lt;- loan_df |&gt;\n  mutate(pred_class = ifelse(preds7 &gt; cutoff, 1, 0)) |&gt;\n  select(approved_fac, pred_class) |&gt;\n  mutate(outcome = case_when(\n    approved_fac == \"1\" & pred_class == 1 ~ \"true positive\",\n    approved_fac == \"0\" & pred_class == 1 ~ \"false positive\",\n    approved_fac == \"1\" & pred_class == 0 ~ \"false negative\",\n    approved_fac == \"0\" & pred_class == 0 ~ \"true negative\",\n    TRUE ~ \"unknown classification\"\n  ))\n\n\nTP &lt;- sum(model_findings$outcome == \"true positive\")\nTN &lt;- sum(model_findings$outcome == \"true negative\")\nFP &lt;- sum(model_findings$outcome == \"false positive\")\nFN &lt;- sum(model_findings$outcome == \"false negative\")\n\n\nprint(paste0(\"There were \", TP, \" true positives\"))\n\n[1] \"There were 229 true positives\"\n\nprint(paste0(\"There were \", TN, \" true negatives\"))\n\n[1] \"There were 127 true negatives\"\n\nprint(paste0(\"There were \", FP, \" false positives\"))\n\n[1] \"There were 36 false positives\"\n\nprint(paste0(\"There were \", FN, \" false negatives\"))\n\n[1] \"There were 138 false negatives\"\n\n\n\nprecision = TP / (TP + FP)\nprint(round(precision, 2))\n\n[1] 0.86\n\n\n\nrecall = TP / (TP + FN)\nprint(round(recall, 2))\n\n[1] 0.62\n\n\n\naccuracy = mean(model_findings$approved_fac == model_findings$pred_class, na.rm = TRUE)\nprint(round(accuracy, 2))\n\n[1] 0.67"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#hyperparmeter-tuning",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#hyperparmeter-tuning",
+    "title": "10: Logistic Regression",
+    "section": "Hyperparmeter Tuning",
+    "text": "Hyperparmeter Tuning\n\nGrid Search\nInstead of how I assumed that the cutoff theshold should be at the median of the preds values, what if we tried out many different candidates for the cutoff threshold? We proceed to compute the precision, recall, and accuracy for each candidate.\n\ncutoff_vals    &lt;- 1:99 / 100\nvec_length     &lt;- length(cutoff_vals)\nprecision_vals &lt;- rep(NA, vec_length)\nrecall_vals    &lt;- rep(NA, vec_length)\naccuracy_vals  &lt;- rep(NA, vec_length)\n\nfor(iter in 1:99){\n  cutoff &lt;- quantile(loan_df$preds7, \n                     cutoff_vals[iter],\n                     na.rm = TRUE)\n\nmodel_findings &lt;- loan_df |&gt;\n  mutate(pred_class = ifelse(preds7 &gt; cutoff, 1, 0)) |&gt;\n  select(approved_fac, pred_class) |&gt;\n  mutate(outcome = case_when(\n    approved_fac == \"1\" & pred_class == 1 ~ \"true positive\",\n    approved_fac == \"0\" & pred_class == 1 ~ \"false positive\",\n    approved_fac == \"1\" & pred_class == 0 ~ \"false negative\",\n    approved_fac == \"0\" & pred_class == 0 ~ \"true negative\",\n    TRUE ~ \"unknown classification\"\n  ))\n\nTP &lt;- sum(model_findings$outcome == \"true positive\")\nTN &lt;- sum(model_findings$outcome == \"true negative\")\nFP &lt;- sum(model_findings$outcome == \"false positive\")\nFN &lt;- sum(model_findings$outcome == \"false negative\")\n\nprecision_vals[iter] = TP / (TP + FP)\nrecall_vals[iter] = TP / (TP + FN)\naccuracy_vals[iter] = mean(\n  model_findings$approved_fac == model_findings$pred_class, \n  na.rm = TRUE)\n}\n\n\n\nDiagnostic Graphs\n\ndata.frame(cutoff_vals, precision_vals, recall_vals) |&gt;\n  ggplot() +\n  geom_line(aes(x = cutoff_vals, precision_vals),\n            color = \"blue\", linewidth = 2) +\n  geom_line(aes(x = cutoff_vals, recall_vals),\n            color = \"red\", linewidth = 2) +\n  labs(title = \"Diagnostic Graphs\",\n       subtitle = \"Precision in blue, recall in red\",\n       caption = \"SML 201\",\n       x = \"cutoff value candidates\",\n       y = \"metric value\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\ndata.frame(cutoff_vals, precision_vals, recall_vals) |&gt;\n  ggplot() +\n  geom_line(aes(x = cutoff_vals, accuracy_vals),\n            color = princeton_orange, linewidth = 2) +\n  labs(title = \"Diagnostic Graphs\",\n       subtitle = \"Seeking highest accuracy\",\n       caption = \"SML 201\",\n       x = \"cutoff value candidates\",\n       y = \"metric value\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#optimum",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#optimum",
+    "title": "10: Logistic Regression",
+    "section": "Optimum",
+    "text": "Optimum\n\noptimal_cutoff &lt;- cutoff_vals[which.max(accuracy_vals)]"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#best-model",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#best-model",
+    "title": "10: Logistic Regression",
+    "section": "Best Model",
+    "text": "Best Model\n\ncutoff &lt;- optimal_cutoff\n\nloan_df &lt;- loan_df |&gt;\n  mutate(pred_class = ifelse(preds7 &gt; cutoff, 1, 0))\n\n\nloan_df |&gt;\n  filter(!is.na(pred_class)) |&gt;\n  janitor::tabyl(approved_fac, pred_class)\n\n approved_fac  0   1\n            0 65  98\n            1  7 360\n\n\n\\[\\text{accuracy} = \\frac{65 + 360}{65 + 98 + 7 + 360} \\approx 0.8019\\]\n\n#accuracy\nmean(loan_df$approved_fac == loan_df$pred_class,\n     na.rm = TRUE)\n\n[1] 0.8018868\n\n\n\nThis optimal model achieved about 80 percent accuracy\n\nbetter than the baseline model\nwith nearly instant calculations\n\n\n\n\n\n\n\n\nWarningDCP3"
+  },
+  {
+    "objectID": "posts/10_logistic_regression/10_logistic_regression.html#beyond-the-binary",
+    "href": "posts/10_logistic_regression/10_logistic_regression.html#beyond-the-binary",
+    "title": "10: Logistic Regression",
+    "section": "Beyond the Binary",
+    "text": "Beyond the Binary\n\n\n\n\n\n\nTipWhat if the categorical response has more than two levels?\n\n\n\n\n\nIn later machine learning classes, you will encounter\n\nsupport vector machines\nrandom forests\n\nTake SML 301 next semester!"
   }
 ]

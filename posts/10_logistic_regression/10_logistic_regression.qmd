@@ -1,0 +1,678 @@
+---
+title: "10: Logistic Regression"
+author: "Derek Sollberger"
+date: "2026-02-26"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+
+# SML 201
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* **Goal**: Classify Binary Responses
+
+* **Objectives**: 
+
+  * define classification
+  * carry out logistic regression
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="45%"}
+![point of inflection](logistic_function.png)
+:::
+
+::::
+
+::: {.callout-note collapse="true"}
+## code packages
+
+```{r}
+#| message: false
+#| warning: false
+library("janitor")   #tools for data cleaning
+library("tidyverse") #tools for data wrangling and visualization
+
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+```
+
+```{r}
+#| message: false
+#| warning: false
+loan_df <- readr::read_csv("loan_data_set.csv") |>
+  janitor::clean_names()
+```
+:::
+
+## Data
+
+::::: {.panel-tabset}
+
+## Description
+
+:::: {.columns}
+
+::: {.column width="60%"}
+"Dream Housing Finance company deals in all home loans. They have presence across all urban, semi urban and rural areas. Customer first apply for home loan after that company validates the customer eligibility for loan."	
+
+* Source: [Kaggle](https://www.kaggle.com/datasets/burak3ergun/loan-data-set)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="30%"}
+![Dream Home Finance](Dream_Home_Finance.png)
+:::
+
+::::
+
+## Scenario
+
+"Company wants to automate the loan eligibility process (real time) based on customer detail provided while filling online application form. These details are Gender, Marital Status, Education, Number of Dependents, Income, Loan Amount, Credit History and others. To automate this process, they have given a problem to identify the customers segments, those are eligible for loan amount so that they can specifically target these customers. Here they have provided a partial data set."
+
+## Response Variable
+
+We will try to predict the loan status (i.e. *categorical* variable)
+
+* Loan status: Yes (Y) or No (N)
+
+## Explanatory Variables
+
+* Gender (of primary applicant)
+* Marital status (of primary applicant)
+* Dependents 
+* Education
+* Self-employed
+* Applicant income (monthly, in dollars)
+* Co-applicant income (monthly, in dollars)
+* loan amount terms (in months)
+* Credit history
+* Property area
+
+:::::
+
+## Cleaning
+
+* remove rows that have missing values in the response variable (`loan_amount`)
+* convert `dependents` to a numerical variable
+
+    * here, replace "+" with nothing
+
+* combine "income" columns
+
+    * ensure all dollar amounts are in the same units (thousands of dollars)
+
+* convert `credit_history` to a factor variable (i.e. categorical)
+
+* retain relevant columns
+
+```{r}
+loan_df <- loan_df |>
+  filter(!is.na(loan_amount)) |>
+  mutate(dependents_num = as.numeric(
+    str_replace(dependents, "\\+", "")
+  )) |>
+  mutate(income = applicant_income/1000 + coapplicant_income/1000) |>
+  mutate(credit_history = factor(credit_history)) |>
+  select(loan_amount, income, dependents_num, gender, married, education, self_employed, credit_history, property_area, loan_status)
+```
+
+After cleaning the data, we should report the size of the resultant data frame
+
+```{r}
+nrow(loan_df) #number of observations
+ncol(loan_df) #number of variables
+```
+
+and the structure of the data frame.
+
+```{r}
+str(loan_df, give.attr = FALSE)
+```
+
+
+# Categorical Response
+
+As implied at the beginning, we want to now shift our goal to *classifying* whether or not a loan application was approved.
+
+::: {.callout-tip}
+## Supervised Machine Learning
+
+If the response variable is ...
+
+* numerical $\rightarrow$ **regression** task
+* categorical $\rightarrow$ **classification** task
+:::
+
+## One-Hot Encoding
+
+```{r}
+loan_df <- loan_df |>
+  mutate(approved = ifelse(loan_status == "Y", 1, 0),
+         approved_fac = factor(approved,
+                               levels = c(0,1)))
+```
+
+## Scatterplot
+
+```{r}
+loan_df |>
+  ggplot(aes(x = income, y = approved)) +
+  geom_point(aes(color = approved_fac)) +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = FALSE) +
+  labs(title = "Dream Home Finance",
+       subtitle = "Linear Regression?",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan status") +
+  scale_color_manual(values = c("gray", "darkgreen")) +
+  theme_minimal()
+```
+
+## Logistic Function
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![logistic function](logistic_function.png)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+* domain: $(-\infty, \infty)$
+* range: $(0,1)$
+* one-to-one and invertible
+:::
+
+::::
+
+::: {.callout-warning}
+# DCP1
+:::
+
+# Logistic Regression
+
+```{r}
+# generalized linear model
+mod6 <- glm(approved_fac ~ income,
+            data = loan_df,
+            family = "binomial")
+```
+
+## Logistic Fit
+
+```{r}
+loan_df <- loan_df |>
+  mutate(preds6 = predict(mod6,
+                         data.frame(income = loan_df$income),
+                         type = "response"))
+```
+
+```{r}
+#| eval: false
+loan_df |>
+  select(income, approved_fac, preds6) |>
+  head(20)
+```
+
+
+## Scatterplot
+
+```{r}
+loan_df |>
+  ggplot(aes(x = income, y = approved)) +
+  geom_point(aes(color = approved_fac)) +
+  geom_point(aes(x = income, y = preds6),
+             color = "blue") +
+  labs(title = "Dream Home Finance",
+       subtitle = "Logistic Regression?",
+       caption = "SML 201",
+       x = "combined monthly income (thousands)",
+       y = "loan status") +
+  scale_color_manual(values = c("gray", "darkgreen")) +
+  theme_minimal()
+```
+
+## Metric
+
+```{r}
+cutoff <- median(loan_df$preds6, na.rm = TRUE)
+
+loan_df <- loan_df |>
+  mutate(pred_class = ifelse(preds6 > cutoff, 1, 0))
+```
+
+```{r}
+#| eval: false
+loan_df |>
+  select(income, approved_fac, preds6) |>
+  head(20)
+```
+
+```{r}
+loan_df |>
+  janitor::tabyl(approved_fac, pred_class)
+```
+
+$$\text{accuracy} = \frac{88 + 203}{88 + 93 + 208 + 203} \approx 0.4916$$
+
+So far, this automated system would classify the loan applications correctly about 49 percent of the time---not better than flipping a coin!
+
+```{r}
+# accuracy, the R way
+mean(loan_df$approved_fac == loan_df$pred_class, na.rm = TRUE)
+```
+
+
+# Baseline Model
+
+When forming a classification task, we advise setting a baseline model that simply predicts the most common category.
+
+## Bar Plot
+
+```{r}
+loan_df |>
+  ggplot(aes(x = approved_fac, )) +
+  geom_bar(aes(color = approved_fac,
+             fill = approved_fac),
+           stat = "count") +
+  labs(title = "Dream Home Financial",
+       subtitle = "Class imbalance",
+       caption = "SML 201") +
+  scale_color_manual(values = c(princeton_orange, princeton_black)) +
+  scale_fill_manual(values = c(princeton_black, princeton_orange)) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+```{r}
+loan_df |>
+  tabyl(approved_fac) |>
+  adorn_pct_formatting()
+```
+
+## Majority Classifier
+
+```{r}
+loan_df <- loan_df |>
+  mutate(always_approve = 1)
+```
+
+```{r}
+#| eval: false
+loan_df |>
+  select(income, approved_fac, always_approve) |>
+  head(20)
+```
+
+## Metric
+
+```{r}
+mean(loan_df$approved_fac == loan_df$always_approve)
+```
+
+::: {.callout-note}
+## Improving from the Baseline
+
+If this simple strategy is correct 69.4 percent of the time, any future machine learning model should achieve an accuracy level that is higher than 69.4 percent.
+:::
+
+::: {.callout-warning}
+# DCP2
+:::
+
+# Extended Model
+
+```{r}
+# generalized linear model
+mod7 <- glm(approved_fac ~ income + dependents_num + credit_history +
+              education + property_area + loan_amount,
+            data = loan_df,
+            family = "binomial")
+```
+
+## Logistic Fit
+
+```{r}
+explanatory_vars <- c("income", "dependents_num", "credit_history", "education", "property_area", "loan_amount")
+
+loan_df <- loan_df |>
+  mutate(preds7 = predict(mod7,
+                         loan_df |> select(all_of(explanatory_vars)),
+                         type = "response"))
+```
+
+```{r}
+cutoff <- median(loan_df$preds7, na.rm = TRUE)
+
+loan_df <- loan_df |>
+  mutate(pred_class = ifelse(preds7 > cutoff, 1, 0))
+```
+
+## Metric
+
+```{r}
+loan_df |>
+  filter(!is.na(pred_class)) |>
+  janitor::tabyl(approved_fac, pred_class)
+```
+
+$$\text{accuracy} = \frac{127 + 229}{127 + 36 + 138 + 229} \approx 0.6717$$
+
+So far, this automated system would classify the loan applications correctly about 67 percent of the time
+
+* better than random guessing
+* worse than (baseline) majority classifier
+
+
+# Hyperparameters
+
+::: {.callout-note}
+## Parameter Terminology
+
+* **parameters** are values (such as regression coefficients) that are determined from machine learning training
+* **hyperparameters** are values that are manually set by the machine learning analyst
+:::
+
+## Confusion Matrics
+
+```{r}
+cutoff <- median(loan_df$preds7, na.rm = TRUE)
+
+model_findings <- loan_df |>
+  mutate(pred_class = ifelse(preds7 > cutoff, 1, 0)) |>
+  select(approved_fac, pred_class) |>
+  mutate(outcome = case_when(
+    approved_fac == "1" & pred_class == 1 ~ "true positive",
+    approved_fac == "0" & pred_class == 1 ~ "false positive",
+    approved_fac == "1" & pred_class == 0 ~ "false negative",
+    approved_fac == "0" & pred_class == 0 ~ "true negative",
+    TRUE ~ "unknown classification"
+  ))
+```
+
+```{r}
+TP <- sum(model_findings$outcome == "true positive")
+TN <- sum(model_findings$outcome == "true negative")
+FP <- sum(model_findings$outcome == "false positive")
+FN <- sum(model_findings$outcome == "false negative")
+```
+
+```{r}
+print(paste0("There were ", TP, " true positives"))
+print(paste0("There were ", TN, " true negatives"))
+print(paste0("There were ", FP, " false positives"))
+print(paste0("There were ", FN, " false negatives"))
+```
+
+```{r}
+precision = TP / (TP + FP)
+print(round(precision, 2))
+```
+```{r}
+recall = TP / (TP + FN)
+print(round(recall, 2))
+```
+```{r}
+accuracy = mean(model_findings$approved_fac == model_findings$pred_class, na.rm = TRUE)
+print(round(accuracy, 2))
+```
+
+
+## Hyperparmeter Tuning
+
+### Grid Search
+
+Instead of how I assumed that the `cutoff` theshold should be at the median of the `preds` values, what if we tried out *many* different candidates for the `cutoff` threshold?  We proceed to compute the precision, recall, and accuracy for each candidate.
+
+```{r}
+cutoff_vals    <- 1:99 / 100
+vec_length     <- length(cutoff_vals)
+precision_vals <- rep(NA, vec_length)
+recall_vals    <- rep(NA, vec_length)
+accuracy_vals  <- rep(NA, vec_length)
+
+for(iter in 1:99){
+  cutoff <- quantile(loan_df$preds7, 
+                     cutoff_vals[iter],
+                     na.rm = TRUE)
+
+model_findings <- loan_df |>
+  mutate(pred_class = ifelse(preds7 > cutoff, 1, 0)) |>
+  select(approved_fac, pred_class) |>
+  mutate(outcome = case_when(
+    approved_fac == "1" & pred_class == 1 ~ "true positive",
+    approved_fac == "0" & pred_class == 1 ~ "false positive",
+    approved_fac == "1" & pred_class == 0 ~ "false negative",
+    approved_fac == "0" & pred_class == 0 ~ "true negative",
+    TRUE ~ "unknown classification"
+  ))
+
+TP <- sum(model_findings$outcome == "true positive")
+TN <- sum(model_findings$outcome == "true negative")
+FP <- sum(model_findings$outcome == "false positive")
+FN <- sum(model_findings$outcome == "false negative")
+
+precision_vals[iter] = TP / (TP + FP)
+recall_vals[iter] = TP / (TP + FN)
+accuracy_vals[iter] = mean(
+  model_findings$approved_fac == model_findings$pred_class, 
+  na.rm = TRUE)
+}
+```
+
+### Diagnostic Graphs
+
+```{r}
+data.frame(cutoff_vals, precision_vals, recall_vals) |>
+  ggplot() +
+  geom_line(aes(x = cutoff_vals, precision_vals),
+            color = "blue", linewidth = 2) +
+  geom_line(aes(x = cutoff_vals, recall_vals),
+            color = "red", linewidth = 2) +
+  labs(title = "Diagnostic Graphs",
+       subtitle = "Precision in blue, recall in red",
+       caption = "SML 201",
+       x = "cutoff value candidates",
+       y = "metric value") +
+  theme_minimal()
+```
+
+```{r}
+data.frame(cutoff_vals, precision_vals, recall_vals) |>
+  ggplot() +
+  geom_line(aes(x = cutoff_vals, accuracy_vals),
+            color = princeton_orange, linewidth = 2) +
+  labs(title = "Diagnostic Graphs",
+       subtitle = "Seeking highest accuracy",
+       caption = "SML 201",
+       x = "cutoff value candidates",
+       y = "metric value") +
+  theme_minimal()
+```
+
+## Optimum
+
+```{r}
+optimal_cutoff <- cutoff_vals[which.max(accuracy_vals)]
+```
+
+## Best Model
+
+```{r}
+cutoff <- optimal_cutoff
+
+loan_df <- loan_df |>
+  mutate(pred_class = ifelse(preds7 > cutoff, 1, 0))
+```
+
+```{r}
+loan_df |>
+  filter(!is.na(pred_class)) |>
+  janitor::tabyl(approved_fac, pred_class)
+```
+
+$$\text{accuracy} = \frac{65 + 360}{65 + 98 + 7 + 360} \approx 0.8019$$
+
+```{r}
+#accuracy
+mean(loan_df$approved_fac == loan_df$pred_class,
+     na.rm = TRUE)
+```
+
+* This optimal model achieved about 80 percent accuracy
+
+    * better than the baseline model
+    * with nearly instant calculations
+
+::: {.callout-warning}
+# DCP3
+:::
+
+# Predictions
+
+::::: {.panel-tabset}
+
+## Applicant 1
+
+Picture a local resident who makes \$5k per month (without a college education), has three dependents, has no credit history,  and is seeking a \$250k loan for a house in a rural area.  Our model says ...
+
+```{r}
+applicant_1 <- data.frame(income = 5,
+                          dependents_num = 3,
+                          credit_history = "0",
+                          education = "Not Graduate",
+                          property_area = "Rural",
+                          loan_amount = 250)
+
+this_prediction <- predict(mod7,
+                          applicant_1,
+                          type = "response")
+
+print(paste0("The computer model says that we should ",
+             ifelse(this_prediction > optimal_cutoff, "approve", "reject"),
+             " this application."))
+```
+
+## Applicant 2
+
+Picture a Princeton graduate who makes \$10k per month, has two dependents, has good credit,  and is seeking a \$500k loan for a house in an urban area.  Our model says ...
+
+```{r}
+applicant_2 <- data.frame(income = 10,
+                          dependents_num = 2,
+                          credit_history = "1",
+                          education = "Graduate",
+                          property_area = "Urban",
+                          loan_amount = 500)
+
+this_prediction <- predict(mod7,
+                          applicant_2,
+                          type = "response")
+
+print(paste0("The computer model says that we should ",
+             ifelse(this_prediction > optimal_cutoff, "approve", "reject"),
+             " this application."))
+```
+
+:::::
+
+
+## Beyond the Binary
+
+::: {.callout-tip collapse="true"}
+## What if the categorical response has more than two levels?
+
+In later machine learning classes, you will encounter
+
+* support vector machines
+* random forests
+
+Take SML 301 next semester!
+:::
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+* This week: 
+
+  * Precept 5
+  * Read Chapter 6
+
+* Exam 1: March 5
+* Refer to weekly announcement for more info
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+![Cloak of Wisdom](cloak_of_wisdom.png)
+
+* image source: [Up and Out Comics](https://www.juliakaye.com/chbeaqv6vde7qjpcppullvaooox6gj)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
