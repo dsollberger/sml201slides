@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Derek Sollberger">
+<meta name="dcterms.date" content="2026-03-05">
 
-<title>SML 201 (Spring 2026) – SML 201</title>
+<title>Exam Day – SML 201</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-870b6070356b2f6ba798b4fc2bd491a6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-870b6070356b2f6ba798b4fc2bd491a6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,67 +70,13 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
+<link href="../../site_libs/countdown-0.6.0/countdown.css" rel="stylesheet">
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
+<script src="../../site_libs/countdown-0.6.0/countdown.js"></script>
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
 
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
 
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -140,9 +86,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">SML 201</span>
     </a>
   </div>
@@ -153,7 +99,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -176,350 +122,84 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">SML 201 (Spring 2026)</h1>
+    <div class="quarto-title column-body">
+      <h1 class="title">Exam Day</h1>
                       </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Derek Sollberger </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 5, 2026</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(12)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sml-201" id="toc-sml-201" class="nav-link active" data-scroll-target="#sml-201">SML 201</a>
+  <ul class="collapse">
+  <li><a href="#exam-one" id="toc-exam-one" class="nav-link" data-scroll-target="#exam-one">Exam One</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1772686800000" data-listing-file-modified-sort="1772664766744" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="86">
-<div class="thumbnail"><a href="./posts/exam_one/exam_one.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\exam_one\exam_one_files\figure-html\unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/exam_one/exam_one.html" class="no-external">Exam Day</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/exam_one/exam_one.html" class="no-external">
-
-
+<section id="sml-201" class="level1">
+<h1>SML 201</h1>
 <section id="exam-one" class="level2">
-
+<h2 class="anchored" data-anchor-id="exam-one">Exam One</h2>
 <ul>
 <li>Every other seat: leave one seat between you an another student</li>
 <li>Pick up one question packet and one answer packet</li>
 <li>Keep paper packets closed until proctors announce start</li>
-<li>…</li></ul><div class="cell"><div class="cell-output-display"><countdown-timer class="countdown" id="timer_9c0ec0b3" minutes="80" seconds="0" update-every="1" tabindex="0" style="right:0;bottom:0;"></countdown-timer></div></div><div class="cell"><div class="cell-output-display"><div><figure class="figure"><p></p></figure></div></div></div></section>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/exam_one/exam_one.html" class="no-external">
-<div class="listing-date">
-Mar 5, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
+<li>When done/time, turn in both packets and formula sheets to proctors</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<countdown-timer class="countdown" id="timer_9c0ec0b3" minutes="80" seconds="0" update-every="1" tabindex="0" style="right:0;bottom:0;"></countdown-timer>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1772514000000" data-listing-file-modified-sort="1772501090936" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3743">
-<div class="thumbnail"><a href="./posts/11_discrete_dist/11_discrete_dist.html" class="no-external">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="exam_one_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
-<p class="card-img-top"><img src="posts\11_discrete_dist\onecoin.png"  class="thumbnail-image card-img"/></p>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/11_discrete_dist/11_discrete_dist.html" class="no-external">11: Discrete Distributions</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/11_discrete_dist/11_discrete_dist.html" class="no-external">
-<strong>Goal</strong>: Introduce concepts of probability
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/11_discrete_dist/11_discrete_dist.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1772082000000" data-listing-file-modified-sort="1772074004757" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2562">
-<div class="thumbnail"><a href="./posts/10_logistic_regression/10_logistic_regression.html" class="no-external">
+</section>
+</section>
 
-<p class="card-img-top"><img src="posts\10_logistic_regression\logistic_function.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/10_logistic_regression/10_logistic_regression.html" class="no-external">10: Logistic Regression</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/10_logistic_regression/10_logistic_regression.html" class="no-external">
-<strong>Goal</strong>: Classify Binary Responses
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/10_logistic_regression/10_logistic_regression.html" class="no-external">
-<div class="listing-date">
-Feb 26, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1771909200000" data-listing-file-modified-sort="1771895844114" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2707">
-<div class="thumbnail"><a href="./posts/09_explain_cats/09_explain_cats.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\09_explain_cats\multiple_slopes.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/09_explain_cats/09_explain_cats.html" class="no-external">9: Modeling Categorical Variables</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/09_explain_cats/09_explain_cats.html" class="no-external">
-<strong>Goal</strong>: Utilize categorical variables in regression models
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/09_explain_cats/09_explain_cats.html" class="no-external">
-<div class="listing-date">
-Feb 24, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1771477200000" data-listing-file-modified-sort="1771466270537" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4211">
-<div class="thumbnail"><a href="./posts/08_multiple_linear/08_multiple_linear.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\08_multiple_linear\moneyball_movie.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/08_multiple_linear/08_multiple_linear.html" class="no-external">8: Multiple Linear Regression</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/08_multiple_linear/08_multiple_linear.html" class="no-external">
-<strong>Goal</strong>: Expand to larger regression models
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/08_multiple_linear/08_multiple_linear.html" class="no-external">
-<div class="listing-date">
-Feb 19, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1771304400000" data-listing-file-modified-sort="1771297897011" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3443">
-<div class="thumbnail"><a href="./posts/07_linear_regression/07_linear_regression.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\07_linear_regression\xkcd_2533.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/07_linear_regression/07_linear_regression.html" class="no-external">7: Linear Regression</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/07_linear_regression/07_linear_regression.html" class="no-external">
-<strong>Goal</strong>: Make predictions
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/07_linear_regression/07_linear_regression.html" class="no-external">
-<div class="listing-date">
-Feb 17, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1770872400000" data-listing-file-modified-sort="1770865240419" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-word-count-sort="5226">
-<div class="thumbnail"><a href="./posts/06_correlation/06_correlation.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\06_correlation\xkcd552.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/06_correlation/06_correlation.html" class="no-external">6: Correlation and Paradoxes</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/06_correlation/06_correlation.html" class="no-external">
-<strong>Goal</strong>: Explore covariance
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/06_correlation/06_correlation.html" class="no-external">
-<div class="listing-date">
-Feb 12, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1770699600000" data-listing-file-modified-sort="1770686032441" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2648">
-<div class="thumbnail"><a href="./posts/05_geospatial/05_geospatial.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\05_geospatial\nj_cutting_board.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/05_geospatial/05_geospatial.html" class="no-external">5: Geospatial</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/05_geospatial/05_geospatial.html" class="no-external">
-<strong>Goal</strong>: Visualize geospatial data
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/05_geospatial/05_geospatial.html" class="no-external">
-<div class="listing-date">
-Feb 10, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1770267600000" data-listing-file-modified-sort="1770262505402" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1868">
-<div class="thumbnail"><a href="./posts/04_categories/04_categories.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\04_categories\short_names.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/04_categories/04_categories.html" class="no-external">4: Categories</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/04_categories/04_categories.html" class="no-external">
-<strong>Goal</strong>: Explore data wrangling with categorical variables
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/04_categories/04_categories.html" class="no-external">
-<div class="listing-date">
-Feb 5, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1770094800000" data-listing-file-modified-sort="1770087339706" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3562">
-<div class="thumbnail"><a href="./posts/03_variance/03_variance.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\03_variance\variance_splash.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/03_variance/03_variance.html" class="no-external">3: Variance</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/03_variance/03_variance.html" class="no-external">
-<strong>Goal</strong>: Introduce the concept of variance
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/03_variance/03_variance.html" class="no-external">
-<div class="listing-date">
-Feb 3, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1769662800000" data-listing-file-modified-sort="1769658678968" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5072">
-<div class="thumbnail"><a href="./posts/02_centrality/02_Centrality.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\02_centrality\median_girls_meme.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external">2: Centrality</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/02_centrality/02_Centrality.html" class="no-external">
-<strong>Goal</strong>: Summarize data by centrality
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/02_centrality/02_Centrality.html" class="no-external">
-<div class="listing-date">
-Jan 29, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1769490000000" data-listing-file-modified-sort="1769650669018" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="42" data-listing-word-count-sort="8360">
-<div class="thumbnail"><a href="./posts/01_intro/01_intro.html" class="no-external">
-
-<p class="card-img-top"><img src="posts\01_intro\R_for_DS_book_cover.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/01_intro/01_intro.html" class="no-external">1: Introduction</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/01_intro/01_intro.html" class="no-external">
-<strong>Goal</strong>: Introduce data science
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/01_intro/01_intro.html" class="no-external">
-<div class="listing-date">
-Jan 27, 2026
-</div>
-<div class="listing-author">
-Derek Sollberger
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

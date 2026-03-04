@@ -1,0 +1,21 @@
+{
+  "hash": "12c03ec6d6320142aa0038abeb0f2340",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Exam Day\"\nauthor: \"Derek Sollberger\"\ndate: \"2026-03-05\"\nformat:\n  html:\n    toc: true\n    theme: cerulean\n---\n\n# SML 201\n\n## Exam One\n\n* Every other seat: leave one seat between you an another student\n* Pick up one question packet and one answer packet\n* Keep paper packets closed until proctors announce start\n* When done/time, turn in both packets and formula sheets to proctors\n\n\n::: {.cell}\n\n:::\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<countdown-timer class=\"countdown\" id=\"timer_9c0ec0b3\" minutes=\"80\" seconds=\"0\" update-every=\"1\" tabindex=\"0\" style=\"right:0;bottom:0;\"></countdown-timer>\n```\n\n:::\n:::\n\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](exam_one_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n",
+    "supporting": [
+      "exam_one_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../../site_libs/countdown-0.6.0/countdown.css\" rel=\"stylesheet\" />\n<script src=\"../../site_libs/countdown-0.6.0/countdown.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

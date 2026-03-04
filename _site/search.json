@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "SML 201 (Spring 2026)",
     "section": "",
-    "text": "11: Discrete Distributions\n\n\n\n\n\n\n\n\nMar 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Logistic Regression\n\n\n\n\n\n\n\n\nFeb 26, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Modeling Categorical Variables\n\n\n\n\n\n\n\n\nFeb 24, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
+    "text": "Exam Day\n\n\n\n\n\n\n\n\nMar 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n11: Discrete Distributions\n\n\n\n\n\n\n\n\nMar 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n10: Logistic Regression\n\n\n\n\n\n\n\n\nFeb 26, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n9: Modeling Categorical Variables\n\n\n\n\n\n\n\n\nFeb 24, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n8: Multiple Linear Regression\n\n\n\n\n\n\n\n\nFeb 19, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n7: Linear Regression\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n6: Correlation and Paradoxes\n\n\n\n\n\n\n\n\nFeb 12, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n5: Geospatial\n\n\n\n\n\n\n\n\nFeb 10, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n4: Categories\n\n\n\n\n\n\n\n\nFeb 5, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n3: Variance\n\n\n\n\n\n\n\n\nFeb 3, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n2: Centrality\n\n\n\n\n\n\n\n\nJan 29, 2026\n\n\nDerek Sollberger\n\n\n\n\n\n\n\n\n\n\n\n\n1: Introduction\n\n\n\n\n\n\n\n\nJan 27, 2026\n\n\nDerek Sollberger\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01_introduction/01_introduction.html",
@@ -4660,5 +4660,19 @@
     "title": "11: Discrete Distributions",
     "section": "Density Plot",
     "text": "Density Plot\nNow, taco_share_vec is itself a numerical variable, so we can visualize its distribution with a density plot.\n\ndf_simulation |&gt;\n  ggplot(aes(x = taco_share_vec)) +\n  geom_density(color = princeton_black, fill = princeton_orange) +\n  geom_vline(xintercept = 0.5, color = \"#2A668F\", \n             linewidth = 3, linetype = 3) +\n  labs(title = \"Taco versus Sandwich!\",\n       subtitle = \"Simulated delegation voting of the residential colleges\",\n       caption = \"SML 201\",\n       x = \"taco vote share\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "posts/exam_one/exam_one.html",
+    "href": "posts/exam_one/exam_one.html",
+    "title": "Exam Day",
+    "section": "",
+    "text": "Every other seat: leave one seat between you an another student\nPick up one question packet and one answer packet\nKeep paper packets closed until proctors announce start\nWhen done/time, turn in both packets and formula sheets to proctors"
+  },
+  {
+    "objectID": "posts/exam_one/exam_one.html#exam-one",
+    "href": "posts/exam_one/exam_one.html#exam-one",
+    "title": "Exam Day",
+    "section": "",
+    "text": "Every other seat: leave one seat between you an another student\nPick up one question packet and one answer packet\nKeep paper packets closed until proctors announce start\nWhen done/time, turn in both packets and formula sheets to proctors"
   }
 ]

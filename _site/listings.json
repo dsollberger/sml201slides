@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/exam_one/exam_one.html",
       "/posts/11_discrete_dist/11_discrete_dist.html",
       "/posts/10_logistic_regression/10_logistic_regression.html",
       "/posts/09_explain_cats/09_explain_cats.html",
