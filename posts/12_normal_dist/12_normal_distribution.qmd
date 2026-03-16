@@ -211,8 +211,7 @@ Suppose that the incubation period---that is, the time between being infected wi
 ![Covid-19](covid_19_molecule.png)
 
 * image credit: University of Chicago
-* `pnorm(7, 8, 3)`
-* `vnorm(7, 8, 3)`
+
 :::
 
 ::::
@@ -223,6 +222,10 @@ vnorm(7, 8, 3) +
   labs(title = "Covid-19 Example",
        x = "days")
 ```
+
+* `pnorm(7, 8, 3)`
+* `vnorm(7, 8, 3)`
+
 
 ## More
 
@@ -239,8 +242,7 @@ Girl Scout Thin Mint cookies have a mean size of 0.25 ounces. Find the probabili
 ::: {.column width="45%"}
 ![Thin Mints](girl_scouts_thin_mints.png)
 
-* `pnorm(0.27, 0.25, 0.03, lower.tail = FALSE)`
-* `vnorm(0.27, 0.25, 0.03, section = "upper")`
+
 :::
 
 ::::
@@ -251,6 +253,9 @@ vnorm(0.27, 0.25, 0.03, section = "upper") +
   labs(title = "Thin Mints Example",
        x = "ounces")
 ```
+
+* `pnorm(0.27, 0.25, 0.03, lower.tail = FALSE)`
+* `vnorm(0.27, 0.25, 0.03, section = "greater")`
 
 
 ## Between
@@ -268,8 +273,7 @@ The cones in the eye detect light. The absorption rate of cones is normally dist
 ::: {.column width="45%"}
 ![eye cones](eye_cones.png)
 
-* `pnorm(575, 535, 65) - pnorm(550, 535, 65)`
-* `vnorm(c(550, 575), 535, 65, section = "between")`
+
 :::
 
 ::::
@@ -280,6 +284,9 @@ vnorm(c(550, 575), 535, 65, section = "between") +
   labs(title = "Eye Cones Example",
        x = "nanometers")
 ```
+
+* `pnorm(575, 535, 65) - pnorm(550, 535, 65)`
+* `vnorm(c(550, 575), 535, 65, section = "between")`
 
 
 ## Characterize
@@ -297,8 +304,7 @@ Suppose that the number of french fries in the batches at In-n-Out are normally 
 ::: {.column width="45%"}
 ![Double Double](in_n_out_meme.png)
 
-* `qnorm(0.95, 42, 3.7)`
-* `vnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = "upper")`
+
 :::
 
 ::::
@@ -310,6 +316,8 @@ vnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = "upper") +
        x = "French Fries")
 ```
 
+* `qnorm(0.95, 42, 3.7)`
+* `vnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = "greater")`
 
 :::::
 
@@ -459,7 +467,7 @@ df_mcv |>
 
 * men testosterone levels: $\bar{x} = 14.6, s = 6.7$ nmol/L
 * women testosterone levels: $\bar{x} = 2.7, s = 4.3$ nmol/L
-* IAAF testing limit (until 2021): 5 nmol/L
+* IAAF testing limit (until 2021): 10 nmol/L
 
 Healy, M.L., Gibney, J., Pentecost, C., Wheeler, M.J. and Sonksen, P.H. (2014), [Endocrine profiles in 693 elite athletes in the postcompetition setting](https://onlinelibrary.wiley.com/doi/full/10.1111/cen.12445). Clin Endocrinol, 81: 294-305. https://doi.org/10.1111/cen.12445
 
@@ -575,7 +583,7 @@ The `gifski` package allows us to make animations from a collection of still ima
 ## Horizontal Translation
 
 * `mu_vals <- seq(-4, 4, by = 0.5)`
-* $x \in \mu \pm 1.23$
+* $x \in [\mu - 1.23, \mu  + 1.23]$
 * $\sigma = 1$
 
 ```{r}
@@ -661,6 +669,114 @@ vnorm(qnorm(c(0.025, 0.975), 90, 5),
 ::: {.callout-warning}
 ## DCP3
 :::
+
+
+# Bell Curve History
+
+::::: {.panel-tabset}
+
+## Galton
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![Sir Francis Galton](Francis_Galton.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+* 1822 - 1911
+* cousin of Charles Darwin
+* correlation discovery
+
+> **regression** to the mean
+
+:::
+
+::::
+
+## Quetelet
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![Adolphe Quetelet](Quetelet_stamp.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+> Could anything be said about the *regularity* with which individuals differences of various magnitudes could be expected?  Quetelet answered in the affirmative, drawing inspiration again from a tool of astronomy: Laplace's *law of distribution of error*, or what we now call the **normal distribution**
+
+---*Bernoulli's Fallacy*, page 114
+
+:::
+
+::::
+
+
+## legacy
+
+:::: {.columns}
+
+::: {.column width="45%"}
+> the perfect tool for a mind like Galton's, seeking structure and ordered hierarchies out of the messy chaos of human variety.  His interest in the **distribution** was, in a sense, the polar opposite of Quetelet's.  Where Quetelet had used the normal error laaw to glorify the average man, Galton focused on the extremes
+
+---*Bernoulli's Fallacy*, page 137
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+> Putting these two ideas together was the grand project of 20th century evolutionary biology now called the *modern synthesis*. One of the chief obstacles to achieving that synthesis was that certain traits, say height or skull size, appeared to vary *continuously* in a population
+
+---*Bernoulli's Fallacy*, page 153
+:::
+
+::::
+
+::: {.callout-warning}
+## Modern Synthesis
+
+*statistics* + *genetics* $\rightarrow$ **eugenics**
+:::
+
+## uni
+
+:::: {.columns}
+
+::: {.column width="45%"}
+![Ezra Stiles, Yale President, 1778 to 1795](Ezra_Stiles.png)	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+Yale president Ezra Stiles implemented the first grading scale in the United States based on four descriptions: 
+
+* Optimi
+* Second Optimi
+* Inferiores
+* Perjores
+
+---[TurnItIn](https://www.turnitin.com/blog/what-is-the-history-of-grading)
+
+:::
+
+::::
+
+:::::
+
+
 
 # Grading Curves
 
@@ -827,9 +943,17 @@ p2
 
 :::::
 
+::: {.callout-warning}
+## Dangerous Curves
 
+As we have seen, a grading **curve** can hurt students if the exam average was relatively high.
+:::
 
+::: {.callout-tip}
+## Nomenclature
 
+Of course, what students are really asking for is a *shift* in the grades, not a curve.
+:::
 
 
 

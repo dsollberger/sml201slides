@@ -237,6 +237,7 @@ window.Quarto = {
   <li><a href="#increasing-sample-size" id="toc-increasing-sample-size" class="nav-link" data-scroll-target="#increasing-sample-size">Increasing Sample Size</a></li>
   </ul></li>
   <li><a href="#toward-significance" id="toc-toward-significance" class="nav-link" data-scroll-target="#toward-significance">Toward Significance</a></li>
+  <li><a href="#bell-curve-history" id="toc-bell-curve-history" class="nav-link" data-scroll-target="#bell-curve-history">Bell Curve History</a></li>
   <li><a href="#grading-curves" id="toc-grading-curves" class="nav-link" data-scroll-target="#grading-curves">Grading Curves</a></li>
   <li><a href="#quo-vadimus" id="toc-quo-vadimus" class="nav-link" data-scroll-target="#quo-vadimus">Quo Vadimus?</a></li>
   <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
@@ -459,8 +460,6 @@ window.Quarto = {
 </div>
 <ul>
 <li>image credit: University of Chicago</li>
-<li><code>pnorm(7, 8, 3)</code></li>
-<li><code>vnorm(7, 8, 3)</code></li>
 </ul>
 </div>
 </div>
@@ -473,6 +472,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<ul>
+<li><code>pnorm(7, 8, 3)</code></li>
+<li><code>vnorm(7, 8, 3)</code></li>
+</ul>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="columns">
@@ -487,10 +490,6 @@ window.Quarto = {
 <figcaption>Thin Mints</figcaption>
 </figure>
 </div>
-<ul>
-<li><code>pnorm(0.27, 0.25, 0.03, lower.tail = FALSE)</code></li>
-<li><code>vnorm(0.27, 0.25, 0.03, section = "upper")</code></li>
-</ul>
 </div>
 </div>
 <div class="cell">
@@ -502,6 +501,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<ul>
+<li><code>pnorm(0.27, 0.25, 0.03, lower.tail = FALSE)</code></li>
+<li><code>vnorm(0.27, 0.25, 0.03, section = "greater")</code></li>
+</ul>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="columns">
@@ -516,10 +519,6 @@ window.Quarto = {
 <figcaption>eye cones</figcaption>
 </figure>
 </div>
-<ul>
-<li><code>pnorm(575, 535, 65) - pnorm(550, 535, 65)</code></li>
-<li><code>vnorm(c(550, 575), 535, 65, section = "between")</code></li>
-</ul>
 </div>
 </div>
 <div class="cell">
@@ -531,6 +530,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<ul>
+<li><code>pnorm(575, 535, 65) - pnorm(550, 535, 65)</code></li>
+<li><code>vnorm(c(550, 575), 535, 65, section = "between")</code></li>
+</ul>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="columns">
@@ -545,10 +548,6 @@ window.Quarto = {
 <figcaption>Double Double</figcaption>
 </figure>
 </div>
-<ul>
-<li><code>qnorm(0.95, 42, 3.7)</code></li>
-<li><code>vnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = "upper")</code></li>
-</ul>
 </div>
 </div>
 <div class="cell">
@@ -560,6 +559,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<ul>
+<li><code>qnorm(0.95, 42, 3.7)</code></li>
+<li><code>vnorm(qnorm(0.95, 42, 3.7), 42, 3.7, section = "greater")</code></li>
+</ul>
 </div>
 </div>
 </div>
@@ -721,9 +724,9 @@ window.Quarto = {
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          diagnosis      n percent
- macrocyctic anemia  11501   11.5%
- microcyctic anemia   2233    2.2%
-    reference range  86266   86.3%
+ macrocyctic anemia  11379   11.4%
+ microcyctic anemia   2262    2.3%
+    reference range  86359   86.4%
               Total 100000  100.0%</code></pre>
 </div>
 </div>
@@ -749,9 +752,9 @@ window.Quarto = {
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         diagnosis2      n percent
- macrocyctic anemia    391    0.4%
- microcyctic anemia    394    0.4%
-    reference range  99215   99.2%
+ macrocyctic anemia    371    0.4%
+ microcyctic anemia    384    0.4%
+    reference range  99245   99.2%
               Total 100000  100.0%</code></pre>
 </div>
 </div>
@@ -766,7 +769,7 @@ window.Quarto = {
 <ul>
 <li>men testosterone levels: <span class="math inline">\(\bar{x} = 14.6, s = 6.7\)</span> nmol/L</li>
 <li>women testosterone levels: <span class="math inline">\(\bar{x} = 2.7, s = 4.3\)</span> nmol/L</li>
-<li>IAAF testing limit (until 2021): 5 nmol/L</li>
+<li>IAAF testing limit (until 2021): 10 nmol/L</li>
 </ul>
 <p>Healy, M.L., Gibney, J., Pentecost, C., Wheeler, M.J. and Sonksen, P.H. (2014), <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/cen.12445">Endocrine profiles in 693 elite athletes in the postcompetition setting</a>. Clin Endocrinol, 81: 294-305. https://doi.org/10.1111/cen.12445</p>
 </div>
@@ -869,7 +872,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="horizontal-translation">Horizontal Translation</h2>
 <ul>
 <li><code>mu_vals &lt;- seq(-4, 4, by = 0.5)</code></li>
-<li><span class="math inline">\(x \in \mu \pm 1.23\)</span></li>
+<li><span class="math inline">\(x \in [\mu - 1.23, \mu  + 1.23]\)</span></li>
 <li><span class="math inline">\(\sigma = 1\)</span></li>
 </ul>
 <div class="cell">
@@ -990,12 +993,115 @@ window.Quarto = {
 </div>
 </div>
 </section>
+<section id="bell-curve-history" class="level1">
+<h1>Bell Curve History</h1>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Galton</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">Quetelet</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false" href="">legacy</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" role="tab" aria-controls="tabset-5-4" aria-selected="false" href="">uni</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Francis_Galton.png" class="img-fluid figure-img"></p>
+<figcaption>Sir Francis Galton</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:50%;">
+<ul>
+<li>1822 - 1911</li>
+<li>cousin of Charles Darwin</li>
+<li>correlation discovery</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>regression</strong> to the mean</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Quetelet_stamp.png" class="img-fluid figure-img"></p>
+<figcaption>Adolphe Quetelet</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<blockquote class="blockquote">
+<p>Could anything be said about the <em>regularity</em> with which individuals differences of various magnitudes could be expected? Quetelet answered in the affirmative, drawing inspiration again from a tool of astronomy: Laplace’s <em>law of distribution of error</em>, or what we now call the <strong>normal distribution</strong></p>
+</blockquote>
+<p>—<em>Bernoulli’s Fallacy</em>, page 114</p>
+</div>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div class="columns">
+<div class="column" style="width:45%;">
+<blockquote class="blockquote">
+<p>the perfect tool for a mind like Galton’s, seeking structure and ordered hierarchies out of the messy chaos of human variety. His interest in the <strong>distribution</strong> was, in a sense, the polar opposite of Quetelet’s. Where Quetelet had used the normal error laaw to glorify the average man, Galton focused on the extremes</p>
+</blockquote>
+<p>—<em>Bernoulli’s Fallacy</em>, page 137</p>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<blockquote class="blockquote">
+<p>Putting these two ideas together was the grand project of 20th century evolutionary biology now called the <em>modern synthesis</em>. One of the chief obstacles to achieving that synthesis was that certain traits, say height or skull size, appeared to vary <em>continuously</em> in a population</p>
+</blockquote>
+<p>—<em>Bernoulli’s Fallacy</em>, page 153</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Modern Synthesis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>statistics</em> + <em>genetics</em> <span class="math inline">\(\rightarrow\)</span> <strong>eugenics</strong></p>
+</div>
+</div>
+</div>
+<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Ezra_Stiles.png" class="img-fluid figure-img"></p>
+<figcaption>Ezra Stiles, Yale President, 1778 to 1795</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<p>Yale president Ezra Stiles implemented the first grading scale in the United States based on four descriptions:</p>
+<ul>
+<li>Optimi</li>
+<li>Second Optimi</li>
+<li>Inferiores</li>
+<li>Perjores</li>
+</ul>
+<p>—<a href="https://www.turnitin.com/blog/what-is-the-history-of-grading">TurnItIn</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="grading-curves" class="level1">
 <h1>Grading Curves</h1>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Setup</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">Scenario 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false" href="">Scenario 2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" role="tab" aria-controls="tabset-5-4" aria-selected="false" href="">Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-5" role="tab" aria-controls="tabset-5-5" aria-selected="false" href="">Codes</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Setup</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">Scenario 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false" href="">Scenario 2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-4" role="tab" aria-controls="tabset-6-4" aria-selected="false" href="">Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-5" role="tab" aria-controls="tabset-6-5" aria-selected="false" href="">Codes</a></li></ul>
 <div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <p>In a past teaching job, Derek would apply a grading curve as follows:</p>
 <ul>
 <li>“A” to the top 9 percentile</li>
@@ -1003,7 +1109,7 @@ window.Quarto = {
 <li>etc.</li>
 </ul>
 </div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
 <p>Suppose that a class of Calculus students took an exam and the grading yielded a sample average of <span class="math inline">\(\bar{x} = 70\)</span> and a sample standard deviation of <span class="math inline">\(s = 15\)</span> percentage points. Derek’s curve would look like</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1015,7 +1121,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
 <p>On a recent exam, data science students had a sample average of <span class="math inline">\(\bar{x} = 81.75\)</span> and a sample standard deviation of <span class="math inline">\(s = 13.77\)</span> percentage points. Derek’s curve would look like</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1027,7 +1133,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div id="tabset-6-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-4-tab">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># patchwork</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1040,7 +1146,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="tabset-5-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-5-tab">
+<div id="tabset-6-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-5-tab">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="dv">70</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="dv">15</span></span>
@@ -1098,6 +1204,32 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Dangerous Curves
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we have seen, a grading <strong>curve</strong> can hurt students if the exam average was relatively high.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Nomenclature
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Of course, what students are really asking for is a <em>shift</em> in the grades, not a curve.</p>
+</div>
+</div>
 </section>
 <section id="quo-vadimus" class="level1">
 <h1>Quo Vadimus?</h1>
@@ -1128,23 +1260,23 @@ window.Quarto = {
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="mgkvubczox" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mgkvubczox table {
+<div id="ctkgncxtmy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ctkgncxtmy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mgkvubczox thead, #mgkvubczox tbody, #mgkvubczox tfoot, #mgkvubczox tr, #mgkvubczox td, #mgkvubczox th {
+#ctkgncxtmy thead, #ctkgncxtmy tbody, #ctkgncxtmy tfoot, #ctkgncxtmy tr, #ctkgncxtmy td, #ctkgncxtmy th {
   border-style: none;
 }
 
-#mgkvubczox p {
+#ctkgncxtmy p {
   margin: 0;
   padding: 0;
 }
 
-#mgkvubczox .gt_table {
+#ctkgncxtmy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1170,12 +1302,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_caption {
+#ctkgncxtmy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mgkvubczox .gt_title {
+#ctkgncxtmy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1187,7 +1319,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#mgkvubczox .gt_subtitle {
+#ctkgncxtmy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1199,7 +1331,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#mgkvubczox .gt_heading {
+#ctkgncxtmy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1211,13 +1343,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_bottom_border {
+#ctkgncxtmy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_col_headings {
+#ctkgncxtmy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1232,7 +1364,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_col_heading {
+#ctkgncxtmy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1252,7 +1384,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#mgkvubczox .gt_column_spanner_outer {
+#ctkgncxtmy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1264,15 +1396,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#mgkvubczox .gt_column_spanner_outer:first-child {
+#ctkgncxtmy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mgkvubczox .gt_column_spanner_outer:last-child {
+#ctkgncxtmy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mgkvubczox .gt_column_spanner {
+#ctkgncxtmy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1284,11 +1416,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#mgkvubczox .gt_spanner_row {
+#ctkgncxtmy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mgkvubczox .gt_group_heading {
+#ctkgncxtmy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1314,7 +1446,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#mgkvubczox .gt_empty_group_heading {
+#ctkgncxtmy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1329,15 +1461,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#mgkvubczox .gt_from_md > :first-child {
+#ctkgncxtmy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mgkvubczox .gt_from_md > :last-child {
+#ctkgncxtmy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mgkvubczox .gt_row {
+#ctkgncxtmy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1356,7 +1488,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#mgkvubczox .gt_stub {
+#ctkgncxtmy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1369,7 +1501,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mgkvubczox .gt_stub_row_group {
+#ctkgncxtmy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1383,15 +1515,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#mgkvubczox .gt_row_group_first td {
+#ctkgncxtmy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mgkvubczox .gt_row_group_first th {
+#ctkgncxtmy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mgkvubczox .gt_summary_row {
+#ctkgncxtmy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1401,16 +1533,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mgkvubczox .gt_first_summary_row {
+#ctkgncxtmy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_first_summary_row.thick {
+#ctkgncxtmy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mgkvubczox .gt_last_summary_row {
+#ctkgncxtmy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1420,7 +1552,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_grand_summary_row {
+#ctkgncxtmy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1430,7 +1562,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mgkvubczox .gt_first_grand_summary_row {
+#ctkgncxtmy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1440,7 +1572,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_last_grand_summary_row_top {
+#ctkgncxtmy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1450,11 +1582,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_striped {
+#ctkgncxtmy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mgkvubczox .gt_table_body {
+#ctkgncxtmy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1463,7 +1595,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_footnotes {
+#ctkgncxtmy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1477,7 +1609,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_footnote {
+#ctkgncxtmy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1486,7 +1618,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mgkvubczox .gt_sourcenotes {
+#ctkgncxtmy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1500,7 +1632,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#mgkvubczox .gt_sourcenote {
+#ctkgncxtmy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1508,72 +1640,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#mgkvubczox .gt_left {
+#ctkgncxtmy .gt_left {
   text-align: left;
 }
 
-#mgkvubczox .gt_center {
+#ctkgncxtmy .gt_center {
   text-align: center;
 }
 
-#mgkvubczox .gt_right {
+#ctkgncxtmy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mgkvubczox .gt_font_normal {
+#ctkgncxtmy .gt_font_normal {
   font-weight: normal;
 }
 
-#mgkvubczox .gt_font_bold {
+#ctkgncxtmy .gt_font_bold {
   font-weight: bold;
 }
 
-#mgkvubczox .gt_font_italic {
+#ctkgncxtmy .gt_font_italic {
   font-style: italic;
 }
 
-#mgkvubczox .gt_super {
+#ctkgncxtmy .gt_super {
   font-size: 65%;
 }
 
-#mgkvubczox .gt_footnote_marks {
+#ctkgncxtmy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mgkvubczox .gt_asterisk {
+#ctkgncxtmy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mgkvubczox .gt_indent_1 {
+#ctkgncxtmy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mgkvubczox .gt_indent_2 {
+#ctkgncxtmy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mgkvubczox .gt_indent_3 {
+#ctkgncxtmy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mgkvubczox .gt_indent_4 {
+#ctkgncxtmy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mgkvubczox .gt_indent_5 {
+#ctkgncxtmy .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mgkvubczox .katex-display {
+#ctkgncxtmy .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mgkvubczox div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ctkgncxtmy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1641,7 +1773,7 @@ window.Quarto = {
 <section id="footnotes" class="level1">
 <h1>Footnotes</h1>
 <div class="callout callout-style-default callout-note callout-empty-content callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1650,14 +1782,14 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1666,7 +1798,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
