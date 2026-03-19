@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Derek Sollberger">
+<meta name="dcterms.date" content="2026-03-19">
+
+<title>13: Estimators – SML 201</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-870b6070356b2f6ba798b4fc2bd491a6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SML 201</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">13: Estimators</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Derek Sollberger </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 19, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sml-201" id="toc-sml-201" class="nav-link active" data-scroll-target="#sml-201">SML 201</a>
+  <ul class="collapse">
+  <li><a href="#start" id="toc-start" class="nav-link" data-scroll-target="#start">Start</a></li>
+  <li><a href="#recap-mean-corpuscular-volume" id="toc-recap-mean-corpuscular-volume" class="nav-link" data-scroll-target="#recap-mean-corpuscular-volume">Recap: Mean Corpuscular Volume</a></li>
+  </ul></li>
+  <li><a href="#scenario-d20" id="toc-scenario-d20" class="nav-link" data-scroll-target="#scenario-d20">Scenario: D20</a></li>
+  <li><a href="#biased-or-unbiased" id="toc-biased-or-unbiased" class="nav-link" data-scroll-target="#biased-or-unbiased">Biased or Unbiased</a>
+  <ul class="collapse">
+  <li><a href="#sample-mean" id="toc-sample-mean" class="nav-link" data-scroll-target="#sample-mean">Sample Mean</a></li>
+  <li><a href="#sample-median" id="toc-sample-median" class="nav-link" data-scroll-target="#sample-median">Sample Median</a></li>
+  <li><a href="#population-variance" id="toc-population-variance" class="nav-link" data-scroll-target="#population-variance">Population Variance</a></li>
+  <li><a href="#sample-variance" id="toc-sample-variance" class="nav-link" data-scroll-target="#sample-variance">Sample Variance</a></li>
+  <li><a href="#sample-standard-deviation" id="toc-sample-standard-deviation" class="nav-link" data-scroll-target="#sample-standard-deviation">Sample Standard Deviation</a></li>
+  <li><a href="#sample-extrema" id="toc-sample-extrema" class="nav-link" data-scroll-target="#sample-extrema">Sample Extrema</a></li>
+  <li><a href="#sample-proportion" id="toc-sample-proportion" class="nav-link" data-scroll-target="#sample-proportion">Sample Proportion</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#central-limit-theorem" id="toc-central-limit-theorem" class="nav-link" data-scroll-target="#central-limit-theorem">Central Limit Theorem</a>
+  <ul class="collapse">
+  <li><a href="#animation" id="toc-animation" class="nav-link" data-scroll-target="#animation">Animation</a></li>
+  <li><a href="#example-computing-cluster" id="toc-example-computing-cluster" class="nav-link" data-scroll-target="#example-computing-cluster">Example: Computing Cluster</a></li>
+  </ul></li>
+  <li><a href="#the-signal-and-the-noise" id="toc-the-signal-and-the-noise" class="nav-link" data-scroll-target="#the-signal-and-the-noise">The Signal and the Noise</a>
+  <ul class="collapse">
+  <li><a href="#gaussian-white-noise" id="toc-gaussian-white-noise" class="nav-link" data-scroll-target="#gaussian-white-noise">Gaussian White Noise</a></li>
+  </ul></li>
+  <li><a href="#quo-vadimus" id="toc-quo-vadimus" class="nav-link" data-scroll-target="#quo-vadimus">Quo Vadimus?</a></li>
+  <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="sml-201" class="level1">
+<h1>SML 201</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Libraries and Helper Functions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"gt"</span>)        <span class="co">#great tables</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>) <span class="co">#tools for data wrangling and visualization</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># school colors</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>princeton_orange <span class="ot">&lt;-</span> <span class="st">"#E77500"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>princeton_black  <span class="ot">&lt;-</span> <span class="st">"#121212"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helper function</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>vnorm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">mu =</span> <span class="dv">0</span>, <span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">section =</span> <span class="st">"lower"</span>){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># bell curve</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  x_vals <span class="ot">&lt;-</span> <span class="fu">seq</span>(mu <span class="sc">-</span> <span class="dv">4</span><span class="sc">*</span>sigma, mu <span class="sc">+</span> <span class="dv">4</span><span class="sc">*</span>sigma, <span class="at">length.out =</span> <span class="dv">201</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  y_vals <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x_vals, mu, sigma)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x_vals, y_vals)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># outline shaded regions</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    shade_left <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(x[<span class="dv">1</span>],<span class="dv">0</span>), df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">filter</span>(x_vals <span class="sc">&lt;</span> x[<span class="dv">1</span>]))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    shade_right <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(x[<span class="dv">1</span>],<span class="dv">0</span>), df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">filter</span>(x_vals <span class="sc">&gt;</span> x[<span class="dv">1</span>]))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    shade_between <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(x[<span class="dv">1</span>],<span class="dv">0</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                           df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">filter</span>(x_vals <span class="sc">&gt;</span> x[<span class="dv">1</span>] <span class="sc">&amp;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                                      x_vals <span class="sc">&lt;</span> x[<span class="dv">2</span>]),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">c</span>(x[<span class="dv">2</span>],<span class="dv">0</span>))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    shade_tails <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">filter</span>(x_vals <span class="sc">&lt;</span> x[<span class="dv">1</span>]),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">c</span>(x[<span class="dv">1</span>],<span class="dv">0</span>),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">c</span>(x[<span class="dv">2</span>],<span class="dv">0</span>),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                         df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">filter</span>(x_vals <span class="sc">&gt;</span> x[<span class="dv">2</span>]))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(section <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"less"</span>, <span class="st">"lower"</span>)){</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    bell_curve <span class="ot">&lt;-</span> df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(x_vals, y_vals)) <span class="sc">+</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_vals, <span class="at">y =</span> y_vals),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> shade_left,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="st">"#E77500"</span>,) <span class="sc">+</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    prob_val <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">pnorm</span>(x,mu,sigma), <span class="dv">4</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(section <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"greater"</span>, <span class="st">"upper"</span>)){</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    bell_curve <span class="ot">&lt;-</span> df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(x_vals, y_vals)) <span class="sc">+</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_vals, <span class="at">y =</span> y_vals),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> shade_right,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="st">"#E77500"</span>,) <span class="sc">+</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    prob_val <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">round</span>(<span class="fu">pnorm</span>(x,mu,sigma), <span class="dv">4</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(section <span class="sc">==</span> <span class="st">"between"</span>){</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    bell_curve <span class="ot">&lt;-</span> df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(x_vals, y_vals)) <span class="sc">+</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_vals, <span class="at">y =</span> y_vals),</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> shade_between,</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="st">"#E77500"</span>,) <span class="sc">+</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    prob_val <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">diff</span>(<span class="fu">pnorm</span>(x,mu,sigma)), <span class="dv">4</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(section <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"tails"</span>, <span class="st">"two.sided"</span>, <span class="st">"two_sided"</span>)){</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    bell_curve <span class="ot">&lt;-</span> df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(x_vals, y_vals)) <span class="sc">+</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">x =</span> x_vals, <span class="at">y =</span> y_vals),</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> shade_tails,</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="st">"#E77500"</span>,) <span class="sc">+</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    prob_val <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">diff</span>(<span class="fu">pnorm</span>(x,mu,sigma)), <span class="dv">4</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot bell curve</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  bell_curve <span class="sc">+</span> </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Probability: "</span>, prob_val),</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">"SML 201"</span>, <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>graph_noise <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  this_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  lin_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> this_df)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  coef_det <span class="ot">&lt;-</span> <span class="fu">summary</span>(lin_fit)<span class="sc">$</span>adj.r.squared</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  this_df <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(x,y)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">color =</span> princeton_orange) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">formula =</span> <span class="st">"y ~ x"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"The Signal and the Noise"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Coefficient of Determination: "</span>, <span class="fu">round</span>(coef_det, <span class="dv">4</span>)),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+<section id="start" class="level2">
+<h2 class="anchored" data-anchor-id="start">Start</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p><strong>Goal</strong>: Estimate known population statistics</p></li>
+<li><p><strong>Objective</strong>: Use density plots to explore biased and unbiased estimators</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="d20_die.png" class="img-fluid figure-img"></p>
+<figcaption>d20</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="recap-mean-corpuscular-volume" class="level2">
+<h2 class="anchored" data-anchor-id="recap-mean-corpuscular-volume">Recap: Mean Corpuscular Volume</h2>
+<p>The mean corpusular volume or mean cell volume (MCV) is the average volume of a red blood cell. The following information was gathered, adapted, heavily rounded from the <a href="https://en.wikipedia.org/wiki/Mean_corpuscular_volume#cite_note-2">Wikipedia page</a>, and should not constitute medical advice. For these mathematical examples, <strong>assume that the mean MCV is <span class="math inline">\(\mu = 90\)</span> fL/cell</strong> with a standard deviation of <span class="math inline">\(\sigma = 5\)</span> fL/cell and that we can apply the normal distribution based on numerous blood tests.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Estimating Populations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>How did we know that the average MCV was 90 for the entire population?</p>
+</blockquote>
+<ul>
+<li>We actually don’t know the population mean.</li>
+<li>Historical data points toward a <em>sample mean</em> of <span class="math inline">\(\bar{x} = 90\)</span> fL/cell.</li>
+<li>Why are we allowed to go from the sample mean <span class="math inline">\(\bar{x}\)</span> to the population mean <span class="math inline">\(\mu\)</span>?</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="scenario-d20" class="level1">
+<h1>Scenario: D20</h1>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Outcomes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Population Statistics</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>For today’s session, we need a setting with <em>known</em> statistics (mean, median, variance, etc.). Picture a “d20” (i.e.&nbsp;a 20-sided die). Its outcome space is a discrete uniform distribution (i.e.&nbsp;each outcome is equally likely):</p>
+<p><span class="math display">\[X = \{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20\}\]</span></p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="d6_die.png" class="img-fluid figure-img"></p>
+<figcaption>d6</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="d20_die.png" class="img-fluid figure-img"></p>
+<figcaption>d20</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><span class="math display">\[\begin{array}{rrcccl}
+  \text{mean: } &amp; \mu &amp; = &amp; \frac{1}{N}\sum_{i=1}^{N} x_{i} &amp; = &amp; 10.5 \\
+  \text{median: } &amp; \nu &amp; = &amp; \frac{1}{2}\left(x_{\lfloor\frac{N+1}{2}\rfloor} + x_{\lceil\frac{N+1}{2}\rceil}\right) &amp; = &amp; 10.5 \\
+  \text{variance: } &amp; \mu &amp; = &amp; \frac{1}{N}\sum_{i=1}^{N} (x_{i} - \mu)^{2} &amp; = &amp; 33.25 \\
+\end{array}\]</span></p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># outcome space (already sorted)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>d20_die <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># population length</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(d20_die)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># population mean</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sum</span>(d20_die)<span class="sc">/</span>N</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># population median</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">&lt;-</span> <span class="fl">0.5</span><span class="sc">*</span>(d20_die[<span class="fu">floor</span>((N<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span>)] <span class="sc">+</span> d20_die[<span class="fu">ceiling</span>((N<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span>)])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># population variance</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>sigma_sq <span class="ot">&lt;-</span> <span class="fu">sum</span>((d20_die <span class="sc">-</span> mu)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>N</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sigma_sq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Experiment’s Design
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>roll the d20 <span class="math inline">\(n = 10\)</span> times</li>
+<li>compute a sample stat (e.g.&nbsp;mean)</li>
+<li>repeat steps (1) and (2) <span class="math inline">\(N = 1000\)</span> times</li>
+<li>construct density plot of the <em>sampling distribution</em></li>
+<li>compare the mode(s) of the density plot to population stat</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="biased-or-unbiased" class="level1">
+<h1>Biased or Unbiased</h1>
+<section id="sample-mean" class="level2">
+<h2 class="anchored" data-anchor-id="sample-mean">Sample Mean</h2>
+<p><span class="math display">\[\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_{i}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(these_rolls)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> mu), </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We say that the sample mean <span class="math inline">\(\bar{x}\)</span> is an <strong>unbiased estimator</strong> for the population mean <span class="math inline">\(\mu\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-empty-content callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>DCP1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="sample-median" class="level2">
+<h2 class="anchored" data-anchor-id="sample-median">Sample Median</h2>
+<p><span class="math display">\[\nu = \frac{1}{2}\left(x_{\lfloor\frac{n+1}{2}\rfloor} + x_{\lceil\frac{n+1}{2}\rceil}\right)\]</span></p>
+<p>For this experiment, Derek wanted an asymmetrical outcome space.</p>
+<p><span class="math display">\[\{1, 2, 3, 14, 16, 18, 20\}\]</span> whose population median is <span class="math inline">\(\nu = 14\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>unfair_die <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">18</span>, <span class="dv">20</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(unfair_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">median</span>(these_rolls)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">14</span>), </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since the modes do not appear to align with the population median, we say that the sample median is a <strong>biased estimator</strong> of the population median. In our visualizations today, the <strong>bias</strong> is the horizontal distance between the red and orange lines.</p>
+</div>
+</div>
+</section>
+<section id="population-variance" class="level2">
+<h2 class="anchored" data-anchor-id="population-variance">Population Variance</h2>
+<p><span class="math display">\[\sigma^{2} = \frac{1}{N}\sum_{i=1}^{N} (x_{i} - \mu)^{2}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pop_var <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  sigma_sq <span class="ot">&lt;-</span> <span class="fu">sum</span>((x <span class="sc">-</span> mu)<span class="sc">^</span>{<span class="dv">2</span>})<span class="sc">/</span>N</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  sigma_sq</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">pop_var</span>(these_rolls)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> sigma_sq), </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpretation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Upon reapplying the population variance formula to the samples, we see that the resulting sampling distribution tends to underestimate the true population variance. So far, this formula is a <strong>biased estimator</strong> of the population variance.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-variance" class="level2">
+<h2 class="anchored" data-anchor-id="sample-variance">Sample Variance</h2>
+<p><span class="math display">\[s^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>samp_var <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bessel's correction: "n-1"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  s_sq <span class="ot">&lt;-</span> <span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span>{<span class="dv">2</span>})<span class="sc">/</span>(n<span class="dv">-1</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  s_sq</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">samp_var</span>(these_rolls)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> sigma_sq), </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpretation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Now, with Bessel’s correction, we say that the sample variance is an <strong>unbiased estimator</strong> for the population variance.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>(optional) Bessel’s Correction
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Claim:</strong> The sample variance formula with <span class="math inline">\(n-1\)</span></p>
+<p><span class="math display">\[s^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}\]</span> is an unbiased estimator for the population variance <span class="math inline">\(\sigma^{2}\)</span>.</p>
+<p><strong>Note</strong>: the “minus one” <em>adjusts</em> for the <strong>degrees of freedom</strong></p>
+<p><strong>Proof</strong>: (omitted)</p>
+<ul>
+<li>takes about 4 Calculus lectures to explain</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-standard-deviation" class="level2">
+<h2 class="anchored" data-anchor-id="sample-standard-deviation">Sample Standard Deviation</h2>
+<p><span class="math display">\[s= \sqrt{\frac{1}{n}\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20241029</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">samp_var</span>(these_rolls))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> sigma), </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It can be mathematically proven that the sample standard deviation is a <em>biased</em> estimator (as it tends to underestimate the true population standard deviation), but the bias is treated as negligible in practice.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>(optional) Standard Deviation is Technically Biased
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Claim:</strong> The sample standard deviation is a biased estimator</p>
+<p><strong>Proof</strong>: Use Jensen’s Inequality</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-extrema" class="level2">
+<h2 class="anchored" data-anchor-id="sample-extrema">Sample Extrema</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">min</span>(these_rolls)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">1</span>), </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpretation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It is quickly apparent that the sample minimum (or maximum) is a <strong>biased estimator</strong> for the population minimum (or maximum).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-proportion" class="level2">
+<h2 class="anchored" data-anchor-id="sample-proportion">Sample Proportion</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co">#number of experiment iterations</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>samp_dist <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, N) <span class="co">#allocate space to store sample calculations</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#roll d20 n = 10 times</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  these_rolls <span class="ot">&lt;-</span> <span class="fu">sample</span>(d20_die, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#record this sample stat</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  samp_dist[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(these_rolls <span class="sc">&lt;</span> <span class="dv">12</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>N,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">samp_dist =</span> samp_dist</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df_for_graph <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> samp_dist), </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">11</span><span class="sc">/</span><span class="dv">20</span>), </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(samp_dist)), </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> princeton_orange, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">linewidth =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased or Unbiased?"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"black: sample distribution</span><span class="sc">\n</span><span class="st">orange: average of samples</span><span class="sc">\n</span><span class="st">red: true population stat"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"SML 201"</span>) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpretation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It may not be apparent from this empirical experiment, but the sample proportion is said to be an <strong>unbiased estimator</strong> for the population proportion.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Unbiased Estimation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In discussing when are we allowed to use sample statistics to describe the overall population, we proceed by using <em>unbiased estimators</em> (and the sample standard deviation).</p>
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">gt table</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div id="lcfovpjzfz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lcfovpjzfz table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#lcfovpjzfz thead, #lcfovpjzfz tbody, #lcfovpjzfz tfoot, #lcfovpjzfz tr, #lcfovpjzfz td, #lcfovpjzfz th {
+  border-style: none;
+}
+
+#lcfovpjzfz p {
+  margin: 0;
+  padding: 0;
+}
+
+#lcfovpjzfz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#lcfovpjzfz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lcfovpjzfz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lcfovpjzfz .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lcfovpjzfz .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lcfovpjzfz .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lcfovpjzfz .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lcfovpjzfz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lcfovpjzfz .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#lcfovpjzfz .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#lcfovpjzfz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lcfovpjzfz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lcfovpjzfz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lcfovpjzfz .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lcfovpjzfz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lcfovpjzfz .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#lcfovpjzfz .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#lcfovpjzfz .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#lcfovpjzfz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lcfovpjzfz .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#lcfovpjzfz .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lcfovpjzfz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lcfovpjzfz .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lcfovpjzfz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lcfovpjzfz .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lcfovpjzfz .gt_left {
+  text-align: left;
+}
+
+#lcfovpjzfz .gt_center {
+  text-align: center;
+}
+
+#lcfovpjzfz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lcfovpjzfz .gt_font_normal {
+  font-weight: normal;
+}
+
+#lcfovpjzfz .gt_font_bold {
+  font-weight: bold;
+}
+
+#lcfovpjzfz .gt_font_italic {
+  font-style: italic;
+}
+
+#lcfovpjzfz .gt_super {
+  font-size: 65%;
+}
+
+#lcfovpjzfz .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#lcfovpjzfz .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#lcfovpjzfz .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#lcfovpjzfz .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#lcfovpjzfz .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#lcfovpjzfz .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#lcfovpjzfz .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#lcfovpjzfz .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#lcfovpjzfz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="2" class="gt_heading gt_title gt_font_normal">Statistical Estimators</td>
+</tr>
+<tr class="gt_heading even">
+<td colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">from samples to populations</td>
+</tr>
+<tr class="gt_col_headings header">
+<th id="estimator" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">estimator</th>
+<th id="bias" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">bias</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="estimator" style="background-color: #E77500; font-weight: bold">sample mean</td>
+<td class="gt_row gt_center" headers="bias" style="background-color: #E77500; font-weight: bold">unbiased</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="estimator" style="color: #FF0000">sample median</td>
+<td class="gt_row gt_center" headers="bias" style="color: #FF0000">biased</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="estimator" style="color: #FF0000">population variance</td>
+<td class="gt_row gt_center" headers="bias" style="color: #FF0000">biased</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="estimator" style="background-color: #E77500; font-weight: bold">sample variance</td>
+<td class="gt_row gt_center" headers="bias" style="background-color: #E77500; font-weight: bold">unbiased</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="estimator" style="background-color: #E77500; font-weight: bold">sample standard deviation</td>
+<td class="gt_row gt_center" headers="bias" style="background-color: #E77500; font-weight: bold">negligible bias</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="estimator" style="color: #FF0000">sample minimum</td>
+<td class="gt_row gt_center" headers="bias" style="color: #FF0000">biased</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="estimator" style="color: #FF0000">sample maximum</td>
+<td class="gt_row gt_center" headers="bias" style="color: #FF0000">biased</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="estimator" style="background-color: #E77500; font-weight: bold">sample proportion</td>
+<td class="gt_row gt_center" headers="bias" style="background-color: #E77500; font-weight: bold">unbiased</td>
+</tr>
+</tbody><tfoot class="gt_footnotes">
+<tr class="odd">
+<td colspan="2" class="gt_footnote">SML 201</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimator =</span> <span class="fu">c</span>(<span class="st">"sample mean"</span>, <span class="st">"sample median"</span>, <span class="st">"population variance"</span>, <span class="st">"sample variance"</span>, <span class="st">"sample standard deviation"</span>, <span class="st">"sample minimum"</span>, <span class="st">"sample maximum"</span>, <span class="st">"sample proportion"</span>),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">bias =</span> <span class="fu">c</span>(<span class="st">"unbiased"</span>, <span class="st">"biased"</span>, <span class="st">"biased"</span>, <span class="st">"unbiased"</span>, <span class="st">"negligible bias"</span>, <span class="st">"biased"</span>, <span class="st">"biased"</span>, <span class="st">"unbiased"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(<span class="at">align =</span> <span class="st">"center"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(<span class="at">footnote =</span> <span class="st">"SML 201"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Statistical Estimators"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"from samples to populations"</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">color =</span> <span class="st">"red"</span>),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> bias <span class="sc">==</span> <span class="st">"biased"</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_fill</span>(<span class="at">color =</span> princeton_orange),</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> bias <span class="sc">==</span> <span class="st">"unbiased"</span>)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-empty-content callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>DCP2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+</section>
+<section id="central-limit-theorem" class="level1">
+<h1>Central Limit Theorem</h1>
+<p>The <strong>Central Limit Theorem</strong> states that the sampling distribution of the mean converges to the standard normal distribution</p>
+<p><span class="math display">\[z\text{-score:} \quad z = \frac{x - \mu}{\sigma} \quad\rightarrow\quad Z_{n} = \frac{\bar{X}_{n} - \mu}{\frac{\sigma}{\sqrt{n}}}\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Standard Error
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When working with a sampling distribution (or from simulations), the <strong>standard error</strong> is the product of the population standard deviation and a scaling factor of <span class="math inline">\(\frac{1}{\sqrt{n}}\)</span></p>
+<p><span class="math display">\[\text{SE} = \frac{\sigma}{\sqrt{n}}\]</span></p>
+</div>
+</div>
+<p>The Central Limit Theorem is based on how</p>
+<ul>
+<li>the sample mean is an unbiased estimator</li>
+<li>the sample standard deviation is practically an unbiased estimator</li>
+<li>the standard error decreases</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Law of Large Numbers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Law of Large Numbers states “that the average of the results obtained from a large number of independent random samples converges to the true value” — <a href="https://en.wikipedia.org/wiki/Law_of_large_numbers">Wikipedia</a></p>
+<ul>
+<li>As <span class="math inline">\(n\)</span> increases, standard error <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span> <em>decreases</em></li>
+</ul>
+</div>
+</div>
+<section id="animation" class="level2">
+<h2 class="anchored" data-anchor-id="animation">Animation</h2>
+<p>Here we will use the <code>vnorm</code> function with various increasing values for the sample size <span class="math inline">\(n\)</span> with constant values for the population mean and population standard deviation.</p>
+<ul>
+<li><code>n_vals &lt;- seq(1, 50)</code></li>
+<li><span class="math inline">\(\mu = 60\)</span></li>
+<li><span class="math inline">\(\sigma = 10\)</span></li>
+</ul>
+<p><span class="math display">\[P(X &lt; 57)\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>n_vals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">50</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mu     <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sigma  <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>N      <span class="ot">&lt;-</span> <span class="fu">length</span>(n_vals)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N){</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  prob_result <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span><span class="sc">/</span><span class="fu">sqrt</span>(n_vals[i]))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  this_plot <span class="ot">&lt;-</span> <span class="fu">vnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span><span class="sc">/</span><span class="fu">sqrt</span>(n_vals[i])) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Central Limit Theorem"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"P(X &lt; 57) = "</span>, <span class="fu">round</span>(prob_result, <span class="dv">4</span>), <span class="st">", n = "</span>, n_vals[i])) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i <span class="sc">&lt;</span> <span class="dv">10</span>){</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggsave</span>(<span class="fu">paste0</span>(<span class="st">"images/CLT_example0"</span>, i, <span class="st">".png"</span>), this_plot)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggsave</span>(<span class="fu">paste0</span>(<span class="st">"images/CLT_example"</span>, i, <span class="st">".png"</span>), this_plot)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  }       </span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>png_files <span class="ot">&lt;-</span> <span class="fu">Sys.glob</span>(<span class="st">"images/CLT_example*.png"</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>gifski<span class="sc">::</span><span class="fu">gifski</span>(</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  png_files,</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"CLT_example.gif"</span>,    <span class="co">#output file name</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">800</span>, <span class="at">width =</span> <span class="dv">800</span>, <span class="co">#you may change the resolution</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">delay =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>                <span class="co">#seconds</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="CLT_example.gif" class="img-fluid figure-img"></p>
+<figcaption>Central Limit Theorem</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Intuition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As the sample size (<span class="math inline">\(n\)</span>) increases, it is less likely to observe an average in the tails of a normal distribution.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Sample Size
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As observed with the shrinking bell curve, we statistics teachers (e.g.&nbsp;AP Stats) have told many students that we are allowed to assume and use the normal distribution when the sample size</p>
+<p><span class="math display">\[n \geq 30\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Commentary
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>However, in research, the notion of a appropriate sample size can vary widely by context</p>
+<ul>
+<li><p>medical or psychological experiments might have only about <span class="math inline">\(n = 12\)</span> human volunteers</p>
+<ul>
+<li>apply other tools instead of the normal distribution</li>
+</ul></li>
+<li><p>training generative AI (e.g.&nbsp;ChatGPT, Claude) wants millions of data examples</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="example-computing-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="example-computing-cluster">Example: Computing Cluster</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Task</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">One Observation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">Average Observation</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<p>For a request to use the campus computing cluster, and knowing that your independent jobs’ duration times are normally distributed with a mean of one hour and a standard deviation of 10 minutes, answer the following inquiries.</p>
+<ul>
+<li><span class="math inline">\(\mu = 60\)</span> minutes</li>
+<li><span class="math inline">\(\sigma = 10\)</span> minutes</li>
+<li><span class="math inline">\(P(X &lt; 57) = ?\)</span></li>
+</ul>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<ol type="1">
+<li>What is the probability that a randomly selected job has a duration of under 57 minutes.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3820886</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Campus Computing Example (n = 1 job)"</span>) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">20</span>, <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<ol start="2" type="1">
+<li>What is the probability that the <em>average</em> duration of your 28 jobs is less than 57 minutes?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">28</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.05620529</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vnorm</span>(<span class="dv">57</span>, <span class="dv">60</span>, <span class="dv">10</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">28</span>)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Campus Computing Example (n = 28 jobs)"</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">20</span>, <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-empty-content callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>DCP3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+</section>
+<section id="the-signal-and-the-noise" class="level1">
+<h1>The Signal and the Noise</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>SNR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>signal-to-noise</strong> ratio can be defined in terms of the coefficient of determination</p>
+<p><span class="math display">\[\text{SNR} = \frac{R^{2}}{1 - R^{2}}\]</span></p>
+<ul>
+<li>higher <span class="math inline">\(R^{2} \rightarrow\)</span> higher SNR</li>
+</ul>
+</div>
+</div>
+<p>Now, equipped with more tools, let us return to regression and ask, “What kind of situations are bad for linear regression?”</p>
+<section id="gaussian-white-noise" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-white-noise">Gaussian White Noise</h2>
+<p>Sometimes, researchers add <strong>Gaussian White Noise</strong> to the data to see if their model process is robust against slight abberations.</p>
+<p><span class="math display">\[Y \sim X + N(\mu, \sigma^{2})\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">201</span> <span class="co">#number of data points</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x_vals <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>y_vals <span class="ot">&lt;-</span> <span class="fl">0.201</span><span class="sc">*</span>x_vals <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">3</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_noise</span>(x_vals, y_vals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Polynomials</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">Seasonal</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false" href="">Heteroscedasticity</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">201</span> <span class="co">#number of data points</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>x_vals <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>y_vals <span class="ot">&lt;-</span> (x_vals <span class="sc">-</span> n<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">2</span><span class="sc">*</span>n)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_noise</span>(x_vals, y_vals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">201</span> <span class="co">#number of data points</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>x_vals <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>y_vals <span class="ot">&lt;-</span> <span class="fu">sin</span>((<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">75</span>)<span class="sc">*</span>x_vals) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.201</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_noise</span>(x_vals, y_vals)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Heteroscedasticity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Heteroscedasticity</em> is a situation where we can no longer assume that the variance is the same for all observations.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">201</span> <span class="co">#number of data points</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x_vals <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>y_vals <span class="ot">&lt;-</span> <span class="fl">0.201</span><span class="sc">*</span>x_vals <span class="sc">+</span> <span class="dv">100</span> <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(n, <span class="dv">0</span>, x_vals<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_noise</span>(x_vals, y_vals) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Heteroscedasticity"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="13_estimators_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="quo-vadimus" class="level1">
+<h1>Quo Vadimus?</h1>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><p>Due this Friday (March 20)</p>
+<ul>
+<li>Precept 6</li>
+<li>Coloring Assignment 2</li>
+<li>Pick Group Partners</li>
+</ul></li>
+<li><p>Project 2</p>
+<ul>
+<li>Assigned: March 23</li>
+<li>Due: April 7</li>
+</ul></li>
+<li><p>Exam 2: April 23</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="simpsons_bell.png" class="img-fluid figure-img"></p>
+<figcaption>National Testing Center bell curve</figcaption>
+</figure>
+</div>
+<ul>
+<li>image source: <em>Simpsons</em> (TV show)</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="footnotes" class="level1">
+<h1>Footnotes</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>(optional) Additional Resources
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://statproofbook.github.io/P/snr-rsq.html">Relationship between signal-to-noise ratio and R²</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.5.2 (2025-10-31 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 10 x64 (build 19045)
+
+Matrix products: default
+  LAPACK version 3.12.1
+
+locale:
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=English_United States.utf8   
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.4 forcats_1.0.0   stringr_1.5.1   dplyr_1.1.4    
+ [5] purrr_1.1.0     readr_2.1.5     tidyr_1.3.1     tibble_3.3.0   
+ [9] ggplot2_4.0.0   tidyverse_2.0.0 gt_1.0.0       
+
+loaded via a namespace (and not attached):
+ [1] Matrix_1.7-4       gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.2    
+ [5] tidyselect_1.2.1   xml2_1.3.8         splines_4.5.2      scales_1.4.0      
+ [9] yaml_2.3.10        fastmap_1.2.0      lattice_0.22-7     R6_2.6.1          
+[13] labeling_0.4.3     generics_0.1.4     knitr_1.50         htmlwidgets_1.6.4 
+[17] pillar_1.11.0      RColorBrewer_1.1-3 tzdb_0.5.0         rlang_1.1.6       
+[21] stringi_1.8.7      xfun_0.52          sass_0.4.10        S7_0.2.0          
+[25] timechange_0.3.0   cli_3.6.5          mgcv_1.9-3         withr_3.0.2       
+[29] magrittr_2.0.3     digest_0.6.37      grid_4.5.2         rstudioapi_0.17.1 
+[33] hms_1.1.3          nlme_3.1-168       lifecycle_1.0.4    vctrs_0.6.5       
+[37] evaluate_1.0.4     glue_1.8.0         farver_2.1.2       rmarkdown_2.29    
+[41] tools_4.5.2        pkgconfig_2.0.3    htmltools_0.5.8.1 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"></ul>
+<div class="tab-content">
+
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
