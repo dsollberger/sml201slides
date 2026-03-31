@@ -1,0 +1,1015 @@
+---
+title: "16: Hypothesis Testing (2)"
+author: "Derek Sollberger"
+date: "2026-03-31"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+::: {.callout-note collapse="true"}
+## Libraries and Helper Functions
+
+```{r}
+#| message: false
+#| warning: false
+
+library("ggsignif")   #put significance "stars" on boxplots
+library("infer")      #pipeline workflow for hypothesis testing
+library("janitor")    #compute proportions easily
+library("moderndive") #textbook's package and data
+library("patchwork")  #easily let's me show graphs side-by-side
+library("tidyverse")  #the overall programming style universe
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: Portland Crime Data
+offense_cat <- readr::read_csv("offense_cat.csv")
+victim_cat  <- readr::read_csv("victim_cat.csv")
+
+# data set: SML 201 demographics survey
+# demo_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/main/posts/04_categories/sml201survey.csv")
+demo_df <- readr::read_csv("sml201survey.csv")
+
+# Derek's visualization helper functions
+source("vdist.R")
+```
+
+:::
+
+## Start
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Continue to explore hypothesis testing and two-sided tests
+
+* **Objective**: Get "stars" and significance levels
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+![Fry](Fry_coffee.png)
+:::
+
+::::
+
+
+# Case Study: Portland Crime Data
+
+::::: {.panel-tabset}
+
+## overview
+
+"The Monthly Reported Crime Statistics is an interactive data visualization of the offenses reported to the Portland Police Bureau. This report is built to provide custom analyses of the reported crime data to interested members of the community, especially as it relates to the Portland neighborhoods and council districts." 
+
+* [https://www.portland.gov/police/open-data/reported-crime-data](https://www.portland.gov/police/open-data/reported-crime-data)
+
+## Offenses
+
+```{r}
+#| echo: false
+
+str(offense_cat, give.attr = FALSE)
+```
+
+## Victims
+
+```{r}
+#| echo: false
+
+str(victim_cat, give.attr = FALSE)
+```
+
+## Districts
+
+![district map](district_map.png)
+
+* **District 1**: suburban
+* **District 4**: downtown
+* Counts shown were for vandalism reports in the previous 12 months.
+
+```{r}
+districts_1_4 <- offense_cat |>
+  filter(CouncilDistrict %in% c("1", "4"))  |>
+  mutate(CouncilDistrict = factor(CouncilDistrict))
+```
+
+
+:::::
+
+
+# Example: Fraud
+
+::: {.callout-note}
+## NHST Test Type
+
+For NHST (**null hypothesis significance testing**), this example is a two-sided tests of means.
+:::
+
+* Colloquially: District 1 and District 4 have *different* amounts of fraud reports (per month)
+* Null hypothesis: District 1 and District 4 have the *same* amounts of fraud reports (per month)
+* Alternative hypothesis: District 1 and District 4 have *different* amounts of fraud reports (per month)
+
+$$H_{o}: \mu_{1} = \mu_{4}$$
+$$H_{a}: \mu_{1} \neq \mu_{4}$$
+
+## Sample Statistics
+
+```{r}
+districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  group_by(CouncilDistrict) |>
+  summarize(xbar = mean(CrimeCount, na.rm = TRUE),
+            s = sd(CrimeCount, na.rm = TRUE))
+```
+
+## Boxplot
+
+```{r}
+districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "(toward two-means hypothesis testing)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+::: {.callout-tip collapse="true"}
+## Intuition
+
+The boxplot visualization lets us guess at whether or not the means for the two groups are *significantly* different (or not).
+:::
+
+::: {.callout-warning}
+## DCP1
+:::
+
+# Modern Approach (infer)
+
+## Null Distribution
+
+In the modern approach, with the `infer` code package, we build a null distribution (i.e. District 1 and District 4 have the *same* amounts of fraud reports (per month)).
+
+::: {.callout-note collapse="true"}
+## Permutation Test
+
+If the district location here did not affect the number of fraud reports, then it shouldn't matter if we permute the "1" or "4" labels.
+:::
+
+```{r}
+null_distribution <- districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  specify(formula = CrimeCount ~ CouncilDistrict) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("1", "4"))
+```
+
+```{r}
+obs_diff <- districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  specify(formula = CrimeCount ~ CouncilDistrict) |>
+  # hypothesize(null = "independence") |>
+  # generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("1", "4"))
+```
+
+## Visualization
+
+::: {.callout-tip}
+## p-value
+
+"The **p-value** is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis $H_0$ is true"
+:::
+
+```{r}
+null_distribution |>
+  visualize() +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "Two-Sided Hypothesis Test",
+       caption = "SML 201",
+       x = "difference between Portland districts") +
+  shade_p_value(obs_diff, direction = "two-sided",
+                color = princeton_black, fill = princeton_orange) +
+  theme_minimal(base_size = 16)
+```
+
+::: {.callout-note}
+## Two-Sided
+
+Since our p-value search looks at both tails of the null distribution, we call this a *two-sided* test.
+:::
+
+
+## Conclusion
+
+```{r}
+null_distribution |> 
+  get_p_value(obs_diff, direction = "two-sided")
+```
+
+::: {.callout-warning}
+## Inconclusive
+
+Since the p-value > 0.05, we have *failed to reject the null hypothesis* that District 1 and District 4 have the *same* amounts of fraud reports per month (at the $\alpha = 0.05$ significance level).
+
+We may treat this result as inconclusive or note that we have not found evidence here toward showing that district location affects prevalence of fraud.
+:::
+
+
+# Example: Vandalism
+
+::: {.callout-note}
+## NHST Test Type
+
+For NHST (**null hypothesis significance testing**), this example is a two-sided tests of means.
+:::
+
+* Colloquially: District 1 and District 4 have *different* amounts of vandalism reports (per month)
+* Null hypothesis: District 1 and District 4 have the *same* amounts of vandalism reports (per month)
+* Alternative hypothesis: District 1 and District 4 have *different* amounts of vandalism reports (per month)
+
+$$H_{o}: \mu_{1} = \mu_{4}$$
+$$H_{a}: \mu_{1} \neq \mu_{4}$$
+
+## Sample Statistics
+
+```{r}
+districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  group_by(CouncilDistrict) |>
+  summarize(xbar = mean(CrimeCount, na.rm = TRUE),
+            s = sd(CrimeCount, na.rm = TRUE))
+```
+
+## Boxplot
+
+```{r}
+districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "(toward two-means hypothesis testing)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+::: {.callout-tip collapse="true"}
+## Intuition
+
+The boxplot visualization lets us guess at whether or not the means for the two groups are *significantly* different (or not).
+:::
+
+
+# Modern Approach (infer)
+
+## Null Distribution
+
+In the modern approach, with the `infer` code package, we build a null distribution (i.e. District 1 and District 4 have the *same* amounts of vandalism reports (per month)).
+
+::: {.callout-note collapse="true"}
+## Permutation Test
+
+If the district location here did not affect the number of vandalism reports, then it shouldn't matter if we permute the "1" or "4" labels.
+:::
+
+```{r}
+null_distribution <- districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  specify(formula = CrimeCount ~ CouncilDistrict) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("1", "4"))
+```
+
+```{r}
+obs_diff <- districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  specify(formula = CrimeCount ~ CouncilDistrict) |>
+  # hypothesize(null = "independence") |>
+  # generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("1", "4"))
+```
+
+## Visualization
+
+::: {.callout-tip}
+## p-value
+
+"The **p-value** is the probability of obtaining a test statistic just as extreme or more extreme than the observed test statistic assuming the null hypothesis $H_0$ is true"
+:::
+
+```{r}
+null_distribution |>
+  visualize() +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "Two-Sided Hypothesis Test",
+       caption = "SML 201",
+       x = "difference between Portland districts") +
+  shade_p_value(obs_diff, direction = "two-sided",
+                color = princeton_black, fill = princeton_orange) +
+  theme_minimal(base_size = 16)
+```
+
+::: {.callout-note}
+## Two-Sided
+
+Since our p-value search looks at both tails of the null distribution, we call this a *two-sided* test.
+:::
+
+
+## Conclusion
+
+```{r}
+null_distribution |> 
+  get_p_value(obs_diff, direction = "two-sided")
+```
+
+::: {.callout-tip}
+## Some Evidence
+
+Since the p-value < 0.05, we *reject the null hypothesis* that District 1 and District 4 have the *same* amounts of vandalism reports per month (at the $\alpha = 0.05$ significance level).
+
+We may treat this as having found *some* evidence that there may be a relationship between district location and vandalism presence.
+:::
+
+::: {.callout-warning}
+## DCP2
+:::
+
+# Old Method (t-test)
+
+## Pooled Variance
+
+The old-fashioned way of computing a two-means hypothesis test was conducted through the $t$-distribution through the *pooled variance*
+
+$$t = \frac{\bar{x}_{1} - \bar{x}_{2}}{\sqrt{\frac{s_{p}^{2}}{n_{1}} + \frac{s_{p}^{2}}{n_{2}}}} \text{ with } s_{p}^{2} = \frac{(n_{1}-1)s_{1}^{2} + (n_{2}-1)^{2}s_{2}^{2}}{n_{1} + n_{2} - 2}$$
+
+
+```{r}
+vandalism_district_1 <- districts_1_4 |>
+  filter(CouncilDistrict == "1") |>
+  filter(OffenseCategory == "Vandalism") |>
+  pull(CrimeCount)
+vandalism_district_4 <- districts_1_4 |>
+  filter(CouncilDistrict == "4") |>
+  filter(OffenseCategory == "Vandalism") |>
+  pull(CrimeCount)
+xbar1 <- mean(vandalism_district_1)
+xbar2 <- mean(vandalism_district_4)
+s1 <- sd(vandalism_district_1)
+s2 <- sd(vandalism_district_4)
+n1 <- length(vandalism_district_1)
+n2 <- length(vandalism_district_4)
+pooled_var <- ((n1 - 1)*s1^2 + (n2-1)*s2^2) / (n1 + n2 - 2)
+t_stat <- (xbar1 - xbar2) / sqrt(pooled_var/n1 + pooled_var/n2)
+crit_val <- qt(c(0.025, 0.975), df = n1 + n2 - 2)
+```
+
+## Comparison
+
+::::: {.panel-tabset}
+
+## plots
+
+```{r}
+#| echo: false
+#| eval: true
+
+vnorm(crit_val, section = "tails") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "Critical Region",
+       subtitle = "Two-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+```
+
+::: {.callout-important}
+## Critical Region
+
+That is, in order to *reject* the null hypothesis, we wanted the $t$ statistic to be inside of the critical region.
+:::
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+
+p1 <- vnorm(crit_val, section = "tails") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "Critical Region",
+       subtitle = "Two-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+p2 <- vnorm(t_stat, section = "lower") +
+  geom_vline(aes(xintercept = t_stat),
+             color = "red", linewidth = 2) +
+  labs(title = "p-value",
+       subtitle = "Two-sided hypothesis test",
+       caption = "SML 201",
+       x = "t distribution") +
+  scale_x_continuous(breaks = t_stat,
+                     labels = "t statistic")
+
+# patchwork
+p1 / p2
+```
+
+:::::
+
+
+## t.test
+
+```{r}
+t.test(vandalism_district_1, vandalism_district_4, 
+       alternative = "two.sided")
+```
+
+::: {.callout-note collapse="true"}
+### Welch modification
+
+While the Student t test assumed that the two quantities had the *same variance*, the Welch modification (which `R` used above) handles cases where the variances may be different (and their pooled variance).
+:::
+
+::: {.callout-tip}
+## Some Evidence
+
+Since the p-value < 0.05, we *reject the null hypothesis* that District 1 and District 4 have the *same* amounts of vandalism reports per month (at the $\alpha = 0.05$ significance level).
+
+We may treat this as having found *some* evidence that there may be a relationship between district location and vandalism presence.
+:::
+
+
+# Regression Redux
+
+Let us return to linear regression and visit concepts that we skipped before.
+
+## Number of Courses versus Age
+
+::::: {.panel-tabset}
+
+## setup
+
+* response variable: `numCourses` (i.e. number of courses taken before this semester)
+* explanatory variable: `age`
+
+$$\hat{y} = \beta_{0} + \beta_{1}X_{1}$$
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+demo_long <- demo_df |>
+  filter(age >= 18 & age <= 21) |>
+  filter(!is.na(numCourses))
+
+demo_long |>
+  ggplot(aes(x = age, y = numCourses)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = TRUE) +
+  labs(title = "Number of Courses versus Age",
+       subtitle = "Is this slope significant?",
+       caption = "SML 201",
+       y = "number of courses taken\nbefore this semester") +
+  theme_minimal(base_size = 14)
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+demo_long <- demo_df |>
+  filter(age >= 18 & age <= 21) |>
+  filter(!is.na(numCourses))
+
+demo_long |>
+  ggplot(aes(x = age, y = numCourses)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = TRUE) +
+  labs(title = "Number of Courses versus Age",
+       subtitle = "Is this slope significant?",
+       caption = "SML 201",
+       y = "number of courses taken\nbefore this semester") +
+  theme_minimal(base_size = 14)
+```
+
+:::::
+
+## Model Statistics
+
+```{r}
+lin_fit <- lm(numCourses ~ age, data = demo_long)
+summary(lin_fit)
+```
+
+## NHST
+
+For a regression model, each coefficent is treated as a hypothesis test.
+
+* null hypothesis: coefficient $\beta_{1}$ *is* zero
+* alternative hypothesis: coefficient $\beta_{1}$ is nonzero
+
+$$H_{o}: \beta_{1} = 0$$
+$$H_{a}: \beta_{1} \neq 0$$
+
+```{r}
+# p-value (from summary of linear model)
+summary(lin_fit)$coefficients[2, 4]
+```
+
+
+::: {.callout-tip}
+## Some Evidence
+
+Since the p-value < 0.05, we have *reject the null hypothesis* that the $\beta_{1}$ coefficient is zero (at the $\alpha = 0.05$ significance level).
+
+We may treat this result as having found *some* evidence that there may be a relationship between age and and the number of courses taken.
+:::
+
+
+## GPA versus Shoe Size
+
+::::: {.panel-tabset}
+
+## setup
+
+* response variable: `GPA` 
+* explanatory variable: `shoeSize`
+
+$$\hat{y} = \beta_{0} + \beta_{1}X_{1}$$
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+demo_long <- demo_df |>
+  filter(GPA > 0 & GPA <= 4.0) |>
+  filter(shoeSize >= 5 & shoeSize <= 20)
+
+demo_long |>
+  ggplot(aes(x = shoeSize, y = GPA)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = TRUE) +
+  labs(title = "Number of Courses versus Age",
+       subtitle = "Is this slope significant?",
+       caption = "SML 201",
+       y = "number of courses taken\nbefore this semester") +
+  theme_minimal(base_size = 14)
+```
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+demo_long <- demo_df |>
+  filter(GPA > 0 & GPA <= 4.0) |>
+  filter(shoeSize >= 5 & shoeSize <= 20)
+
+demo_long |>
+  ggplot(aes(x = shoeSize, y = GPA)) +
+  geom_point() +
+  geom_smooth(formula = "y ~ x",
+              method = "lm",
+              se = TRUE) +
+  labs(title = "Number of Courses versus Age",
+       subtitle = "Is this slope significant?",
+       caption = "SML 201",
+       y = "number of courses taken\nbefore this semester") +
+  theme_minimal(base_size = 14)
+```
+
+:::::
+
+## Model Statistics
+
+```{r}
+lin_fit <- lm(GPA ~ shoeSize, data = demo_long)
+summary(lin_fit)
+```
+
+```{r}
+# p-value (from summary of linear model)
+summary(lin_fit)$coefficients[2, 4]
+```
+
+::: {.callout-warning}
+## Inconclusive
+
+Since the p-value > 0.05, we have *failed to reject the null hypothesis* that the $\beta_{1}$ coefficient is zero (at the $\alpha = 0.05$ significance level).
+
+We may treat this result as inconclusive or note that we have not found evidence here toward showing a relationship between GPA and shoe size.
+:::
+
+
+# Stargazing (visuals)
+
+::: {.callout-tip}
+## ggsignif
+
+The `ggsignif` package greatly enhances boxplots for "stargazing" for levels of significance.
+:::
+
+## Significant
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 400
+  ) +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+districts_1_4 |>
+  filter(OffenseCategory == "Vandalism") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 400
+  ) +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+:::::
+
+
+
+## Not Significant
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 140
+  ) +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+districts_1_4 |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 140
+  ) +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+:::::
+
+::: {.callout-warning}
+## DCP3
+:::
+
+# Toward ANOVA
+
+## Significant
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+offense_cat |>
+  filter(OffenseCategory == "Vandalism") |>
+  mutate(CouncilDistrict = factor(CouncilDistrict)) |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 400
+  ) +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+offense_cat |>
+  filter(OffenseCategory == "Vandalism") |>
+  mutate(CouncilDistrict = factor(CouncilDistrict)) |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 400
+  ) +
+  labs(title = "Does District Location affect Vandalism Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+:::::
+
+
+
+## Not Significant
+
+::::: {.panel-tabset}
+
+## plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+offense_cat |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  mutate(CouncilDistrict = factor(CouncilDistrict)) |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 140
+  ) +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+
+## code
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| warning: false
+
+offense_cat |>
+  filter(OffenseCategory == "Fraud Offenses") |>
+  mutate(CouncilDistrict = factor(CouncilDistrict)) |>
+  ggplot(aes(x = CouncilDistrict, 
+             y = CrimeCount,
+             fill = CouncilDistrict,
+             group = CouncilDistrict)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("1", "4")),
+    map_signif_level = TRUE,
+    y_position = 140
+  ) +
+  labs(title = "Does District Location affect Fraud Prevalance?",
+       subtitle = "(stars of significance)",
+       caption = "SML 201",
+       x = "council district", y = "crime reports (per month)") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "none")
+```
+
+:::::
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* Due Friday (April 3)
+  * Precept 8
+  * Historical Case Studies in Ethics (AI allowed!)
+
+* Project 2 (due April 7)
+* Exam 2 (April 23)
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+![Yoda knows](Yoda_NHST.png)
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+* [ggsignif vignette](https://cran.r-project.org/web/packages/ggsignif/vignettes/intro.html)
+
+===
+
+Some students were asking about how to specifically show the endpoints of the confidence interval on the horizontal axis of the histogram that is produced by visualize.  This skill is not required for Precept 8 or other tasks that ask for visualize, but I went ahead and assembled a quick example below.
+
+    1. `scale_x_continuous` to set breaks (locations) and labels
+    2. needed to convert `ci_per` from a tibble to a vector
+
+```{r}
+#| eval: false
+library("palmerpenguins")
+bootstrap_distribution <- penguins |>
+  filter(!is.na(body_mass_g)) |>
+  specify(response = body_mass_g) |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "mean")
+
+ci_per <- bootstrap_distribution |> get_ci(level = 0.95)
+ci_vec <- as.vector(unlist(ci_per))
+
+bootstrap_distribution |>
+  visualize() +
+  labs(title = "Palmer Penguins",
+       subtitle = "Confidence Interval for Body Mass",
+       caption = "SML 201",
+       x = "body mass (grams)") +
+  scale_x_continuous(breaks = ci_vec, 
+                     labels = round(ci_vec, 1)) +
+  shade_ci(ci_per, color = "black", fill = "orange") +
+  theme_minimal(base_size = 16)
+```
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
