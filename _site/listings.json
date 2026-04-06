@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/18_intro_ml/18_intro_ml.html",
       "/posts/17_anova/17_anova.html",
       "/posts/16_nhst_two_sided/16_nhst_two_sided.html",
       "/posts/15_NHST_one_sided/15_NHST_one_sided.html",
