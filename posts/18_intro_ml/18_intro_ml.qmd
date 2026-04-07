@@ -692,6 +692,91 @@ cv_error
 ```
 
 
+# Normality
+
+::: {.callout-note}
+## ANOVA Assumptions
+
+For assurance in the results of ANOVA (analysis of variance), researchers usually check the following assumptions
+
+1. **Normality**: The data within each group should be normally distributed.
+2. **Homogeneity of variance**: The variance of the data within each group should be equal.
+3. **Independence**: The observations within each group should be independent.
+4. **Random sampling**: Observations within each group have been sampled randomly and are independent of each other.
+
+* source: [Editage](https://www.editage.com/blog/anova-types-uses-assumptions-a-quick-guide-for-biomedical-researchers/)
+
+:::
+
+So, how do we check if our data is normally distributed?
+
+## QQ Plots
+
+One way is to construct **quantile-quantile plots**.  Let us proceed with some more [ggplot] tech.
+
+```{r}
+bike_df |>
+  ggplot(aes(sample = height)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(title = "QQ Plot",
+       subtitle = "Height looks to be normally distributed\nexcept for lower level amounts",
+       caption = "Source: Dream House Finance",
+       x = "quantile 1", y = "quantile 2") +
+  theme_minimal()
+```
+
+```{r}
+bike_df |>
+  ggplot(aes(sample = weight)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(title = "QQ Plot",
+       subtitle = "Weight looks to be normally distributed",
+       caption = "Source: Dream House Finance",
+       x = "quantile 1", y = "quantile 2") +
+  theme_minimal()
+```
+
+```{r}
+bike_df |>
+  ggplot(aes(sample = age)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(title = "QQ Plot",
+       subtitle = "Age looks to be normally distributed",
+       caption = "Source: Dream House Finance",
+       x = "quantile 1", y = "quantile 2") +
+  theme_minimal()
+```
+
+
+## Shapiro-Wilk Test
+
+* null hypothesis: data is normally distributed
+* alternative hypothesis: data is not normally distributed
+
+```{r}
+stats::shapiro.test(bike_df$height)
+```
+
+We *reject* the null hypothesis that the height data was normally distributed.
+
+
+```{r}
+stats::shapiro.test(bike_df$weight)
+```
+
+We *fail to reject* the null hypothesis that the weight data was normally distributed.
+
+
+```{r}
+stats::shapiro.test(bike_df$age)
+```
+
+We *fail to reject* the null hypothesis that the age data was normally distributed.
+
+
 # Pitch
 
 ![data science is growing!](growing_occupations.png)
