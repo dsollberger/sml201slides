@@ -1,0 +1,648 @@
+---
+title: "21: Effect Size"
+author: "Derek Sollberger"
+
+date: "2026-04-16"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Start
+
+
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* **Goal**: Move beyond p-values
+
+* **Objectives**: 
+
+  * `tidymodels` logistic regression
+  * correlation tests
+  * effect size
+  * power analyses
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+![Big Block of Cheese Day](big_block_of_cheese_day.png)
+
+* image source: [Daily Princetonian](https://projects.dailyprincetonian.com/big-block-of-cheese-day/)
+:::
+
+::::
+
+::: {.callout-note collapse="true"}
+## Libraries and Loading the Data
+
+```{r}
+#| message: false
+#| warning: false
+
+library("corrplot")
+library("effectsize")
+library("gt")
+library("janitor")
+library("tidyclust")
+library("tidymodels")
+library("tidyverse")
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+heart_df <- readr::read_csv("heart_failure_clinical_records.csv") |>
+  janitor::clean_names()
+
+# user-defined function
+cor2text <- function(x,y, num_digits = 4){
+  # This function will compute a correlation, round the result, and describe the results
+  # INPUTS:
+  ## x: numerical vector
+  ## y: numerical vector
+  ## num_digits: number of digits for rounding (default: 4)
+  # OUTPUT: string
+  
+  r = cor(x,y, use = "pairwise.complete.obs")
+  
+  cor_des <- case_when(
+    r >= 0.7 ~ "strongly and positively correlated",
+    r >= 0.4 & r < 0.7 ~ "slightly and positively correlated",
+    r <= -0.4 & r > -0.7 ~ "slightly and negatively correlated",
+    r <= -0.7 ~ "strongly and negatively correlated",
+    .default = "virtually uncorrelated"
+  )
+  
+  #return
+  paste0("r = ", round(r, num_digits),
+         ", ", cor_des)
+}
+```
+
+:::
+
+::: {.callout-tip}
+
+## Abstract
+
+"This dataset contains the medical records of 5000 patients who had heart failure, collected during their follow-up period, where each patient profile has 13 clinical features."
+
+:::
+
+::: {.callout-note}
+
+## Data Dictionary
+
+* **age**: age of the patient (years)
+* **anaemia**: decrease of red blood cells or hemoglobin (Boolean)
+* **creatinine phosphokinase** (CPK): level of the CPK enzyme in the blood (mcg/L)
+* **diabetes**: if the patient has diabetes (Boolean)
+* **ejection fraction**: percentage of blood leaving the heart at each contraction (percentage)
+* **high blood pressure**: if the patient has hypertension (Boolean)
+* **platelets**: platelets in the blood (kiloplatelets/mL)
+* **sex**: woman or man (binary)
+* **serum creatinine**: level of serum creatinine in the blood (mg/dL)
+* **serum sodium**: level of serum sodium in the blood (mEq/L)
+* **smoking**: if the patient smokes or not (Boolean)
+* **time**: follow-up period (days)
+* **death**: if the patient died during the follow-up period (Boolean)
+
+:::
+
+::: {.callout-warning}
+
+## Source
+
+This data set was from the classic UC Irvine Machine Learning repository.  At the time of this writing (2026-04-11), that repository was down, so the data and the documentation above were provided by [Aadarsh Velu](https://www.kaggle.com/datasets/aadarshvelu/heart-failure-prediction-clinical-records)
+
+:::
+
+# Logistic Regression
+
+## Wrangling
+
+```{r}
+heart_df <- heart_df |>
+  mutate(death = factor(death), #turn into categorical variable
+         sex = ifelse(sex == "F", 0, 1))
+```
+
+
+## Response Variable
+
+From the explanatory variables, we are trying to find patterns in the data relating to the death of patients.
+
+::::: {.panel-tabset}
+
+### plot
+
+```{r}
+#| echo: false
+#| eval: true
+
+heart_df |>
+  ggplot(aes(x = death, fill = death)) +
+  geom_bar(stat = "count") +
+  labs(title = "Heart Failure Data",
+       subtitle = "class imbalance",
+       caption = "Source: UCI Machine Learning Repository",
+       x = "death (Boolean)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+### code
+
+```{r}
+#| echo: true
+#| eval: false
+
+heart_df |>
+  ggplot(aes(x = death, fill = death)) +
+  geom_bar(stat = "count") +
+  labs(title = "Heart Failure Data",
+       subtitle = "class imbalance",
+       caption = "Source: UCI Machine Learning Repository",
+       x = "death (Boolean)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+:::::
+
+## Baseline Metric
+
+```{r}
+heart_df |>
+  tabyl(death) |>
+  adorn_totals("row") |>
+  adorn_pct_formatting()
+```
+Our classification models need to exceed 68.6 percent in accuracy.
+
+
+## Preprocessing
+
+```{r}
+ridge_recipe <- recipe(death ~ ., data = heart_df) |>
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_predictors())
+```
+
+
+## Data Split
+
+To help generalize our processes, we split the data into training and testing sets.
+
+```{r}
+set.seed(201)
+heart_split <- initial_split(heart_df, strata = "death")
+heart_train <- training(heart_split)
+heart_test  <- testing(heart_split)
+heart_fold  <- vfold_cv(heart_train, v = 10)
+```
+
+## Baseline Model
+
+```{r}
+ridge_fit <- logistic_reg(mixture = 0, penalty = 0) |> 
+  set_engine("glmnet") |>
+  fit(death ~ ., data = heart_train)
+tidy(ridge_fit)
+```
+
+
+## Grid Search
+
+**Ridge regression** *penalizes* model coefficients that may weight some variables too much more so than others.
+
+```{r}
+# mixture = 0 for ridge regression
+ridge_spec <- logistic_reg(mixture = 0, penalty = tune()) |>
+  set_engine("glmnet")
+
+ridge_workflow <- workflow() |> 
+  add_recipe(ridge_recipe) |>
+  add_model(ridge_spec)
+
+lambda_grid <- grid_regular(penalty(range = c(-3, 3)),
+                            levels = 25)
+```
+
+We *train* the models on the **training data** and perform a **grid search** to find an optimal value for the penalization *hyperparameter*.
+
+```{r}
+ridge_grid <- tune_grid(
+  ridge_workflow,
+  resamples = heart_fold, 
+  grid = lambda_grid
+)
+
+best_penalty <- select_best(ridge_grid, metric = "accuracy") |>
+  pull(penalty)
+```
+
+## Evaluation
+
+Finally, we *evaluate* our model with a **metric** (such as accuracy for a classification task) on the **test data**
+
+```{r}
+predictions <- predict(ridge_fit, 
+                       new_data = heart_test,
+                       penalty = best_penalty)
+true_values <- heart_test |> select(death)
+
+# accuracy
+mean(true_values == predictions)
+```
+
+::: {.callout-warning}
+## DCP1
+:::
+
+
+
+# LASSO Regression
+
+## Baseline Model
+
+```{r}
+lasso_fit <- logistic_reg(mixture = 1, penalty = 0) |> 
+  set_engine("glmnet") |>
+  fit(death ~ ., data = heart_train)
+
+lasso_recipe <- recipe(death ~ ., data = heart_df) |>
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors()) |>
+  step_normalize(all_predictors())
+
+lasso_spec <- logistic_reg(mixture = 1, penalty = tune()) |>
+  set_engine("glmnet")
+```
+
+## Grid Search
+
+**Ridge regression** *penalizes* model coefficients that may weight some variables too much more so than others.
+
+```{r}
+# mixture = 1 for LASSO regression
+lasso_spec <- logistic_reg(mixture = 1, penalty = tune()) |>
+  set_engine("glmnet")
+
+lasso_workflow <- workflow() |> 
+  add_recipe(lasso_recipe) |>
+  add_model(lasso_spec)
+
+lambda_grid <- grid_regular(penalty(range = c(-3, 3)),
+                            levels = 25)
+```
+
+We *train* the models on the **training data** and perform a **grid search** to find an optimal value for the penalization *hyperparameter*.
+
+```{r}
+lasso_grid <- tune_grid(
+  lasso_workflow,
+  resamples = heart_fold, 
+  grid = lambda_grid
+)
+
+best_penalty <- select_best(lasso_grid, metric = "accuracy") |>
+  pull(penalty)
+```
+
+## Evaluation
+
+Finally, we *evaluate* our model with a **metric** (such as accuracy for a classification task) on the **test data**
+
+```{r}
+predictions <- predict(lasso_fit, 
+                       new_data = heart_test,
+                       penalty = best_penalty)
+true_values <- heart_test |> select(death)
+
+# accuracy
+mean(true_values == predictions)
+```
+
+## Discovered Model
+
+::::: {.panel-tabset}
+
+### gt table
+
+```{r}
+#| echo: false
+#| eval: true
+tidy(lasso_fit, penalty = best_penalty) |>
+  select(term, estimate) |>
+  arrange(desc(abs(estimate))) |>
+  gt() |>
+  cols_align(align = "right") |>
+  fmt_number(decimals = 6) |>
+  tab_footnote(footnote = "Source: UCI Machine Learning Repository") |>
+  tab_header(
+    title = "Heart Failure Data",
+    subtitle = "Possible Explanatory Varibles"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#E77500"),
+      cell_text(weight = "bold")),
+    locations = cells_body(rows = abs(estimate) > 1e-6)
+  )
+```
+
+### gt code
+
+```{r}
+#| echo: true
+#| eval: false
+tidy(lasso_fit, penalty = best_penalty) |>
+  select(term, estimate) |>
+  arrange(desc(abs(estimate))) |>
+  gt() |>
+  cols_align(align = "right") |>
+  fmt_number(decimals = 6) |>
+  tab_footnote(footnote = "Source: UCI Machine Learning Repository") |>
+  tab_header(
+    title = "Heart Failure Data",
+    subtitle = "Possible Explanatory Varibles"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "#E77500"),
+      cell_text(weight = "bold")),
+    locations = cells_body(rows = abs(estimate) > 1e-6)
+  )
+```
+
+:::::
+
+::: {.callout-warning}
+## DCP2
+:::
+
+
+# Correlation Tests
+
+## Hypothesis Tests
+
+* null hypothesis: correlation is zero
+* alternative hypothesis: we may have some evidence of a linear relationship
+
+$$\begin{array}{rrcl}
+H_{0}: & r & = & 0 \\
+H_{a}: & r & \neq & 0 \\
+\end{array}$$
+
+
+## Not Significant
+
+```{r}
+cor(heart_df$creatinine_phosphokinase,
+    heart_df$serum_sodium,
+    use = "pairwise.complete.obs")
+```
+
+```{r}
+cor.test(heart_df$creatinine_phosphokinase,
+    heart_df$serum_sodium)
+```
+
+::: {.callout-warning}
+## interpretation
+
+Since the p-value is greater than 0.05, we *fail to reject* the null hypothesis that there is zero correlation between creatinine phosphokinase and serum sodium (at the $\alpha = 0.05$ significance level).
+:::
+
+
+## Significant
+
+```{r}
+cor(heart_df$serum_creatinine,
+    heart_df$serum_sodium,
+    use = "pairwise.complete.obs")
+```
+
+```{r}
+cor.test(heart_df$serum_creatinine,
+    heart_df$serum_sodium)
+```
+
+::: {.callout-tip}
+## interpretation
+
+Since the p-value is less than 0.05, we *reject* the null hypothesis that there is zero correlation between serum creatinine and serum sodium (at the $\alpha = 0.05$ significance level).
+
+We may have found some evidence of a linear relationship between serum creatinine and serum sodium measurements.
+:::
+
+::: {.callout-warning}
+## DCP3
+:::
+
+
+# Effect Sizes
+
+## Cohens h
+
+[Cohen's h](https://en.wikipedia.org/wiki/Cohen%27s_h) is a measure of distance between two proportions
+
+$$h = |2\text{arcsin}\sqrt{p_{1}} - 2\text{arcsin}\sqrt{p_{2}}|$$
+
+* suggested interpretation:
+
+    * $h = 0.20$: "small effect size"
+    * $h = 0.50$: "medium effect size"
+    * $h = 0.80$: "large effect size"
+
+## Cohen's d
+
+$$d = \frac{\bar{x}_{1} - \bar{x}_{2}}{s_\text{pooled}}$$
+
+with pooled standard deviation
+
+$$s = \sqrt{
+  \frac{(n_{1} - 1)s_{1}^{2} + (n_{2} - 1)s_{2}^{2}}{n_{1} + n_{2} - 2}
+}$$
+
+
+* suggested interpretation:
+
+    * $d = 0.20$: "small effect size"
+    * $d = 0.50$: "medium effect size"
+    * $d = 0.80$: "large effect size"
+
+```{r}
+effectsize::cohens_d(platelets ~ death, data = heart_df)
+```
+
+```{r}
+effectsize::cohens_d(serum_creatinine ~ death, data = heart_df)
+```
+
+
+# Power Analyses
+
+## Type I and Type II
+
+* **Type I errors**: false positive
+* **Type II errors**: false negative
+
+::: {.callout-note}
+### Power
+
+The **power** of a NHST (null hypothesis significance test) is the probability of correctly rejecting a false null hypothesis.
+
+$$\text{power} = 1 - \beta$$
+
+where $\beta$ is the Type II error rate.
+:::
+
+
+## Measuring Power
+
+```{r}
+mean_0 <- heart_df |>
+  filter(death == 0) |>
+  summarize(xbar = mean(serum_creatinine, na.rm = TRUE)) |>
+  unlist()
+mean_1 <- heart_df |>
+  filter(death == 1) |>
+  summarize(xbar = mean(serum_creatinine, na.rm = TRUE)) |>
+  unlist()
+diff_in_means = mean_1 - mean_0
+pooled_sd <- effectsize::sd_pooled(
+  heart_df |> filter(death == 0) |> pull(serum_creatinine),
+  heart_df |> filter(death == 1) |> pull(serum_creatinine),
+)
+```
+
+```{r}
+power.t.test(
+  alternative = "one.sided",
+  delta = diff_in_means,
+  n = 1500, #group size
+  # power = ? #what we are trying to compute
+  sd = pooled_sd
+)
+```
+
+
+## Sample Size
+
+::: {.callout-tip}
+### Finding Sample Size
+
+We use a **power analysis** to compute a *minimum sample size* (for each group) needed to achieve 
+
+$$\begin{array}{rcll}
+  \alpha & = & 0.05 & \text{significance level} \\
+  1 - \beta & = & 0.80 & \text{power level} \\
+\end{array}$$
+:::
+
+```{r}
+power.t.test(
+  alternative = "one.sided",
+  delta = diff_in_means,
+  #n = ?, #what we are trying to find
+  power = 0.80,
+  sd = pooled_sd
+)
+```
+
+* This exploration should have at least $n = 26$ in each group to try to meet these research goals.
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* Precept 10
+* Reading Week 11
+* CLO Assessment (survey)
+* Exam 2 (April 23)
+  * check location and other info in Canvas
+* Project 3
+  * assigned: April 24
+  * due: May 11
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="40%"}
+{{< video https://www.youtube.com/watch?v=LXD4MGINIzQ >}}
+
+* last-minute exam advice from 5 Second Films ([YouTube](https://www.youtube.com/watch?v=LXD4MGINIzQ))
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+* [correlograms](https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/#correlograms) by Antoine Soetewey
+* [correlation tests](https://tuos-bio-data-skills.github.io/intro-stats-book/correlation-tests.html) from *Introductory Biostatistics* with R by Dylan Z. Childs, Bethan J. Hindle and Philip H. Warren
+* [power analyses by simulation](https://iro.uiowa.edu/view/pdfCoverPage?instCode=01IOWA_INST&filePid=13675101040002771&download=true) by Brandon LeBeau
+
+:::
+
+
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
