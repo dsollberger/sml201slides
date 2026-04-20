@@ -1,0 +1,999 @@
+---
+title: "22: Unsupervised Learning"
+author: "Derek Sollberger"
+date: "2026-04-21"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Start
+
+::: {.callout-note collapse="true"}
+## Libraries and Loading the Data
+
+```{r}
+#| message: false
+#| warning: false
+
+library("corrplot")
+library("DiagrammeR")#easy coding of flowcharts
+library("GGally")    #extensions for ggplot
+library("ggsignif")  #show significance levels on boxplots
+library("gt")
+library("patchwork") #arrange plots
+library("sf")
+library("tidyclust")
+library("tidymodels")
+library("tidyverse") #general framework for data wrangling
+
+# school colors
+princeton_orange <- "#E77500"
+princeton_black  <- "#121212"
+
+# data set: College Scorecard
+# college_raw <- readr::read_csv('Most-Recent-Cohorts-Institution.csv')
+# college_df <- college_raw |>
+#   select(INSTNM, UGDS,
+#          STABBR, LATITUDE, LONGITUDE,
+#          ADM_RATE,
+#          # SATMT75, SATWR75,
+#          C150_4, RET_FT4,
+#          MD_EARN_WNE_P10, ENDOWBEGIN) |>
+#   drop_na() |>
+#   filter(LONGITUDE > -125 & LONGITUDE < -67) |>
+#   filter(LATITUDE > 25 & LATITUDE < 49)
+# readr::write_csv(college_df, "college_data.csv")
+college_df <- readr::read_csv("college_data.csv")
+# college_df <- readr::read_csv("https://raw.githubusercontent.com/dsollberger/sml201slides/refs/heads/main/data/college_data.csv")
+states_shp <- readr::read_rds("us_states_shp.rds")
+# states_shp <- readr::read_rds("https://raw.githubusercontent.com/dsollberger/sml201slides/refs/heads/main/data/us_states_shp.rds")
+
+set.seed(201)
+control_data <- data.frame(
+  age = sample(18:65, size = 100, replace = TRUE),
+  height = round(rnorm(100, 65, 8)),
+  sex = sample(c("female", "male"), size = 100, replace = TRUE),
+  group = "control",
+  weight_before = round(rnorm(100, 150, 15))
+) |>
+  #coded like Gaussian white noise
+  mutate(weight_after = round(weight_before - rnorm(100, 0, 6)))
+
+treatment_data <- data.frame(
+  age = sample(18:65, size = 100, replace = TRUE),
+  height = round(rnorm(100, 65, 8)),
+  sex = sample(c("female", "male"), size = 100, replace = TRUE),
+  group = "treatment",
+  weight_before = round(rnorm(100, 150, 15))
+) |>
+  #coded like Gaussian white noise
+  mutate(weight_after = round(weight_before - rnorm(100, 15, 6)))
+
+GLP_raw <- rbind(control_data, treatment_data) |>
+  sample_frac() |>
+  mutate(patient_id = 1:200, .before = "age")
+
+# helper function
+vnorm <- function(x, mu = 0, sigma = 1, section = "lower"){
+  
+  # bell curve
+  x_vals <- seq(mu - 4*sigma, mu + 4*sigma, length.out = 201)
+  y_vals <- dnorm(x_vals, mu, sigma)
+  df_for_graph <- data.frame(x_vals, y_vals)
+
+  # outline shaded regions
+  if(length(x) == 1){
+    shade_left <- rbind(c(x[1],0), df_for_graph |>
+                        filter(x_vals < x[1]))
+    shade_right <- rbind(c(x[1],0), df_for_graph |>
+                        filter(x_vals > x[1]))
+  }
+  if(length(x) == 2){
+    shade_between <- rbind(c(x[1],0),
+                       df_for_graph |>
+                         filter(x_vals > x[1] &
+                                  x_vals < x[2]),
+                       c(x[2],0))
+    shade_tails <- rbind(df_for_graph |>
+                        filter(x_vals < x[1]),
+                     c(x[1],0),
+                     c(x[2],0),
+                     df_for_graph |>
+                        filter(x_vals > x[2]))
+  }
+  if(section == "lower"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_left,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(pnorm(x,mu,sigma), 4)
+  }
+  if(section == "upper"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_right,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- 1 - round(pnorm(x,mu,sigma), 4)
+  }
+  if(section == "between"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_between,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(diff(pnorm(x,mu,sigma)), 4)
+  }
+  if(section == "tails"){
+    bell_curve <- df_for_graph |>
+      ggplot(aes(x_vals, y_vals)) +
+      geom_polygon(aes(x = x_vals, y = y_vals),
+                   data = shade_tails,
+                   fill = "#E77500",) +
+      geom_line(color = "gray50", linewidth = 2)
+    prob_val <- round(1 - diff(pnorm(x,mu,sigma)), 4)
+  }
+  
+  # plot bell curve
+  bell_curve + 
+    labs(subtitle = paste0("Probability: ", prob_val),
+         caption = "SML 201", y = "") +
+    theme_minimal()
+}
+
+```
+
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* **Goal**: Explore topics in unsupervised learning
+
+
+:::
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="40%"}
+* **Objectives**: 
+
+- clustering
+- workflows
+
+:::
+
+::::
+
+## Data: College Scorecard
+
+Today's data comes from [College Scorecard](https://collegescorecard.ed.gov/data).
+
+* `INSTNM`: institution name
+* `UGDS`: undergraduate enrollment (number of students)
+* `LATITUDE`
+* `LONGITUDE`
+* `ADM_RATE`: admission rate
+* `C150_4`: completion rate (at 150% of expected time for 4-year degrees)
+* `RET_FT4`: retention rate (full-time students, 4-year institutions)
+* `MD_EARN_WNE_P10`: median earnings, 10 years after graduation (USD)
+* `ENDOWBEGIN`: endowment (beginning of school year)
+
+## Correlation Plot
+
+```{r}
+college_df |>
+  select_if(is.numeric) |>
+  cor(use = "pairwise.complete.obs") |>
+  corrplot(method = "ellipse",
+           order = "FPC",
+           type = "upper")
+```
+
+
+
+
+# k-means Clustering
+
+## Scene
+
+```{r}
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = STABBR),
+             data = college_df) +
+  labs(title = "American Universities",
+       subtitle = "A selection of insitutions in the continental USA",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+## A first foray
+
+```{r}
+set.seed(20241121)
+k4_fit <- k_means(num_clusters = 4) |>
+  set_engine("stats") |>
+  fit(~ LATITUDE + LONGITUDE, data = college_df)
+```
+
+## Centroids
+
+```{r}
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE),
+             color = "gray60",
+             data = college_df) +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = .cluster),
+             data = extract_centroids(k4_fit),
+             size = 7) +
+  labs(title = "Centroids",
+       subtitle = "The clusters will be picked by distance to the nearest centroid",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+## Clusters
+
+```{r}
+cluster_df <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k4_fit) |>
+           pull())
+
+states_shp |>
+  ggplot() +
+  geom_sf(color = "gray80", fill = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, 
+                 color = cluster_num),
+             data = cluster_df) +
+  labs(title = "Clusters",
+       subtitle = "k = 4",
+       caption = "Source: College Scorecard",
+       x = "", y = "") +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+::: {.callout-note}
+## Considerations
+
+1. How do we place the centroids? Randomly?
+2. How do we pick the number of clusters?
+:::
+
+
+
+
+# Error Ratios
+
+## Try several arrangements
+
+```{r}
+N <- 10 #max possible number of clusters
+k_vals <- 1:N
+err_ratios <- rep(NA, N)
+
+for(i in 1:N){
+  kmeans_fit <- k_means(num_clusters = k_vals[i]) |>
+    set_engine("stats") |>
+    fit(~ LATITUDE + LONGITUDE, data = college_df)
+  err_ratios[i] <- kmeans_fit$fit$tot.withinss / kmeans_fit$fit$totss
+}
+```
+
+## Scree Plot
+
+```{r}
+df_for_graph <- data.frame(num_clusters = 1:N,
+                           err_ratios)
+
+df_for_graph |>
+  ggplot() +
+  geom_point(aes(x = factor(num_clusters), y = err_ratios),
+             size = 3) +
+  geom_line(aes(x = num_clusters, y = err_ratios)) +
+  labs(title = "Scree Plot",
+       subtitle = "Aiming to choose the number of clusters",
+       caption = "SML 201",
+       x = "number of clusters",
+       y = "within/total SSE ratio") +
+  theme_minimal(base_size = 14)
+```
+
+::: {.callout-warning}
+## DCP1
+:::
+
+
+# Workflow
+
+::::: {.panel-tabset}
+
+## Flowchart
+
+```{r}
+#| echo: false
+#| eval: true
+DiagrammeR::mermaid("
+graph LR
+
+data_frame --> cross_validation
+data_frame --> recipe
+recipe --> workflow
+spec --> workflow
+grid_search --> tuning
+workflow --> tuning
+cross_validation --> tuning
+
+tuning --> eval_metrics
+")
+```
+
+## Mermaid code
+
+```{r}
+#| echo: true
+#| eval: false
+DiagrammeR::mermaid("
+graph LR
+
+data_frame --> cross_validation
+data_frame --> recipe
+recipe --> workflow
+spec --> workflow
+grid_search --> tuning
+workflow --> tuning
+cross_validation --> tuning
+
+tuning --> eval_metrics
+")
+```
+
+:::::
+
+## Tidymodels
+
+```{r}
+# cross-validation folds
+college_cv <- vfold_cv(college_df, v = 10)
+
+# specification
+college_spec <- k_means(num_clusters = tune())
+
+# recipe
+college_recipe <- recipe(~., data = college_df |>
+                         select_if(is.numeric)) |>
+  step_normalize()
+
+# workflow
+college_workflow <- workflow(college_recipe, college_spec)
+
+# parameter grid
+kvals_grid <- grid_regular(num_clusters(), levels = 10)
+
+# tuning
+tune_results <- tune_cluster(
+  college_workflow,
+  resamples = college_cv,
+  grid = kvals_grid,
+  metrics = cluster_metric_set(sse_within_total, sse_total, sse_ratio)
+)
+```
+
+## Scree Plot
+
+```{r}
+tune_results |>
+  collect_metrics() |>
+  filter(.metric == "sse_ratio") |>
+  ggplot(aes(x = num_clusters, y = mean)) +
+  geom_point(aes(x = factor(num_clusters), y = mean),
+             size = 3) +
+  geom_line() +
+  labs(title = "Scree Plot",
+       subtitle = "Aiming to choose the number of clusters",
+       caption = "SML 201",
+       x = "number of clusters",
+       y = "within/total SSE ratio") +
+  theme_minimal(base_size = 14)
+```
+
+# Pairs Plot
+
+```{r}
+#| message: false
+college_df |>
+  select_if(is.numeric) |>
+  GGally::ggpairs(title = "American Universities")
+```
+
+```{r}
+set.seed(20241121)
+k4_fit <- k_means(num_clusters = 4) |>
+  set_engine("stats") |>
+  fit(~., data = college_df |>
+        select_if(is.numeric))
+college_k4 <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k4_fit) |>
+           pull())
+```
+
+```{r}
+#| message: false
+college_k4 |>
+  GGally::ggpairs(columns = c(2, 6:9),
+                  aes(color = cluster_num)) +
+  scale_color_brewer(palette = "Dark2")
+```
+
+
+
+
+# Classification
+
+Out of interest, we now seek smaller cluster sizes (i.e. fewer colleges in each cluster), so let us explore an arrangement with $k = 10$ clusters.
+
+```{r}
+set.seed(20241121)
+k10_fit <- k_means(num_clusters = 10) |>
+  set_engine("stats") |>
+  fit(~., data = college_df |>
+        select_if(is.numeric) |>
+        mutate(across(where(is.numeric), scale)))
+college_k10 <- college_df |>
+  mutate(cluster_num = extract_cluster_assignment(k10_fit) |>
+           pull())
+```
+
+```{r}
+p_clust_id <- college_k10 |> 
+  filter(INSTNM == "Princeton University") |>
+  pull(cluster_num)
+```
+
+```{r}
+college_k10 |>
+  filter(cluster_num == p_clust_id)
+```
+::::: {.panel-tabset}
+
+## table
+
+```{r}
+#| echo: false
+#| eval: true
+college_k10 |>
+  filter(cluster_num == p_clust_id) |>
+  select(INSTNM, STABBR, UGDS,
+         ADM_RATE, C150_4, RET_FT4,
+         MD_EARN_WNE_P10) |>
+  rename(university = INSTNM,
+         state = STABBR,
+         enrollment = UGDS,
+         income = MD_EARN_WNE_P10) |>
+  mutate(admit_rate = 100*ADM_RATE,
+         grad_rate = 100*C150_4,
+         retention = 100*RET_FT4,) |>
+  select(university, state, enrollment,
+         admit_rate, grad_rate, retention,
+         income) |>
+  arrange(university) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Source: College Scorecard") |>
+  tab_header(
+    title = "The Princeton Cluster",
+    subtitle = "of similar universities"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "#E77500"),
+                 cell_text(color = "#121212",
+                           weight = "bold")),
+    locations = cells_body(rows = university == "Princeton University")
+  )
+```
+
+## gt
+
+```{r}
+#| echo: true
+#| eval: false
+college_k10 |>
+  filter(cluster_num == p_clust_id) |>
+  select(INSTNM, STABBR, UGDS,
+         ADM_RATE, C150_4, RET_FT4,
+         MD_EARN_WNE_P10) |>
+  rename(university = INSTNM,
+         state = STABBR,
+         enrollment = UGDS,
+         income = MD_EARN_WNE_P10) |>
+  mutate(admit_rate = 100*ADM_RATE,
+         grad_rate = 100*C150_4,
+         retention = 100*RET_FT4,) |>
+  select(university, state, enrollment,
+         admit_rate, grad_rate, retention,
+         income) |>
+  arrange(university) |>
+  gt() |>
+  cols_align(align = "center") |>
+  tab_footnote(footnote = "Source: College Scorecard") |>
+  tab_header(
+    title = "The Princeton Cluster",
+    subtitle = "of similar universities"
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(cell_fill(color = "#E77500"),
+                 cell_text(color = "#121212",
+                           weight = "bold")),
+    locations = cells_body(rows = university == "Princeton University")
+  )
+```
+
+
+:::::
+
+::: {.callout-warning}
+## DCP2
+:::
+
+
+# Review Session
+
+## Data
+
+> "GLP [Glucagon-like peptide-1] agonists are medications that help lower blood sugar levels and promote weight loss." --- Cleveland Clinic
+
+We are going to take hypothetical data and pretend that we are analyzing results from clinical trials in hopes of obtaining approval from the Food and Drug Administration.
+
+
+### Data Preparation
+
+* add a column for
+
+$$\text{weight loss} = \text{weight before} - \text{weight after}$$
+
+* remove the `patient_id` column
+
+```{r}
+GLP_df <- GLP_raw |>
+  mutate(weight_loss = weight_before - weight_after) |>
+  select(-patient_id)
+```
+
+## Probability
+
+Assuming a normal distribution, what is the probability that a randomly selected person in the treatment group lost at least 10 pounds?
+
+```{r}
+GLP_df |>
+  filter(group == "treatment") |>
+  summarize(xbar = mean(weight_loss),
+            s = sd(weight_loss))
+
+pnorm(10, 16.1, 5.8232, lower.tail = FALSE)
+```
+
+```{r}
+vnorm(10, 16.1, 5.8232, section = "upper") +
+  labs(title = "GLP Case Study",
+       subtitle = "probability of losing at least 10 pounds",
+       caption = "SML 201\n(hypothetical data)",
+       x = "weight loss (pounds)")
+```
+
+
+## Confidence Intervals
+
+Use `infer::visualize` to construct confidence intervals for `weight_loss` for both the control and treatment groups.
+
+```{r}
+bootstrap_distribution <- GLP_df |>
+  filter(group == "control") |>
+  specify(response = weight_loss) |>
+  generate(reps = 1337, type = "bootstrap") |>
+  calculate(stat = "mean")
+
+bootstrap_distribution |>
+  visualize() +
+  shade_ci(endpoints = bootstrap_distribution |>
+             get_ci(level = 0.95, type = "percentile"),
+           color = princeton_black,
+           fill = princeton_orange) +
+  labs(title = "GLP Clinical Trials",
+       subtitle = "control group",
+       caption = "(hypothetical data)",
+       x = "weight loss", y = "number of patients") +
+  theme_minimal(base_size = 16)
+```
+
+```{r}
+bootstrap_distribution <- GLP_df |>
+  filter(group == "treatment") |>
+  specify(response = weight_loss) |>
+  generate(reps = 1337, type = "bootstrap") |>
+  calculate(stat = "mean")
+
+bootstrap_distribution |>
+  visualize() +
+  shade_ci(endpoints = bootstrap_distribution |>
+             get_ci(level = 0.95, type = "percentile"),
+           color = princeton_black,
+           fill = princeton_orange) +
+  labs(title = "GLP Clinical Trials",
+       subtitle = "treatment group",
+       caption = "(hypothetical data)",
+       x = "weight loss", y = "number of patients") +
+  theme_minimal(base_size = 16)
+```
+
+
+## Hypothesis Testing
+
+### Null Distribution
+
+Use `infer` package code to perform NHST to test the claim (among those in the treatment group)
+
+* null hypothesis: male patients have at least as much weight loss than female patients
+* alternative hypothesis: male patients have less weight loss than female patients
+
+```{r}
+# build a null distribution
+null_distribution <- GLP_df |>
+  filter(group == "treatment") |>
+  specify(formula = weight_loss ~ sex) |> 
+  hypothesize(null = "independence") |> 
+  generate(reps = 1000, type = "permute") |> 
+  calculate(stat = "diff in means", order = c("male", "female"))
+```
+
+```{r}
+# compute the observed difference in means
+obs_diff_means <- GLP_df |>
+  filter(group == "treatment") |>
+  specify(formula = weight_loss ~ sex) |> 
+  calculate(stat = "diff in means", order = c("male", "female"))
+  
+# visualize the null distribution and shade in the p-value
+null_distribution |>
+visualize(bins = 10) + 
+  shade_p_value(obs_stat = obs_diff_means, direction = "less") +
+  theme_minimal()
+```
+
+```{r}
+null_distribution |>
+  get_p_value(obs_stat = obs_diff_means, direction = "less")
+```
+
+### Boxplots
+
+Create a side-by-side boxplot to conduct a two-sided NHST for weight loss between the control and treatment groups.
+
+```{r}
+GLP_df |>
+  ggplot(aes(x = group, y = weight_loss,
+             fill = group)) +
+  geom_boxplot() +
+  geom_signif(
+    comparisons = list(c("control", "treatment")),
+    map_signif_level = TRUE
+  ) +
+  labs(title = "GLP Clinical Trials",
+       subtitle = "(toward publisable results)",
+       caption = "(hypothetical data)",
+       x = "", y = "weight loss (pounds)") +
+  theme_minimal()
+```
+
+
+## Machine Learning
+
+```{r}
+GLP_ml <- GLP_df |>
+  select(-c(weight_before, weight_after))
+
+data_split <- initial_split(GLP_ml)
+data_train <- training(data_split)
+data_fold <- vfold_cv(data_train)
+lambda_grid <- grid_regular(penalty(range = c(-3, 3)),
+                            levels = 50)
+```
+
+### Ridge Regression
+
+```{r}
+#| message: false
+#| warning: false
+
+ml_pipeline_fit <- linear_reg(mixture = 0, penalty = 0) |> 
+  set_engine("glmnet") |>
+  fit(weight_loss ~ ., data = GLP_ml)
+ml_pipeline_recipe <- recipe(weight_loss ~ ., data = GLP_ml) |>
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors())
+ml_pipeline_spec <- linear_reg(mixture = 0, penalty = tune()) |>
+  set_engine("glmnet")
+ml_pipeline_workflow <- workflow() |> 
+  add_recipe(ml_pipeline_recipe) |>
+  add_model(ml_pipeline_spec)
+
+ml_pipeline_grid <- tune_grid(
+  ml_pipeline_workflow,
+  resamples = data_fold, 
+  grid = lambda_grid
+)
+```
+
+```{r}
+best_penalty <- select_best(ml_pipeline_grid, 
+                            metric = "rmse") |>
+  pull(penalty)
+predictions <- predict(ml_pipeline_fit, 
+                       new_data = GLP_df |>
+                         select(-weight_loss),
+                       penalty = best_penalty)
+true_values <- GLP_df  |> select(weight_loss)
+n <- GLP_df  |> drop_na(weight_loss) |> nrow()
+RMSE <- sqrt((1/n)*sum((true_values - predictions)^2))
+print(RMSE)
+```
+
+### Lasso Regression
+
+```{r}
+#| message: false
+#| warning: false
+
+ml_pipeline_fit <- linear_reg(mixture = 1, penalty = 0) |> 
+  set_engine("glmnet") |>
+  fit(weight_loss ~ ., data = GLP_ml)
+ml_pipeline_recipe <- recipe(weight_loss ~ ., data = GLP_ml) |>
+  step_novel(all_nominal_predictors()) |>
+  step_dummy(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |>
+  step_normalize(all_numeric_predictors())
+ml_pipeline_spec <- linear_reg(mixture = 1, penalty = tune()) |>
+  set_engine("glmnet")
+ml_pipeline_workflow <- workflow() |> 
+  add_recipe(ml_pipeline_recipe) |>
+  add_model(ml_pipeline_spec)
+
+ml_pipeline_grid <- tune_grid(
+  ml_pipeline_workflow,
+  resamples = data_fold, 
+  grid = lambda_grid
+)
+```
+
+```{r}
+best_penalty <- select_best(ml_pipeline_grid, 
+                            metric = "rmse") |>
+  pull(penalty)
+predictions <- predict(ml_pipeline_fit, 
+                       new_data = GLP_df |>
+                         select(-weight_loss),
+                       penalty = best_penalty)
+true_values <- GLP_df  |> select(weight_loss)
+n <- GLP_df  |> drop_na(weight_loss) |> nrow()
+RMSE <- sqrt((1/n)*sum((true_values - predictions)^2))
+print(RMSE)
+```
+
+
+### Clustering
+
+```{r}
+# cross-validation folds
+ml_pipeline_cv <- vfold_cv(GLP_ml, v = 5)
+
+# specification
+ml_pipeline_spec <- k_means(num_clusters = tune())
+
+# recipe
+ml_pipeline_recipe <- recipe(~weight_loss, data = GLP_ml) |>
+  step_zv() |>
+  step_normalize()
+
+# workflow
+ml_pipeline_workflow <- workflow(ml_pipeline_recipe, ml_pipeline_spec)
+
+# parameter grid
+kvals_grid <- grid_regular(num_clusters(), levels = 10)
+
+# tuning
+tune_results <- tune_cluster(
+  ml_pipeline_workflow,
+  resamples = ml_pipeline_cv,
+  grid = kvals_grid,
+  metrics = cluster_metric_set(sse_within_total, sse_total, sse_ratio)
+)
+```
+
+```{r}
+tune_results |>
+  collect_metrics() |>
+  filter(.metric == "sse_ratio") |>
+  ggplot(aes(x = num_clusters, y = mean)) +
+  geom_point(aes(x = factor(num_clusters), y = mean),
+             size = 3) +
+  geom_line() +
+  labs(title = "Scree Plot",
+       subtitle = "Aiming to choose the number of clusters",
+       caption = "SML 201",
+       x = "number of clusters",
+       y = "within/total SSE ratio") +
+  theme_minimal(base_size = 14)
+```
+
+
+### Visualization
+
+Create a side-by-side arrangements of scatterplots
+
+* horizontal: `weight_before`
+* vertical: `weight_after`
+
+1. color coded by `group`
+2. color coded by cluster assignment
+
+```{r}
+cluster_fit <- k_means(num_clusters = 2) |>
+  set_engine("stats") |>
+  fit(~ weight_loss, data = GLP_df)
+GLP_clust <- GLP_df |>
+  mutate(cluster_num = extract_cluster_assignment(cluster_fit) |>
+           pull())
+```
+
+```{r}
+p1 <- GLP_clust |>
+  ggplot(aes(x = weight_before, y = weight_after)) +
+  geom_point(aes(color = group),
+             alpha = 0.5, size = 3) +
+  labs(title = "GLP Clinical Trials",
+       subtitle = "experiment groups",
+       x = "weight before (pounds)",
+       y = "weight after (pounds)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+p2 <- GLP_clust |>
+  ggplot(aes(x = weight_before, y = weight_after)) +
+  geom_point(aes(color = cluster_num),
+             alpha = 0.5, size = 3) +
+  labs(title = "GLP Clinical Trials",
+       subtitle = "k = 2 clusters",
+       x = "weight before (pounds)",
+       y = "weight after (pounds)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+#patchwork
+p1 + p2
+```
+
+::: {.callout-warning}
+## DCP3
+:::
+
+
+# Coda
+
+::: {.callout-note}
+
+## Course Learning Outcomes
+
+By the end of this course, students will be able to:
+
+1. Implement data science and statistical concepts and methods to data sets and real-world scenarios
+2. Utilize software to load files, perform data wrangling, and produce visualizations
+3. Compute results from data analyses and express the findings to academic and scientific communication audiences
+4. Discuss ethical and societal impact of data science projects and equitable practices
+
+:::
+
+
+
+# Quo Vadimus?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+* CLO Assessment (survey)
+* Exam 2 (April 23)
+  * check location and other info in Canvas
+* Project 3
+  * assigned: April 27
+  * due: May 11
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="50%"}
+{{< video https://www.youtube.com/watch?v=LXD4MGINIzQ >}}
+
+* last-minute exam advice from 5 Second Films ([YouTube](https://www.youtube.com/watch?v=LXD4MGINIzQ))
+:::
+
+::::
+
+
+# Footnotes
+
+::: {.callout-note collapse="true"}
+## (optional) Additional Resources
+
+
+
+:::
+
+::: {.callout-note collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::
+
+
+
+
+
+:::: {.columns}
+
+::: {.column width="45%"}
+	
+:::
+
+::: {.column width="10%"}
+	
+:::
+
+::: {.column width="45%"}
+
+:::
+
+::::
+
+::::: {.panel-tabset}
+
+
+
+:::::
