@@ -1,0 +1,39 @@
+---
+title: "Exam Day"
+author: "Derek Sollberger"
+date: "2026-04-23"
+format:
+  html:
+    toc: true
+    theme: cerulean
+---
+
+# SML 201
+
+## Exam
+
+* Every other seat: leave one seat between you an another student
+* Receive one question packet and one answer packet
+* Keep paper packets closed until proctors announce start
+* When done/time, turn in both packets and formula sheets to proctors
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+# library("corrplot")
+library("countdown")
+# library("tidyverse")
+```
+
+
+
+
+```{r}
+#| echo: false
+countdown(minutes = 80, seconds = 0)
+```
+
+
+
+

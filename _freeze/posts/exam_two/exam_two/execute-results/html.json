@@ -1,0 +1,21 @@
+{
+  "hash": "7df1876c55896a0d6aceda941be0ae75",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Exam Day\"\nauthor: \"Derek Sollberger\"\ndate: \"2026-04-23\"\nformat:\n  html:\n    toc: true\n    theme: cerulean\n---\n\n# SML 201\n\n## Exam\n\n* Every other seat: leave one seat between you an another student\n* Receive one question packet and one answer packet\n* Keep paper packets closed until proctors announce start\n* When done/time, turn in both packets and formula sheets to proctors\n\n\n::: {.cell}\n\n:::\n\n\n\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<countdown-timer class=\"countdown\" id=\"timer_89659655\" minutes=\"80\" seconds=\"0\" update-every=\"1\" tabindex=\"0\" style=\"right:0;bottom:0;\"></countdown-timer>\n```\n\n:::\n:::\n\n\n\n\n\n",
+    "supporting": [
+      "exam_two_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../../site_libs/countdown-0.6.0/countdown.css\" rel=\"stylesheet\" />\n<script src=\"../../site_libs/countdown-0.6.0/countdown.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
